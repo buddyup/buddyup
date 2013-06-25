@@ -1,0 +1,38 @@
+#!/bin/bash
+
+MODULE_PATH=env/puppet/modules
+MANIFEST=env/puppet/manifests/$1.pp
+PROD_MANIFEST=env/puppet/manifests/prod.pp
+DEV_MANIFEST=env/puppet/manifests/dev.pp
+
+DISTRIBUTOR=$(lsb_release -is)
+CODENAME=$(lsb_release -cs)
+
+# RHEL and CentOS
+redhat() {
+    rpm -ivh http://yum.puppetlabs.com/el/6/products/i386/puppetlabs-release-6-7.noarch.rpm
+}
+
+# Debian and Ubuntu
+debian() {
+    wget http://apt.puppetlabs.com/puppetlabs-release-$CODENAME.deb
+    dpkg -i puppetlabs-release-$CODENAME.deb
+    # Updates to include Puppet Labs' repositories
+    apt-get update
+}
+
+provision() {
+    puppet apply --modulepath=$MODULE_PATH $MANIFEST
+}
+
+main() {
+    case $DISTRIBUTOR in
+        centos|redhat )
+            redhat
+            ;;
+        debian|ubuntu )
+            debian
+            ;;
+    esac
+    provision
+}
