@@ -1,28 +1,68 @@
+from datetime import datetime
+from functools import partial
+
+from flask import request, abort
+
 from buddyup.app import app
-from buddyup import database
+from buddyup.database import Event
 from buddyup.templating import render_template
+from buddyup.util import form_get
 
 
-@app.route('/group/profile/<int:group_id>')
-def group_view(group_id):
-    group_record = database.Group.query.get_or_404(group_id)
-    return render_template('group_view.html',
-                            group_record=group_record)
+@app.route('/event/profile/<int:event_id>')
+def event_view(event_id):
+    event_record = Event.query.get_or_404(event_id)
+    return render_template('event_view.html',
+                            event_record=event_record)
 
 
-@app.route('/group/search')
-def group_search():
-    return render_template('group_search.html')
+@app.route('/event/search')
+def event_search():
+    return render_template('event_search.html')
 
 
-@app.route('/group/search_results', methods=['POST'])
-def group_search_results():
+@app.route('/event/search_results', methods=['POST'])
+def event_search_results():
     """
-    TODO: Implement searching by:
-    * group.cid
-    * group.name?
-    * group.id + event.gid
-    Give render_template a pagination
+    Gives event_search_results.html a Pagination (see Flask-SQLAlchemy) of
+    Events.
+    
+    Should this be GET?
     """
-    return render_template('group_search_results.html',
-                           pagination=pagination)
+
+    get_int = partial(form_get, type=int)
+    # TODO: Addition ordering?
+    query = Event.query.order_by(Event.time)
+
+    course = get_int('course')
+    # -1 indicates no course selected, so don't filter
+    if course >= 0:
+        query = query.filter(Event.course == course)
+    
+    page = form_get('page', convert=int, default=0)
+    if page < 0:
+        page = 0
+    else:
+        page = page - 1
+
+    if form_get('start_year') != '':
+        start_year = get_int('start_year')
+        start_month = get_int('start_month')
+        start_day = get_int('start_day')
+        start_hour = get_int('start_hour')
+        start_minute = get_int('start_minute')
+        
+        end_year = get_int('end_year')
+        end_month = get_int('end_month')
+        end_day = get_int('end_day')
+        end_hour = get_int('end_hour')
+        end_minute = get_int('end_minute')
+
+        # TODO: Timezone?
+        start = datetime(start_year, start_month, start_day, start_minute)
+        end = datetime(end_year, end_month, end_day, en_minute)
+        # TODO: Show any event that overlaps the time
+        query = query.filter(start < Event.start).filter(end > Event.end)
+
+    return render_template('event_search_results.html',
+                           pagination=query.pagination())
