@@ -1,0 +1,46 @@
+{#
+
+/event/search_results
+
+Variables
+---------
+
+pagination: Instance of flask.ext.sqlalchemy.Pagination
+pagination.items: Events for this page
+
+#}
+{% inherit "layout.html" %}
+{% block title %} Event Search Results {% endblock %}
+{% block body %}
+
+{# TODO: Forward/back code OR scroll to load #}
+<div id="pagination-nav">
+  <ul>
+    <li></li>
+    <li></li>
+  </ul>
+</div>
+
+<table id="search-results">
+  <thead>
+    <tr>
+      <th>Course</th>
+      <th>Date</th>
+      <th>Start Time</th>
+      <th>End Time</th>
+      <th>Attendees</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for event in pagination.items %}
+    <tr>
+      <td>{{ event.course|format_course('{subject} {number}') }}</td>
+      <td>{{ event.start.strftime('%a %b %d') }}</td>
+      <td>{{ event.start.strftime('%I:%M %p') }}</td>
+      <td>{{ event.end.strftime('%I:%M %p') }}</td>
+      <td>{{ event.users.count() }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
