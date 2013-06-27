@@ -139,11 +139,6 @@ Extra Variables and Functions
             {{ user_record.full_name }}
         </a>
 
-.. function:: url_for_group(group, **kwargs)
-
-    Return a URL based on a specific group record or group id. Otherwise
-    identical to ``url_for_user()``.
-
 .. function:: url_for_event(event, **kwargs)
 
     Return a URL based on a specific event record or event id. Otherwise
