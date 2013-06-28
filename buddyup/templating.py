@@ -1,7 +1,7 @@
 from flask import render_template as _render_template
-from flask import session, request, g
+from flask import g
 
-from buddyup import app, database, util
+from buddyup.app import app
 
 
 @app.template_global
@@ -60,7 +60,7 @@ def format_event(event, format, datef=None, timef=None):
     """
 
     variables = {
-        'id': event.id
+        'id': event.id,
         'location': event.location,
     }
     if datef:
