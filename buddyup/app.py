@@ -7,6 +7,8 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 app.config.from_envvar('BUDDYUP_SETTINGS', silent=True)
 
+runner = Runner(app)
+
 import database
 import templating
 
