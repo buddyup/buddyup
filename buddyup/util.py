@@ -1,7 +1,7 @@
 from flask import url_for, request, abort
 
-from buddyup import database, app
-
+from buddyup import database
+from buddyup.app import app
 
 _DEFAULT = object()
 
@@ -31,26 +31,45 @@ def _url_for_profile(id, base, kls, kwargs):
     return "%s/profile/%i" % (url_for(base), id)
 
 
-def form_get(var, convert=None, default=_DEFAULT):
-    """
-    Get a variable from request.form. Abort with status code 400 if the
-    variable is not present.
-    
-    convert is a function or class to convert the value. 
-    
-    If specified, default is used instead of raising an error.
-    """
+def _parameter_get(source, var, convert=None, default=_DEFAULT):
 
-    if var not in request.form:
+    if var not in source:
         if default is _DEFAULT:
+            print "OMG"
             abort(400)
             # abort raises an exception, so the function ends here
         else:
             return default
     elif convert is not None:
         try:
-            return convert(request.form[var])
+            return convert(source[var])
         except ValueError:
+            print "OMG"
             abort(400)
     else:
-        return request.form[var]
+        return source[var]
+
+def form_get(var, convert=None, default=_DEFAULT):
+    """
+    Get a variable from request.form. Abort with status code 400 if the
+    variable is not present unless default is given.
+    
+    convert is a function or class to convert the value. 
+    
+    If specified, default is used instead of raising an error.
+    """
+    
+    return _parameter_get(request.form, var, convert, default)
+
+
+def args_get(var, convert=None, default=_DEFAULT):
+    """
+    Get a variable from request.args. Abort with status code 400 if the
+    variable is not present unless default is given.
+    
+    convert is a function or class to convert the value. 
+    
+    If specified, default is used instead of raising an error.
+    """
+    
+    return _parameter_get(request.args, var, convert, default)
