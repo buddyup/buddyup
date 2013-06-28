@@ -1,5 +1,5 @@
-from buddyup import app
-from flaskext.sqlalchemy import SQLAlchemy
+from buddyup.app import app
+from flask.ext.sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy(app)
 
@@ -42,7 +42,7 @@ class Course(db.Model):
         secondary=CourseMembership,
         backref=db.backref('courses', lazy='dynamic'))
     # TODO
-    events = 
+    #events = 
 
 
 class User(db.Model):
@@ -50,15 +50,16 @@ class User(db.Model):
     # PSU user names are always <= 8 ASCII characters
     user_name = db.Column(db.String(8))
     full_name = db.Column(db.UnicodeText)
-    courses = db.relationship('Course',)
-    events = db.relationship('EventMembership', backref='user',
+    courses = db.relationship('Course', secondary=CourseMembership,
+                              lazy='dynamic')
+    events = db.relationship('Event', secondary=EventMembership,
                              lazy='dynamic')
     sent_messages = db.relationship('Message', backref='sender',
                                     lazy='dynamic')
-    received_messages = db.relationship('Message', backref='sender',
-                                        lazy='dynamic'
+    received_messages = db.relationship('Message', backref='receiver',
+                                        lazy='dynamic')
     # TODO
-    buddies = db.relationship('User', secondary=Buddy)
+    buddies = db.relationship('User', secondary=Buddy, lazy='dynamic')
 
 
 class Event(db.Model):
