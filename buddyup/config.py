@@ -4,9 +4,9 @@ class Base:
 
 
 class Dev(Base):
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///'
-    # MockCAS server
-    CAS_SERVER = 'http://locahost:8000/'
+    SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/buddyup.db'
+    # MockCAS server for testing
+    CAS_SERVER = 'http://localhost:8000'
 
 
 class Testing(Base):
