@@ -4,7 +4,9 @@
   <title>{% block title %} Title {% endblock %} - BuddyUp</title>
 </head>
 <body>
-  <div id="header"></div>
+  <div id="header">
+    {{ user|format_user('ID: {id}, user name {name}, name {full_name}') }}
+  </div>
   <div id="body">{% block body %}Body{% endblock %}</div>
   <div id="footer"></div>
 </body>
