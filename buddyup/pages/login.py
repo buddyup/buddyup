@@ -2,10 +2,10 @@ from urllib2 import urlopen, HTTPError
 from urllib import urlencode, quote
 from xml.etree import cElementTree as etree
 
-from flask import url_for, request, redirect, flash, abort
+from flask import url_for, request, redirect, flash, abort, session
 
 from buddyup.app import app
-from buddyup.database import User
+from buddyup.database import User, db
 from buddyup.util import args_get
 
 VALIDATE_URL = "{server}/serviceValidate?{args}"
@@ -35,7 +35,7 @@ def login():
     if 'ticket' in request.args:
         status, message = validate(args_get('ticket'))
         if status == 0:
-            return redirect(url_for('/'))
+            return redirect(url_for('index'))
         else:
             app.logger.error(message)
             abort(status)
@@ -93,10 +93,12 @@ def validate(ticket):
         user_record = User.query.filter(User.user_name == user_name).first()
         # No user with that user name :(
         if user_record is None:
-            # Maybe create the record?
-            return 401, "User name not in database"
-        request.session['user_id'] = user_record.id
-        return True, None
+            new_user_record = User(user_name=user_name, full_name="")
+            db.session.add(new_user_record)
+            db.session.commit()
+        else:
+            session['user_id'] = user_record.id
+        return 0, None
     else:
         app.logger.error('bad response: %s', etree.tostring(tree.getroot()))
         return 500, "Bad response from CAS server: no success/failure"
