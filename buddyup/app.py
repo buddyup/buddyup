@@ -4,7 +4,7 @@ from flask.ext.runner import Runner
 
 
 app = Flask(__name__)
-app.config.from_object(__name__)
+app.config.from_object(__name__.split('.')[0] + '.config.Dev')
 app.config.from_envvar('BUDDYUP_SETTINGS', silent=True)
 
 runner = Runner(app)
