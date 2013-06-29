@@ -30,6 +30,11 @@ def teardown(*args):
         del g.user
 
 
+@app.route('/')
+def index():
+    return templating.render_template('index.html')
+
+
 # Import after creating `app` to let pages.* have access to buddyup.app.app
 import pages
 
