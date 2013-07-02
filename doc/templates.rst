@@ -33,6 +33,10 @@ Extra Variables and Functions
 
     CAS login URL (``unicode``)
 
+    .. code-block:: jinja
+
+        <a href="{{ login_url }}">Log In</a>
+
 .. data:: logged_in
 
     Is the user logged in? A ``bool`` value.
