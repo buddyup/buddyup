@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Favorite</title>
+<title>Creat Group</title>
 <!-- Bootstrap -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Username's homepage">
@@ -30,8 +30,12 @@
   .navbar .brand{
 	  padding-top:0;
   }
-  .dropdown-menu a{
-      color: #000000 !important;
+  h2{ color: red;} 
+  h4{ color: blue;} 
+  .me_icon{
+  	 background-image: url(../homepage/css/glyphicons-halflings.png);}
+  .dropdown-menu {
+   	background-color:#C8C8C8;
   }
 </style>
 
@@ -49,8 +53,8 @@
     <ul class="nav">
 	  <li><a href="../homepage/profile.html">Home</a></li>
       <li><a href="../homepage/findgroup.html">Find Group</a></li>
-      <li><a href="../homepage/favorite.html">Favorite</a></li>
-	  
+      <li><a href="../homepage/creategroup.html">Create Group</a></li>
+	  <li><a href="../homepage/forum.html">Forum</a></li>
       
     </ul>
 	
@@ -58,17 +62,19 @@
 	<li class="dropdown">
 		<a class="dropdown-toggle" data-toggle="dropdown">Welcome, User <b class="caret"></b></a>
 		<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-			<li><a tabindex="-1"  href="../homepage/editprofile.html"> Edit Your Profile </a></li>
-			<li><a tabindex="-1"  href="#logout"> Log out</a></li>
+			<li><a tabindex="-1"  href="../homepage/message.html"><i class="icon-envelope me_icon"></i> Message </a></li>
+			<li><a tabindex="-1"  href="../homepage/invitation.html"> <i class="icon-pencil me_icon"></i> Invitations </a></li>
+			<li><a tabindex="-1"  href="../homepage/editprofile.html"><i class="icon-edit me_icon"></i> Edit Your Profile </a></li>
+			<li><a tabindex="-1"  href="#logout"><i class="icon-off me_icon"></i>  Log out</a></li>
 		</ul>
 	</li>
 </ul>
   </div>
 </div>
 
-<h1>Favortie page </h1>
-<br>
-<br>
+<h2 style="text-align:center;"> Invitation page </h2>
+
+
 
 
 
