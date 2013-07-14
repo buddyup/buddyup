@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Buddy Up</title>
+<!-- Bootstrap -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Username's homepage">
+<meta name="author" content="Username">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/bootstrap-fileupload.css" rel="stylesheet">
+<link href="css/bootstrap-fileupload.min.css" rel="stylesheet">
+<link href="css/calendar.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="css/js/jquery.js"></script>
+<script type="text/javascript" src="css/js/bootstrap.js"></script>
+<script type="text/javascript" src="css/js/bootstrap-calendar.js" ></script>
+
+<style>
+  body {
+    padding-top: 60px;
+  }
+  a {
+    color: #00759A;
+  }
+  .navbar .brand{
+	  padding-top:0;
+  }
+  .me_icon{
+  	 background-image: url(../homepage/css/glyphicons-halflings.png);}
+  .dropdown-menu {
+   	background-color:#C8C8C8;
+  }
+</style>
+
+ <script type="text/javascript">
+    $(document).ready(function(){
+    var evnts = function(){
+        return {
+            "event":
+            [
+                {"date":"01/01/2012","title":"1"}
+                ,{"date":"02/02/2012","title":"2"}
+                ,{"date":"03/03/2012","title":"34"}
+                ,{"date":"04/04/2012","title":"123"}
+                ,{"date":"07/14/2013","title":"223"}
+                ,{"date":"07/17/2013","title":"4"}
+                ,{"date":"07/31/2013","title":"5"}
+                ,{"date":"08/08/2012","title":"14"}
+                ,{"date":"09/09/2012","title":"10"}
+                ,{"date":"10/10/2012","title":"10"}
+                ,{"date":"11/11/2012","title":"10"}
+                ,{"date":"12/12/2012","title":"10"}
+            ]
+        }
+    };
+    $('#calendar').Calendar({ 'events': evnts, 'weekStart': 1 })
+    .on('changeDay', function(event){ alert("No event"); })
+    .on('onEvent', function(event){})
+    .on('onNext', function(event){})
+    .on('onPrev', function(event){})
+    .on('onCurrent', function(event){});
+    });
+</script>
+	
+</head>
+
+
+<body>
+
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="navbar-inner">
+			<a class="brand" href="../homepage/profile.html">
+				<img id="topbar_logo" src="logo.png"> </img>
+			</a>
+			<ul class="nav">
+				<li><a href="#home">Home</a></li>
+				<li><a href="../homepage/findgroup.html">Find Group</a></li>
+				<li><a href="../homepage/creategroup.html">Create Group</a></li>
+				<li><a href="../homepage/forum.html">Forum</a></li>
+			</ul>
+			<ul class="nav pull-right">
+				<li class="dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown">Welcome, User <b class="caret"></b></a>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+						<li><a tabindex="-1"  href="../homepage/message.html"><i class="icon-envelope me_icon"></i> Message </a></li>
+						<li><a tabindex="-1"  href="../homepage/invitation.html"> <i class="icon-pencil me_icon"></i> Invitations </a></li>
+						<li><a tabindex="-1"  href="../homepage/editprofile.html"><i class="icon-edit me_icon"></i> Edit Your Profile </a></li>
+						<li><a tabindex="-1"  href="#logout"><i class="icon-off me_icon"></i>  Log out</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+    <div class="container">
+      <div class="row">
+        <div class="span4" id="calendar"></div>
+      </div>
+    </div> <!-- /container -->
+    
+	<br>
+	<br>
+
+</body>
+</html>
