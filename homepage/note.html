@@ -2,22 +2,22 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Creat Group</title>
+<title>Sticky Note</title>
 <!-- Bootstrap -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Username's homepage">
 <meta name="author" content="Username">
-
 <link href="css/bootstrap.css" rel="stylesheet">
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/bootstrap-fileupload.css" rel="stylesheet">
 <link href="css/bootstrap-fileupload.min.css" rel="stylesheet">
+<link rel="stylesheet" href="css/jquery.stickynotes.css" type="text/css">
 <script src="css/js/jquery.js"></script>
 <script src="css/js/bootstrap.js"></script>
-
-
-
+<script type="text/javascript" src="css/js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="css/js/jquery-ui-1.7.2.custom.min.js"></script>
+<script type="text/javascript" src="css/js/jquery.stickynotes.js"></script>
 <style>
   body {
     padding-top: 60px;
@@ -29,16 +29,29 @@
   .navbar .brand{
 	  padding-top:0;
   }
-  h2{ color: red;} 
-  h4{ color: blue;} 
   .me_icon{
   	 background-image: url(../homepage/css/glyphicons-halflings.png);}
   .dropdown-menu {
    	background-color:#C8C8C8;
   }
+  .circle{
+	display:block;
+	width:200px;
+	height:200px;
+	border-radius:100px;
+	font-size:30px;
+	color:#fff;
+	line-height:200px;
+	text-align:center;
+	text-decoration:none;
+	background:#3300FF}
+   .circle:hover{
+ 	color:#ccc;
+	text-decoration:none;
+	background:#3366FF}
+	legend { margin:3px; text-align:center;width:100%}
 </style>
 
-<link href="css/bootstrap-responsive.css" rel="stylesheet">
 </head>
 
 
@@ -73,10 +86,46 @@
 	  </div>
 	</div>
 
+<h1>Sticky Notes </h1>
+<div id="notes" class="span4" style="width:1000px;height:500px;">
+</div>
 
-<h2 style="text-align:center;"> Message page </h2>
+<script type="text/javascript" charset="utf-8">
+	var edited = function(note) {
+	}
+	var created = function(note) {
+	}
+	
+	var deleted = function(note) {
+	}
+	
+	var moved = function(note) {
+	}	
+	
+	var resized = function(note) {
+	}					
 
-
+	$(document).ready(function() {
+		var options = {
+			notes:[{"id":1,
+			      "text":"Your Note",
+				  "pos_x": 80,
+				  "pos_y": 80,	
+				  "width": 200,							
+				  "height": 200,													
+			    }]
+			,resizable: true
+			,controls: true 
+			,editCallback: edited
+			,createCallback: created
+			,deleteCallback: deleted
+			,moveCallback: moved					
+			,resizeCallback: resized					
+			
+		};
+		$("#notes").stickyNotes(options);
+	});
+</script>
 
 
 

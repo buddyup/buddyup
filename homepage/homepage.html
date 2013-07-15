@@ -2,20 +2,16 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Creat Group</title>
+<title>Buddy Up</title>
 <!-- Bootstrap -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Username's homepage">
 <meta name="author" content="Username">
-
 <link href="css/bootstrap.css" rel="stylesheet">
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/bootstrap-fileupload.css" rel="stylesheet">
 <link href="css/bootstrap-fileupload.min.css" rel="stylesheet">
-<script src="css/js/jquery.js"></script>
-<script src="css/js/bootstrap.js"></script>
-
 
 
 <style>
@@ -29,16 +25,29 @@
   .navbar .brand{
 	  padding-top:0;
   }
-  h2{ color: red;} 
-  h4{ color: blue;} 
   .me_icon{
   	 background-image: url(../homepage/css/glyphicons-halflings.png);}
   .dropdown-menu {
    	background-color:#C8C8C8;
   }
+  .circle{
+	display:block;
+	width:200px;
+	height:200px;
+	border-radius:100px;
+	font-size:30px;
+	color:#fff;
+	line-height:200px;
+	text-align:center;
+	text-decoration:none;
+	background:#3300FF}
+   .circle:hover{
+ 	color:#ccc;
+	text-decoration:none;
+	background:#3366FF}
+	.center { float: none; margin-left: auto; margin-right: auto; }
 </style>
 
-<link href="css/bootstrap-responsive.css" rel="stylesheet">
 </head>
 
 
@@ -73,12 +82,26 @@
 	  </div>
 	</div>
 
+<div class="container" style="margin-top:250px;margin-left:160px;">
+	<ul class="thumbnails">
+  	  <li class="span3">
+    	  <a href="http://www.google.com/calendar/embed?src=pdx.edu_skouts7amp5qejcihf5ddd7fcs%40group.calendar.google.com&ctz=America/Los_Angeles" class="thumbnail">
+      		<img data-src="holder.js/300x200" alt="300x200" style="width:300px;height:200px" src="calendar.jpg">
+    	   </a>
+	    </li>
+  	  <li class="center">
+  		  <a href="../homepage/activity.html" class="circle" >Activity</a>
+  		</li>
+    	  <li class="span3">
+      	  <a href="../homepage/note.html" class="thumbnail">
+        		<img data-src="holder.js/300x200" alt="300x200" style="width:300px;height:200px" src="note.jpg">
+      	   </a>
+  	    </li>
+	</ul>
+</div>
 
-<h2 style="text-align:center;"> Message page </h2>
-
-
-
-
+<script src="css/js/jquery.js"></script>
+<script src="css/js/bootstrap.js"></script>
 
 </body>
 </html>
