@@ -82,14 +82,16 @@ class EventComment(db.Model):
     event_id = db.Column(db.Integer, db.ForeignKey('event.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     contents = db.Column(db.UnicodeText)
-
+    #TODO: submission time
+    time = db.Column(db.DateTime)
 
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     text = db.Column(db.UnicodeText)
-
+    #TODO: sending time
+    time = db.Column(db.DateTime)
 
 class Notes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -97,13 +99,15 @@ class Notes(db.Model):
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
     title = db.Column(db.UnicodeText)
     text = db.Column(db.UnicodeText)
-
+    #TODO: submission time
+    time = db.Column(db.DateTime)
 
 class NotesComment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     notes_id = db.Column(db.Integer, db.ForeignKey('notes.id'))
     text = db.Column(db.UnicodeText)
-
+    #TODO: submission time
+    time = db.Column(db.DateTime)
 
 class Invitation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -111,3 +115,4 @@ class Invitation(db.Model):
     receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     text = db.Column(db.UnicodeText)
     rejected = db.Column(db.Boolean, default=False)
+    #Question: just removed it from the db if rejected?
