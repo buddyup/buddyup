@@ -9,8 +9,8 @@ app.config.from_envvar('BUDDYUP_SETTINGS', silent=True)
 
 runner = Runner(app)
 
-import database
-import templating
+from . import database
+from . import templating
 
 @app.before_request
 def setup():
@@ -36,6 +36,6 @@ def index():
 
 
 # Import after creating `app` to let pages.* have access to buddyup.app.app
-import pages
+from . import pages
 
 # Insert others here...
