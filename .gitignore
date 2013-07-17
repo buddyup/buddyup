@@ -4,3 +4,4 @@
 *.pyc
 *.pyo
 doc/_build/*
+__pycache__
