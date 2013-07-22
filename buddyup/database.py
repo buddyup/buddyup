@@ -116,3 +116,13 @@ class Invitation(db.Model):
     text = db.Column(db.UnicodeText)
     rejected = db.Column(db.Boolean, default=False)
     #Question: just removed it from the db if rejected?
+
+class Vote(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    # May change value into boolean
+    value = db.Column(db.Integer)
+
+# TODO: primary key: user_id & date & time
+# class Availability(db.Model):
+    
