@@ -15,7 +15,7 @@ def home1():
  
 @app.route('/buddies')
 def buddies():
-  return render_template('findgroup.html')
+  return render_template('buddies.html')
   
 @app.route('/resources')
 def resources():
@@ -39,6 +39,17 @@ def help():
 @app.route('/setting')
 def setting():
    return render_template('message.html')
-
+@app.route('/note')
+def note():
+   return render_template('note.html')
+@app.route('/findgroup')
+def findgroup():
+   return render_template('findgroup.html')
+@app.route('/creategroup')
+def creategroup():
+   return render_template('creategroup.html')   
+@app.route('/calendar')
+def calendar():
+   return render_template('calendar.html')  
 if __name__ == '__main__':
   app.run(debug=True)

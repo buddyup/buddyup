@@ -9,7 +9,7 @@
   .navbar .brand{
 	  max-height: 40px;
 	  overflow: visible;
-	  padding-top: 0;
+	  padding-top: 0.1;
 	  padding-bottom: 0;
   }
   .me_icon{
@@ -17,21 +17,7 @@
   .dropdown-menu {
    	background-color:#C8C8C8;
   }
-  .circle{
-	display:block;
-	width:200px;
-	height:200px;
-	border-radius:100px;
-	font-size:30px;
-	color:#fff;
-	line-height:200px;
-	text-align:center;
-	text-decoration:none;
-	background:#3300FF}
-   .circle:hover{
- 	color:#ccc;
-	text-decoration:none;
-	background:#3366FF}
+  
 	.center { float: none; margin-left: auto; margin-right: auto; }
     .btn-file { 
    	   background-color: hsl(51, 78%, 45%) !important; 
@@ -44,3 +30,11 @@
    	   background-image: linear-gradient(#f0e28d, #ccb119); 
    	   border-color: #ccb119 #ccb119 hsl(51, 78%, 37.5%); color: #333 !important; text-shadow: 0 1px 1px rgba(255, 255, 255, 0.49); -webkit-font-smoothing: antialiased;
     }
+    ul
+    {
+        list-style-type: none;
+    }
+	#calendar {
+	width: 900px;
+	margin: 0 auto;
+	}

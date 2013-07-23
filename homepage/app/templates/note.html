@@ -1,95 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>Sticky Note</title>
-<!-- Bootstrap -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Username's homepage">
-<meta name="author" content="Username">
-<link href="css/bootstrap.css" rel="stylesheet">
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<link href="css/bootstrap-responsive.css" rel="stylesheet">
-<link href="css/bootstrap-fileupload.css" rel="stylesheet">
-<link href="css/bootstrap-fileupload.min.css" rel="stylesheet">
-<link rel="stylesheet" href="css/jquery.stickynotes.css" type="text/css">
-<script src="css/js/jquery.js"></script>
-<script src="css/js/bootstrap.js"></script>
-<script type="text/javascript" src="css/js/jquery-1.3.2.min.js"></script>
-<script type="text/javascript" src="css/js/jquery-ui-1.7.2.custom.min.js"></script>
-<script type="text/javascript" src="css/js/jquery.stickynotes.js"></script>
-<style>
-  body {
-    padding-top: 60px;
-	background-color:white;
-  }
-  a {
-    color: #00759A;
-  }
-  .navbar .brand{
-	  padding-top:0;
-  }
-  .me_icon{
-  	 background-image: url(../homepage/css/glyphicons-halflings.png);}
-  .dropdown-menu {
-   	background-color:#C8C8C8;
-  }
-  .circle{
-	display:block;
-	width:200px;
-	height:200px;
-	border-radius:100px;
-	font-size:30px;
-	color:#fff;
-	line-height:200px;
-	text-align:center;
-	text-decoration:none;
-	background:#3300FF}
-   .circle:hover{
- 	color:#ccc;
-	text-decoration:none;
-	background:#3366FF}
-	legend { margin:3px; text-align:center;width:100%}
-</style>
-
-</head>
-
-
-<body>
-
-	<div class="navbar navbar-inverse navbar-fixed-top">
-	  <div class="navbar-inner">
-		  <a class="brand" href="../homepage/profile.html">
-			  <img id="topbar_logo" src="logo.png"> </img>
-		  </a>
-	    <ul class="nav">
-		  <li><a href="../homepage/homepage.html">Home</a></li>
-	      <li><a href="../homepage/findgroup.html">Buddies</a></li>
-		  <li><a href="../homepage/findgroup.html">Groups</a></li>
-		  <li><a href="../homepage/forum.html">Resources</a></li>
-      
-	    </ul>
-	
-	<ul class="nav pull-right">
-		<li class="dropdown">
-			<a class="dropdown-toggle" data-toggle="dropdown">Welcome, User <b class="caret"></b></a>
-			<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-				<li><a tabindex="-1"  href="../homepage/message.html"><i class="icon-envelope me_icon"></i> Message </a></li>
-				<li><a tabindex="-1"  href="../homepage/invitation.html"> <i class="icon-pencil me_icon"></i> Invitations </a></li>
-				<li><a tabindex="-1"  href="../homepage/editprofile.html"><i class="icon-edit me_icon"></i> Edit Your Profile </a></li>
-				<li><a tabindex="-1"  href="../homepage/message.html"><i class="icon-th me_icon"></i> Setting </a></li>
-				<li><a tabindex="-1"  href="../homepage/message.html"><i class="icon-comment me_icon"></i> Help </a></li>
-				<li><a tabindex="-1"  href="#logout"><i class="icon-off me_icon"></i>  Log out</a></li>
-			</ul>
-		</li>
-	</ul>
-	  </div>
-	</div>
-
-<h1>Sticky Notes </h1>
-<div id="notes" class="span4" style="width:1000px;height:500px;">
+{% extends "layout.html" %}
+  
+{% block content %}
+<div id="notes" class="span4" style="width:900px;height:600px;">
 </div>
 
+
+{% endblock %}
+{% block extrascript %}
+<script src="{{ url_for('static', filename = 'js/jquery-1.3.2.min.js') }}" ></script>
+<script src="{{ url_for('static', filename = 'js/jquery-ui-1.7.2.custom.min.js') }}" ></script>
+<script src="{{ url_for('static', filename = 'js/jquery.stickynotes.js') }}" ></script>
 <script type="text/javascript" charset="utf-8">
 	var edited = function(note) {
 	}
@@ -106,6 +26,7 @@
 	}					
 
 	$(document).ready(function() {
+		
 		var options = {
 			notes:[{"id":1,
 			      "text":"Your Note",
@@ -127,7 +48,4 @@
 	});
 </script>
 
-
-
-</body>
-</html>
+{% endblock %}

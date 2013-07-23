@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+  
+{% block content %}
+<div id='calendar'></div>
+{% endblock %}
+
+{% block extrascript %}
+<strong><script src="{{ url_for('static', filename = 'js/jquery-1.9.1.min.js') }}" ></script></strong>
+<strong><script src="{{ url_for('static', filename = 'js/jquery-ui-1.10.2.custom.min.js') }}" ></script></strong>
+<strong><script src="{{ url_for('static', filename = 'js/fullcalendar.min.js') }}" ></script></strong>
+
+<script>
+	$(document).ready(function() {
+		var date = new Date();
+		var d = date.getDate();
+		var m = date.getMonth();
+		var y = date.getFullYear();
+             	
+                function event(title,start,id)
+		{
+			this.id = id;
+			this.title=title;
+			this.start=start;
+		}
+	 	thong = new event('event1','2013-07-21',2);
+                
+                $('#calendar').fullCalendar({
+                        header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'month,basicWeek,basicDay'
+			},
+			editable: false,
+			events: [
+				thong,
+				{
+   					 id     : 1,
+					 title  : 'event2',
+            				 start  : '2013-07-05',
+            				 end    : '2013-07-07'
+				}
+			]
+		});
+                thong.title = 'we are pro';
+                //$('#calendar').fullCalendar('removeEvents' ,2)
+                $('#calendar').fullCalendar('updateEvent', thong);  
+	
+	});
+</script>
+{% endblock %}
