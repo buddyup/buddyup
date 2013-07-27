@@ -27,30 +27,35 @@ Buddy = db.Table('buddy',
 # Main tables
 
 
-class Subject(db.Model):
+'''class Subject(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     short = db.Column(db.String(3))
     full = db.Column(db.UnicodeText)
-
+    def __init__(self, id=None, 
+'''
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     crn = db.Column(db.Integer)
     name = db.Column(db.UnicodeText)
-    subject = db.Column(db.Integer, db.ForeignKey('subject.id'))
+    # subject = db.Column(db.Integer, db.ForeignKey('subject.id'))
     number = db.Column(db.Integer)
     students = db.relationship('User',
-        secondary=CourseMembership,
-        backref=db.backref('courses', lazy='dynamic'))
-    # TODO
-    #events = 
-
+            secondary=CourseMembership,
+            backref=db.backref('courses', lazy='dynamic'))
+    def __init__(self, crn, name, number):
+        self.crn = crn
+        if name is None:
+            name = "Unspecified"
+        self.number = number
+    def __repr__(self):
+        return '<Course %r>' % self.crn
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     # PSU user names are always <= 8 ASCII characters
     user_name = db.Column(db.String(8))
     full_name = db.Column(db.UnicodeText)
-    courses = db.relationship('Course', secondary=CourseMembership,
+    course = db.relationship('Course', secondary=CourseMembership,
                               lazy='dynamic')
     events = db.relationship('Event', secondary=EventMembership,
                              lazy='dynamic')
@@ -58,9 +63,14 @@ class User(db.Model):
                                     lazy='dynamic')
     received_messages = db.relationship('Message', backref='receiver',
                                         lazy='dynamic')
-    # TODO
     buddies = db.relationship('User', secondary=Buddy, lazy='dynamic')
+    def __init__(self, user_name, full_name, course):
+        self.user_name = user_name
+        self.full_name = full_name
+        self.course = course
 
+    def __repr__(self):
+        return '<User %r>' % self.user_name
 
 class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -75,7 +85,15 @@ class Event(db.Model):
     # TODO
     comments = db.relationship('EventComment', backref='event',
                                lazy='dynamic')
+    def __init__(self, owner_id, course_id, location, start, end):
+        self.owner_id = owner_id
+        self.course_id = course_id
+        self.location = location
+        self.start = start
+        self.end = end
 
+    def __repr__(self):
+        return '<Event %r>' % self.id
 
 class EventComment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -84,14 +102,30 @@ class EventComment(db.Model):
     contents = db.Column(db.UnicodeText)
     #TODO: submission time
     time = db.Column(db.DateTime)
+    def __init__(self, event_id, user_id, contents, time):
+        self.event_id = event_id
+        self.contents = contents
+        self.time = time
+
+    def __repr__(self):
+        return '<EventComment %r>' % self.id
+
 
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     text = db.Column(db.UnicodeText)
-    #TODO: sending time
     time = db.Column(db.DateTime)
+    read = db.Column(db.Boolean, default=False)
+    def __init__(self, sender_id, receiver_id, text, time):
+        self.sender_id = sender_id
+        self.receiver_id = receiver_id
+        self.text = text
+        self.time = time
+
+    def __repr__(self):
+        return '<Message> %r>' % self.id
 
 class Notes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -99,16 +133,31 @@ class Notes(db.Model):
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
     title = db.Column(db.UnicodeText)
     text = db.Column(db.UnicodeText)
-    #TODO: submission time
-    time = db.Column(db.DateTime)
+    # I don't think Notes need time - Will
+    # time = db.Column(db.DateTime)
+    def __init__(self, user_id, course_id, title, text):
+        self.user_id = user_id
+        self.course_id = course_id
+        self.title = title
+        self.text = self.text
 
-class NotesComment(db.Model):
+    def __repr__(self):
+        return '<Notes %r>' % self.id
+
+'''class NotesComment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     notes_id = db.Column(db.Integer, db.ForeignKey('notes.id'))
     text = db.Column(db.UnicodeText)
-    #TODO: submission time
     time = db.Column(db.DateTime)
 
+    def __init__(self, notes_id, text, time):
+        self.notes_id = notes_id
+        self.text = text
+        self.time = time
+
+    def __repr__(self):
+        return '<NotesComment %r>' % self.id
+'''
 class Invitation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -117,12 +166,41 @@ class Invitation(db.Model):
     rejected = db.Column(db.Boolean, default=False)
     #Question: just removed it from the db if rejected?
 
+class Question(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    text = db.Column(db.UnicodeText)
+    time = db.Column(db.DateTime)
+    answers = db.relationship("Answer",
+            backref="Question", lazy='dynamic')
+
+    def __init__(self, user_id, text, time):
+        self.user_id = user_id
+        self.text = text
+        self.time = time
+
+    def __repr__(self):
+        return '<Question %r>' % self.id
+
+class Answer(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    question_id = db.Column(db.Integer, db.ForeignKey('Question.id'))
+    text = db.Column(db.UnicodeText)
+    time = db.Column(db.DateTime)
+    votes = db.relationship("Vote", backref="Answer", lazy='dynamic')
+
 class Vote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    answer_id = db.Column(db.Integer, db.ForeignKey('Answer.id'))
     # May change value into boolean
     value = db.Column(db.Integer)
 
-# TODO: primary key: user_id & date & time
-# class Availability(db.Model):
-    
+class Availability(db.Model):
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'),
+            primary_key=True)
+    day = db.Column(db.Integer, primary_key=True)
+    hour = db.Column(db.Integer, primary_key=True)
+    avail = db.Column(db.Boolean, default=False)
+
