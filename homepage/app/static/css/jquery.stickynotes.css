@@ -3,7 +3,7 @@ html,body {
 }
 
 #sticky-container {
-	background:url(image/bg_wood.jpg) repeat-x scroll 0 0;	
+	background:url(../img/bg_wood.jpg) repeat-x scroll 0 0;	
 	position: relative;
 	height:100%;
 }
@@ -82,7 +82,7 @@ html,body {
 	z-index:999999;
 }
 .jSticky-delete[class]{
-	background:transparent url(image/delete.png) no-repeat top left;
+	background:transparent url(../img/delete.png) no-repeat top left;
 	height:14px;
 	width:14px;
 	position:absolute;
@@ -90,7 +90,7 @@ html,body {
 	z-index:4;
 }
 * .jSticky-delete{
-    filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='image/delete.png');
+    filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/delete.png');
 	height:14px;
 	width:14px;
 	position:absolute;

@@ -40,23 +40,14 @@
         return {
             "event":
             [
-                {"date":"01/01/2012","title":"1"}
-                ,{"date":"02/02/2012","title":"2"}
-                ,{"date":"03/03/2012","title":"34"}
-                ,{"date":"04/04/2012","title":"123"}
-                ,{"date":"07/14/2013","title":"223"}
+                {"date":"07/14/2013","title":"223"}
                 ,{"date":"07/17/2013","title":"4"}
                 ,{"date":"07/31/2013","title":"5"}
-                ,{"date":"08/08/2012","title":"14"}
-                ,{"date":"09/09/2012","title":"10"}
-                ,{"date":"10/10/2012","title":"10"}
-                ,{"date":"11/11/2012","title":"10"}
-                ,{"date":"12/12/2012","title":"10"}
             ]
         }
     };
     $('#calendar').Calendar({ 'events': evnts, 'weekStart': 1 })
-    .on('changeDay', function(event){ alert("No event"); })
+    .on('changeDay', function(event){})
     .on('onEvent', function(event){})
     .on('onNext', function(event){})
     .on('onPrev', function(event){})
