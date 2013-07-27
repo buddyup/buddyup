@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Buddy Up</title>
+<title> BuddyUp</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <strong><link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet"></strong>
 <strong><link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet"></strong>
@@ -13,25 +13,28 @@
 <strong><link href="{{ url_for('static', filename='css/jquery.stickynotes.css') }}" rel="stylesheet"></strong>
 <strong><link href="{{ url_for('static', filename='css/fullcalendar.css') }}" rel="stylesheet"></strong>
 <strong><link href="{{ url_for('static', filename='css/fullcalendar.print.css') }}" rel="stylesheet" media='print'></strong>
-
+<style>
+{% block forstyle %}
+{% endblock %}
+</style>
 
 </head>
 
 
 <body>
 	<header>
-	<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="navbar navbar-inverse navbar-fixed-top" style:"height:30px;">
 	  <div class="navbar-inner">
-		  <a class="brand" href="{{ url_for('logo') }}">
-			  <img id="topbar_logo" src="../static/img/BuddyUpLogo.png"> </img>
+		  <a class="brand" href="{{ url_for('home') }}">
+			  <img id="topbar_logo" src="../static/img/BuddyUpLogo_300x88.png"> </img>
 		  </a>
-	    <ul class="nav">
-	        <li><a href="{{ url_for('home') }}"> Home </a></li>
+	    <ul class="nav" style="margin-top:10px;">
+	        <li><a href="{{ url_for('profile') }}"> Profile </a></li>
 	        <li><a href="{{ url_for('buddies') }}">Buddies</a></li>
 			<li><a href="{{ url_for('resources') }}">Resources</a></li>
 	    </ul>
 		
-		<ul class="nav pull-right">
+		<ul class="nav pull-right" style="margin-top:10px;">
 			<li class="dropdown">
 				<a class="dropdown-toggle" data-toggle="dropdown">Welcome, User <b class="caret"></b></a>
 				<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">

@@ -1,7 +1,12 @@
 {% extends "layout.html" %}
-  
+{% block forstyle %}
+
+{% endblock %} 
 {% block content %}
+<br>
+
 <div id='calendar'></div>
+
 {% endblock %}
 
 {% block extrascript %}
@@ -41,7 +46,7 @@
 				}
 			]
 		});
-                thong.title = 'we are pro';
+                thong.title = 'something';
                 //$('#calendar').fullCalendar('removeEvents' ,2)
                 $('#calendar').fullCalendar('updateEvent', thong);  
 	

@@ -5,18 +5,9 @@ app = Flask(__name__)
 @app.route('/')
 def home():
   return render_template('homepage.html')
-@app.route('/logo')
-def logo():
-  return render_template('profile.html')
-
-@app.route('/home')
-def home1():
-  return render_template('homepage.html')
- 
-@app.route('/buddies')
-def buddies():
-  return render_template('buddies.html')
-  
+@app.route('/profile')
+def profile():
+  return render_template('profile.html') 
 @app.route('/resources')
 def resources():
    return render_template('forum.html')
@@ -50,6 +41,27 @@ def creategroup():
    return render_template('creategroup.html')   
 @app.route('/calendar')
 def calendar():
-   return render_template('calendar.html')  
+   return render_template('calendar.html') 
+@app.route('/buddies')
+def buddies():
+   return render_template('buddies.html')   
+@app.route('/404')
+def error404():
+   return render_template('404.html') 
+@app.route('/500')
+def error500():
+   return render_template('500.html')
+@app.route('/503')
+def error503():
+   return render_template('503.html')
+@app.route('/400')
+def error400():
+   return render_template('400.html')
+@app.route('/403')
+def error403():
+    return render_template('403.html') 
+@app.route('/landing')
+def landing():
+    return render_template('landing.html') 
 if __name__ == '__main__':
   app.run(debug=True)
