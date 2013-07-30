@@ -1,6 +1,77 @@
 {% extends "layout.html" %}
-  
+{% block forstyle %}
+{% endblock %}  
 {% block content %}
 <h2 style="text-align:center;"> Invitation page </h2>
 
+{% endblock %}
+{% block extrascript %}
+<script type="text/javascript">
+function toggle(source) {
+  checkboxes = document.getElementsByName('foo');
+  for(var i=0, n=checkboxes.length;i<n;i++) {
+    checkboxes[i].checked = source.checked;
+  }
+}
+</script>
+<div class="container">
+    <div class="span3"></div>
+    <div class="well span5">
+<label class="checkbox">
+<input type="checkbox" name="foo" value="bar1" style="margin-top:20px;">  
+	<p style="float: left;"><img src="http://placekitten.com/g/200/200" height="50px" width="50px" border="1px"></p>
+	<font style="margin-left:10px;" color="2BA515"><b> User A </b> <br> </font>	
+	<font style="margin-left:10px;" color="E8A40D">Location: SW  </font>
+	<hr>    
+</label>
+<label class="checkbox">
+<input type="checkbox" name="foo" value="bar1" style="margin-top:20px;">  
+	<p style="float: left;"><img src="http://placekitten.com/g/200/200" height="50px" width="50px" border="1px"></p>
+	<font style="margin-left:10px;" color="2BA515"><b> User B </b> <br> </font>	
+	<font style="margin-left:10px;" color="E8A40D">Location: SW  </font>
+	<hr>    
+</label>
+<label class="checkbox">
+<input type="checkbox" name="foo" value="bar1" style="margin-top:20px;">  
+	<p style="float: left;"><img src="http://placekitten.com/g/200/200" height="50px" width="50px" border="1px"></p>
+	<font style="margin-left:10px;" color="2BA515"><b> User C </b> <br> </font>	
+	<font style="margin-left:10px;" color="E8A40D">Location: SW  </font>
+	<hr>    
+</label>
+<label class="checkbox">
+<input type="checkbox" name="foo" value="bar1" style="margin-top:20px;">  
+	<p style="float: left;"><img src="http://placekitten.com/g/200/200" height="50px" width="50px" border="1px"></p>
+	<font style="margin-left:10px;" color="2BA515"><b> User D </b> <br> </font>	
+	<font style="margin-left:10px;" color="E8A40D">Location: SW  </font>
+	<hr>    
+</label>
+<label class="checkbox">
+<input type="checkbox" name="foo" value="bar1" style="margin-top:20px;">  
+	<p style="float: left;"><img src="http://placekitten.com/g/200/200" height="50px" width="50px" border="1px"></p>
+	<font style="margin-left:10px;" color="2BA515"><b> User E </b> <br> </font>	
+	<font style="margin-left:10px;" color="E8A40D">Location: SW  </font>
+	<hr>    
+</label>
+<label class="checkbox">
+<input type="checkbox" name="foo" value="bar1" style="margin-top:20px;">  
+	<p style="float: left;"><img src="http://placekitten.com/g/200/200" height="50px" width="50px" border="1px"></p>
+	<font style="margin-left:10px;" color="2BA515"><b> User F </b> <br> </font>	
+	<font style="margin-left:10px;" color="E8A40D">Location: SW  </font>
+	<hr>    
+</label>
+<label class="checkbox">
+<input type="checkbox" name="foo" value="bar1" style="margin-top:20px;">  
+	<p style="float: left;"><img src="http://placekitten.com/g/200/200" height="50px" width="50px" border="1px"></p>
+	<font style="margin-left:10px;" color="2BA515"><b> User G </b> <br> </font>	
+	<font style="margin-left:10px;" color="E8A40D">Location: SW  </font>
+	<hr>    
+</label>
+<input type="checkbox" onClick="toggle(this)" style="margin-top:-5px;"/> Select/Unselect All <br>
+<form class="navbar-search pull-left">
+<input type="text" class="search-query" placeholder="Search Friends">
+</form>
+<div class="btn btn-default btn-primary" style="float:right;"> Invite </div>
+
+		</div>
+</div>
 {% endblock %}
