@@ -62,6 +62,9 @@ def error403():
     return render_template('403.html') 
 @app.route('/landing')
 def landing():
-    return render_template('landing.html') 
+    return render_template('landing.html')
+@app.route('/group_result')
+def group_result():
+    return render_template('group_result.html') 
 if __name__ == '__main__':
   app.run(debug=True)

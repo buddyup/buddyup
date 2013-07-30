@@ -8,12 +8,15 @@
 <script src="{{ url_for('static', filename = 'js/bootstrap.js') }}" ></script>
 <script src="{{ url_for('static', filename = 'js/jquery.js') }}" ></script>
 <script src="{{ url_for('static', filename = 'js/bootstrap-button.js') }}" ></script>
-
+<script src="{{ url_for('static', filename = 'js/bootstrap-dropdown.js') }}" ></script>
 
 
 <style>
 color{color:red;}
-.btn{width:15%;}
+#a{width:90%;}
+.dropdown-menu {
+ 	background-color:#4169E1;
+}
 </style>
 </head>
 <body>
@@ -21,8 +24,8 @@ color{color:red;}
 
 <h2 style="text-align:center;"> Welcome to BuddyUp! </h2>
 <div class="container">
-<div class="span3"></div>
-		<form class="well span6">  
+<div class="span2"></div>
+		<form class="well span8">  
 		  <h4> Please fill in</h4>
 		  <label> Your Name <color> (*Required) </color> </label>  
 		  <input type="text" class="span2" placeholder="First Name">  
@@ -34,55 +37,90 @@ color{color:red;}
 		  <option>STAT 3xx</option>
 	  	  </select>
 		  <label> Location</label>
-		  <input type="text" class="span3" placeholder="where are you from...">
-		  <label> Your free time </label>
-	      <div class="btn-group" data-toggle="buttons-checkbox" >
-	      <button type="button" name="days" class="btn btn-primary">Monday</button>
-	      <button type="button" name="days" class="btn btn-primary">Tuesday</button>
-	      <button type="button" name="days" class="btn btn-primary">Wednesday</button>
-	      <button type="button" name="days" class="btn btn-primary">Thursday</button>
-	      <button type="button" name="days" class="btn btn-primary">Friday</button>
-	      <button type="button" name="days" class="btn btn-primary">Saturday</button>
-		  <button type="button" name="days" class="btn btn-primary">Sunday</button>
-	      </div>
-  		  <div class="btn-group btn-group-vertical " data-toggle="buttons-radio" style='margin-left:30px;'>
-			<button type="button" name="time" class="btn btn-success"> AM</button>
-			<button type="button" name="time" class="btn btn-success"> PM </button>
-			<button type="button" name="time" class="btn btn-success"> ALL</button>
-  	  	  </div>
-  		  <div class="btn-group btn-group-vertical " data-toggle="buttons-radio"  style='margin-left:30px;'>
-			<button type="button" name="time" class="btn btn-success"> AM</button>
-			<button type="button" name="time" class="btn btn-success"> PM </button>
-			<button type="button" name="time" class="btn btn-success"> ALL</button>
-  	  	  </div>
-  		  <div class="btn-group btn-group-vertical " data-toggle="buttons-radio"  style='margin-left:25px;'>
-			<button type="button" name="time" class="btn btn-success"> AM</button>
-			<button type="button" name="time" class="btn btn-success"> PM </button>
-			<button type="button" name="time" class="btn btn-success"> ALL</button>
-  	  	  </div>
-  		  <div class="btn-group btn-group-vertical " data-toggle="buttons-radio" style='margin-left:30px;'>
-			<button type="button" name="time" class="btn btn-success"> AM</button>
-			<button type="button" name="time" class="btn btn-success"> PM </button>
-			<button type="button" name="time" class="btn btn-success"> ALL</button>
-  	  	  </div>
-  		  <div class="btn-group btn-group-vertical " data-toggle="buttons-radio" style='margin-left:30px;'>
-			<button type="button" name="time" class="btn btn-success"> AM</button>
-			<button type="button" name="time" class="btn btn-success"> PM </button>
-			<button type="button" name="time" class="btn btn-success"> ALL</button>
-  	  	  </div>
-  		  <div class="btn-group btn-group-vertical " data-toggle="buttons-radio" style='margin-left:20px;'>
-			<button type="button" name="time" class="btn btn-success"> AM</button>
-			<button type="button" name="time" class="btn btn-success"> PM </button>
-			<button type="button" name="time" class="btn btn-success"> ALL</button>
-  	  	  </div>
-  		  <div class="btn-group btn-group-vertical " data-toggle="buttons-radio"style='margin-left:20px;'>
-			<button type="button" name="time" class="btn btn-success"> AM</button>
-			<button type="button" name="time" class="btn btn-success"> PM </button>
-			<button type="button" name="time" class="btn btn-success"> ALL</button>
-  	  	  </div>
-		  <div class="btn btn-inverse" style="margin-left:370px;margin-top: 20px;"> Submit</div>
+		  <select>  
+		  <option>SW</option>
+		  <option>SE</option>
+		  <option>NW</option>
+		  <option>NE</option>
+	  	  </select>
+		  
+	  	  </select>
+		  
+		  <label> Time for Study Group </label>
+		  <div class="btn-group">
+		    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+		      Monday
+		    </button>
+		    <ul class="dropdown-menu">
+		      <li><a href="#">AM</a></li>
+		      <li><a href="#">PM</a></li>
+		      <li><a href="#">All day</a></li>
+		    </ul>
+		</div>
+		 <div class="btn-group">
+  		    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+  		      Tuesday</span>
+  		    </button>
+  		    <ul class="dropdown-menu">
+  		      <li><a href="#">AM</a></li>
+  		      <li><a href="#">PM</a></li>
+  		      <li><a href="#">All day</a></li>
+  		    </ul>
+		  </div>
+ 		 <div class="btn-group">
+   		    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+   		      Wednesday</span>
+   		    </button>
+   		    <ul class="dropdown-menu">
+   		      <li><a href="#">AM</a></li>
+   		      <li><a href="#">PM</a></li>
+   		      <li><a href="#">All day</a></li>
+   		    </ul>
+ 		  </div>
+ 		 <div class="btn-group">
+   		    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+   		      Thursday</span>
+   		    </button>
+   		    <ul class="dropdown-menu">
+   		      <li><a href="#">AM</a></li>
+   		      <li><a href="#">PM</a></li>
+   		      <li><a href="#">All day</a></li>
+   		    </ul>
+ 		  </div>
+ 		 <div class="btn-group">
+   		    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+   		      Friday</span>
+   		    </button>
+   		    <ul class="dropdown-menu">
+   		      <li><a href="#">AM</a></li>
+   		      <li><a href="#">PM</a></li>
+   		      <li><a href="#">All day</a></li>
+   		    </ul>
+ 		  </div>
+ 		 <div class="btn-group">
+   		    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+   		      Saturday</span>
+   		    </button>
+   		    <ul class="dropdown-menu">
+   		      <li><a href="#">AM</a></li>
+   		      <li><a href="#">PM</a></li>
+   		      <li><a href="#">All day</a></li>
+   		    </ul>
+ 		  </div>
+ 		 <div class="btn-group">
+   		    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+   		     Sunday</span>
+   		    </button>
+   		    <ul class="dropdown-menu">
+   		      <li><a href="#">AM</a></li>
+   		      <li><a href="#">PM</a></li>
+   		      <li><a href="#">All day</a></li>
+   		    </ul>
+ 		  </div>
+		  <div class="btn btn-inverse" style="margin-left:470px;margin-top: 20px;"> Submit</div>
 		</form>  
 </div>
+
     
 
 
