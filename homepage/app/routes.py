@@ -66,5 +66,19 @@ def landing():
 @app.route('/group_result')
 def group_result():
     return render_template('group_result.html') 
+@app.route('/q&a/id=1')
+def q1():
+   return render_template('q&a/id=1.html')
+@app.route('/admin/dashboard')
+def dashboard():
+   return render_template('admin/dashboard.html')
+
+@app.route('/admin/userManagement')
+def userManagement():
+   return render_template('admin/userManagement.html')
+
+@app.route('/admin/forumManagement')
+def forumManagement():
+   return render_template('admin/forumManagement.html')
 if __name__ == '__main__':
   app.run(debug=True)
