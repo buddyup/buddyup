@@ -7,7 +7,7 @@ from flask.ext.heroku import Heroku
 
 
 app = Flask(__name__)
-config_type = os.getenv('BUDDYUP_TYPE').capitalize()
+config_type = os.getenv('BUDDYUP_TYPE', 'dev').capitalize()
 config_object = "{name}.config.{type}".format(name=__name__.split('.')[0],
                                               type=config_type)
 app.config.from_object(config_object)
