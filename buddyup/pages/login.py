@@ -1,11 +1,11 @@
-from urllib2 import urlopen, HTTPError
+from urllib2 import urlopen, URLError
 from urllib import urlencode, quote
 from xml.etree import cElementTree as etree
 
 from flask import url_for, request, redirect, flash, abort, session
 
 from buddyup.app import app
-from buddyup.database import User, db
+from buddyup.database import User, Visit, db
 from buddyup.util import args_get
 
 VALIDATE_URL = "{server}/serviceValidate?{args}"
@@ -35,7 +35,22 @@ def login():
     if 'ticket' in request.args:
         status, message = validate(args_get('ticket'))
         if status == 0:
-            return redirect(url_for('index'))
+            user_record = User.query.filter(User.user_name == user_name).first()
+            # No user with that user name
+            if user_record is None:
+                user_record = User(user_name=user_name)
+                db.session.add(new_user_record)
+                db.session.commit()
+                url = url_for('create_profile')
+            else:
+                url = url_for('index')
+            session['user_id'] = user_record.id
+
+            visit_record = Visit(user=user_record.id)
+            db.session.add(visit_record)
+            db.session.commit()
+
+            return redirect(url)
         else:
             app.logger.error(message)
             abort(status)
@@ -74,31 +89,19 @@ def validate(ticket):
     try:
         req = urlopen(url)
         tree = etree.parse(req)
-    except HTTPError as e:
-        app.logger.error(
-            "CAS validator request failed with status {code}: {reason}".format(
-                code=e.code,
-                reason=e.reason))
-        return 500, "Error contacting CAS server"
+    except URLError as e:
+        return 500, "Error contacting CAS server: {}".format(e)
     except etree.ParseError:
         return 500, "Bad response from CAS server: ParseError"
 
     failure_elem = tree.find(TAG_FAILURE)
     if failure_elem is not None:
-        return 500, failure_elem.text.strip()
+        return 500, "Failure: " + failure_elem.text.strip()
 
     success_elem = tree.find(TAG_SUCCESS)
     if success_elem is not None:
         user_name = success_elem.find(TAG_USER).text.strip()
-        user_record = User.query.filter(User.user_name == user_name).first()
-        # No user with that user name :(
-        if user_record is None:
-            new_user_record = User(user_name=user_name, full_name="")
-            db.session.add(new_user_record)
-            db.session.commit()
-        else:
-            session['user_id'] = user_record.id
-        return 0, None
+        return 0, user_name
     else:
         app.logger.error('bad response: %s', etree.tostring(tree.getroot()))
         return 500, "Bad response from CAS server: no success/failure"
