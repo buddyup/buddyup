@@ -35,10 +35,11 @@ def login():
     if 'ticket' in request.args:
         status, message = validate(args_get('ticket'))
         if status == 0:
+            user_name = message
             user_record = User.query.filter(User.user_name == user_name).first()
             # No user with that user name
             if user_record is None:
-                user_record = User(user_name=user_name)
+                new_user_record = User(user_name=user_name)
                 db.session.add(new_user_record)
                 db.session.commit()
                 url = url_for('create_profile')

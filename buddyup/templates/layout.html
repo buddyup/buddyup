@@ -5,7 +5,7 @@
 </head>
 <body>
   <div id="header">
-    {{ user|format_user('ID: {id}, user name {name}, name {full_name}') }}
+    {{ user_record.full_name }}
   </div>
   <div id="body">{% block body %}Body{% endblock %}</div>
   <div id="footer"></div>
