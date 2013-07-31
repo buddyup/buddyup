@@ -1,10 +1,16 @@
+import os
+
 from flask import Flask, g, session
 from flask.ext.runner import Runner
+from flask.ext.heroku import Heroku
 
 
 
 app = Flask(__name__)
-app.config.from_object(__name__.split('.')[0] + '.config.Dev')
+config_type = os.getenv('BUDDYUP_TYPE').capitalize()
+config_object = "{name}.config.{type}".format(name=__name__.split('.')[0],
+                                              type=config_type)
+app.config.from_object(config_object)
 app.config.from_envvar('BUDDYUP_SETTINGS', silent=True)
 
 runner = Runner(app)
