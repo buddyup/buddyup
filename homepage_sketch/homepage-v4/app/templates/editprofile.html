@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+  
+{% block content %}
+<h1 style="text-align:center;"> Edit profile</h1>
+<div class="span3">
+	<div style="border:1px solid #e0e0e0;padding:15px;margin-bottom:20px;">
+		<div style="text-align:center;">
+		<strong class=" PIN_1373193698306_hazClick">
+		      Your current avatar
+		  </strong>
+	  </div>
+	  <img src="../static/img/index.jpg"></img>
+	  
+	  <div class="fileupload fileupload-new" data-provides="fileupload" style="text-align:center;margin-top:15px;">
+	  <span class="btn btn-file"><span class="fileupload-new">Change Picture</span><span class="fileupload-exists">Change</span><input type="file" /></span>
+	  <span class="fileupload-preview"></span>
+	  <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
+	  </div>
+  </div>
+  
+</div>
+
+<div class="span8">
+		<p> This information will appear in your public profile. Leave the fields blank if you'd prefer not to reveal any information.</p>
+		<form action="{{url_for('edit_profile')}}" class="well"> 
+ 
+		  <label> Your Name </label>  
+		  <input name="firstname" type="text" class="span3" placeholder="First Name" value="{{ user.first_name }}">  
+		  <input name="lastname" type="text" class="span3" placeholder="Last Name" value="{{ user.last_name }}">  
+		  <label> Gender </label>
+		  <select>
+		  <option>Male</option>
+		  <option>Female</option>
+		  <option>Other</option>
+	  	  </select>
+		 
+		 
+		  <label> Your Bio </label>
+		  <textarea name="bio"  type="text" class="span6" style="height: 150px;">{{user.bio}} </textarea>
+		  <div class="btn btn-primary" style="margin-left:450px;margin-top: 20px;"> Save Changes</div>
+		</form>  
+</div>
+	
+{% endblock %}
+

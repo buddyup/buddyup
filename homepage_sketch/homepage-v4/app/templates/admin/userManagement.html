@@ -1,0 +1,69 @@
+{% extends "admin/adminlayout.html" %}
+  
+{% block content %}
+                                
+    <div class="span12">
+        <div class="box">
+            <header>
+                <h5>List of current users</h5>
+                <div class="toolbar">
+                    <a href="#actionTable" data-toggle="collapse" class="accordion-toggle minimize-box">
+                        <i class="icon-chevron-up"></i>
+                    </a>
+                </div>
+            </header>
+            <div id="actionTable" class="body collapse in">
+                <table class="table table-bordered responsive">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Username</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                            <td>
+                                <button class="btn edit"><i class="icon-edit"></i></button>
+                                <button class="btn btn-danger remove" data-toggle="confirmation"><i class="icon-remove"></i></button>
+                                <button class="btn edit"><i class="icon-envelope me_icon"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td>@fat</td>
+                            <td>
+                                <button class="btn edit"><i class="icon-edit"></i></button>
+                                <button class="btn btn-danger remove" data-toggle="confirmation"><i class="icon-remove"></i></button>
+                                 <button class="btn edit"><i class="icon-envelope me_icon"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Larry</td>
+                            <td>the Bird</td>
+                            <td>@twitter</td>
+                            <td>
+                                <button class="btn edit"><i class="icon-edit"></i></button>
+                                <button class="btn btn-danger remove" data-toggle="confirmation"><i class="icon-remove"></i></button>
+                                <button class="btn edit"><i class="icon-envelope me_icon"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <textarea rows="10" cols="100" name="comment" form="usrform"></textarea>
+<form action="demo_form.asp" id="usrform">
+  <input type="submit" value="Post an announcement to users">
+{% endblock %}
