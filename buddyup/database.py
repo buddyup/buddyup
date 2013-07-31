@@ -39,14 +39,10 @@ class Course(db.Model):
     name = db.Column(db.UnicodeText)
     # subject = db.Column(db.Integer, db.ForeignKey('subject.id'))
     number = db.Column(db.Integer)
-    students = db.relationship('User',
-            secondary=CourseMembership,
-            backref=db.backref('courses', lazy='dynamic'))
-    def __init__(self, crn, name, number):
-        self.crn = crn
-        if name is None:
-            name = "Unspecified"
-        self.number = number
+#    students = db.relationship('User',
+#            secondary=CourseMembership,
+#            backref=db.backref('courses', lazy='dynamic'))
+
     def __repr__(self):
         return '<Course %r>' % self.crn
 
@@ -55,19 +51,15 @@ class User(db.Model):
     # PSU user names are always <= 8 ASCII characters
     user_name = db.Column(db.String(8))
     full_name = db.Column(db.UnicodeText)
-    course = db.relationship('Course', secondary=CourseMembership,
+    courses = db.relationship('Course', secondary=CourseMembership,
                               lazy='dynamic')
     events = db.relationship('Event', secondary=EventMembership,
                              lazy='dynamic')
-    sent_messages = db.relationship('Message', backref='sender',
-                                    lazy='dynamic')
-    received_messages = db.relationship('Message', backref='receiver',
-                                        lazy='dynamic')
-    buddies = db.relationship('User', secondary=Buddy, lazy='dynamic')
-    def __init__(self, user_name, full_name, course):
-        self.user_name = user_name
-        self.full_name = full_name
-        self.course = course
+#    sent_messages = db.relationship('Message', foreign_keys=['sender']
+#                                    lazy='dynamic')
+#    received_messages = db.relationship('Message', backref="receiver",
+#                                        lazy='dynamic')
+#    buddies = db.relationship('User', secondary=Buddy, lazy='dynamic')
 
     def __repr__(self):
         return '<User %r>' % self.user_name
@@ -79,18 +71,12 @@ class Event(db.Model):
     location = db.Column(db.UnicodeText)
     start = db.Column(db.DateTime)
     end = db.Column(db.DateTime)
-    users = db.relationship('User',
-        secondary=EventMembership,
-        backref=db.backref('events'), lazy='dynamic')
+#    users = db.relationship('User',
+#        secondary=EventMembership,
+#        backref=db.backref('events'), lazy='dynamic')
     # TODO
-    comments = db.relationship('EventComment', backref='event',
-                               lazy='dynamic')
-    def __init__(self, owner_id, course_id, location, start, end):
-        self.owner_id = owner_id
-        self.course_id = course_id
-        self.location = location
-        self.start = start
-        self.end = end
+#    comments = db.relationship('EventComment', backref='event',
+#                               lazy='dynamic')
 
     def __repr__(self):
         return '<Event %r>' % self.id
@@ -102,10 +88,6 @@ class EventComment(db.Model):
     contents = db.Column(db.UnicodeText)
     #TODO: submission time
     time = db.Column(db.DateTime)
-    def __init__(self, event_id, user_id, contents, time):
-        self.event_id = event_id
-        self.contents = contents
-        self.time = time
 
     def __repr__(self):
         return '<EventComment %r>' % self.id
@@ -118,11 +100,6 @@ class Message(db.Model):
     text = db.Column(db.UnicodeText)
     time = db.Column(db.DateTime)
     read = db.Column(db.Boolean, default=False)
-    def __init__(self, sender_id, receiver_id, text, time):
-        self.sender_id = sender_id
-        self.receiver_id = receiver_id
-        self.text = text
-        self.time = time
 
     def __repr__(self):
         return '<Message> %r>' % self.id
@@ -135,11 +112,6 @@ class Notes(db.Model):
     text = db.Column(db.UnicodeText)
     # I don't think Notes need time - Will
     # time = db.Column(db.DateTime)
-    def __init__(self, user_id, course_id, title, text):
-        self.user_id = user_id
-        self.course_id = course_id
-        self.title = title
-        self.text = self.text
 
     def __repr__(self):
         return '<Notes %r>' % self.id
@@ -174,18 +146,13 @@ class Question(db.Model):
     answers = db.relationship("Answer",
             backref="Question", lazy='dynamic')
 
-    def __init__(self, user_id, text, time):
-        self.user_id = user_id
-        self.text = text
-        self.time = time
-
     def __repr__(self):
         return '<Question %r>' % self.id
 
 class Answer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    question_id = db.Column(db.Integer, db.ForeignKey('Question.id'))
+    question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
     text = db.Column(db.UnicodeText)
     time = db.Column(db.DateTime)
     votes = db.relationship("Vote", backref="Answer", lazy='dynamic')
@@ -193,7 +160,7 @@ class Answer(db.Model):
 class Vote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    answer_id = db.Column(db.Integer, db.ForeignKey('Answer.id'))
+    answer_id = db.Column(db.Integer, db.ForeignKey('answer.id'))
     # May change value into boolean
     value = db.Column(db.Integer)
 
@@ -204,3 +171,7 @@ class Availability(db.Model):
     hour = db.Column(db.Integer, primary_key=True)
     avail = db.Column(db.Boolean, default=False)
 
+class Visit(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    requests = db.Column(db.Integer, default=1)
