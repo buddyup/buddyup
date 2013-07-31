@@ -4,12 +4,18 @@
 .right{ position: fixed;
     top: 50px;
     right: 1em;;} 
+	#wrapper {
+	    margin-left:auto;
+	    margin-right:auto;
+	    width:900px;
+	}
 {% endblock %} 
 
 {% block content %}
 <br>
 <h2 style="text-align:center;"> My Dashboard </h2>
 <br>
+<div id="wrapper">
 <div style="float: left; width: 600px;" id='calendar'>
 	<a href="{{ url_for('calendar') }}"> View Calendar in bigger size. </a>
 	
@@ -31,7 +37,7 @@
 	    </li>	
 </div>
 
-
+</div>
 
 {% endblock %}
 
