@@ -71,9 +71,11 @@ class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
+    name = db.Column(db.UnicodeText)
     location = db.Column(db.UnicodeText)
     start = db.Column(db.DateTime)
     end = db.Column(db.DateTime)
+    note = db.Column(db.UnicodeText)
 #    users = db.relationship('User',
 #        secondary=EventMembership,
 #        backref=db.backref('events'), lazy='dynamic')
