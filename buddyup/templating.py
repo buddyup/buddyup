@@ -4,7 +4,8 @@ from flask import g
 from buddyup.app import app
 
 
-@app.template_global
+@app.template_filter('paragraphs')
+@app.template_global('paragraphs')
 def paragraphs(string):
     """
     Convert a newline separated string to a list of paragraph strings.

@@ -47,7 +47,7 @@ def login():
                 url = url_for('index')
             session['user_id'] = user_record.id
 
-            visit_record = Visit(user=user_record.id)
+            visit_record = Visit(user_id=user_record.id)
             db.session.add(visit_record)
             db.session.commit()
 
