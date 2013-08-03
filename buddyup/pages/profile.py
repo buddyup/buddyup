@@ -2,8 +2,8 @@ from flask import request, session, flash, g, redirect, url_for
 
 from buddyup.app import app
 from buddyup.database import User, Availability, db
-from buddyup.util import form_get
-from buddyup.templating import render_template, login_required
+from buddyup.util import form_get, login_required
+from buddyup.templating import render_template
 
 
 @app.route('/user/create/info', methods=['POST', 'GET'])

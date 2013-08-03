@@ -15,6 +15,7 @@ def login_required(func):
             return redirect('login')
         else:
             return func(*args, **kwargs)
+    return f
 
 
 @app.template_global
