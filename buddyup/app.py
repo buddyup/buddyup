@@ -1,4 +1,4 @@
-import os
+import os, logging
 
 from flask import Flask, g, session
 from flask.ext.runner import Runner
