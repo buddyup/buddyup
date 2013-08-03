@@ -50,7 +50,10 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     # PSU user names are always <= 8 ASCII characters
     user_name = db.Column(db.String(8))
-    full_name = db.Column(db.UnicodeText)
+    full_name = db.Column(db.UnicodeText, default=u"")
+    bio = db.Column(db.UnicodeText, default=u"")
+    initialized = db.Column(db.Boolean, default=False)
+    location = db.Column(db.Integer, db.ForeignKey('location.id'))
     courses = db.relationship('Course', secondary=CourseMembership,
                               lazy='dynamic')
     events = db.relationship('Event', secondary=EventMembership,
@@ -138,6 +141,7 @@ class Invitation(db.Model):
     rejected = db.Column(db.Boolean, default=False)
     #Question: just removed it from the db if rejected?
 
+
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -149,6 +153,7 @@ class Question(db.Model):
     def __repr__(self):
         return '<Question %r>' % self.id
 
+
 class Answer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -157,6 +162,7 @@ class Answer(db.Model):
     time = db.Column(db.DateTime)
     votes = db.relationship("Vote", backref="Answer", lazy='dynamic')
 
+
 class Vote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -164,14 +170,20 @@ class Vote(db.Model):
     # May change value into boolean
     value = db.Column(db.Integer)
 
+
 class Availability(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'),
             primary_key=True)
     day = db.Column(db.Integer, primary_key=True)
-    hour = db.Column(db.Integer, primary_key=True)
-    avail = db.Column(db.Boolean, default=False)
+    time = db.Column(db.Enum('am', 'pm'), primary_key=True)
+
 
 class Visit(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     requests = db.Column(db.Integer, default=1)
+
+
+class Location(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.UnicodeText)
