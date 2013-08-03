@@ -1,2 +1,1 @@
-from . import app
-runner = app.runner
+from .app import app, runner
