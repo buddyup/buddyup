@@ -1,9 +1,20 @@
-from flask import url_for, request, abort
+from functools import wraps
+
+from flask import url_for, request, abort, g, redirect
 
 from buddyup import database
 from buddyup.app import app
 
 _DEFAULT = object()
+
+
+def login_required(func):
+    @wraps(func)
+    def f(*args, **kwargs):
+        if g.user is None:
+            return redirect('login')
+        else:
+            return func(*args, **kwargs)
 
 
 @app.template_global
