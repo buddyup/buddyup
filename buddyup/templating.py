@@ -101,5 +101,9 @@ def render_template(template, **variables):
     # g.user is constructed in app.py's setup()
     variables['user_record'] = g.user
     variables['logged_in'] = g.user is not None
+    if g.user is None:
+        variables['is_admin'] = None
+    else:
+        variables['is_admin'] = g.user.user_name == app.config["ADMIN_USER"]
 
     return _render_template(template, **variables)
