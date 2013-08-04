@@ -4,8 +4,8 @@ from flask import g
 from buddyup.app import app
 
 
-@app.template_filter('paragraphs')
-@app.template_global('paragraphs')
+@app.template_filter()
+@app.template_global()
 def paragraphs(string):
     """
     Convert a newline separated string to a list of paragraph strings.
@@ -18,7 +18,7 @@ def paragraphs(string):
     return [line.strip() for line in string.split('\n')]
 
 
-@app.template_global
+@app.template_global()
 def format_course(course, format):
     """
     Render a buddyup.database.Course according to a format string in the style::
@@ -41,7 +41,7 @@ def format_course(course, format):
         )
 
 
-@app.template_global
+@app.template_global()
 def format_event(event, format, datef=None, timef=None):
     """
     Render a buddyup.database.Event according to a format string. Pass in
@@ -91,6 +91,26 @@ def format_user(user, format):
         user_name=user.user_name,
         full_name=user.full_name,
         )
+
+
+def _static_shortcut(filename):
+    return url_for('static', filename='{prefix}/{filename}'.format(
+        prefix=prefix, filename=filename)
+
+
+@app.template_global()
+def js(filename):
+    return _static_shortcut('js', filename)
+
+
+@app.template_global()
+def css(filename):
+    return _static_shortcut('css', filename)
+
+
+@app.template_global()
+def img(filename):
+    return _static_shortcut('img', filename)
 
 
 def render_template(template, **variables):

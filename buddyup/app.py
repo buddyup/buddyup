@@ -1,4 +1,4 @@
-import os
+import os, logging
 
 from flask import Flask, g, session
 from flask.ext.runner import Runner
@@ -15,8 +15,15 @@ app.config.from_envvar('BUDDYUP_SETTINGS', silent=True)
 
 runner = Runner(app)
 
+# In production mode, add log handler to sys.stderr.
+if not app.debug:
+    app.logger.addHandler(logging.StreamHandler())
+    app.logger.setLevel(logging.INFO)
+
+
 from . import database
 from . import templating
+
 
 @app.before_request
 def setup():

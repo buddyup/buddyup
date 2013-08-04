@@ -42,10 +42,12 @@ def login():
                 new_user_record = User(user_name=user_name)
                 db.session.add(new_user_record)
                 db.session.commit()
+                user_id = new_user_record.id
                 url = url_for('create_profile')
             else:
                 url = url_for('index')
-            session['user_id'] = user_record.id
+                user_id = user_record.id
+            session['user_id'] = user_id
 
             visit_record = Visit(user_id=user_record.id)
             db.session.add(visit_record)
