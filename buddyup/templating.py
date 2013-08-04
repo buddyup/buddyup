@@ -93,6 +93,26 @@ def format_user(user, format):
         )
 
 
+def _static_shortcut(filename):
+    return url_for('static', filename='{prefix}/{filename}'.format(
+        prefix=prefix, filename=filename)
+
+
+@app.template_global('js')
+def js(filename):
+    return _static_shortcut('js', filename)
+
+
+@app.template_global('css')
+def css(filename):
+    return _static_shortcut('css', filename)
+
+
+@app.template_global('img')
+def img(filename):
+    return _static_shortcut('img', filename)
+
+
 def render_template(template, **variables):
     """
     Wrapper around flask.render_template to add in some extra variables.
