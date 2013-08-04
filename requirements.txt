@@ -5,6 +5,7 @@ Flask-SQLAlchemy==0.16
 Flask-Script==0.5.3
 Jinja2==2.7
 MarkupSafe==0.18
+Pillow==2.1.0
 PyMySQL==0.5
 SQLAlchemy==0.8.2
 Werkzeug==0.9.1
