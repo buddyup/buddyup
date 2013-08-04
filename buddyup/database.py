@@ -77,11 +77,8 @@ class Event(db.Model):
     end = db.Column(db.DateTime)
     note = db.Column(db.UnicodeText)
     # TODO: this users relationship may be wrong
-    users = db.relationship('User',
-        secondary=EventMembership,
-        backref=db.backref('events'),
-        lazy='dynamic'
-        cascade="all, delete, delete-orphan")
+    users = db.relationship('User', secondary=EventMembership,
+        backref=db.backref('events'), lazy='dynamic')
     # TODO
 #    comments = db.relationship('EventComment', backref='event',
 #                               lazy='dynamic')
