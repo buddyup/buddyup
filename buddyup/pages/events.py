@@ -1,4 +1,4 @@
-from flask import g, request, flash, redirect, url_for, session
+from flask import g, request, flash, redirect, url_for, session, abort
 from datetime import datetime
 from functools import partial
 
@@ -9,10 +9,10 @@ from buddyup.util import args_get, login_required, form_get
 
 
 @app.route('/event')
-def event_view():
+def event_view_all():
     # TODO: view all events that relates to the currently active user
     events = g.user.events
-    return render_template('event_view.html', events=events)
+    return render_template('event_view_all.html', events=events)
 
 @app.route('/event/<int:event_id>')
 def event_view(event_id):
@@ -72,9 +72,9 @@ def event_search_results():
     return render_template('event_search_results.html',
                            pagination=query.pagination())
 
-@app.route('event/create', methods=['GET','POST'])
+@app.route('/event/create', methods=['GET','POST'])
 @login_required
-def even_create():
+def event_create():
     if request.method == 'GET':
         # TODO: pass out the user's course to set it as default
         return render_template('create_event.html')
@@ -118,16 +118,14 @@ def even_create():
 @app.route('/event/cancel/<int:event_id>')
 @login_required
 def event_remove(event_id):
-    event = Event.query.filter(Event.event_id=event_id,
-            Event.owner_id=g.user.id)
+    event = Event.query.filter_by(event_id=event_id, owner_id=g.user.id)
     # If the user is not the owner, 403!
     if event is None:
         abort(403)
     else:
         # TODO: may want to send out messages to all users annoucing
         # This might be unnecessary
-        EventMembership.query.filter_by(EventMembership.event_id=event_id).delete()
+        EventMembership.query.filter_by(event_id=event_id).delete()
         db.session.delete(event)
         db.session.commit()
-        return redirect(url_for(event_view()))
-    #pass
+        return redirect(url_for('event_view'))
