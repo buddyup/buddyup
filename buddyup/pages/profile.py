@@ -18,9 +18,8 @@ def create_profile():
         if first_name == '':
             flash("First Name Is Empty")
             error = True
-        # Last name should be optional
+        # Last name is optional
         last_name = form_get('last_name')
-        # TODO: enum gender
         gender = form_get('gender')
         location = form_get('location')
         bio = form_get('bio')
@@ -57,6 +56,7 @@ def create_profile():
 
 
 @app.route('/user/create/photo', methods=['POST', 'GET'])
+@login_required
 def create_photo():
     pass
     
@@ -86,7 +86,8 @@ def edit_profile():
         return render_template('view_profile.html', user=g.user)
 
 @app.route('/my/profile/picture')
-def change_picture():
+@login_required
+def change_photo():
     pass
 
 # Will be combine with edit_profile
