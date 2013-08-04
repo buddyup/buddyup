@@ -119,9 +119,19 @@ def profile(record):
     if isinstance(record, Event):
         return url_for('event_view', event_id=record.id)
     elif isinstance(record, User):
-        return url_for('view_buddy', user_id=record.id)
+        return url_for('view_buddy', user_name=record.user_name)
     else:
         raise TypeError("profile(record) requires an Event or User")
+    
+    
+@app.template_global()
+def user_thumbnail(user_record):
+    pass
+
+
+@app.template_global()
+def user_full(user_record):
+    pass
 
 
 def render_template(template, **variables):
