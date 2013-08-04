@@ -2,6 +2,7 @@ from flask import render_template as _render_template
 from flask import g
 
 from buddyup.app import app
+from buddyup.database import User, Event
 
 
 @app.template_filter()
@@ -95,7 +96,7 @@ def format_user(user, format):
 
 def _static_shortcut(filename):
     return url_for('static', filename='{prefix}/{filename}'.format(
-        prefix=prefix, filename=filename)
+        prefix=prefix, filename=filename))
 
 
 @app.template_global()
@@ -111,6 +112,16 @@ def css(filename):
 @app.template_global()
 def img(filename):
     return _static_shortcut('img', filename)
+
+
+@app.template_global()
+def profile(record):
+    if isinstance(record, Event):
+        return url_for('event_view', event_id=record.id)
+    elif isinstance(record, User):
+        return url_for('view_buddy', user_id=record.id)
+    else:
+        raise TypeError("profile(record) requires an Event or User")
 
 
 def render_template(template, **variables):
