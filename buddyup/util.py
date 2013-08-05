@@ -1,9 +1,22 @@
-from flask import url_for, request, abort
+from functools import wraps
+import re
+
+from flask import url_for, request, abort, g, redirect
 
 from buddyup import database
 from buddyup.app import app
 
 _DEFAULT = object()
+
+
+def login_required(func):
+    @wraps(func)
+    def f(*args, **kwargs):
+        if g.user is None:
+            return redirect('login')
+        else:
+            return func(*args, **kwargs)
+    return f
 
 
 @app.template_global
@@ -73,3 +86,20 @@ def args_get(var, convert=None, default=_DEFAULT):
     """
     
     return _parameter_get(request.args, var, convert, default)
+
+
+def check_empty(value, label):
+    if value == u'':
+        flash(label + " Is Empty")
+
+
+def checked_regexp(regexp, value, label):
+    if isinstance(regexp, (unicode, str)):
+        match = re.match(regexp, value)
+    else:
+        match = regexp.match(value)
+    if match is None:
+        flash(label + " Is Incorrectly Formatted", category)
+        return None
+    else:
+        return match

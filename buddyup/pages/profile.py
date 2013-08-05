@@ -2,8 +2,8 @@ from flask import request, session, flash, g, redirect, url_for
 
 from buddyup.app import app
 from buddyup.database import User, Availability, db
-from buddyup.util import form_get
-from buddyup.templating import render_template, login_required
+from buddyup.util import form_get, login_required
+from buddyup.templating import render_template
 
 
 @app.route('/user/create/info', methods=['POST', 'GET'])
@@ -18,9 +18,8 @@ def create_profile():
         if first_name == '':
             flash("First Name Is Empty")
             error = True
-        # Last name should be optional
+        # Last name is optional
         last_name = form_get('last_name')
-        # TODO: enum gender
         gender = form_get('gender')
         location = form_get('location')
         bio = form_get('bio')
@@ -57,6 +56,7 @@ def create_profile():
 
 
 @app.route('/user/create/photo', methods=['POST', 'GET'])
+@login_required
 def create_photo():
     pass
     
@@ -86,7 +86,8 @@ def edit_profile():
         return render_template('view_profile.html', user=g.user)
 
 @app.route('/my/profile/picture')
-def change_picture():
+@login_required
+def change_photo():
     pass
 
 # Will be combine with edit_profile

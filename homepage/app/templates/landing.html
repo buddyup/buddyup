@@ -17,6 +17,7 @@ color{color:red;}
 .dropdown-menu {
  	background-color:#4169E1;
 }
+.span7	{width: 450px;}
 </style>
 </head>
 <body>
@@ -24,8 +25,8 @@ color{color:red;}
 
 <h2 style="text-align:center;"> Welcome to BuddyUp! </h2>
 <div class="container">
-<div class="span2"></div>
-		<form class="well span8">  
+<div class="span3"></div>
+		<form class="well span7">  
 		  <h4> Please fill in</h4>
 		  <label> Your Name <color> (*Required) </color> </label>  
 		  <input type="text" class="span2" placeholder="First Name">  
@@ -51,82 +52,64 @@ color{color:red;}
 	  	  </select>
 		  
 		  <label> Time for Study Group </label>
-		  <div class="btn-group">
-		    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-		      Monday
-		    </button>
-		    <ul class="dropdown-menu">
-		      <li><a href="#">AM</a></li>
-		      <li><a href="#">PM</a></li>
-		      <li><a href="#">All day</a></li>
-		    </ul>
-		</div>
-		 <div class="btn-group">
-  		    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-  		      Tuesday</span>
-  		    </button>
-  		    <ul class="dropdown-menu">
-  		      <li><a href="#">AM</a></li>
-  		      <li><a href="#">PM</a></li>
-  		      <li><a href="#">All day</a></li>
-  		    </ul>
+		  <label> <input type="checkbox" class="toggle" id="monday" style="margin-top:-5px;margin-left:10px;">  Monday </label>
+		  <div class="detail" id="mondaydetail" style="margin-left:30px;">
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" style="Margin-top:-5px;"> AM </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" style="Margin-top:-5px;"> PM </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" style="Margin-top:-5px;"> All day </label>
+		  </label>
 		  </div>
- 		 <div class="btn-group">
-   		    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-   		      Wednesday</span>
-   		    </button>
-   		    <ul class="dropdown-menu">
-   		      <li><a href="#">AM</a></li>
-   		      <li><a href="#">PM</a></li>
-   		      <li><a href="#">All day</a></li>
-   		    </ul>
- 		  </div>
- 		 <div class="btn-group">
-   		    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-   		      Thursday</span>
-   		    </button>
-   		    <ul class="dropdown-menu">
-   		      <li><a href="#">AM</a></li>
-   		      <li><a href="#">PM</a></li>
-   		      <li><a href="#">All day</a></li>
-   		    </ul>
- 		  </div>
- 		 <div class="btn-group">
-   		    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-   		      Friday</span>
-   		    </button>
-   		    <ul class="dropdown-menu">
-   		      <li><a href="#">AM</a></li>
-   		      <li><a href="#">PM</a></li>
-   		      <li><a href="#">All day</a></li>
-   		    </ul>
- 		  </div>
- 		 <div class="btn-group">
-   		    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-   		      Saturday</span>
-   		    </button>
-   		    <ul class="dropdown-menu">
-   		      <li><a href="#">AM</a></li>
-   		      <li><a href="#">PM</a></li>
-   		      <li><a href="#">All day</a></li>
-   		    </ul>
- 		  </div>
- 		 <div class="btn-group">
-   		    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-   		     Sunday</span>
-   		    </button>
-   		    <ul class="dropdown-menu">
-   		      <li><a href="#">AM</a></li>
-   		      <li><a href="#">PM</a></li>
-   		      <li><a href="#">All day</a></li>
-   		    </ul>
- 		  </div>
-		  <div class="btn btn-inverse" style="margin-left:470px;margin-top: 20px;"> Submit</div>
+		  <label> <input type="checkbox" class="toggle" id="tuesday" style="margin-top:-5px;margin-left:10px;;">  Tuesday </label>
+		  <div class="detail" id="tuesdaydetail" style="margin-left:30px;">
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" style="Margin-top:-5px;"> AM </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" style="Margin-top:-5px;"> PM </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" style="Margin-top:-5px;"> All day </label>
+		  </label>
+		  </div>
+		  <label> <input type="checkbox" class="toggle" id="wednesday" style="margin-top:-5px;margin-left:10px;;">  Wednesday </label>
+		  <div class="detail" id="wednesdaydetail" style="margin-left:30px;">
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" style="Margin-top:-5px;"> AM </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" style="Margin-top:-5px;"> PM </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" style="Margin-top:-5px;"> All day </label>
+		  </label>
+		  </div>
+		  <label> <input type="checkbox" class="toggle" id="thursday" style="margin-top:-5px;margin-left:10px;">  Thursday </label>
+		  <div class="detail" id="thursdaydetail" style="margin-left:30px;">
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" style="Margin-top:-5px;"> AM </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" style="Margin-top:-5px;"> PM </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" style="Margin-top:-5px;"> All day </label>
+		  </label>
+		  </div>
+		  <label> <input type="checkbox" class="toggle" id="friday" style="margin-top:-5px;margin-left:10px;">  Friday </label>
+		  <div class="detail" id="fridaydetail" style="margin-left:30px;">
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" style="Margin-top:-5px;"> AM </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" style="Margin-top:-5px;"> PM </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" style="Margin-top:-5px;"> All day </label>
+		  </label>
+		  </div>
+		  <label> <input type="checkbox" class="toggle" id="saturday" style="margin-top:-5px;margin-left:10px;">  Saturday </label>
+		  <div class="detail" id="saturdaydetail" style="margin-left:30px;">
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" style="Margin-top:-5px;"> AM </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" style="Margin-top:-5px;"> PM </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" style="Margin-top:-5px;"> All day </label>
+		  </label>
+		  </div>
+		  <label> <input type="checkbox" class="toggle" id="sunday" style="margin-top:-5px;margin-left:10px;">  Sunday </label>
+		  <div class="detail" id="sundaydetail" style="margin-left:30px;">
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" style="Margin-top:-5px;"> AM </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" style="Margin-top:-5px;"> PM </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" style="Margin-top:-5px;"> All day </label>
+		  </label>
+		  </div>
+		  <div class="btn btn-inverse" style="margin-left:370px;margin-top: 30px;"> Submit</div>
 		</form>  
-</div>
-
-    
-
+</div>   
+<script>
+$('.detail').hide();
+$('.toggle').change(function() {
+	$('#'.concat(this.id).concat('detail')).toggle();
+});
+</script>
 
 </body>
 </html>
