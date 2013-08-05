@@ -9,6 +9,7 @@ from buddyup.util import args_get, login_required, form_get
 
 
 @app.route('/event')
+@login_required
 def event_view():
     # TODO: view all events that relates to the currently active user
     events = g.user.events
@@ -115,10 +116,10 @@ def even_create():
         event_id = Event.query.filter_by(Event.name == name).first().id
         return redirect(url_for(event_view(event_id)))
 
-@app.route('/event/cancel/<int:event_id>')
+@app.route('/event/cancel/<int:event_id>', methods=['POST'])
 @login_required
 def event_remove(event_id):
-    event = Event.query.filter(Event.event_id=event_id,
+    event = Event.query.filter_by(Event.event_id=event_id,
             Event.owner_id=g.user.id)
     # If the user is not the owner, 403!
     if event is None:
