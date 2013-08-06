@@ -66,6 +66,9 @@ def error403():
 @app.route('/landing')
 def landing():
     return render_template('landing.html')
+@app.route('/landing2')
+def landing2():
+    return render_template('landing2.html')
 @app.route('/group_result')
 def group_result():
     return render_template('group_result.html') 
@@ -86,6 +89,8 @@ def userManagement():
 @app.route('/admin/forumManagement')
 def forumManagement():
    return render_template('admin/forumManagement.html')
-     
+@app.route('/search')
+def search():
+  return render_template('search.html')     
 if __name__ == '__main__':
   app.run(debug=True)
