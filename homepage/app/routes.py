@@ -29,10 +29,10 @@ def editprofile():
    
 @app.route('/help')
 def help():
-   return render_template('message.html')
+   return render_template('help.html')
 @app.route('/setting')
 def setting():
-   return render_template('message.html')
+   return render_template('setting.html') 
 @app.route('/note')
 def note():
    return render_template('note.html')
@@ -69,6 +69,9 @@ def landing():
 @app.route('/group_result')
 def group_result():
     return render_template('group_result.html') 
+@app.route('/viewevent')
+def viewevent():
+    return render_template('viewevent.html') 
 @app.route('/q&a/id=1')
 def q1():
    return render_template('q&a/id=1.html')
@@ -83,5 +86,6 @@ def userManagement():
 @app.route('/admin/forumManagement')
 def forumManagement():
    return render_template('admin/forumManagement.html')
+     
 if __name__ == '__main__':
   app.run(debug=True)
