@@ -28,7 +28,7 @@ def comment_create(event_id):
     db.session.add(new_comment_record)
     db.session.commit()
     # TODO: decide how to show the comments
-    return redirect(url_for(event_view(event_id)))
+    return redirect(url_for('event_view',event_id=event_id))
 
 @app.route('/event/comment/remove/<int:comment_id>', methods=['POST'])
 @login_required
@@ -42,4 +42,4 @@ def comment_remove(comment_id):
         comment.delete()
         db.session.commit()
         # TODO: check syntax of the line below
-        return redirect(url_for('event_view(event_id)'))
+        return redirect(url_for('event_view',event_id=event_id))

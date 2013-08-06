@@ -58,7 +58,8 @@ def event_view_all():
 @app.route('/event/view/<int:event_id>')
 def event_view(event_id):
     event_record = Event.query.get_or_404(event_id)
-    is_owner = event_record.owner.id  == g.user.owner.id
+    # No "owner" field in Event, instead "user_id"
+    is_owner = event_record.user_id  == g.user.id
     remove_url = url_for('event_remove', event_id=event_record.id)
     return render_template('event_view.html',
                             event_record=event_record,
@@ -148,19 +149,21 @@ def event_create():
         # Check that the user is in this course
         if user.courses.filter_by(course_id=course_id).count() == 0:
             abort(403)
-        new_event_record = Event(owner_id=user.id, course_id=course_id,
+        # Again, user_id instead of owner_id
+        new_event_record = Event(user_id=user.id, course_id=course_id,
                 name=course, location_id=location, start=start, end=end,
                 note=note)
         db.session.add(new_event_record)
         db.session.commit()
         event_id = Event.query.filter_by(Event.name == name).first().id
-        return redirect(url_for(event_view(event_id)))
+        return redirect(url_for('event_view', event_id=event_id))
 
 @app.route('/event/cancel/<int:event_id>')
 @login_required
 def event_remove(event_id):
-    event = Event.query.filter_by(event_id=event_id, owner_id=g.user.id)
-    # If the user is not the owner, 403!
+    # Fixed: "event_id=event_id" into "id=event_id"
+    event = Event.query.filter_by(id=event_id, owner_id=g.user.id)
+    
     if event is None:
         abort(403)
     else:
@@ -168,4 +171,5 @@ def event_remove(event_id):
         # This might be unnecessary
         EventMembership.query.filter_by(event_id=event_id).delete()
         db.session.commit()
+        # Redirect to view all events
         return redirect(url_for('event_view'))
