@@ -94,18 +94,22 @@ def format_user(user, format):
         )
 
 
-def _static_shortcut(filename):
+def _static_shortcut(prefix, filename):
     return url_for('static', filename='{prefix}/{filename}'.format(
         prefix=prefix, filename=filename))
 
 
 @app.template_global()
 def js(filename):
+    if not filename.endswith(".js"):
+        filename += '.js'
     return _static_shortcut('js', filename)
 
 
 @app.template_global()
 def css(filename):
+    if not filename.endswith(".css"):
+        filename += '.css'
     return _static_shortcut('css', filename)
 
 
