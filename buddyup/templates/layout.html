@@ -1,38 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<title> BuddyUp</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<strong><link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet"></strong>
-<strong><link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet"></strong>
-<strong><link href="{{ url_for('static', filename='css/bootstrap-responsive.css') }}" rel="stylesheet"></strong>
-<strong><link href="{{ url_for('static', filename='css/bootstrap-fileupload.css') }}" rel="stylesheet"></strong>
-<strong><link href="{{ url_for('static', filename='css/bootstrap-fileupload.min.css') }}" rel="stylesheet"></strong>
-<strong><link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet"></strong>
-<strong><link href="{{ url_for('static', filename='css/jquery.stickynotes.css') }}" rel="stylesheet"></strong>
-<strong><link href="{{ url_for('static', filename='css/fullcalendar.css') }}" rel="stylesheet"></strong>
-<strong><link href="{{ url_for('static', filename='css/fullcalendar.print.css') }}" rel="stylesheet" media='print'></strong>
-<style>
-{% block forstyle %}
-{% endblock %}
-</style>
-
+	<meta charset="utf-8">
+	<title> {% block title %}{% endblock %} BuddyUp</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="{{ css('bootstrap.min') }}" rel="stylesheet">
+	<link href="{{ css('bootstrap-responsive') }}" rel="stylesheet">
+	<link href="{{ css('bootstrap-fileupload.min') }}" rel="stylesheet">
+	<link href="{{ css('style') }}" rel="stylesheet">
+	<link href="{{ css('jquery.stickynotes') }}" rel="stylesheet">
+	<link href="{{ css('fullcalendar') }}" rel="stylesheet">
+	<link href="{{ css('fullcalendar.print') }}" rel="stylesheet" media="print">
+	{% block for %}{% endblock %}
+	{% block extrascript %}{% endblock %}
 </head>
 
 
 <body>
 	<header>
-	<div class="navbar navbar-inverse navbar-fixed-top" style:"height:30px;">
-	  <div class="navbar-inner">
-		  <a class="brand" href="{{ url_for('home') }}">
-			  <img id="topbar_logo" src="../static/img/BuddyUpLogo_300x88.png"> </img>
-		  </a>
-	    <ul class="nav" style="margin-top:10px;">
-	        <li><a href="{{ url_for('profile') }}"> Profile </a></li>
-	        <li><a href="{{ url_for('buddies') }}">Buddies</a></li>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="navbar-inner">
+			<a class="brand" href="{{ url_for('home') }}">
+				<img id="topbar_logo" src="../static/img/BuddyUpLogo_300x88.png"> </img>
+			</a>
+			<ul class="nav" style="margin-top:10px;">
+					<li><a href="{{ view(user_record) }}"> Profile </a></li>
+					<li><a href="{{ url_for('buddies') }}">Buddies</a></li>
 			<li><a href="{{ url_for('resources') }}">Resources</a></li>
-	    </ul>
+			</ul>
 		
 		<ul class="nav pull-right" style="margin-top:10px;">
 			<li class="dropdown">
@@ -48,22 +43,13 @@
 			</li>
 		</ul>
 		
-	  </div>
+		</div>
 	</div>
 </header>
-    <div class="container">
-      {% block content %}
-      {% endblock %}
-    </div>
- 
-<script src="{{ url_for('static', filename = 'js/bootstrap-fileupload.min.js') }}" ></script>
-<script src="{{ url_for('static', filename = 'js/bootstrap-fileupload.js') }}" ></script>
-<script src="{{ url_for('static', filename = 'js/jquery.js') }}" ></script>
-<script src="{{ url_for('static', filename = 'js/bootstrap.js') }}" ></script>
-
-{% block extrascript %}
-{% endblock %}
-
+		<div class="container">
+			{% block content %}
+			{% endblock %}
+		</div>
 
 </body>
 </html>
