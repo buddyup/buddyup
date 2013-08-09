@@ -18,10 +18,13 @@ def resources():
 @app.route('/message')
 def message():
    return render_template('message.html')
+@app.route('/invite')
+def invite():
+   return render_template('invite.html')
    
-@app.route('/invitations')
-def invitations():
-   return render_template('invitation.html')
+@app.route('/invite2group')
+def invite2group():
+   return render_template('invite2group.html')
 
 @app.route('/editprofile')
 def editprofile():
@@ -39,6 +42,9 @@ def note():
 @app.route('/findgroup')
 def findgroup():
    return render_template('findgroup.html')
+@app.route('/findgrouperror')
+def findgrouperror():
+   return render_template('findgroup_error.html')
 @app.route('/creategroup')
 def creategroup():
    return render_template('creategroup.html')   
