@@ -136,7 +136,7 @@ class Notes(db.Model):
     def __repr__(self):
         return '<NotesComment %r>' % self.id
 '''
-class Invitation(db.Model):
+class BuddyInvitation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -144,6 +144,12 @@ class Invitation(db.Model):
     rejected = db.Column(db.Boolean, default=False)
     #Question: just removed it from the db if rejected?
 
+class EventInvitation(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey('eventmembership.user_id'))
+    receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    event_id = db.Column(db.Integer, db.ForeignKey('event.id'))
+    rejected = db.Column(db.Boolean, default=False)
 
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -50,6 +50,7 @@ def parse_time(time_string, ampm, base, label):
 
 
 @app.route('/event')
+@login_required
 def event_view_all():
     # TODO: view all events that relates to the currently active user
     events = g.user.events.all()
@@ -169,7 +170,7 @@ def event_remove(event_id):
     else:
         # TODO: may want to send out messages to all users annoucing
         # This might be unnecessary
-        EventMembership.query.filter_by(event_id=event_id).delete()
+        EventMembership.query.filter_by(event_id==event_id).delete()
         db.session.commit()
         # Redirect to view all events
         return redirect(url_for('event_view'))
