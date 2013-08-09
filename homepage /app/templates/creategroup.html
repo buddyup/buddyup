@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+{% block forstyle %}
+.span6	{width: 480px;}
+{% endblock %}
+{% block content %}
+
+<h2 style="text-align:center;"> Create A New Study Group</h2>
+
+
+{% endblock %}
+{% block extrascript %}
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+
+<script>
+$(function() {
+  $( "#datepicker" ).datepicker({
+    changeMonth: true,
+    changeYear: true
+  });
+});
+</script>
+<div class="container">
+    <div class="span3"></div>
+	
+    <div class="well span6">
+	  <h4> Please fill in the information below: </h4>
+	  <label> Group Name </label>  
+	  <input type="text" class="span3" placeholder="...">  
+	  <label> Location </label>
+	  <input type="text" class="span3" placeholder="...">
+	  <label> Date </label>
+	  <input type="text" class="span3" id="datepicker" >
+	  <label> Time </label>
+	  <input type="text" class="span1" placeholder="From">
+	  <select style="width:80px">
+	  <option>AM</option>
+	  <option>PM</option>
+  	  </select>
+	  <input type="text" class="span1" placeholder="To">
+	  <select style="width:80px">
+	  <option>AM</option>
+	  <option>PM</option>
+  	  </select>
+	  <label> Subject </label>
+	  <input type="text" class="span3" placeholder="...">
+	  <label> Note </label>
+	  <input type="text" class="span3" placeholder="...">
+	  <div class="btn-group" style="margin-left:350px;margin-top: 20px;">
+	  <a class="btn btn-large btn-danger" >Create</a>
+  		</div>
+  </div>
+
+{% endblock %}
+
