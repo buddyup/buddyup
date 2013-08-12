@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block forstyle %}
+.span4	{width: 290px;}
 .span5	{width: 390px;}
 {% endblock %}  
 {% block content %}
@@ -19,7 +20,7 @@ $(function() {
 });
 </script>
 <div class="container">
-    <div class="span3"></div>
+    <div class="span4"></div>
 	
     <div class="well span5">
 	  <h4> Please fill in these criterion: </h4>
@@ -30,13 +31,13 @@ $(function() {
 	  <label> Starting time: </label>
 	  <label id="starttime" style="margin-left:10px;">
 	  	<label>
-	    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" style="margin-top:0;"> AM
+	    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" style="margin-top:-5px;"> AM
 	  	</label>
 	  	<label>
-	    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" style="margin-top:0px;"> PM
+	    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" style="margin-top:-5px;"> PM
 	  	</label>
 	  	<label>
-	    <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" style="margin-top:0px;"> All day
+	    <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" style="margin-top:-5px;"> All day
 	  	</label>
 	  </label>
 	  <a id ="btn-search" style="margin-top:20px;margin-left:270px;"class="btn btn-large btn-warning" >Search</a>
