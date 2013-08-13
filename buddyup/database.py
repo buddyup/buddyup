@@ -50,12 +50,13 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     # PSU user names are always <= 8 ASCII characters
     user_name = db.Column(db.String(8), index=True, unique=True)
-    full_name = db.Column(db.UnicodeText, default=u"")
+    full_name = db.Column(db.UnicodeText, default="")
     bio = db.Column(db.UnicodeText, default=u"")
     initialized = db.Column(db.Boolean, default=False)
     location = db.Column(db.Integer, db.ForeignKey('location.id'))
     courses = db.relationship('Course', secondary=CourseMembership,
                               lazy='dynamic')
+    #email = db.Column(db.UnicodeText)
     events = db.relationship('Event', secondary=EventMembership,
                              lazy='dynamic')
 #    sent_messages = db.relationship('Message', foreign_keys=['sender']
@@ -154,8 +155,10 @@ class EventInvitation(db.Model):
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    title = db.Column(db.UnicodeText)
     text = db.Column(db.UnicodeText)
     time = db.Column(db.DateTime)
+    #TODO: Add a counter of views?
     answers = db.relationship("Answer",
             backref="Question", lazy='dynamic')
 

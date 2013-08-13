@@ -133,7 +133,7 @@ def event_create():
         course_id = form_get('course', convert=int)
         location = form_get('location', convert=int)
         check_empty(location, "Location")
-
+        note = form_get('note')
         # Date
         date = parse_date(form_get('date'))
 
@@ -152,10 +152,11 @@ def event_create():
             abort(403)
         # Again, user_id instead of owner_id
         new_event_record = Event(user_id=user.id, course_id=course_id,
-                name=course, location_id=location, start=start, end=end,
+                name=name, location_id=location, start=start, end=end,
                 note=note)
         db.session.add(new_event_record)
         db.session.commit()
+        #TODO: change this query to ensure it works as intended
         event_id = Event.query.filter_by(Event.name == name).first().id
         return redirect(url_for('event_view', event_id=event_id))
 
@@ -170,7 +171,7 @@ def event_remove(event_id):
     else:
         # TODO: may want to send out messages to all users annoucing
         # This might be unnecessary
-        EventMembership.query.filter_by(event_id==event_id).delete()
+        event.first().delete()
         db.session.commit()
         # Redirect to view all events
         return redirect(url_for('event_view'))
