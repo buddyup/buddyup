@@ -1,20 +1,41 @@
 {% extends "layout.html" %}
-{% block forstyle %}
 
-.right{ position: fixed;
-    top: 50px;
-    right: 1em;;} 
+{% block extrahead %}
+<style type="text/css">
+	.right {
+		position: fixed;
+		top: 50px;
+		right: 1em;
+	} 
 	#wrapper {
-	    margin-left:auto;
-	    margin-right:auto;
-	    width:900px;
+		margin-left:auto;
+		margin-right:auto;
+		width:900px;
 	}
-{% endblock %} 
+</style>
+
+<script src="{{ js('jquery-ui') }}" type="text/javascript"></script>
+
+<script>
+	$(document).ready(function() {
+		$('#calendar').fullCalendar({
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'month,basicWeek,basicDay'
+			},
+			editable: false,
+			events: {{ events }}
+		});
+	});
+</script>
+{% endblock %}
+
 
 {% block content %}
 <br>
 <h2 style="text-align:center;"> My Dashboard </h2>
-<br>
+<br>Except old textbooks.
 <div id="wrapper">
 <div style="float: left; width: 600px;" id='calendar'>
 	<a href="{{ url_for('calendar') }}"> View Calendar in bigger size. </a>
@@ -41,47 +62,4 @@
 
 {% endblock %}
 
-{% block extrascript %}
-<strong><script src="{{ url_for('static', filename = 'js/jquery-1.9.1.min.js') }}" ></script></strong>
 <strong><script src="{{ url_for('static', filename = 'js/jquery-ui-1.10.2.custom.min.js') }}" ></script></strong>
-<strong><script src="{{ url_for('static', filename = 'js/fullcalendar.min.js') }}" ></script></strong>
-
-<script>
-	$(document).ready(function() {
-		var date = new Date();
-		var d = date.getDate();
-		var m = date.getMonth();
-		var y = date.getFullYear();
-             	
-                function event(title,start,id)
-		{
-			this.id = id;
-			this.title=title;
-			this.start=start;
-		}
-	 	thong = new event('event1','2013-07-21',2);
-                
-                $('#calendar').fullCalendar({
-                        header: {
-				left: 'prev,next today',
-				center: 'title',
-				right: 'month,basicWeek,basicDay'
-			},
-			editable: false,
-			events: [
-				thong,
-				{
-   					 id     : 1,
-					 title  : 'event2',
-            				 start  : '2013-07-05',
-            				 end    : '2013-07-07'
-				}
-			]
-		});
-                thong.title = 'something';
-                //$('#calendar').fullCalendar('removeEvents' ,2)
-                $('#calendar').fullCalendar('updateEvent', thong);  
-	
-	});
-</script>
-{% endblock %}

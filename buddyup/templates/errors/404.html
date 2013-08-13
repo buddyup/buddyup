@@ -1,10 +1,12 @@
 {% extends "layout.html" %} 
 {% block forstyle %}
+<style type="text/css">
 	body 
 	{
-	background-image:url('../static/img/missing.jpg');
+	background-image:url('{{ img('missing.jpg') }}');
 	background-size:cover;
 	}
+</style>
 {% endblock %}
 {% block content %}  
 <h1 style="color:red;text-align:center;"> Error 404: Page not Found! </h1>
