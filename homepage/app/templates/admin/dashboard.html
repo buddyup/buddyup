@@ -1,7 +1,8 @@
 {% extends "admin/adminlayout.html" %}
   
 {% block content %}
-    <p>Users online/Recently login users</p>
+    <br><br>
+    <p>Recent login users</p>
     <div class="box">
         <div class="body">
             <table class="table table-bordered table-condensed table-hovered sortableTable">
@@ -42,7 +43,23 @@
     <p>Number of groups: 0</p>
     <p>Number of invites sent: 0</p>
     <p>Number of registered users: 0</p>
-<p><h1>Put a calendar ?<h1></p>
+     
+	<form>
+		Enter new course: <input type="text" name="newcourse"></input>
+		<input type="submit" value="Add this new course"></input>
+	</form> 
+	
+	<form>
+		Current user list courses:
+		<br><select size=5>
+			<option value="course1">Course1</option>
+			<option value="course2">Course2</option>
+			<option value="course3">Course3</option>
+			<option value="course4">Course4</option>
+		</select>
+		<input type="submit" value="Remove courses"> 
+	</form>
+</form> 
                                 
 
 {% endblock %}

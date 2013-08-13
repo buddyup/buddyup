@@ -2,11 +2,7 @@
 <html>
 <head>
 <title> BuddyUp </title>
-<link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
-<link href="{{ url_for('static', filename='css/bootstrap-fileupload.css') }}" rel="stylesheet">
-<script src="{{ url_for('static', filename = 'js/bootstrap.js') }}" ></script>
-<script src="{{ url_for('static', filename = 'js/jquery.js') }}" ></script>
-
+<link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
 <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
 <link href="http://cdn.strategiqcommerce.com/ajax/libs/jasny-bootstrap/2.3.0-j5/jasny-bootstrap.css" rel="stylesheet">
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
@@ -20,7 +16,9 @@ color{color:red;}
 .dropdown-menu {
  	background-color:#4169E1;
 }
+.span4  {width: 350px;}
 .span7	{width: 480px;}
+
 .btn-file { 
    background-color: hsl(51, 78%, 45%) !important; 
    background-repeat: repeat-x; filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#f0e28d", endColorstr="#ccb119"); 	  		 background-image: -khtml-gradient(linear, left top, left bottom, from(#f0e28d), to(#ccb119)); 
@@ -37,7 +35,7 @@ color{color:red;}
 <body>
 	
 
-<h2 style="text-align:center;"> Welcome to BuddyUp! </h2>
+<h2 style="margin-left:500px;"> Welcome to BuddyUp! </h2>
 <div class="span4"></div>
 	  <form class="well span7"> 
 	  <h4> Please share something about you</h4> 	
@@ -51,7 +49,7 @@ color{color:red;}
 	  <input type="text" class="span3" placeholder="facebook.com/yourfacebook" style="margin-left:15px;">
 	  </label>
 	  <label> A Few Words About You </label>
-	  <textarea type="text" class="span6" style="height: 150px;"> </textarea>
+	  <textarea type="text" style="height: 150px;width: 450px;"> </textarea>
 	  <a class="btn btn-large btn-primary" href="{{ url_for('home') }}" style="margin-left:400px;margin-top: 20px;"> Save </a>
   </div>
   
