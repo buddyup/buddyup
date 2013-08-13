@@ -25,20 +25,87 @@
 		<form class="well">  
 		  <label> Your Name </label>  
 		  <input type="text" class="span3" placeholder="First Name">  
-		  <input type="text" class="span3" placeholder="Last Name">  
+		  <input type="text" class="span3" placeholder="Last Name"> 
+		  <br> 
 		  <label> Gender </label>
 		  <select>
 		  <option>Male</option>
 		  <option>Female</option>
 		  <option>Other</option>
 	  	  </select>
+		  <br>
 		  <label> Location</label>
 		  <input type="text" class="span3" placeholder="where are you from...">
-		  <label> Your Bio </label>
-		  <textarea type="text" class="span6" style="height: 150px;"> </textarea>
+		  <br>
+		  <label> Your Social Network</label>
+		  <input type="text" class="span3" placeholder="facebook.com/yourfacebook"> <br>
+		  <input type="text" class="span3" placeholder="twitter.com/yourtwitter">
+		  <br>
+		  <label> Time for Study Group </label>
+		  <label> <input type="checkbox" class="toggle" id="monday" style="margin-top:-5px;margin-left:10px;">  Monday </label>
+		  <div class="detail" id="mondaydetail" style="margin-left:30px;">
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" style="Margin-top:-5px;"> AM </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" style="Margin-top:-5px;"> PM </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" style="Margin-top:-5px;"> All day </label>
+		  </label>
+		  </div>
+		  <label> <input type="checkbox" class="toggle" id="tuesday" style="margin-top:-5px;margin-left:10px;;">  Tuesday </label>
+		  <div class="detail" id="tuesdaydetail" style="margin-left:30px;">
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" style="Margin-top:-5px;"> AM </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" style="Margin-top:-5px;"> PM </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" style="Margin-top:-5px;"> All day </label>
+		  </label>
+		  </div>
+		  <label> <input type="checkbox" class="toggle" id="wednesday" style="margin-top:-5px;margin-left:10px;;">  Wednesday </label>
+		  <div class="detail" id="wednesdaydetail" style="margin-left:30px;">
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" style="Margin-top:-5px;"> AM </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" style="Margin-top:-5px;"> PM </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" style="Margin-top:-5px;"> All day </label>
+		  </label>
+		  </div>
+		  <label> <input type="checkbox" class="toggle" id="thursday" style="margin-top:-5px;margin-left:10px;">  Thursday </label>
+		  <div class="detail" id="thursdaydetail" style="margin-left:30px;">
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" style="Margin-top:-5px;"> AM </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" style="Margin-top:-5px;"> PM </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" style="Margin-top:-5px;"> All day </label>
+		  </label>
+		  </div>
+		  <label> <input type="checkbox" class="toggle" id="friday" style="margin-top:-5px;margin-left:10px;">  Friday </label>
+		  <div class="detail" id="fridaydetail" style="margin-left:30px;">
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" style="Margin-top:-5px;"> AM </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" style="Margin-top:-5px;"> PM </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" style="Margin-top:-5px;"> All day </label>
+		  </label>
+		  </div>
+		  <label> <input type="checkbox" class="toggle" id="saturday" style="margin-top:-5px;margin-left:10px;">  Saturday </label>
+		  <div class="detail" id="saturdaydetail" style="margin-left:30px;">
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" style="Margin-top:-5px;"> AM </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" style="Margin-top:-5px;"> PM </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" style="Margin-top:-5px;"> All day </label>
+		  </label>
+		  </div>
+		  <label> <input type="checkbox" class="toggle" id="sunday" style="margin-top:-5px;margin-left:10px;">  Sunday </label>
+		  <div class="detail" id="sundaydetail" style="margin-left:30px;">
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" style="Margin-top:-5px;"> AM </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" style="Margin-top:-5px;"> PM </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" style="Margin-top:-5px;"> All day </label>
+		  </label>
+		  </div>
+		  <br>
+		  <label> A Few Words About You </label>
+		  <textarea type="text" class="span7" style="height: 150px;"> </textarea>
 		  <div class="btn btn-primary" style="margin-left:450px;margin-top: 20px;"> Save Changes</div>
 		</form>  
 </div>
 	
 {% endblock %}
+{% block extrascript %}
+<script>
+$('.detail').hide();
+$('.toggle').change(function() {
+	$('#'.concat(this.id).concat('detail')).toggle();
+});
+</script>
+{% endblock %}
+
 

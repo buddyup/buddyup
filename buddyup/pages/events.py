@@ -52,6 +52,7 @@ def parse_time(time_string, ampm, base, label):
 
 
 @app.route('/event')
+@login_required
 def event_view_all():
     # TODO: view all events that relates to the currently active user
     events = g.user.events.all()
@@ -60,7 +61,8 @@ def event_view_all():
 @app.route('/event/view/<int:event_id>')
 def event_view(event_id):
     event_record = Event.query.get_or_404(event_id)
-    is_owner = event_record.owner.id  == g.user.owner.id
+    # No "owner" field in Event, instead "user_id"
+    is_owner = event_record.user_id  == g.user.id
     remove_url = url_for('event_remove', event_id=event_record.id)
     return render_template('event_view.html',
                             event_record=event_record,
@@ -161,18 +163,20 @@ def event_create():
         db.session.add(new_event_record)
         db.session.commit()
         event_id = Event.query.filter_by(Event.name == name).first().id
-        return redirect(url_for(event_view(event_id)))
+        return redirect(url_for('event_view', event_id=event_id))
 
 @app.route('/event/cancel/<int:event_id>')
 @login_required
 def event_remove(event_id):
-    event = Event.query.filter_by(event_id=event_id, owner_id=g.user.id)
-    # If the user is not the owner, 403!
+    # Fixed: "event_id=event_id" into "id=event_id"
+    event = Event.query.filter_by(id=event_id, owner_id=g.user.id)
+    
     if event is None:
         abort(403)
     else:
         # TODO: may want to send out messages to all users annoucing
         # This might be unnecessary
-        EventMembership.query.filter_by(event_id=event_id).delete()
+        EventMembership.query.filter_by(event_id==event_id).delete()
         db.session.commit()
+        # Redirect to view all events
         return redirect(url_for('event_view'))

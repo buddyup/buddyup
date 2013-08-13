@@ -18,10 +18,13 @@ def resources():
 @app.route('/message')
 def message():
    return render_template('message.html')
+@app.route('/invite')
+def invite():
+   return render_template('invite.html')
    
-@app.route('/invitations')
-def invitations():
-   return render_template('invitation.html')
+@app.route('/invite2group')
+def invite2group():
+   return render_template('invite2group.html')
 
 @app.route('/editprofile')
 def editprofile():
@@ -29,16 +32,19 @@ def editprofile():
    
 @app.route('/help')
 def help():
-   return render_template('message.html')
+   return render_template('help.html')
 @app.route('/setting')
 def setting():
-   return render_template('message.html')
+   return render_template('setting.html') 
 @app.route('/note')
 def note():
    return render_template('note.html')
 @app.route('/findgroup')
 def findgroup():
    return render_template('findgroup.html')
+@app.route('/findgrouperror')
+def findgrouperror():
+   return render_template('findgroup_error.html')
 @app.route('/creategroup')
 def creategroup():
    return render_template('creategroup.html')   
@@ -66,9 +72,15 @@ def error403():
 @app.route('/landing')
 def landing():
     return render_template('landing.html')
+@app.route('/landing2')
+def landing2():
+    return render_template('landing2.html')
 @app.route('/group_result')
 def group_result():
     return render_template('group_result.html') 
+@app.route('/viewevent')
+def viewevent():
+    return render_template('viewevent.html') 
 @app.route('/q&a/id=1')
 def q1():
    return render_template('q&a/id=1.html')
@@ -83,5 +95,8 @@ def userManagement():
 @app.route('/admin/forumManagement')
 def forumManagement():
    return render_template('admin/forumManagement.html')
+@app.route('/search')
+def search():
+  return render_template('search.html')     
 if __name__ == '__main__':
   app.run(debug=True)

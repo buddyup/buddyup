@@ -4,15 +4,11 @@
 <meta charset="utf-8">
 <title> BuddyUp</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<strong><link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet"></strong>
-<strong><link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet"></strong>
-<strong><link href="{{ url_for('static', filename='css/bootstrap-responsive.css') }}" rel="stylesheet"></strong>
-<strong><link href="{{ url_for('static', filename='css/bootstrap-fileupload.css') }}" rel="stylesheet"></strong>
-<strong><link href="{{ url_for('static', filename='css/bootstrap-fileupload.min.css') }}" rel="stylesheet"></strong>
-<strong><link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet"></strong>
-<strong><link href="{{ url_for('static', filename='css/jquery.stickynotes.css') }}" rel="stylesheet"></strong>
-<strong><link href="{{ url_for('static', filename='css/fullcalendar.css') }}" rel="stylesheet"></strong>
-<strong><link href="{{ url_for('static', filename='css/fullcalendar.print.css') }}" rel="stylesheet" media='print'></strong>
+<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+<link href="http://cdn.strategiqcommerce.com/ajax/libs/jasny-bootstrap/2.3.0-j5/jasny-bootstrap.css" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/fullcalendar.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/fullcalendar.print.css') }}" rel="stylesheet" media='print'>
 <style>
 {% block forstyle %}
 {% endblock %}
@@ -30,7 +26,7 @@
 		  </a>
 	    <ul class="nav" style="margin-top:10px;">
 	        <li><a href="{{ url_for('profile') }}"> Profile </a></li>
-	        <li><a href="{{ url_for('buddies') }}">Buddies</a></li>
+	        <li><a href="{{ url_for('invite') }}"> Invitation</a></li>
 			<li><a href="{{ url_for('resources') }}">Resources</a></li>
 	    </ul>
 		
@@ -38,10 +34,7 @@
 			<li class="dropdown">
 				<a class="dropdown-toggle" data-toggle="dropdown">Welcome, User <b class="caret"></b></a>
 				<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-<!--					<li><a tabindex="-1"  href="{{ url_for('message') }}"><i class="icon-envelope me_icon"></i> Message </a></li>
-					<li><a tabindex="-1"  href="{{ url_for('invitations') }}"> <i class="icon-pencil me_icon"></i> Invitations </a></li> -->
 					<li><a tabindex="-1"  href="{{ url_for('editprofile') }}"><i class="icon-edit me_icon"></i> Edit Your Profile </a></li>
-					<li><a tabindex="-1"  href="{{ url_for('setting') }}"><i class="icon-th me_icon"></i> Setting </a></li>
 					<li><a tabindex="-1"  href="{{ url_for('help') }}"><i class="icon-comment me_icon"></i> Help </a></li>
 					<li><a tabindex="-1"  href="#logout"><i class="icon-off me_icon"></i>  Log out</a></li>
 				</ul>
@@ -56,10 +49,8 @@
       {% endblock %}
     </div>
  
-<script src="{{ url_for('static', filename = 'js/bootstrap-fileupload.min.js') }}" ></script>
-<script src="{{ url_for('static', filename = 'js/bootstrap-fileupload.js') }}" ></script>
-<script src="{{ url_for('static', filename = 'js/jquery.js') }}" ></script>
-<script src="{{ url_for('static', filename = 'js/bootstrap.js') }}" ></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
 
 {% block extrascript %}
 {% endblock %}
