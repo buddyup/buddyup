@@ -1,8 +1,15 @@
+# Template wrapper and basic helper functions
+# See also: buddyup.photo.photo_*
+
+from ConfigParser import ConfigParser
+
 from flask import render_template as _render_template
-from flask import g
+from flask import g, url_for
 
 from buddyup.app import app
 from buddyup.database import User, Event
+
+STATIC_ALIASES_INI = "aliases.ini"
 
 
 @app.template_filter()
@@ -94,18 +101,50 @@ def format_user(user, format):
         )
 
 
-def _static_shortcut(filename):
-    return url_for('static', filename='{prefix}/{filename}'.format(
-        prefix=prefix, filename=filename))
+cdn_locations = {}
+local_locations = {}
+
+
+@app.before_first_request
+def load_aliases():
+    cp = ConfigParser()
+    cp.read(STATIC_ALIASES_INI)
+    use_cdn = app.config['USE_CDN']
+    for file_name in cp.sections():
+        if use_cdn and cp.has_option(file_name, 'cdn'):
+            cdn_locations[file_name] = cp.get(file_name, 'cdn')
+        if cp.has_option(file_name, 'local'):
+            local_locations[file_name] = cp.get(file_name, 'local')
+
+
+def _static_shortcut(prefix, filename):
+    if filename in cdn_locations:
+        return cdn_locations[filename]
+    else:
+        filename = local_locations.get(filename, filename)
+        return url_for('static', filename='{prefix}/{filename}'.format(
+            prefix=prefix, filename=filename))
 
 
 @app.template_global()
 def js(filename):
+    """
+    Look up the preferred location of the specified JavaScript file. File
+    names without a trailing ".js" will have it automatically added.
+    """
+    if not filename.endswith(".js"):
+        filename += '.js'
     return _static_shortcut('js', filename)
 
 
 @app.template_global()
 def css(filename):
+    """
+    Look up the preferred location of the specified CSS file. File names
+    without a trailing ".css" will have it automatically added.
+    """
+    if not filename.endswith(".css"):
+        filename += '.css'
     return _static_shortcut('css', filename)
 
 
@@ -122,16 +161,19 @@ def profile(record):
         return url_for('view_buddy', user_name=record.user_name)
     else:
         raise TypeError("profile(record) requires an Event or User")
-    
-    
-@app.template_global()
-def user_thumbnail(user_record):
-    pass
 
 
 @app.template_global()
-def user_full(user_record):
-    pass
+def view_url(record):
+    """view_url(record) -> str
+    View URL for a given record (User or Event)
+    """
+    if isinstance(record, User):
+        return url_for('view_buddy', user_name=record.user_name)
+    elif isinstance(record, Event):
+        return url_for('view_group', event_id=record.id)
+    else:
+        raise TypeError("Unknown type '%s'" % record.__class__.__name__)
 
 
 def render_template(template, **variables):
@@ -142,6 +184,7 @@ def render_template(template, **variables):
     # g.user is constructed in app.py's setup()
     variables['user_record'] = g.user
     variables['logged_in'] = g.user is not None
+    variables['login_url'] = app.cas_login
     if g.user is None:
         variables['is_admin'] = None
     else:

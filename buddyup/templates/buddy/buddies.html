@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+
+{% block extrahead %}
+
+<style type="text/css">
+.profile-result {
+	white-space: nowrap;
+	margin-bottom: 2px;
+}
+
+.profile-result a {
+	white-space: nowrap;
+}
+
+.buddies li {
+	white-space: nowrap;
+	margin-bottom: 2px;
+}
+
+.buddies h5 {
+	text-align: center;
+}
+
+.buddies a {
+	white-space: nowrap;
+}
+</style>
+
+{% endblock extrahead %}
+  
+{% block content %}
+<h1 style="text-align:center"> Buddies Page </h1>
+<br>
+
+<div class="well span3 buddies">
+	<form class="navbar-search pull-left">
+		<input type="text" class="search-query" placeholder="Search Friends">
+	</form>
+	<br>
+	<br>
+	<h5> My Buddies </h5>
+	<ul>
+		{% for user in buddies %}
+		<li>
+			<a href="{{ profile(user) }}">
+				<img src="{{ photo_tiny(user) }}" width="30px" height="22px">
+				{{ user.full_name }}
+			</a>
+		</li>
+		{% endfor %}
+	</ul>
+</div>
+
+<div class="well span6">
+	{% for user in search_results %}
+	<div style="margin-top:20px;">
+		<p style="float: left;"><img src="{{ photo_thumbnail(user) }}" height="50px" width="50px" border="1px"></p>
+		<font style="margin-left:10px;" color="2BA515">
+			<b>{{ user.full_name }}</b> <br>
+		</font>	
+		<font style="margin-left:10px;" color="E8A40D">
+			Location: {{ user.location.name }}
+		</font>
+		<div class="btn btn-medium btn-primary" style="float: right;"> Invite </div>	
+		<hr>
+	</div>
+	{% endfor %}
+</div>
+ {% endblock %}

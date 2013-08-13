@@ -49,7 +49,7 @@ def login():
                 user_id = user_record.id
             session['user_id'] = user_id
 
-            visit_record = Visit(user_id=user_record.id)
+            visit_record = Visit(user_id=user_id)
             db.session.add(visit_record)
             db.session.commit()
 

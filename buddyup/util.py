@@ -1,7 +1,7 @@
 from functools import wraps
 import re
 
-from flask import url_for, request, abort, g, redirect
+from flask import flash, request, abort, g, redirect
 
 from buddyup import database
 from buddyup.app import app
@@ -10,45 +10,27 @@ _DEFAULT = object()
 
 
 def login_required(func):
+    """
+    Decorator to redirect the user to '/' if they are not logged in
+    """
     @wraps(func)
     def f(*args, **kwargs):
         if g.user is None:
-            return redirect('login')
+            print 'redirecting not logged in user'
+            return redirect('index')
         else:
             return func(*args, **kwargs)
     return f
 
 
-@app.template_global
-def url_for_user(user, **kwargs):
-    return _url_for_profile(user, 'user_view', database.User, kwargs)
-
-
-@app.template_global
-def url_for_event(event, **kwargs):
-    return _url_for_profile(event, 'event_view', database.Event, kwargs)
-
-
-@app.template_global
-def url_for_course(course, **kwargs):
-    return _url_for_profile(course, 'course_view', database.Course, kwargs)
-
-
-def _url_for_profile(id, base, kls, kwargs):
-    # base: url_for(base)
-    # profile_id: id number or instance of kls
-    # kls: Viewable profile from buddyup.database
-    # returns str
-    if isinstance(id, kls):
-        id = id.id
-    return "%s/profile/%i" % (url_for(base), id)
-
-
 def _parameter_get(source, var, convert=None, default=_DEFAULT):
-
+    # Get a 
+    # source: mapping type
+    # var: variable name
+    # convert: function to call on variable (includes int, float, etc.)
+    # default: Default value
     if var not in source:
         if default is _DEFAULT:
-            print "OMG"
             abort(400)
             # abort raises an exception, so the function ends here
         else:
@@ -57,10 +39,10 @@ def _parameter_get(source, var, convert=None, default=_DEFAULT):
         try:
             return convert(source[var])
         except ValueError:
-            print "OMG"
             abort(400)
     else:
         return source[var]
+
 
 def form_get(var, convert=None, default=_DEFAULT):
     """
@@ -89,17 +71,24 @@ def args_get(var, convert=None, default=_DEFAULT):
 
 
 def check_empty(value, label):
+    """
+    Check if a string is empty, flash a message if it is.
+    """
     if value == u'':
         flash(label + " Is Empty")
 
 
 def checked_regexp(regexp, value, label):
+    """
+    Check if a regular expression matches, flash a message if it didn't.
+    `regexp` is either a string or compiled regular expression.
+    """
     if isinstance(regexp, (unicode, str)):
         match = re.match(regexp, value)
     else:
         match = regexp.match(value)
     if match is None:
-        flash(label + " Is Incorrectly Formatted", category)
+        flash(label + " Is Incorrectly Formatted")
         return None
     else:
         return match

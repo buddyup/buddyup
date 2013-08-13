@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+	
+{% block content %}
+
+<br>
+<div class="row">
+	<div class="span4 offset1">
+		<img src="{{ img('index.jpg') }}" class="img-rounded">
+	</div>
+
+	<div class="span6">
+		<h2>{{ buddy_record.full_name }}</h2>
+		<address>
+		Location: {{ buddy_record.location }}
+		</address>
+		<div id="profile-social">
+			{% if buddy_record.facebook %}
+				<a href="{{ buddy_record.facebook }}">
+					<img src="{{ img('facebook.png') }}">
+				</a>
+			{% endif %}
+
+			{% if buddy_record.twitter %}
+				<a href="{{ buddy_record.twitter }}">
+					<img src="{{ img('twitter.png') }}">
+				</a>
+			{% endif %}
+	</div>
+</div>
+
+
+<div class="row">
+	<div class="span10 offset1">
+		<h4>Bio</h4>
+		{% for p in buddy_record.bio|paragraphs %}
+			<p>{{ p }}</p>
+		{% endfor %}
+	</div>
+</div>
+
+{% endblock %}
