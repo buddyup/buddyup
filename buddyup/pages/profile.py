@@ -40,19 +40,17 @@ def create_profile():
             if am_name in request.form:
                 am_record = Availability(user_id=user.id,
                                          day=i,
-                                         time='pm',
-                                         available=pm_checked)
+                                         time='am')
             db.add(am_record)
             pm_name = "{day}-pm"
             if pm_name in request.form:
                 pm_record = Availability(user_id=user.id,
                                          day=i,
-                                         time='pm',
-                                         available=pm_checked)
+                                         time='pm')
             db.add(pm_record)
         db.commit()
         # TODO: figure out what's next and redirect to that page
-#        return redirect(url_for(
+        return redirect(url_for('create_photo'))
 
 
 @app.route('/user/create/photo', methods=['POST', 'GET'])
@@ -83,7 +81,7 @@ def edit_profile():
         db.commit()
         return redirect(url_for('edit_profile'))
     else:
-        return render_template('view_profile.html', user=g.user)
+        return render_template('profile.html', user=g.user)
 
 @app.route('/my/profile/picture')
 @login_required
@@ -94,3 +92,4 @@ def change_photo():
 @app.route('/my/availability', methods=['POST', 'GET'])
 def edit_availability():
     pass
+

@@ -7,4 +7,4 @@ def error_page(e):
     """
     Dispatch to {error code}.html
     """
-    return render_template('%i.html' % e.code, e=e), e.code
+    return render_template('errors/%i.html' % e.code, e=e), e.code

@@ -1,4 +1,5 @@
-from flask import g, request, flash, redirect, url_for, session, abort
+from flask import (g, request, flash, redirect, url_for, session, abort,
+                   get_flashed_messages)
 from datetime import datetime
 import time
 from functools import partial
@@ -7,7 +8,8 @@ import re
 from buddyup.app import app
 from buddyup.database import Event, Course, EventMembership, db
 from buddyup.templating import render_template
-from buddyup.util import args_get, login_required, form_get, check_empty
+from buddyup.util import (args_get, login_required, form_get, check_empty,
+                          checked_regexp)
 
 TIME_REGEXP = re.compile(r"""
     (?P<hour>\d\d?)     # hour
@@ -17,12 +19,12 @@ DATE_REGEXP = re.compile(r"""
     (?P<month>\d{1,2})[-/]  # month
     (?P<day>\d{1,2})[-/]    # day
     (?:20)                  # optional '20' year prefix
-    (?P<year>\d{2})")       # year (xx)
+    (?P<year>\d{2})         # year (xx)
 """, flags=re.VERBOSE)
 
 
 def parse_date(date, label):
-    match = checked_match(DATE_REGEXP, date, label)
+    match = checked_regexp(DATE_REGEXP, date, label)
     if match:
         year = int(match.group('year')) + 2000
         month = int(match.group('month'))
@@ -33,7 +35,7 @@ def parse_date(date, label):
 
 
 def parse_time(time_string, ampm, base, label):
-    match = checked_match(TIME_REGEXP, time_string, label)
+    match = checked_regexp(TIME_REGEXP, time_string, label)
     if match:
         hour = int(match.group('hour'))
         minute = int(match.group('minute')) or 0
@@ -115,7 +117,7 @@ def event_search_results():
         # TODO: Show any event that overlaps the time
         query = query.filter(start < Event.start).filter(end > Event.end)
 
-    return render_template('event_search_results.html',
+    return render_template('group/search_result.html',
                            pagination=query.pagination())
 
 @app.route('/event/create', methods=['GET','POST'])
@@ -123,13 +125,19 @@ def event_search_results():
 def event_create():
     if request.method == 'GET':
         # TODO: pass out the user's course to set it as default
-        return render_template('create_event.html', has_errors=False)
+        return render_template('group/create.html',
+                               has_errors=False,
+                               name='',
+                               location='',
+                               start='',
+                               end='',
+                               )
     else:
         user = g.user
         name = form_get('name')
         check_empty(name, "Event Name")
         course_id = form_get('course', convert=int)
-        location = form_get('location', convert=int)
+        location = form_get('location')
         check_empty(location, "Location")
 
         # Date
@@ -143,14 +151,13 @@ def event_create():
         
 
         if get_flashed_messages():
-            return render_template('create_event.html', has_errors=True)
+            return render_template('group/create.html', has_errors=True)
 
         # Check that the user is in this course
         if user.courses.filter_by(course_id=course_id).count() == 0:
             abort(403)
         new_event_record = Event(owner_id=user.id, course_id=course_id,
-                name=course, location_id=location, start=start, end=end,
-                note=note)
+                name=name, location=location, start=start, end=end)
         db.session.add(new_event_record)
         db.session.commit()
         event_id = Event.query.filter_by(Event.name == name).first().id
