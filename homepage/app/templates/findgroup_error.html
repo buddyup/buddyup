@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block forstyle %}
+.span3	{width: 300px;}
+.span5	{width: 390px;}
+{% endblock %}  
+{% block content %}
+<h2 style="text-align:center;"> Search Error</h2> 
+    <div class="span3"></div>
+	
+    <div class="well span5">
+	  <font size="3" color="197DBD"> Sorry, there is no group matched your search.  </font> <br>
+	  <font size="3" color="197DBD"> Please, do your search again or create a new group. </font>
+	  <div class="btn-group" style="margin-left:160px;margin-top: 20px;">
+  		<a class="btn btn-danger" href="{{ url_for('findgroup') }}" > Search Again</a>
+		<a class="btn btn-success"href="{{ url_for('creategroup') }}"> Create Group </a>
+		</div>
+	 
+  </div>
+
+{% endblock %}
+
