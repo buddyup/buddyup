@@ -1,6 +1,6 @@
 from flask import (g, request, flash, redirect, url_for, session, abort,
                    get_flashed_messages)
-from datetime import datetime
+from datetime import datetime, timedelta
 import time
 from functools import partial
 import re
@@ -29,7 +29,7 @@ def parse_date(date, label):
         year = int(match.group('year')) + 2000
         month = int(match.group('month'))
         day = int(match.group('day'))
-        return datetime.datetime(year, month, day)
+        return datetime(year, month, day)
     else:
         return None
 
@@ -46,7 +46,7 @@ def parse_time(time_string, ampm, base, label):
         else:
             # Must be AM or PM!
             abort(400)
-        return base + datetime.timedelta(hours=hour, minutes=minute)
+        return base + timedelta(hours=hour, minutes=minute)
     else:
         return None
 
