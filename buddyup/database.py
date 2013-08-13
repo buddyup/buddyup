@@ -54,7 +54,6 @@ class User(db.Model):
     bio = db.Column(db.UnicodeText, default=u"")
     initialized = db.Column(db.Boolean, default=False)
     location = db.Column(db.Integer, db.ForeignKey('location.id'))
-<<<<<<< HEAD
     courses = db.relationship('Course', secondary=CourseMembership,
                               lazy='dynamic')
     #email = db.Column(db.UnicodeText)
