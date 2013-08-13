@@ -11,9 +11,14 @@ config_type = os.getenv('BUDDYUP_TYPE', 'dev').capitalize()
 config_object = "{name}.config.{type}".format(name=__name__.split('.')[0],
                                               type=config_type)
 app.config.from_object(config_object)
-app.config.from_envvar('BUDDYUP_SETTINGS', silent=True)
+# NO_CDN: Default to using Content Distribution Network for libraries
+# where possible.
+app.config['USE_CDN'] = 'NO_CDN' not in os.environ
+
+Heroku(app)
 
 runner = Runner(app)
+
 
 # In production mode, add log handler to sys.stderr.
 if not app.debug:
@@ -22,7 +27,8 @@ if not app.debug:
 
 
 from . import database
-from . import templating
+from .templating import render_template
+from .util import login_required
 
 
 @app.before_request
@@ -41,11 +47,6 @@ def setup():
 def teardown(*args):
     if hasattr(g, 'user'):
         del g.user
-
-
-@app.route('/')
-def index():
-    return templating.render_template('index.html')
 
 
 # Import after creating `app` to let pages.* have access to buddyup.app.app
