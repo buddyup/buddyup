@@ -4,6 +4,7 @@
 .span2	{width: 100px;}
 .span5	{width: 500px;}
 .span6	{width: 550px;}
+
 {% endblock %}  
 {% block content %}
 <h1 style="text-align:center"> Event Page </h1>
@@ -89,6 +90,10 @@
 		        </div>
 	        
 	        </div>
+			<form action="demo_form.asp" id="usrform">
+			<textarea class="span5" style="height: 150px;" name="comment" form="usrform" ></textarea>
+			  <input type="submit" value="Submit" class="btn btn-success">
+			</form>
 			
 		</div>
 		<div class="btn btn-medium btn-danger" style="margin-left:2px;"> Delete Event </div>
