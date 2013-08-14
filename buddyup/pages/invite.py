@@ -1,7 +1,7 @@
 from flask import g
 
 from buddyup.app import app
-from buddyup.database import db, Invitation, User, Buddy
+from buddyup.database import db, BuddyInvitation, User, Buddy
 from buddyup.templating import render_template
 from buddyup.util import login_required
 
@@ -18,7 +18,7 @@ def view_invites():
 @login_required
 def send_invite(user_name):
     other_user_record = User.query.filter(user_name=user_name).first_or_404()
-    invite_record = Invitation(sender_id=g.user_record.id,
+    invite_record = BuddyInvitation(sender_id=g.user_record.id,
                                receiver_id=other_user_record.id)
     db.add(invite_record)
     db.commit()
@@ -30,7 +30,7 @@ def send_invite(user_name):
 @login_required
 def deny_invite(user_name):
     other_user_record = User.query.filter(user_name=user_name).first_or_404()
-    invite_record = Invitation.query.filter(receiver_id=other_user_record.id).first_or_404()
+    invite_record = BuddyInvitation.query.filter(receiver_id=other_user_record.id).first_or_404()
     invite_record.delete()
     db.commit()
     return render_template("invite/denied.html",
@@ -41,7 +41,7 @@ def deny_invite(user_name):
 @login_required
 def accept_invite(user_name):
     other_user_record = User.query.filter(user_name=user_name).first_or_404()
-    invite_record = Invitation.query.filter(receiver_id=other_user_record.id).first_or_404()
+    invite_record = BuddyInvitation.query.filter(receiver_id=other_user_record.id).first_or_404()
     invite_record.delete()
     # Us -> Them record
     buddy1_record = Buddy(user1_id=g.user.id, user2_id=other_user_record.id)
