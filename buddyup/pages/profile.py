@@ -33,7 +33,7 @@ def create_profile():
         user.location = location
         user.bio = bio
         user.initialized = True
-        db.update(user)
+        db.session.update(user)
         
         for i in range(7):
             am_name = "{day}-am"
@@ -47,8 +47,8 @@ def create_profile():
                 pm_record = Availability(user_id=user.id,
                                          day=i,
                                          time='pm')
-            db.add(pm_record)
-        db.commit()
+            db.session.add(pm_record)
+        db.sesssion.commit()
         # TODO: figure out what's next and redirect to that page
         return redirect(url_for('create_photo'))
 

@@ -20,8 +20,8 @@ def send_invite(user_name):
     other_user_record = User.query.filter(user_name=user_name).first_or_404()
     invite_record = BuddyInvitation(sender_id=g.user_record.id,
                                receiver_id=other_user_record.id)
-    db.add(invite_record)
-    db.commit()
+    db.session.add(invite_record)
+    db.session.commit()
     return render_template("invite/sent.html",
                            other_user=other_user_record)
 
@@ -32,7 +32,7 @@ def deny_invite(user_name):
     other_user_record = User.query.filter(user_name=user_name).first_or_404()
     invite_record = BuddyInvitation.query.filter(receiver_id=other_user_record.id).first_or_404()
     invite_record.delete()
-    db.commit()
+    db.session.commit()
     return render_template("invite/denied.html",
                            other_user=other_user_record)
 

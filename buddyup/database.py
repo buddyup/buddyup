@@ -54,16 +54,15 @@ class User(db.Model):
     bio = db.Column(db.UnicodeText, default=u"")
     initialized = db.Column(db.Boolean, default=False)
     location = db.Column(db.Integer, db.ForeignKey('location.id'))
-<<<<<<< HEAD
     courses = db.relationship('Course', secondary=CourseMembership,
                               lazy='dynamic')
     #email = db.Column(db.UnicodeText)
     events = db.relationship('Event', secondary=EventMembership,
                              lazy='dynamic')
 #    sent_messages = db.relationship('Message', foreign_keys=['sender']
-=======
-    photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
-    thumbnail = db.Column(db.Integer, db.ForeignKey('photo.id'))
+    tiny_image = db.Column(db.Integer, db.ForeignKey('photo.id'))
+    thumbnail_image = db.Column(db.Integer, db.ForeignKey('photo.id'))
+    large_image = db.Column(db.Integer, db.ForeignKey('photo.id'))
 
 
 class Photo(db.Model):
@@ -77,7 +76,6 @@ class Photo(db.Model):
 #    events = db.relationship('Event', secondary=EventMembership,
 #                             lazy='dynamic')
 #    sent_messages = db.relationship('Message', foreign_keys='message.sender_id',
->>>>>>> d5f0f31e38053862731f30e48f22975b838940f7
 #                                    lazy='dynamic')
 #    received_messages = db.relationship('Message', backref="receiver",
 #                                        lazy='dynamic')

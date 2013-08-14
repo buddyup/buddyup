@@ -20,7 +20,7 @@ def photo_tiny(user_record):
     """
     Get the URL for a User's tiny image
     """
-    return user_record.tiny_image.url or img(GENERIC_PHOTO)
+    return user_record.tiny_photo.url or img(GENERIC_PHOTO)
 
 
 @app.template_global()
@@ -28,7 +28,7 @@ def photo_thumbnail(user_record):
     """
     Get the URL for a User's thumbnail image
     """
-    return user_record.thumbnail.url or img(GENERIC_PHOTO)
+    return user_record.thumbnail_image.url or img(GENERIC_PHOTO)
 
 
 @app.template_global()

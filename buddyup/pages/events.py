@@ -8,8 +8,7 @@ import re
 from buddyup.app import app
 from buddyup.database import Event, Course, EventMembership, db
 from buddyup.templating import render_template
-from buddyup.util import (args_get, login_required, form_get, check_empty,
-                          checked_regexp)
+from buddyup.util import args_get, login_required, form_get, check_empty
 
 TIME_REGEXP = re.compile(r"""
     (?P<hour>\d\d?)     # hour
@@ -19,12 +18,12 @@ DATE_REGEXP = re.compile(r"""
     (?P<month>\d{1,2})[-/]  # month
     (?P<day>\d{1,2})[-/]    # day
     (?:20)                  # optional '20' year prefix
-    (?P<year>\d{2})         # year (xx)
+    (?P<year>\d{2})")       # year (xx)
 """, flags=re.VERBOSE)
 
 
 def parse_date(date, label):
-    match = checked_regexp(DATE_REGEXP, date, label)
+    match = checked_match(DATE_REGEXP, date, label)
     if match:
         year = int(match.group('year')) + 2000
         month = int(match.group('month'))
@@ -35,7 +34,7 @@ def parse_date(date, label):
 
 
 def parse_time(time_string, ampm, base, label):
-    match = checked_regexp(TIME_REGEXP, time_string, label)
+    match = checked_match(TIME_REGEXP, time_string, label)
     if match:
         hour = int(match.group('hour'))
         minute = int(match.group('minute')) or 0
@@ -119,7 +118,7 @@ def event_search_results():
         # TODO: Show any event that overlaps the time
         query = query.filter(start < Event.start).filter(end > Event.end)
 
-    return render_template('group/search_result.html',
+    return render_template('event_search_results.html',
                            pagination=query.pagination())
 
 @app.route('/event/create', methods=['GET','POST'])
@@ -127,21 +126,15 @@ def event_search_results():
 def event_create():
     if request.method == 'GET':
         # TODO: pass out the user's course to set it as default
-        return render_template('group/create.html',
-                               has_errors=False,
-                               name='',
-                               location='',
-                               start='',
-                               end='',
-                               )
+        return render_template('create_event.html', has_errors=False)
     else:
         user = g.user
         name = form_get('name')
         check_empty(name, "Event Name")
         course_id = form_get('course', convert=int)
-        location = form_get('location')
+        location = form_get('location', convert=int)
         check_empty(location, "Location")
-
+        note = form_get('note')
         # Date
         date = parse_date(form_get('date'))
 
@@ -153,15 +146,18 @@ def event_create():
         
 
         if get_flashed_messages():
-            return render_template('group/create.html', has_errors=True)
+            return render_template('create_event.html', has_errors=True)
 
         # Check that the user is in this course
-        if user.courses.filter_by(course_id=course_id).count() == 0:
+        if user.courses.filter_by(course_id==course_id).count() == 0:
             abort(403)
-        new_event_record = Event(owner_id=user.id, course_id=course_id,
-                name=name, location=location, start=start, end=end)
+        # Again, user_id instead of owner_id
+        new_event_record = Event(user_id=user.id, course_id=course_id,
+                name=name, location_id=location, start=start, end=end,
+                note=note)
         db.session.add(new_event_record)
         db.session.commit()
+        #TODO: change this query to ensure it works as intended
         event_id = Event.query.filter_by(Event.name == name).first().id
         return redirect(url_for('event_view', event_id=event_id))
 
@@ -169,14 +165,53 @@ def event_create():
 @login_required
 def event_remove(event_id):
     # Fixed: "event_id=event_id" into "id=event_id"
-    event = Event.query.filter_by(id=event_id, owner_id=g.user.id)
+    event = Event.query.filter_by(id==event_id, owner_id==g.user.id)
     
     if event is None:
         abort(403)
     else:
         # TODO: may want to send out messages to all users annoucing
         # This might be unnecessary
-        EventMembership.query.filter_by(event_id==event_id).delete()
+        event.first().delete()
         db.session.commit()
         # Redirect to view all events
         return redirect(url_for('event_view'))
+
+@app.route('/event/attend/<int:event_id>')
+@login_required
+def event_attend(event_id):
+    event = Event.query.get_or_404(event_id)
+    
+    if is_attend(event_id):
+        pass
+    else:
+        new_attendance_record = EventMembership(event_id=event_id,
+                user_id=g.user.id)
+        db.session.add(new_attendance_record)
+        db.session.commit()
+        # Not sure what's next
+        pass
+
+
+@app.route('/event/dismiss/<int:event_id>')
+@login_required
+def event_dismiss(event_id):
+    event = Event.query.get_or_404(event_id)
+
+    if is_attend(event_id):
+        attendance_record = EventMembership.query.filter_by(event_id==event_id,
+                user_id==g.user.id).first()
+        attendance_record.delete()
+        db.session.commit()
+        # Not sure what's next
+    else:
+        abort(403)
+
+
+@login_required
+def is_attend(event_id):
+    if EventMembership.query.filter_by(event_id==event_id,
+            user_id==g.user.id).first() is None:
+        return False
+    else:
+        return True
