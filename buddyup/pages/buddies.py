@@ -1,7 +1,7 @@
 from flask import g
 
 from buddyup.app import app
-from buddyup.database import User, db, 
+from buddyup.database import User, db 
 from buddyup.templating import render_template
 from buddyup.util import login_required, args_get
 from buddyup.database import User

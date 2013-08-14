@@ -50,7 +50,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     # PSU user names are always <= 8 ASCII characters
     user_name = db.Column(db.String(8), index=True, unique=True)
-    full_name = db.Column(db.UnicodeText, default="")
+    full_name = db.Column(db.UnicodeText, default=u"")
     bio = db.Column(db.UnicodeText, default=u"")
     initialized = db.Column(db.Boolean, default=False)
     location = db.Column(db.Integer, db.ForeignKey('location.id'))

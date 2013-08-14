@@ -46,7 +46,7 @@ def question_create():
         #question_id = Question.query.filter_
         return redirect(url_for('question_view', question_id=question_id))
 
-@app.route('/forum/remove/<int:question:id>', methods = ['POST'])
+@app.route('/forum/remove/<int:question_id>', methods=['POST'])
 @login_required
 def question_remove(question_id):
     question = Question.query.filter_by(id=question_id, user_id=g.user.id)

@@ -4,7 +4,8 @@ from buddyup.templating import render_template
 from functools import partial
 
 
-@app.route("/admin"):
+@app.route("/admin")
+def admin_dashboard():
     return render_template('dashboard.html')
 
 

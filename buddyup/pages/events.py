@@ -17,7 +17,7 @@ TIME_REGEXP = re.compile(r"""
 DATE_REGEXP = re.compile(r"""
     (?P<month>\d{1,2})[-/]  # month
     (?P<day>\d{1,2})[-/]    # day
-    (?:20)                  # optional '20' year prefix
+    (?:20)?                 # optional '20' year prefix
     (?P<year>\d{2})         # year (xx)
 """, flags=re.VERBOSE)
 
@@ -63,7 +63,7 @@ def event_view(event_id):
     # No "owner" field in Event, instead "user_id"
     is_owner = event_record.user_id  == g.user.id
     remove_url = url_for('event_remove', event_id=event_record.id)
-    return render_template('event_view.html',
+    return render_template('group/view.html',
                             event_record=event_record,
                             is_owner=is_owner,
                             remove_url=remove_url,
@@ -72,7 +72,7 @@ def event_view(event_id):
 
 @app.route('/event/search')
 def event_search():
-    return render_template('event_search.html')
+    return render_template('group/search.html')
 
 
 @app.route('/event/search_results')
@@ -118,7 +118,7 @@ def event_search_results():
         # TODO: Show any event that overlaps the time
         query = query.filter(start < Event.start).filter(end > Event.end)
 
-    return render_template('event_search_results.html',
+    return render_template('group/search_results.html',
                            pagination=query.pagination())
 
 @app.route('/event/create', methods=['GET','POST'])
@@ -146,7 +146,7 @@ def event_create():
         
 
         if get_flashed_messages():
-            return render_template('create_event.html', has_errors=True)
+            return render_template('event/create.html', has_errors=True)
 
         # Check that the user is in this course
         if user.courses.filter_by(course_id==course_id).count() == 0:
@@ -215,3 +215,16 @@ def is_attend(event_id):
         return False
     else:
         return True
+def calendar(start, end):
+    query = Event.query
+    query = query.filter(Event.time >= start)
+    query = query.filter(Event.time <= end)
+    return events_to_json(query.all())
+
+
+
+
+@app.route('/calendar')
+@login_required
+def calendar():
+    return events_to_json([])

@@ -33,10 +33,10 @@ from .util import login_required
 
 @app.before_request
 def setup():
-    if 'uid' in session:
-        user = database.User.query.get('user_id')
+    if 'user_id' in session:
+        g.user = database.User.query.get(session['user_id'])
         # Invalid user id, kill the session with fire!
-        if user is None:
+        if g.user is None:
             app.logger.warning("Session with uid %i is invalid, clearing session")
             session.clear()
     else:

@@ -9,7 +9,7 @@ from flask import g, url_for
 from buddyup.app import app
 from buddyup.database import User, Event
 
-STATIC_ALIASES_INI = "aliases.ini"
+STATIC_ALIASES_INI = "buddyup/aliases.ini"
 
 
 @app.template_filter()
@@ -110,11 +110,14 @@ def load_aliases():
     cp = ConfigParser()
     cp.read(STATIC_ALIASES_INI)
     use_cdn = app.config['USE_CDN']
+    print cp.sections()
     for file_name in cp.sections():
         if use_cdn and cp.has_option(file_name, 'cdn'):
             cdn_locations[file_name] = cp.get(file_name, 'cdn')
         if cp.has_option(file_name, 'local'):
             local_locations[file_name] = cp.get(file_name, 'local')
+    print cdn_locations
+    print local_locations
 
 
 def _static_shortcut(prefix, filename):
@@ -188,6 +191,7 @@ def render_template(template, **variables):
     if g.user is None:
         variables['is_admin'] = None
     else:
-        variables['is_admin'] = g.user.user_name == app.config["ADMIN_USER"]
+        # TODO: Be able to mark users as admins
+        variables['is_admin'] = g.user.user_name == app.config.get("ADMIN_USER", u"")
 
     return _render_template(template, **variables)

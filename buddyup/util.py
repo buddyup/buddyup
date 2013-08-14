@@ -1,7 +1,7 @@
 from functools import wraps
 import re
 
-from flask import flash, request, abort, g, redirect
+from flask import flash, request, abort, g, redirect, url_for
 
 from buddyup import database
 from buddyup.app import app
@@ -16,8 +16,8 @@ def login_required(func):
     @wraps(func)
     def f(*args, **kwargs):
         if g.user is None:
-            print 'redirecting not logged in user'
-            return redirect('index')
+            app.logger.info('redirecting not logged in user')
+            return redirect(url_for('index'))
         else:
             return func(*args, **kwargs)
     return f
@@ -92,3 +92,18 @@ def checked_regexp(regexp, value, label):
         return None
     else:
         return match
+    
+
+
+def events_to_json(events):
+    json = []
+    for event in events:
+        date = event.date.strftime("%Y-%m-%d %H:%M")
+        json.append({
+            'id': event.id,
+            'title': event.name,
+            'start': date,
+            'end': date,
+            'url': url_for('event_view', event_id=event.id),
+        })
+    return json

@@ -45,7 +45,7 @@ def login():
                 user_id = new_user_record.id
                 url = url_for('create_profile')
             else:
-                url = url_for('index')
+                url = url_for('home')
                 user_id = user_record.id
             session['user_id'] = user_id
 

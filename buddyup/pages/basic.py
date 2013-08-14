@@ -19,3 +19,9 @@ def index():
 @login_required
 def home():
     return render_template('index.html')
+
+
+@app.route('/help')
+@login_required
+def help():
+    return render_template('help.html')
