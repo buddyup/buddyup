@@ -45,10 +45,10 @@ def accept_invite(user_name):
     invite_record.delete()
     # Us -> Them record
     buddy1_record = Buddy(user1_id=g.user.id, user2_id=other_user_record.id)
-    db.add(buddy1_record)
+    db.session.add(buddy1_record)
     # Them -> Us record
     buddy2_record = Buddy(user2_id=g.user.id, user1_id=other_user_record.id)
-    db.add(buddy2_record)
-    db.commit()
+    db.sesion.add(buddy2_record)
+    db.session.commit()
     return render_template("invite/accepted.html",
                            other_user=other_user_record)
