@@ -18,7 +18,7 @@ DATE_REGEXP = re.compile(r"""
     (?P<month>\d{1,2})[-/]  # month
     (?P<day>\d{1,2})[-/]    # day
     (?:20)                  # optional '20' year prefix
-    (?P<year>\d{2})")       # year (xx)
+    (?P<year>\d{2})         # year (xx)
 """, flags=re.VERBOSE)
 
 
