@@ -8,7 +8,7 @@ from buddyup.templating import render_template
 
 @app.route('/user/create/info', methods=['POST', 'GET'])
 @login_required
-def create_profile():
+def profile_create():
     if request.method == 'GET':
         return render_template('create_profile.html')
     else:
@@ -55,12 +55,13 @@ def create_profile():
 
 @app.route('/user/create/photo', methods=['POST', 'GET'])
 @login_required
-def create_photo():
+def photo_create():
     pass
     
+
 @app.route('/user/profile', methods=['POST', 'GET'])
 @login_required
-def edit_profile():
+def profile_edit():
     if request.method == 'POST':
         first_name = form_get('firstname')
         last_name = form_get('lastname')
@@ -85,11 +86,5 @@ def edit_profile():
 
 @app.route('/my/profile/picture')
 @login_required
-def change_photo():
+def photo_change():
     pass
-
-# Will be combine with edit_profile
-@app.route('/my/availability', methods=['POST', 'GET'])
-def edit_availability():
-    pass
-
