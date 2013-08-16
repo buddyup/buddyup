@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title> BuddyUp </title>
+ <link href="{{ css('bootstrap') }}" rel="stylesheet">
+ <script src="{{ js('jquery') }}"></script>
+ <script src="{{ js('bootstrap') }}"></script>
+
+<style>
+h1 {color:blue;}
+.span6	{width: 450px;}
+</style>
+</head>
+<body>
+	
+
+<h1 style="text-align:center;"> A Few Suggestions </h2>
+<div class="container">
+<div class="span3"></div>
+		<form class="well span6"> 
+			<li>
+			<font size="4">
+				If you don&#39;t use your pdx email account very much, be sure to set up email forwarding to your main account so you don&#39;t miss messages from potential buddies!
+			</font>
+			</li>
+			<li>
+			<font size="4">
+				Before creating a new study group be sure to make sure none of the other groups will work for you.
+				</font>
+			</li>
+			<li>
+			<font size="4">
+				Out of respect for others, please do your best to show up to the groups you&#39;ve RSVP&#39;d to.
+				</font>
+			</li>
+			<li>
+			<font size="4">
+				...and don&#39;t be afraid to advertise your group during class.
+				</font>
+			</li>
+		  <a class="btn btn-large btn-primary" href="{{ url_for('home') }}" style="margin-left:370px;margin-top: 30px;">  Get Started </a>
+		</form>  
+</div>   
+</body>
+</html>
