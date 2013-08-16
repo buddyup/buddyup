@@ -42,22 +42,27 @@
 	
 </div>
 
-<div style="float: left;margin-left:120px;width:100px;">
+<div style="float: left;margin-top:20px;margin-left:90px;width:100px;">
 	<ul class="thumbnails">
-  	  <li class="span3">
-		  <h5> Find Group </h5>
-    	  <a href="{{ url_for('event_search') }}" class="thumbnail">
-      		<img data-src="holder.js/300x200" style="width:180px;height:140px" src="{{ img('search.jpg') }}">
-    	   </a>
-	    </li>
-  	  <li class="span3">
-		  <h5> Find Buddy </h5>
-    	  <a href="{{ url_for('search_buddies') }}" class="thumbnail">
-      		<img data-src="holder.js/300x200" style="width:180px;height:140px" src="{{ img('search.jpg') }}">
-    	   </a>
-	    </li>	
+     	  <li class="span4" style="margin-top:20px;">
+       	  <a href="{{ url_for('event_search') }}">
+  			<p style="float: left;"><img src="{{ img('search.jpg') }}" height="80px" width="80px" border="1px"></p>
+  			<p style="margin-top:10px;font-size:25px"> Find Group </p>	
+       	   </a>
+   	    </li>
+     	  <li class="span4" style="margin-top:20px;">
+       	  <a href="{{ url_for('search_buddies') }}">
+  			<p style="float: left;"><img src="{{ img('user_search.jpg') }}" height="80px" width="80px" border="1px"></p>
+  			<p style="margin-top:10px;font-size:25px;"> Find Buddies </p>	
+       	   </a>
+   	    </li>
+   	    <li class="span4" style="margin-top:20px;">
+       	  <a href="{{ url_for('profile') }}">
+  			<p style="float: left;"><img src="{{ img('profile.jpg') }}" height="80px" width="80px" border="1px"></p>
+  			<p style="margin-top:10px;font-size:25px;"> My Profile </p>	
+       	   </a>
+   	    </li>
 </div>
-
 </div>
 
 {% endblock %}
