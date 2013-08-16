@@ -8,14 +8,14 @@ from buddyup.database import User
 
 @app.route("/buddy/view/<user_name>")
 @login_required
-def view_buddy(user_name):
+def buddy_view(user_name):
     buddy_record = User.query.filter_by(user_name=user_name).first_or_404()
     return render_template('buddy/view.html', buddy_record=buddy_record)
 
 
 @app.route("/buddy/search")
 @login_required
-def search_buddies():
+def buddy_search():
     # TODO: implement this stuff!
     buddies = g.user.buddies.all()
     return render_template('buddy/search.html',
@@ -24,5 +24,5 @@ def search_buddies():
 
 @app.route("/buddy/search_result")
 @login_required
-def search_results_buddies():
+def buddy_search_results():
     raise NotImplemented()
