@@ -5,10 +5,10 @@
 
 <script>
 $(function() {
-  $( "#datepicker" ).datepicker({
-    changeMonth: true,
-    changeYear: true
-  });
+	$( "#datepicker" ).datepicker({
+		changeMonth: true,
+		changeYear: true
+	});
 });
 </script>
 <style type="text/css">
@@ -18,27 +18,25 @@ $(function() {
 {% endblock %}  
 
 {% block content %}
-    <div class="span4"></div>
-	
-    <div class="well span5">
-	  <h4> Please fill in these criterion: </h4>
-	  <label> Course </label>  
-	  <input id="course" type="text" class="span3" placeholder="...">  
-	  <label> Date </label>
-	  <input id="datepicker" type="text" class="span3" placeholder="mm/dd/yyyy">
-	  <label> Starting time: </label>
-	  <label id="starttime" style="margin-left:10px;">
-	  	<label>
-	    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" style="margin-top:-5px;"> AM
-	  	</label>
-	  	<label>
-	    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" style="margin-top:-5px;"> PM
-	  	</label>
-	  	<label>
-	    <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" style="margin-top:-5px;"> All day
-	  	</label>
-	  </label>
-	  <a id ="btn-search" style="margin-top:20px;margin-left:270px;" class="btn btn-large btn-warning" >Search</a>
-	 
-  </div>
+<div class="span4"></div>
+	<div class="well span5">
+		<h4> Please fill in these criterion: </h4>
+		<label for="course"> Course </label>  
+		<input id="course" type="text" class="span3" placeholder="...">  
+		<label> Date
+			<input id="datepicker" type="text" class="span3" placeholder="mm/dd/yyyy">
+		</label>
+		<label>Starting time:</label>
+		<label id="starttime" style="margin-left:10px;">
+			<input type="radio" name="start_time" id="am" value="am" style="margin-top:-5px;"> AM
+		</label>
+		<label>
+			<input type="radio" name="start_time" id="pm" value="pm" style="margin-top:-5px;"> PM
+		</label>
+		<label>
+			<input type="radio" name="start_time" id="whynotboth" value="whynotboth" style="margin-top:-5px;"> All day
+		</label>
+		<a id ="btn-search" style="margin-top:20px;margin-left:270px;" class="btn btn-large btn-warning" >Search</a>
+	</div>
+</div>
 {% endblock content %}

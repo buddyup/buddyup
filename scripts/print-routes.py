@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# Print a list of all registered routes
 import sys, os
 
 sys.path.insert(0, os.getcwd())
