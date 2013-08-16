@@ -25,4 +25,13 @@ def buddy_search():
 @app.route("/buddy/search_result")
 @login_required
 def buddy_search_results():
-    raise NotImplemented()
+    name = args_get('name')
+    language = args_get('language', convert=int)
+    course = args_get('course', convert=int)
+    query = Buddy.query
+    if name:
+        query = query.filter(Buddy.full_name.like('%' + name + "%"))
+    query = query.filter(Buddy.language_id == language)
+    query = query.filter(BuddyMembership.course_id == course)
+    buddies = query.all()
+    return render_template('buddy/search_results.html', buddies=buddies)
