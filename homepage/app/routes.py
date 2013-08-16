@@ -5,6 +5,9 @@ app = Flask(__name__)
 @app.route('/')
 def intro():
   return render_template('intro.html')
+@app.route('/welcome')
+def welcome():
+  return render_template('welcome.html')
 @app.route('/home')
 def home():
   return render_template('homepage.html')

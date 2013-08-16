@@ -6,6 +6,9 @@
   a {
     color: #00759A;
   }
+  .navbar-fixed-top{
+	position:fixed;
+  }
   .navbar .navbar-inner{
 	  min-height:50px;
   }

@@ -78,6 +78,9 @@ def viewevent():
 @app.route('/q&a/id=1')
 def q1():
    return render_template('q&a/id=1.html')
+@app.route('/writeQuestion')
+def writequestion():
+  return render_template('writeQuestion.html')     
 @app.route('/admin/dashboard')
 def dashboard():
    return render_template('admin/dashboard.html')
@@ -92,5 +95,6 @@ def forumManagement():
 @app.route('/search')
 def search():
   return render_template('search.html')     
+  
 if __name__ == '__main__':
   app.run(debug=True)
