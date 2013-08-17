@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+  
+{% block content %}
+<h2 style="text-align:center;"> Invitations </h2>
+<br>
+<div class="container">
+	<div class="alert alert-success">
+		<button type="button" class="close" data-dismiss="alert">x</button>
+		<strong> You added a <a href="{{ url_for('profile') }} ">friend </a> </strong>
+	</div>
+	<div class="alert alert-success">
+		<button type="button" class="close" data-dismiss="alert">x</button>
+		<strong> You attended to a <a href="{{ url_for('viewevent') }} "> group </a> </strong>
+	</div>
+	<div class="alert alert-block">
+		<button type="button" class="close" data-dismiss="alert">x</button>
+		<strong> You denied to make <a href="{{ url_for('profile') }} ">friend </a> </strong>
+	</div>
+	<div class="alert alert-block">
+		<button type="button" class="close" data-dismiss="alert">x</button>
+		<strong> You denied to attend a <a href="{{ url_for('viewevent') }} "> group </a> </strong>
+	</div>
+    <div class="well span5">
+		<strong><font style="margin-left:150px;" color="2896FF"> From Buddies </font></strong>
+		<div style="margin-top:20px;">
+			{% for user in buddies %}
+			<p style="float: left;"><img src="{{ profile(user) }}" height="50px" width="50px" border="1px"></p>
+			<font style="margin-left:10px;" color="2BA515"><b> {{ user.full_name }} </b> <br> </font>	
+			<font style="margin-left:10px;" color="E8A40D"> Add you as a friend  </font>
+	  	  <div class="btn-group" style="margin-left:240px;">
+	    		<a class="btn btn-success" > Accept</a>
+	  			<a class="btn btn-danger"> Deny </a>
+	  		</div>
+			<hr>
+			{% endfor %}    
+		</div>
+	
+	</div>
+    <div class="well span5">
+		<strong><font style="margin-left:150px;" color="2896FF";> From Groups </font></strong>
+		<div style="margin-top:20px;">
+			{% for group in group %}
+			<p style="float: left;"><img src="{{ profile(user) }}" height="50px" width="50px" border="1px"></p>
+				<font style="margin-left:10px;" color="2BA515"><b> {{ group.name }} </b> <br> </font>	
+				<font style="margin-left:10px;" color="E8A40D"> You are invited to a group </font>
+		  	 <div class="btn-group" style="margin-left:240px;">
+		  	    <a class="btn btn-success" > Accept</a>
+		  	  	<a class="btn btn-deny"> Deny </a>
+			</div>	
+			<hr>
+			{% endfor %}     
+		</div>
+	</div>
+</div>
+{% endblock %}
