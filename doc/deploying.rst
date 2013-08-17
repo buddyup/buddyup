@@ -6,7 +6,7 @@ Create an SSH key
 
 Run in a terminal::
 
-    ssh-keygen -f ~/.ssh/id_rsa
+    $ ssh-keygen -f ~/.ssh/id_rsa
 
 Install Heroku Toolbelt
 =======================
@@ -21,9 +21,9 @@ Setting Up An App
 Pick a name for the app (e.g. buddyup). The app will be accessible via
 app-name.herokuapp.com. Run::
 
-    cd <git repository>
-    heroku create <app name>
-    git push heroku master
+    $ cd <git repository>
+    $ heroku create <app name>
+    $ git push heroku master
     
 
 Deploy Using Git
@@ -31,8 +31,8 @@ Deploy Using Git
 
 Run::
 
-    cd <git repository>
-    git push heroku master
+    $ cd <git repository>
+    $ git push heroku master
 
 This command will upload your repository to Heroku and create a "slug"
 on Heroku's servers.
@@ -42,15 +42,37 @@ Add Heroku Postgres
 
 Provision Heroku's Postgres addon::
 
-    cd <git repository>
-    heroku addons:add heroku-postgresql:<postgres plan>
+    $ cd <git repository>
+    $ heroku addons:add heroku-postgresql:<postgres plan>
 
 Where ``<postgres plan>`` is the name of your desired postgres plan.
-Developers should use the ``dev`` plan.
+Developers should use the ``dev`` plan. Pick from
+https://addons.heroku.com/heroku-postgresql.
 
-Next create the database::
+You will be assigned a database url named something like ``HEROKU_POSTGRESQL_BLUE_URL``.
+To find it, run::
 
-    heroku run init
+    $ heroku config | grep HEROKU_POSTGRESQL
+
+If multiple variables are present, just pick one. Then run::
+
+    $ heroku pg:promote HEROKU_POSTGRESQL_BLUE_URL
+
+Next create the database tables::
+
+    $ heroku run init
+    
+To drop and recreate the tables, run::
+
+    $ heroku run scripts/reset
+    
+
+Set Heroku variables
+====================
+
+BuddyUp must be configured through some environmental variables::
+
+    $ heroku config:set BUDDYUP_TYPE=production
 
 Mail
 ====
@@ -60,4 +82,4 @@ Mail alerts are not implemented yet.
 Amazon S3
 =========
 
-Create a bucket
+Amazon services have not been implemented yet
