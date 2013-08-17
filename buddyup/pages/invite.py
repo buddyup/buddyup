@@ -10,7 +10,7 @@ from buddyup.util import login_required
 @login_required
 def invite_list():
     invitations = g.user.invitations.all()
-    return render_template('invite/view.html',
+    return render_template('invite/list.html',
                            invitations=invitations)
 
 
@@ -22,7 +22,8 @@ def invite_send(user_name):
                                receiver_id=other_user_record.id)
     db.session.add(invite_record)
     db.session.commit()
-    return render_template("invite/sent.html",
+    flash("Sent invitation to " + user_name)
+    return render_template("invite/list.html",
                            other_user=other_user_record)
 
 
@@ -33,7 +34,8 @@ def invite_deny(user_name):
     invite_record = BuddyInvitation.query.filter(receiver_id=other_user_record.id).first_or_404()
     invite_record.delete()
     db.session.commit()
-    return render_template("invite/denied.html",
+    flash("Ignored invitation from " + user_name)
+    return render_template("invite/list.html",
                            other_user=other_user_record)
 
 
@@ -50,5 +52,6 @@ def invite_accept(user_name):
     buddy2_record = Buddy(user2_id=g.user.id, user1_id=other_user_record.id)
     db.sesion.add(buddy2_record)
     db.session.commit()
-    return render_template("invite/accepted.html",
+    flash("Accepted invitation from " + user_name)
+    return render_template("invite/list.html",
                            other_user=other_user_record)
