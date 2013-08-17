@@ -4,6 +4,7 @@
 <title> BuddyUp </title>
 <link href="{{ css('bootstrap') }}" rel="stylesheet">
 <link href="{{ css('bootstrap-responsive') }}" rel="stylesheet">
+<link href="{{ css('bootstrap-fileupload') }}" rel="stylesheet">
 <script src="{{ js('jquery') }}"></script>
 <script src="{{ js('bootstrap') }}"></script>
 <script src="{{ js('bootstrap-button') }}"></script>
@@ -25,37 +26,42 @@ color{color:red;}
 <h2 style="text-align:center;"> Welcome to BuddyUp! </h2>
 <div class="container">
 <div class="span3"></div>
-		<form class="well span7">  
+		<div class="well span7">  
 		  <h4> Please fill in</h4>
+		  <form action="{{ url_for('setup/landing') }}" method="POST">
 		  <label> Your Name <color> (*Required) </color> </label>  
-		  <input type="text" class="span2" placeholder="First Name">  
-		  <input type="text" class="span2" placeholder="Last Name">  
+		  <input type="text" class="span2" placeholder="Your Full Name" value="{{ user_record.full_name }}">    
 		  <label> Your Course <color> (*Required) </color></label>
-		  <select>
-		  <option>STAT 1xx</option>
-		  <option>STAT 2xx</option>
-		  <option>STAT 3xx</option>
-	  	  </select>
-		  <label> Location</label>
-		  <select>
-		  <option>Campus</option>  
-		  <option>SW Portland</option>
-		  <option>SE Portland</option>
-		  <option>NW Portland</option>
-		  <option>NE Portland</option>
-		  <option>Beaverton</option>
-		  <option>Gresham</option>
-		  <option>Hillsborro</option>
-	  	  </select>
+  		  <select style="width: 80px" name="course">
+  				{% for course_record in courses %}
+  					{% if selected(course_record) %}
+  						<option value="subject_record.id" selected>
+  							{{ subject_record.name }}
+  						</option>
+  					{% else %}
+  						<option value="subject_record.id">
+  							{{ subject_record.name }}
+  						</option>
+  					{% endif %}
+  				{% endfor %}
+  		  </select>
 		  
+		  <label> Location</label>
+		  {% for location in location %}
+		  		{% if selected(location) %}
+		  <select name="location">
+		  	<option value="{{ location.id }}">
+			  	{{ location.name }}
+		 	 </option>  
 	  	  </select>
+		  {% endfor %}
 		  
 		  <label> Time for Study Group </label>
 		  <label> <input type="checkbox" class="toggle" id="monday" style="margin-top:-5px;margin-left:10px;">  Monday </label>
 		  <div class="detail" id="mondaydetail" style="margin-left:30px;">
-		    <label> <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" style="Margin-top:-5px;"> AM </label>
-		    <label> <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" style="Margin-top:-5px;"> PM </label>
-		    <label> <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" style="Margin-top:-5px;"> All day </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios1" value="am" style="Margin-top:-5px;"> AM </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios2" value="pm" style="Margin-top:-5px;"> PM </label>
+		    <label> <input type="radio" name="optionsRadios" id="optionsRadios3" value="whynotboth" style="Margin-top:-5px;"> All day </label>
 		  </label>
 		  </div>
 		  <label> <input type="checkbox" class="toggle" id="tuesday" style="margin-top:-5px;margin-left:10px;;">  Tuesday </label>
@@ -100,6 +106,29 @@ color{color:red;}
 		    <label> <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" style="Margin-top:-5px;"> All day </label>
 		  </label>
 		  </div>
+		  <h4> Please share something about you</h4> 	
+		  <div class="fileupload fileupload-new" data-provides="fileupload">
+		  <font> Profile Picture </font>
+		  <span class="btn btn-file" style="margin-left:20px;"><span class="fileupload-new">Choose Picture</span><span class="fileupload-exists">Change</span><input type="file" /></span>
+		  <span class="fileupload-preview"></span>
+		  <br>
+		  <font>
+		       <br> Current avatar
+		  </font>
+	  
+		  <img src="../static/img/index.jpg" class="img-rounded" width="100" height="100" style="margin-left:20px;">
+		  <br>
+		  <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
+		  <label style="margin-top:20px;">Your Facebook 
+		  <input type="text" class="span3" placeholder="facebook.com/yourfacebook" style="margin-left:15px;" value="{{ user_record.facebook }}">
+		  </label>
+		  <label style="margin-top:20px;">Your Twitter
+		  <input type="text" class="span3" placeholder="twitter.com/yourtwitter" style="margin-left:15px;" value="{{ user_record.twitter }}">
+		  </label>
+		  <label> A Few Words About You </label>
+		  <textarea type="text" style="height: 150px;width: 450px;" value="{{ user_record.bio }}"> </textarea>
+		  <a class="btn btn-large btn-primary" href="{{ url_for('home') }}" style="margin-left:400px;margin-top: 20px;"> Save </a>
+	  	  </div>
 		  <div class="btn btn-inverse" style="margin-left:370px;margin-top: 30px;"> Submit</div>
 		</form>  
 </div>   
