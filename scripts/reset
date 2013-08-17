@@ -1,0 +1,4 @@
+#!/bin/bash
+
+./scripts/drop-database.py
+./scripts/create-database.py
