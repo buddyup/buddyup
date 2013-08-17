@@ -55,6 +55,19 @@ def admin_delete_course():
         return render_template('course_delete.html')
     else:
         return render_template('course_delete.html')
+                           
+
+
+@app.route("/admin/users")
+@admin_required
+def admin_user_management():
+    pass
+
+
+@app.route("/admin/forums")
+@admin_required
+def admin_forum_management():
+    pass
 
 
 @app.route("/admin/stats")

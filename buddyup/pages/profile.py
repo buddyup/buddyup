@@ -1,3 +1,5 @@
+from calendar import day_name
+
 from flask import request, session, flash, g, redirect, url_for
 
 from buddyup.app import app
@@ -6,57 +8,55 @@ from buddyup.util import form_get, login_required
 from buddyup.templating import render_template
 
 
-@app.route('/user/create/info', methods=['POST', 'GET'])
+@app.route('/setup/profile', methods=['POST', 'GET'])
 @login_required
 def profile_create():
     if request.method == 'GET':
-        return render_template('create_profile.html')
+        locations = Locations.query.all()
+        return render_template('setup/landing.html', locations=locations)
     else:
         user = g.user
-        error = False
-        first_name = form_get('first_name')
-        if first_name == '':
-            flash("First Name Is Empty")
-            error = True
-        # Last name is optional
-        last_name = form_get('last_name')
-        gender = form_get('gender')
-        location = form_get('location')
+        name = form_get('first_name')
+        check_empty(first_name, "Full Name")
+        location = form_get('location', convert=int)
+        if Locations.query.get(location) is None:
+            abort(400)
         bio = form_get('bio')
         
-        if error:
-            return render_template('create_profile.html')
+        # If anything has been flashed, there was an error
+        if get_flashed_messages():
+            return render_template('setup/landing.html', day_names=day_name)
 
-        user.first_name = first_name
-        user.last_name = last_name
-        user.gender = gender
-        user.location = location
+        user.full_name = name
+        user.location_id = location
         user.bio = bio
         user.initialized = True
         db.session.update(user)
         
+        AVAILABILITIES = {
+            'am': ('am',),
+            'pm': ('pm',),
+            'whynotboth': ('am', 'pm')
+        }
+
         for i in range(7):
-            am_name = "{day}-am"
-            if am_name in request.form:
-                am_record = Availability(user_id=user.id,
-                                         day=i,
-                                         time='am')
-            db.add(am_record)
-            pm_name = "{day}-pm"
-            if pm_name in request.form:
-                pm_record = Availability(user_id=user.id,
-                                         day=i,
-                                         time='pm')
-            db.session.add(pm_record)
-        db.sesssion.commit()
+            availability = form_get('availability-{}'.format(i))
+            if availability not in AVAILABILITIES:
+                abort(400)
+            for time in AVAILABILITIES[availability]:
+                record = Availability(user_id=user.id,
+                                      day=i,
+                                      time=time)
+                db.add(record)
+        db.session.commit()
         # TODO: figure out what's next and redirect to that page
-        return redirect(url_for('create_photo'))
+        return redirect(url_for('home'))
 
 
-@app.route('/user/create/photo', methods=['POST', 'GET'])
-@login_required
-def photo_create():
-    pass
+# @app.route('/setup/photo', methods=['POST', 'GET'])
+# @login_required
+# def photo_create():
+#    pass
     
 
 @app.route('/user/profile', methods=['POST', 'GET'])
@@ -65,14 +65,12 @@ def profile_edit():
     if request.method == 'POST':
         first_name = form_get('firstname')
         last_name = form_get('lastname')
-        gender = form_get('gender')
         bio = form_get('bio')
         location = form_get('location')
 
         user = g.user
         user.first_name = first_name
         user.last_name = last_name
-        user.gender = gender
         user.bio = bio
         user.location = location
         db.update(user)
@@ -80,9 +78,10 @@ def profile_edit():
         # TODO: get availability and replace the old records
 
         db.commit()
-        return redirect(url_for('edit_profile'))
+        return redirect(url_for('profile_view', user_name=g.user.full_name))
     else:
-        return render_template('profile.html', user=g.user)
+        return render_template('profile/edit.html')
+
 
 @app.route('/my/profile/picture')
 @login_required

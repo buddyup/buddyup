@@ -161,7 +161,7 @@ def profile(record):
     if isinstance(record, Event):
         return url_for('event_view', event_id=record.id)
     elif isinstance(record, User):
-        return url_for('view_buddy', user_name=record.user_name)
+        return url_for('buddy_view', user_name=record.user_name)
     else:
         raise TypeError("profile(record) requires an Event or User")
 
@@ -172,9 +172,9 @@ def view_url(record):
     View URL for a given record (User or Event)
     """
     if isinstance(record, User):
-        return url_for('view_buddy', user_name=record.user_name)
+        return url_for('buddy_view', user_name=record.user_name)
     elif isinstance(record, Event):
-        return url_for('view_group', event_id=record.id)
+        return url_for('event_view', event_id=record.id)
     else:
         raise TypeError("Unknown type '%s'" % record.__class__.__name__)
 

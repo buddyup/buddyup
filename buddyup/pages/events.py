@@ -60,8 +60,7 @@ def event_view_all():
 @app.route('/event/view/<int:event_id>')
 def event_view(event_id):
     event_record = Event.query.get_or_404(event_id)
-    # No "owner" field in Event, instead "user_id"
-    is_owner = event_record.user_id  == g.user.id
+    is_owner = event_record.owner_id  == g.user.id
     remove_url = url_for('event_remove', event_id=event_record.id)
     return render_template('group/view.html',
                             event_record=event_record,
@@ -86,7 +85,8 @@ def event_search_results():
 
     get_int = partial(args_get, type=int)
     # TODO: Addition ordering?
-    query = Event.query.order_by(Event.time)
+    query = Event.query
+    query = query.order_by(Event.time)
 
     course = get_int('course')
     # -1 indicates no course selected, so don't filter
@@ -98,25 +98,20 @@ def event_search_results():
         page = 0
     else:
         page = page - 1
-
-    if args_get('start_year') != '':
-        start_year = get_int('start_year')
-        start_month = get_int('start_month')
-        start_day = get_int('start_day')
-        start_hour = get_int('start_hour')
-        start_minute = get_int('start_minute')
-        
-        end_year = get_int('end_year')
-        end_month = get_int('end_month')
-        end_day = get_int('end_day')
-        end_hour = get_int('end_hour')
-        end_minute = get_int('end_minute')
-
-        # TODO: Timezone?
-        start = datetime(start_year, start_month, start_day, start_hour, start_minute)
-        end = datetime(end_year, end_month, end_day, end_hour, end_minute)
-        # TODO: Show any event that overlaps the time
         query = query.filter(start < Event.start).filter(end > Event.end)
+    
+    {
+        'name': event.name,
+        # TODO: strftime
+        # Month/Day/Year Hour:Minute
+        'timestamp': event.time.strftime("%m/%d/%Y %I:%M %p"),
+        'people_count': event.users.count(),
+        'view': url_for('group_view', group_id=event_id),
+        'attending': EventMembership.query.filter_by(user_id=g.user.id,
+                     event_id=event.id).count > 0,
+        'attend_link': url_for('event_attend', event_id=event_id),
+        'leave_link': url_for('event_leave', event_id=event_id),
+    }
 
     return render_template('group/search_results.html',
                            pagination=query.pagination())
@@ -149,7 +144,7 @@ def event_create():
             return render_template('event/create.html', has_errors=True)
 
         # Check that the user is in this course
-        if user.courses.filter_by(course_id==course_id).count() == 0:
+        if user.courses.filter_by(course_id=course_id).count() == 0:
             abort(403)
         # Again, user_id instead of owner_id
         new_event_record = Event(user_id=user.id, course_id=course_id,
@@ -158,70 +153,61 @@ def event_create():
         db.session.add(new_event_record)
         db.session.commit()
         #TODO: change this query to ensure it works as intended
-        event_id = Event.query.filter_by(Event.name == name).first().id
+        event_id = Event.query.filter_by(name=name).first().id
         return redirect(url_for('event_view', event_id=event_id))
+
 
 @app.route('/event/cancel/<int:event_id>')
 @login_required
 def event_remove(event_id):
-    # Fixed: "event_id=event_id" into "id=event_id"
-    event = Event.query.filter_by(id==event_id, owner_id==g.user.id)
-    
-    if event is None:
+    event = Event.query.get_or_404(event_id)
+    if event.owner_id != g.user.id:
         abort(403)
     else:
         # TODO: may want to send out messages to all users annoucing
         # This might be unnecessary
-        event.first().delete()
+        event.delete()
         db.session.commit()
         # Redirect to view all events
         return redirect(url_for('event_view'))
+
 
 @app.route('/event/attend/<int:event_id>')
 @login_required
 def event_attend(event_id):
     event = Event.query.get_or_404(event_id)
-    
-    if is_attend(event_id):
-        pass
-    else:
+ 
+    if not is_attend(event_id):
         new_attendance_record = EventMembership(event_id=event_id,
                 user_id=g.user.id)
         db.session.add(new_attendance_record)
         db.session.commit()
-        # Not sure what's next
-        pass
+    flash("Now attending group")
+    return render_template('event/view.html')
 
 
-@app.route('/event/dismiss/<int:event_id>')
+@app.route('/event/leave/<int:event_id>')
 @login_required
-def event_dismiss(event_id):
+def event_leave(event_id):
     event = Event.query.get_or_404(event_id)
-
-    if is_attend(event_id):
-        attendance_record = EventMembership.query.filter_by(event_id==event_id,
-                user_id==g.user.id).first()
-        attendance_record.delete()
-        db.session.commit()
-        # Not sure what's next
-    else:
-        abort(403)
+    name = event.name
+    attendance_record = EventMembership.query.filter_by(event_id=event_id,
+            user_id=g.user.id).first_or_404()
+    attendance_record.delete()
+    db.session.commit()
+    return render_template('event/left.html', name=name)
 
 
-@login_required
 def is_attend(event_id):
-    if EventMembership.query.filter_by(event_id==event_id,
-            user_id==g.user.id).first() is None:
-        return False
-    else:
-        return True
+    return EventMembership.query.filter_by(event_id=event_id,
+            user_id=g.user.id).count() > 0
+
+
 def calendar(start, end):
     query = Event.query
     query = query.filter(Event.time >= start)
     query = query.filter(Event.time <= end)
     return events_to_json(query.all())
-
-
 
 
 @app.route('/calendar')
