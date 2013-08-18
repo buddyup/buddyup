@@ -106,7 +106,7 @@ def event_search_results():
         # Month/Day/Year Hour:Minute
         'timestamp': event.time.strftime("%m/%d/%Y %I:%M %p"),
         'people_count': event.users.count(),
-        'view': url_for('group_view', group_id=event_id),
+        'view': url_for('event_view', group_id=event_id),
         'attending': EventMembership.query.filter_by(user_id=g.user.id,
                      event_id=event.id).count > 0,
         'attend_link': url_for('event_attend', event_id=event_id),
