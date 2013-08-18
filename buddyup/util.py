@@ -18,6 +18,8 @@ def login_required(func):
         if g.user is None:
             app.logger.info('redirecting not logged in user')
             return redirect(url_for('index'))
+        elif not g.user.initialized:
+            return redirect(url_for('profile_create'))
         else:
             return func(*args, **kwargs)
     return f
