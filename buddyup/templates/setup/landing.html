@@ -15,10 +15,22 @@
 color{color:red;}
 #a{width:90%;}
 .dropdown-menu {
- 	background-color:#4169E1;
+	background-color:#4169E1;
 }
 .span7	{width: 450px;}
+.detail input {
+	margin-top: -5px;
+}
 </style>
+<script>
+$(function() {
+	$('.detail').hide();
+}
+$('.toggle').change(function() {
+	$('#'.concat(this.id).concat('detail')).toggle();
+});
+</script>
+
 </head>
 <body>
 	
@@ -26,118 +38,81 @@ color{color:red;}
 <h2 style="text-align:center;"> Welcome to BuddyUp! </h2>
 <div class="container">
 <div class="span3"></div>
-		<div class="well span7">  
-		  <h4> Please fill in</h4>
-		  <form action="{{ url_for('setup/landing') }}" method="POST">
-		  <label> Your Name <color> (*Required) </color> </label>  
-		  <input type="text" class="span2" placeholder="Your Full Name" value="{{ user_record.full_name }}">    
-		  <label> Your Course <color> (*Required) </color></label>
-  		  <select style="width: 80px" name="course">
-  				{% for course_record in courses %}
-  					{% if selected(course_record) %}
-  						<option value="subject_record.id" selected>
-  							{{ subject_record.name }}
-  						</option>
-  					{% else %}
-  						<option value="subject_record.id">
-  							{{ subject_record.name }}
-  						</option>
-  					{% endif %}
-  				{% endfor %}
-  		  </select>
-		  
-		  <label> Location</label>
-		  {% for location in location %}
-		  		{% if selected(location) %}
-		  <select name="location">
-		  	<option value="{{ location.id }}">
-			  	{{ location.name }}
-		 	 </option>  
-	  	  </select>
-		  {% endfor %}
-		  
-		  <label> Time for Study Group </label>
-		  <label> <input type="checkbox" class="toggle" id="monday" style="margin-top:-5px;margin-left:10px;">  Monday </label>
-		  <div class="detail" id="mondaydetail" style="margin-left:30px;">
-		    <label> <input type="radio" name="optionsRadios" id="optionsRadios1" value="am" style="Margin-top:-5px;"> AM </label>
-		    <label> <input type="radio" name="optionsRadios" id="optionsRadios2" value="pm" style="Margin-top:-5px;"> PM </label>
-		    <label> <input type="radio" name="optionsRadios" id="optionsRadios3" value="whynotboth" style="Margin-top:-5px;"> All day </label>
-		  </label>
-		  </div>
-		  <label> <input type="checkbox" class="toggle" id="tuesday" style="margin-top:-5px;margin-left:10px;;">  Tuesday </label>
-		  <div class="detail" id="tuesdaydetail" style="margin-left:30px;">
-		    <label> <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" style="Margin-top:-5px;"> AM </label>
-		    <label> <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" style="Margin-top:-5px;"> PM </label>
-		    <label> <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" style="Margin-top:-5px;"> All day </label>
-		  </label>
-		  </div>
-		  <label> <input type="checkbox" class="toggle" id="wednesday" style="margin-top:-5px;margin-left:10px;;">  Wednesday </label>
-		  <div class="detail" id="wednesdaydetail" style="margin-left:30px;">
-		    <label> <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" style="Margin-top:-5px;"> AM </label>
-		    <label> <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" style="Margin-top:-5px;"> PM </label>
-		    <label> <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" style="Margin-top:-5px;"> All day </label>
-		  </label>
-		  </div>
-		  <label> <input type="checkbox" class="toggle" id="thursday" style="margin-top:-5px;margin-left:10px;">  Thursday </label>
-		  <div class="detail" id="thursdaydetail" style="margin-left:30px;">
-		    <label> <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" style="Margin-top:-5px;"> AM </label>
-		    <label> <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" style="Margin-top:-5px;"> PM </label>
-		    <label> <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" style="Margin-top:-5px;"> All day </label>
-		  </label>
-		  </div>
-		  <label> <input type="checkbox" class="toggle" id="friday" style="margin-top:-5px;margin-left:10px;">  Friday </label>
-		  <div class="detail" id="fridaydetail" style="margin-left:30px;">
-		    <label> <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" style="Margin-top:-5px;"> AM </label>
-		    <label> <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" style="Margin-top:-5px;"> PM </label>
-		    <label> <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" style="Margin-top:-5px;"> All day </label>
-		  </label>
-		  </div>
-		  <label> <input type="checkbox" class="toggle" id="saturday" style="margin-top:-5px;margin-left:10px;">  Saturday </label>
-		  <div class="detail" id="saturdaydetail" style="margin-left:30px;">
-		    <label> <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" style="Margin-top:-5px;"> AM </label>
-		    <label> <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" style="Margin-top:-5px;"> PM </label>
-		    <label> <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" style="Margin-top:-5px;"> All day </label>
-		  </label>
-		  </div>
-		  <label> <input type="checkbox" class="toggle" id="sunday" style="margin-top:-5px;margin-left:10px;">  Sunday </label>
-		  <div class="detail" id="sundaydetail" style="margin-left:30px;">
-		    <label> <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" style="Margin-top:-5px;"> AM </label>
-		    <label> <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" style="Margin-top:-5px;"> PM </label>
-		    <label> <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" style="Margin-top:-5px;"> All day </label>
-		  </label>
-		  </div>
-		  <h4> Please share something about you</h4> 	
-		  <div class="fileupload fileupload-new" data-provides="fileupload">
-		  <font> Profile Picture </font>
-		  <span class="btn btn-file" style="margin-left:20px;"><span class="fileupload-new">Choose Picture</span><span class="fileupload-exists">Change</span><input type="file" /></span>
-		  <span class="fileupload-preview"></span>
-		  <br>
-		  <font>
-		       <br> Current avatar
-		  </font>
-	  
-		  <img src="../static/img/index.jpg" class="img-rounded" width="100" height="100" style="margin-left:20px;">
-		  <br>
-		  <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
-		  <label style="margin-top:20px;">Your Facebook 
-		  <input type="text" class="span3" placeholder="facebook.com/yourfacebook" style="margin-left:15px;" value="{{ user_record.facebook }}">
-		  </label>
-		  <label style="margin-top:20px;">Your Twitter
-		  <input type="text" class="span3" placeholder="twitter.com/yourtwitter" style="margin-left:15px;" value="{{ user_record.twitter }}">
-		  </label>
-		  <label> A Few Words About You </label>
-		  <textarea type="text" style="height: 150px;width: 450px;" value="{{ user_record.bio }}"> </textarea>
-		  <a class="btn btn-large btn-primary" href="{{ url_for('home') }}" style="margin-left:400px;margin-top: 20px;"> Save </a>
-	  	  </div>
-		  <div class="btn btn-inverse" style="margin-left:370px;margin-top: 30px;"> Submit</div>
-		</form>  
+	<div class="well span7">  
+		<h4> Please fill in</h4>
+		<form action="{{ url_for('profile_create') }}" method="POST">
+			<label> Your Name <color> (*Required) </color> </label>  
+			<input type="text" class="span2" placeholder="Your Full Name" value="{{ user_record.full_name }}">    
+			<label> Your Course <color> (*Required) </color></label>
+				<select style="width: 80px" name="course">
+					{% for course_record in courses %}
+						{% if selected(course_record) %}
+							<option value="{{ subject_record.id }}" selected>
+								{{ subject_record.name }}
+							</option>
+						{% else %}
+							<option value="{{ subject_record.id }}">
+								{{ subject_record.name }}
+							</option>
+						{% endif %}
+					{% endfor %}
+				</select>
+			
+			<label> Location</label>
+			<select name="location">
+			{% for location in location %}
+				{% if selected(location) %}
+				<option value="{{ location.id }}" selected>
+					{{ location.name }}
+				</option>  
+				{% else %}
+				<option value="{{ location.id }}">
+					{{ location.name }}
+				</option>  
+				{% endif %}
+			{% endfor %}
+			</select>
+			
+			<label> Time for Study Group </label>
+			{% for day in day_names %}
+			<label> <input type="checkbox" class="toggle" id="{{ day|lower }}" style="margin-top:-5px; margin-left:10px;">{{ day }}</label>
+			<div class="detail" id="{{day|lower}}detail" style="margin-left:30px;">
+				<label> <input type="radio" name="{{day|lower}}time" id="{{day|lower}}-am" value="am"> AM </label>
+				<label> <input type="radio" name="{{day|lower}}time" id="{{day|lower}}-pm" value="pm"> PM </label>
+				<label> <input type="radio" name="{{day|lower}}time" id="{{day|lower}}-all" value="all"> All Day </label>
+			</div>
+			{% endfor %}
+
+			<h4> Please share something about you</h4> 	
+			{# Save file upload for later
+			<div class="fileupload fileupload-new" data-provides="fileupload">
+
+			<font> Profile Picture </font>
+			<span class="btn btn-file" style="margin-left:20px;"><span class="fileupload-new">Choose Picture</span><span class="fileupload-exists">Change</span><input type="file" /></span>
+			<span class="fileupload-preview"></span>
+			<br>
+
+			<font>
+					<br> Current avatar
+			</font>
+		
+			<img src="../static/img/index.jpg" class="img-rounded" width="100" height="100" style="margin-left:20px;">
+			<br>
+			<a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
+			#}
+
+			<label style="margin-top:20px;">Your Facebook 
+				<input type="text" class="span3" placeholder="http://facebook.com/yourfacebook" style="margin-left:15px;" value="{{ user_record.facebook }}">
+			</label>
+			<label style="margin-top:20px;">Your Twitter
+				<input type="text" class="span3" placeholder="http://twitter.com/yourtwitter" style="margin-left:15px;" value="{{ user_record.twitter }}">
+			</label>
+			<label> A Few Words About You </label>
+			<textarea type="text" style="height: 150px;width: 450px;" value="{{ user_record.bio }}"> </textarea>
+			<a class="btn btn-large btn-primary" href="{{ url_for('profile_create') }}" style="margin-left:400px;margin-top: 20px;"> Save </a>
+		</div>
+	</form>
 </div>   
-<script>
-$('.detail').hide();
-$('.toggle').change(function() {
-	$('#'.concat(this.id).concat('detail')).toggle();
-});
-</script>
 
 </body>
 </html>

@@ -3,7 +3,7 @@ from calendar import day_name
 from flask import request, session, flash, g, redirect, url_for
 
 from buddyup.app import app
-from buddyup.database import User, Availability, db
+from buddyup.database import User, Availability, Location, db
 from buddyup.util import form_get, login_required
 from buddyup.templating import render_template
 
@@ -12,7 +12,7 @@ from buddyup.templating import render_template
 @login_required
 def profile_create():
     if request.method == 'GET':
-        locations = Locations.query.all()
+        locations = Location.query.all()
         return render_template('setup/landing.html', locations=locations)
     else:
         user = g.user
@@ -36,11 +36,11 @@ def profile_create():
         AVAILABILITIES = {
             'am': ('am',),
             'pm': ('pm',),
-            'whynotboth': ('am', 'pm')
+            'both': ('am', 'pm')
         }
 
-        for i in range(7):
-            availability = form_get('availability-{}'.format(i))
+        for i, day in enumerate(day_names):
+            availability = form_get('availability-{}'.format(day))
             if availability not in AVAILABILITIES:
                 abort(400)
             for time in AVAILABILITIES[availability]:
