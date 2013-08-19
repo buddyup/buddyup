@@ -110,14 +110,11 @@ def load_aliases():
     cp = ConfigParser()
     cp.read(STATIC_ALIASES_INI)
     use_cdn = app.config['USE_CDN']
-    print cp.sections()
     for file_name in cp.sections():
         if use_cdn and cp.has_option(file_name, 'cdn'):
             cdn_locations[file_name] = cp.get(file_name, 'cdn')
         if cp.has_option(file_name, 'local'):
             local_locations[file_name] = cp.get(file_name, 'local')
-    print cdn_locations
-    print local_locations
 
 
 def _static_shortcut(prefix, filename):
