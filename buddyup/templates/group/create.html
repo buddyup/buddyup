@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block title %}Create Group {% endblock %}
+{% block title %}Create Group{% endblock %}
 {% block extrahead %}
 <script src="{{ js('jquery-ui') }}"></script>
 <script>
@@ -15,8 +15,6 @@ $(function() {
 	.span6 {width: 480px;}
 </style>
 <link rel="stylesheet" href="{{ css('jquery-ui') }}" />
-<!-- TODO: Why is this here? -->
-<link rel="stylesheet" href="/resources/demos/style.css" />
 {% endblock extrahead %}
 
 {% block content %}
@@ -26,7 +24,7 @@ $(function() {
 
 <div class="well span6">
 	<h4> Please fill in the information below: </h4>
-	<form action="{{ url_for('create_group') }}" method="POST">
+	<form action="{{ url_for('event_create') }}" method="POST">
 		<label> Group Name </label>  
 		<input type="text" class="span3" placeholder="..." name="name"
 				value="{{ name }}">  
