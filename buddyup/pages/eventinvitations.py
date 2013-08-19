@@ -2,13 +2,13 @@ from flask import g, request, flash, direct, url_for, session, abort
 from datetime import datetime
 
 from buddyup.app import app
-from buddup.database import User, EventInvitation, EventMembership, db
+from buddup.database import User, EventInvitation, EventMembership, db, Event
 from buddyup.templating import render_template
 from buddyup.util import args_get, login_required, form_get
 
 @login_required
 def event_invitation_view_all():
-    event_invitations = EventInvitation.query.filter_by(receiver_id==g.user.id)
+    event_invitations = EventInvitation.query.filter_by(receiver_id=g.user.id)
     return event_invitations
 
 @app.route('/invite/event/<int:event_id>/<user_name>', methods=['GET', 'POST'])
@@ -22,17 +22,17 @@ def event_invitation_send(event_id, user_name):
     Event.query.get_or_404(event_id)
     receiver = User.query.filter_by(user_name==user_name).first_or_404()
     
-    if EventMembership.query.filter_by(event_id==event_id,
-            user_id==receiver.id) is None:
-        if EventInvitation.query.filter_by(sender_id==g.user.id,
-                receiver_id==receiver.id).first() is None:
+    if EventMembership.query.filter_by(event_id=event_id,
+            user_id=receiver.id) is None:
+        if EventInvitation.query.filter_by(sender_id=g.user.id,
+                receiver_id=receiver.id).first() is None:
             new_invitation_record = EventInvitation(sender_id=g.user.id,
                     receiver_id=receiver.id, event_id=event_id)
             db.session.add(new_invitation_record)
             db.session.commit()
 
     else:
-        #SAYING THAT USER IS ALREADY IN!
+        #TODO: SAYING THAT USER IS ALREADY IN!
         pass
 
 
@@ -42,18 +42,18 @@ def event_invitation_accept(invitation_id):
         abort(403)
 
     event_invitation = EventInvitation.query.get_or_404(invitation_id)
-    if EventMembership.query.filter_by(event_id==event_invitation.event_id,
-            user_id==event_invitation.user_id).first() is None:
+    if EventMembership.query.filter_by(event_id=event_invitation.event_id,
+            user_id=event_invitation.user_id).first() is None:
         new_attendance_record = EventMembership(event_id=event_invitation.event_id,
                 user_id=event_invitation.user_id)
         db.session.add(new_attendance_record)
         db.session.delete(event_invitation)
         db.session.commit()
-        #NOT SURE WHAT'S NEXT!
+        #TODO: NOT SURE WHAT'S NEXT!
         pass
 
     else:
-        #SAYING HES ALREADY IN!
+        #TODO: SAYING HES ALREADY IN!
         pass
 
 @app.route('/decline/event/<int:invitation_id>', methods=['POST'])

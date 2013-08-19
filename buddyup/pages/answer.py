@@ -46,7 +46,7 @@ def create_answer(question_id):
 @app.route('/forum/answer/edit/<int:answer_id>', methods = ['GET', 'POST'])
 @login_required
 def edit_answer(answer_id):
-    answer = Answer.query.filter_by(id==answer_id, user_id==g.user.id).first_or_404()
+    answer = Answer.query.filter_by(id=answer_id, user_id=g.user.id).first_or_404()
 
     if request.method == 'GET':
         return render_template('edit_answer.html', answer=answer,
@@ -73,7 +73,7 @@ def edit_answer(answer_id):
 
 @app.route('/forum/answer/remove/<int:answer_id>', methods=['GET', 'POST'])
 def remove_answer(answer_id):
-    answer = Answer.query.filter_by(id==answer_id, user_id==g.user.id).first_or_404()
+    answer = Answer.query.filter_by(id=answer_id, user_id=g.user.id).first_or_404()
     answer.delete()
     #TODO: delete its votes
     db.session.commit()
