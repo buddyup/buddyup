@@ -17,7 +17,7 @@ def invite_list():
 @app.route("/invite/send/<user_name>")
 @login_required
 def invite_send(user_name):
-    other_user_record = User.query.filter(user_name=user_name).first_or_404()
+    other_user_record = User.query.filter(user_name==user_name).first_or_404()
     invite_record = BuddyInvitation(sender_id=g.user_record.id,
                                receiver_id=other_user_record.id)
     db.session.add(invite_record)
@@ -30,8 +30,8 @@ def invite_send(user_name):
 @app.route("/invite/deny/<user_name>")
 @login_required
 def invite_deny(user_name):
-    other_user_record = User.query.filter(user_name=user_name).first_or_404()
-    invite_record = BuddyInvitation.query.filter(receiver_id=other_user_record.id).first_or_404()
+    other_user_record = User.query.filter(user_name==user_name).first_or_404()
+    invite_record = BuddyInvitation.query.filter(receiver_id==other_user_record.id).first_or_404()
     invite_record.delete()
     db.session.commit()
     flash("Ignored invitation from " + user_name)
@@ -42,8 +42,8 @@ def invite_deny(user_name):
 @app.route("/invite/accept/<user_name>")
 @login_required
 def invite_accept(user_name):
-    other_user_record = User.query.filter(user_name=user_name).first_or_404()
-    invite_record = BuddyInvitation.query.filter(receiver_id=other_user_record.id).first_or_404()
+    other_user_record = User.query.filter(user_name==user_name).first_or_404()
+    invite_record = BuddyInvitation.query.filter(receiver_id==other_user_record.id).first_or_404()
     invite_record.delete()
     # Us -> Them record
     buddy1_record = Buddy(user1_id=g.user.id, user2_id=other_user_record.id)
