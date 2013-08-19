@@ -7,11 +7,14 @@ from buddyup.database import Question, Answer, Vote, db
 from buddyup.templating import render_template
 from buddyup.util import args_get, login_required, form_get, check_empty
 
-@app.route('/forum')
-def view_all_question():
+@app.route('/forum/', defaults:{'page': 1})
+@app.route('/forum/page/<int:page>')
+def view_all_question(page):
+    pagination = Question.query.order_by(Question.order_by(Question.time)
+            .paginate(page, per_page=20, error_out=True)
     # TODO: display about 10 questions per page in chronological order.
     # Use pagination?
-    pass
+    return render_template('view_questions.html', pagination=pagination)
 
 
 @app.route('/forum/<int:question_id>')

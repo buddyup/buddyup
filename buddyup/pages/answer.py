@@ -1,4 +1,4 @@
-from flask import g, request, flash, redirect, url_for, session, abort
+from flask import g, request, flash, redirect, url_for, session, abort, get_flashed_message
 from datetime import datetime
 import time
 
@@ -10,7 +10,7 @@ from buddyup.util import args_get, login_required, form_get, check_empty
 
 def view_all_answer(question_id):
     question = Question.query.get_or_404(question_id)
-    return question.answer.all()
+    return question.answers.all()
 
 
 @app.route('/forum/answer/<int:answer_id>')
@@ -19,7 +19,7 @@ def view_answer(answer_id):
     return render_template('view_answer.html', answer=answer)
 
 
-@app.route('/forum/answer_question/<int:question_id>', methods = ['GET', 'POST'])
+@app.route('/forum/<int:question_id>/answer/', methods = ['GET', 'POST'])
 @login_required
 def create_answer(question_id):
     if request.method == 'GET':
