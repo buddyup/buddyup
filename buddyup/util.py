@@ -96,8 +96,13 @@ def checked_regexp(regexp, value, label):
         return match
     
 
-
 def events_to_json(events):
+    """
+    Convert a list/iterable of events records to a list that can be converted
+    to json to work with the fullcalendar widget. In the template, use::
+    
+        events: {{ events|tojson|safe }}
+    """
     json = []
     for event in events:
         date = event.date.strftime("%Y-%m-%d %H:%M")
