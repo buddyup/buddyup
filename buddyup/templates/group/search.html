@@ -12,7 +12,8 @@ $(function() {
 });
 </script>
 <style type="text/css">
-	.span5	{width: 390px;}
+.span4	{width: 300px;}
+.span5	{width: 390px;}
 </style>
 
 {% endblock %}  
@@ -22,7 +23,7 @@ $(function() {
 
 	<div class="well span5">
 		<h4> Please fill in the information below: </h4>
-		<form action="{{ url_for('/event/search') }}" method="POST">
+		<form action="{{ url_for('event_search') }}" method="POST">
 		<label for="course"> Course </label>  
 		<select style="width: 80px" name="course">
 			{% for course_record in courses %}
@@ -37,9 +38,8 @@ $(function() {
 				{% endif %}
 			{% endfor %}
 		</select> 
-		<label> Date
+		<label for="datepicker"> Date</label>
 			<input id="datepicker" type="text" class="span3" placeholder="mm/dd/yyyy" name="date" value="{{ date }}">
-		</label>
 		<label>Starting time:</label>
 		<label id="starttime" style="margin-left:10px;">
 			<input type="radio" name="start_time" id="am" value="am" style="margin-top:-5px;"> AM

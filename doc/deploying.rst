@@ -54,7 +54,8 @@ To find it, run::
 
     $ heroku config | grep HEROKU_POSTGRESQL
 
-If multiple variables are present, just pick one. Then run::
+If multiple variables are present, you accidentally added multiple databases.
+Then run::
 
     $ heroku pg:promote HEROKU_POSTGRESQL_BLUE_URL
 

@@ -9,6 +9,7 @@ from buddyup.app import app
 from buddyup.database import Event, Course, EventMembership, db
 from buddyup.templating import render_template
 from buddyup.util import args_get, login_required, form_get, check_empty
+from buddyup.calendar import events_to_json
 
 TIME_REGEXP = re.compile(r"""
     (?P<hour>\d\d?)     # hour
@@ -58,6 +59,7 @@ def event_view_all():
     return render_template('event_view_all.html', events=events)
 
 @app.route('/event/view/<int:event_id>')
+@login_required
 def event_view(event_id):
     event_record = Event.query.get_or_404(event_id)
     is_owner = event_record.owner_id  == g.user.id
@@ -70,11 +72,13 @@ def event_view(event_id):
 
 
 @app.route('/event/search')
+@login_required
 def event_search():
     return render_template('group/search.html')
 
 
 @app.route('/event/search_results')
+@login_required
 def event_search_results():
     """
     Gives event_search_results.html a Pagination (see Flask-SQLAlchemy) of
@@ -106,7 +110,7 @@ def event_search_results():
         # Month/Day/Year Hour:Minute
         'timestamp': event.time.strftime("%m/%d/%Y %I:%M %p"),
         'people_count': event.users.count(),
-        'view': url_for('group_view', group_id=event_id),
+        'view': url_for('event_view', group_id=event_id),
         'attending': EventMembership.query.filter_by(user_id=g.user.id,
                      event_id=event.id).count > 0,
         'attend_link': url_for('event_attend', event_id=event_id),
