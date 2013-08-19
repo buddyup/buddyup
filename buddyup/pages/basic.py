@@ -25,3 +25,9 @@ def home():
 @login_required
 def help():
     return render_template('help.html')
+
+
+@app.route('/suggestions')
+@login_required
+def suggestions():
+    return render_template('setup/suggestions.html')

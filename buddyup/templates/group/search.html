@@ -26,14 +26,16 @@ $(function() {
 		<form action="{{ url_for('event_search') }}" method="POST">
 		<label for="course"> Course </label>  
 		<select style="width: 80px" name="course">
+			{#- -1 indicates include all #}
+			<option value="-1">All</option>
 			{% for course_record in courses %}
 				{% if selected(course_record) %}
-					<option value="subject_record.id" selected>
-						{{ subject_record.name }}
+					<option value="course_record.id" selected>
+						{{ course_record.name }}
 					</option>
 				{% else %}
-					<option value="subject_record.id">
-						{{ subject_record.name }}
+					<option value="course_record.id">
+						{{ course_record.name }}
 					</option>
 				{% endif %}
 			{% endfor %}

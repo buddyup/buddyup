@@ -19,43 +19,34 @@ def admin_required(f):
 @app.route("/admin")
 @admin_required
 def admin_dashboard():
-    return render_template('dashboard.html')
+    return render_template('admin/dashboard.html')
 
 
 @app.route("/admin/course/add", methods=['POST', 'GET'])
 @admin_required
 def admin_add_course():
- 
-    if request.method == 'POST':
-        get_int = partial(form_get, convert=int)
-        # TODO: Change to include
-        crn = get_int('crn')
-        name = form_get('name')
-        check_empty(name, "Course Name")
-        subject = get_int('subject')
-        number = get_int('number')
-        course = Course(crn=crn,
-                        name=name,
-                        subject=subject,
-                        number=number)
+    name = form_get('name')
+    check_empty(name, "Course Name")
+    professor = form_get('professor')
+    check_empty(professor, "Professor Name")
+    if not get_flash_messages():
+        course = Course(name=name, professor=professor)
         db.session.add(course)
         db.session.commit()
         flash("Added Course " + name)
-    return render_template('add_course.html')
+    return render_template('admin/dashboard.html')
 
 
 @app.route("/admin/course/delete", methods=['POST', 'GET'])
 @admin_required
 def admin_delete_course():
-    if request.method == 'POST':
-        course_id = form_get('course_id', convert=int)
-        course_record = Course.query.filter(Course.id == course_id).delete()
-        db.session.commit()
-        flash('Course deleted')
-        return render_template('course_delete.html')
-    else:
-        return render_template('course_delete.html')
-                           
+    course_ids = map(int, request.form.getlist('courselist'))
+    for course_id in course_ids:
+        Course.query.filter_by(id=course_id).delete()
+    db.session.commit()
+    flash('Course deleted')
+    return render_template('.html')
+
 
 
 @app.route("/admin/users")

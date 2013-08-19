@@ -1,36 +1,38 @@
 {% extends "admin/adminlayout.html" %}
   
 {% block content %}
-    <br>
-    <div class="well span2" style="width: 320px">
-		<h3>Current Website Statistic</h3>
-		<p>Number of total visits: {{ total_visits }}</p>
-		<p>Number of unique visitors: {{ unique_visits }}</p>
-		<p>Number of groups: {{ group_count }}</p>
-		<p>Number of invites sent: {{ total_invites }}</p>
-		<p>Number of registered users: {{ total_users }}</p>
-    </div>
-    
-    <div class="well span3">
-		<h3>Enter a new course</h3>
-		<form>
-			Course name: <input type="text" name="newcoursename"></input><br>
-			By Professor: <input type="text" name="newcourseprof"></input><br>
-			<input type="submit" value="Add this new course"></input>
-		</form> 
-	</div>
+<br>
+{% for flashed in get_flashed_messages() %}
+	<div>{{ }}</div>
+{% endfor %}
+<div class="well span2" style="width: 320px">
+	<h3>Current Website Statistic</h3>
+	<p>Number of total visits: {{ total_visits }}</p>
+	<p>Number of unique visitors: {{ unique_visits }}</p>
+	<p>Number of groups: {{ group_count }}</p>
+	<p>Number of invites sent: {{ total_invites }}</p>
+	<p>Number of registered users: {{ total_users }}</p>
+</div>
 	
-	<div class="well span4">
-		<h3>Current user list courses</h3>
-		<form>
-			<select size=15 width="320" style="width: 320px" name="listcourse" multiple>
-				<option value="course1">Course1</option>
-				<option value="course2">Course2</option>
-				<option value="course3">Course3</option>
-				<option value="course4">Course4</option>
-			</select>
-			<br><input type="submit" value="Remove courses"> 
-		</form>
-	</div>                       
+<div class="well span3">
+	<h3>Enter a new course</h3>
+	<form action="{{ url_for('admin_add_course') }}" method="POST">
+		Course name: <input type="text" name="newcoursename"></input><br>
+		By Professor: <input type="text" name="newcourseprof"></input><br>
+		<input type="submit" value="Add this new course"></input>
+	</form> 
+</div>
+
+<div class="well span4">
+	<h3>Current user list courses</h3>
+	<form action="{{ url_for('admin_delete_course') }}" method="POST">
+		<select size=15 width="320" style="width: 320px" name="listcourse" multiple>
+			{% for course in courses %}
+			<option value="{{ course.id }}">{{ course.name }}</option>
+			{% endfor %}
+		</select>
+		<br><input type="submit" value="Remove courses"> 
+	</form>
+</div>                       
 
 {% endblock %}

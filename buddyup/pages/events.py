@@ -95,8 +95,8 @@ def event_search_results():
     course = get_int('course')
     # -1 indicates no course selected, so don't filter
     if course >= 0:
-        query = query.filter(Event.course == course)
-    
+        query = query.filter_by(course=course)
+
     page = args_get('page', convert=int, default=0)
     if page < 0:
         page = 0
@@ -104,6 +104,9 @@ def event_search_results():
         page = page - 1
         query = query.filter(start < Event.start).filter(end > Event.end)
     
+    events = [event for event in query.all()
+              if event.time.hour]
+
     {
         'name': event.name,
         # TODO: strftime

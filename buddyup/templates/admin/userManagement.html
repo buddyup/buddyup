@@ -1,5 +1,5 @@
 {% extends "admin/adminlayout.html" %}
- 
+
 {% block extrahead %}
 	<script type="text/javascript">
 		function toggle(source) {
@@ -13,7 +13,7 @@
 	<script src="{{ js('prettify') }}"></script>
 	<script src="{{ js('docs') }}"></script>
 	<script src="{{ js('jquery.tablesorter') }}"></script>
-    <script src="{{ js('jquery.tablesorter.widgets') }}"></script>
+	<script src="{{ js('jquery.tablesorter.widgets') }}"></script>
 	<script src="{{ js('jquery.tablesorter.pager') }}"></script>
 	
 	<script id="js">$(function() {
@@ -80,89 +80,68 @@
 	});</script>
 	
 {% endblock %}  
- 
-  
+
+	
 {% block content %}
-    <br>                            
-    <div class="span12">
-        <div class="box">
-                <h5>List of current users</h5>
-                <button type="button" class="reset btn btn-primary" data-column="0" data-filter=""><i class="icon-white icon-refresh"></i> Reset filters</button>
-                <br><br>
-            <form>
-                <table class="table table-bordered responsive">
-                    <thead>
-                        <tr>
-                            <th class="filter-false remove sorter-false">#</th>
-                            <th class="filter-false remove sorter-false">Select</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Username</th>
-                            <th class="filter-select filter-exact" data-placeholder="Pick a gender">Gender</th>
-                            <th class="filter-false remove sorter-false">Action</th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-						<tr>
-							<th colspan="7" class="pager form-horizontal">
-								<button type="button" class="btn first"><i class="icon-step-backward"></i></button>
-								<button type="button" class="btn prev"><i class="icon-arrow-left"></i></button>
-								<span class="pagedisplay"></span> <!-- this can be any element, including an input -->
-								<button type="button" class="btn next"><i class="icon-arrow-right"></i></button>
-								<button type="button" class="btn last"><i class="icon-step-forward"></i></button>
-								<select class="pagesize input-mini" title="Select page size">
-									<option selected="selected" value="10">10</option>
-									<option value="20">20</option>
-									<option value="30">30</option>
-									<option value="40">40</option>
-								</select>
-							</th>
-						</tr>
-					</tfoot>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td><input type="checkbox" name="foo"></td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            <td>Male</td>
-                            <td>
-                                <button class="btn edit"><i class="icon-edit"></i></button>
-                                <button class="btn btn-danger remove" data-toggle="confirmation"><i class="icon-remove"></i></button>     
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td><input type="checkbox" name="foo"></td>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                            <td>Male</td>
-                            <td>
-                                <button class="btn edit"><i class="icon-edit"></i></button>
-                                <button class="btn btn-danger remove" data-toggle="confirmation"><i class="icon-remove"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td><input type="checkbox" name="foo"></td>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                            <td>Female</td>
-                            <td>
-                                <button class="btn edit"><i class="icon-edit"></i></button>
-                                <button class="btn btn-danger remove" data-toggle="confirmation"><i class="icon-remove"></i></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <input type="checkbox" onClick="toggle(this)"/> Select/Unselect All <br>
-                <br>
-                <textarea rows="10" cols="100" name="comment" form="usrform" style="width:600px;"></textarea>
-				<br><input type="submit" value="Email an announcement to selected users">        
-            </form>
-        </div>
-    </div>
+<br>
+<div class="span12">
+	<div class="box">
+		<h5>List of current users</h5>
+		<button type="button" class="reset btn btn-primary" data-column="0" data-filter=""><i class="icon-white icon-refresh"></i> Reset filters</button>
+		<br><br>
+		<form>
+			<table class="table table-bordered responsive">
+				<thead>
+					<tr>
+						<th class="filter-false remove sorter-false">#</th>
+						<th class="filter-false remove sorter-false">Select</th>
+						<th>First Name</th>
+						<th>Last Name</th>
+						<th>Username</th>
+						<th class="filter-select filter-exact" data-placeholder="Pick a gender">Gender</th>
+						<th class="filter-false remove sorter-false">Action</th>
+					</tr>
+				</thead>
+				<tfoot>
+					<tr>
+						<th colspan="7" class="pager form-horizontal">
+							<button type="button" class="btn first"><i class="icon-step-backward"></i></button>
+							<button type="button" class="btn prev"><i class="icon-arrow-left"></i></button>
+							<span class="pagedisplay"></span> <!-- this can be any element, including an input -->
+							<button type="button" class="btn next"><i class="icon-arrow-right"></i></button>
+							<button type="button" class="btn last"><i class="icon-step-forward"></i></button>
+							<select class="pagesize input-mini" title="Select page size">
+								<option selected="selected" value="10">10</option>
+								<option value="20">20</option>
+								<option value="30">30</option>
+								<option value="40">40</option>
+							</select>
+						</th>
+					</tr>
+				</tfoot>
+				<tbody>
+					{% for user in users %}
+					<tr>
+						<td>{{ user.id }}</td>
+						<td><input type="checkbox" name="foo"></td>
+						<td>Mark</td>
+						<td>Otto</td>
+						<td>@{{ user.full_name</td>
+						<td>Male</td>
+						<td>
+							<button class="btn edit"><i class="icon-edit"></i></button>
+							<button class="btn btn-danger remove" data-toggle="confirmation"><i class="icon-remove"></i></button>     
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<input type="checkbox" onClick="toggle(this)"/> Select/Unselect All <br>
+			<br>
+			<textarea rows="10" cols="100" name="comment" form="usrform" style="width:600px;"></textarea>
+			<br>
+			<input type="submit" value="Email an announcement to selected users">        
+		</form>
+	</div>
+</div>
 {% endblock %}
