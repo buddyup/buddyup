@@ -188,6 +188,7 @@ class Answer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
+    title = db.Column(db.UnicodeText)
     text = db.Column(db.UnicodeText)
     time = db.Column(db.DateTime)
     votes = db.relationship("Vote", backref="Answer", lazy='dynamic')
