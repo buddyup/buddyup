@@ -49,7 +49,7 @@ def create_question():
 @app.route('/forum/edit/<int:question_id>', methods=['POST', 'GET'])
 @login_required
 def edit_quesion(question_id):
-    question = Question.query.filter_by(id==question_id, user_id==g.user.id).first_or_404()
+    question = Question.query.filter_by(id=question_id, user_id=g.user.id).first_or_404()
     
     if request.method == 'GET':
         return render_template('edit_question.html', question=question,
@@ -67,7 +67,7 @@ def edit_quesion(question_id):
         
         question.title = title
         question.text = text
-        quesiton.time = time
+        question.time = time
         db.session.update(question)
         db.sesion.commit()
 
@@ -77,7 +77,7 @@ def edit_quesion(question_id):
 @app.route('/forum/remove/<int:question_id>', methods=['POST'])
 @login_required
 def remove_question(question_id):
-    question = Question.query.filter_by(id==question_id, user_id==g.user.id).first_or_404()
+    question = Question.query.filter_by(id=question_id, user_id=g.user.id).first_or_404()
     question.delete()
         #TODO: delete its answers
     db.session.commit()
