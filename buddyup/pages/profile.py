@@ -5,7 +5,8 @@ from flask import (request, session, flash, g, redirect, url_for, abort,
 
 
 from buddyup.app import app
-from buddyup.database import User, Availability, Location, Course, db
+from buddyup.database import (User, Availability, Location, Course,
+                              CourseMembership, db)
 from buddyup.util import form_get, login_required, check_empty
 from buddyup.templating import render_template
 
@@ -88,6 +89,12 @@ def profile_create():
                                       time=time)
                 db.add(record)
         db.session.commit()
+        
+        for course_id in request.form.getlist('course'):
+            mem = CourseMembership(course_id=course_id, user_id=g.user.id)
+            db.session.add(mem)
+            
+        
         return redirect(url_for('welcome'))
 
 
@@ -95,22 +102,31 @@ def profile_create():
 # @login_required
 # def photo_create():
 #    pass
-    
+ 
+
+
 
 @app.route('/user/profile', methods=['POST', 'GET'])
 @login_required
 def profile_edit():
+    user = g.user
     if request.method == 'GET':
+        def selected(record):
+            if isinstance(record, Location):
+                return user.location_id == record.id
+            elif isinstance(record, Course):
+                return user.courses.filter_by(id=record.id) is not None
+            else:
+                raise TypeError
         locations = Location.query.all()
         courses = Course.query.all()
         return render_template('my/edit_profile.html',
                                day_names=day_name,
                                locations=locations,
                                courses=courses,
-                               selected=lambda record: user.record,
+                               selected=selected,
                                )
     else:
-        user = g.user
         name = form_get('name')
         course = form_get('course', convert=int)
         check_empty(name, "Full Name")
