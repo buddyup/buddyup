@@ -33,7 +33,7 @@
 			<input type="text" class="span2" placeholder="Your Full Name" value="{{ user_record.full_name }}" name="name"></input> 
 			
 			<label> Your Course <color> (*Required) </color></label>
-				<select size=10 style="width: 80px" name="course" multiple>
+				<select size=10 style="width: 180px" name="course" multiple>
 					{% for course_record in courses %}
 						{% if selected(course_record) %}
 							<option value="{{ course_record.id }}" selected>
@@ -72,17 +72,15 @@
 			</div>
 			{% endfor %}
 
-			<h4> Please share something about you</h4> 	
 			<label style="margin-top:20px;">Your Facebook 
-				<input type="text" class="span3" placeholder="http://facebook.com/yourfacebook" style="margin-left:15px;" value="{{ facebook }}" name="facebook">
+				<input type="text" class="span3" placeholder="http://facebook.com/yourfacebook" style="margin-left:15px;" value="{{ facebook }}" name="facebook"></input>
 			</label>
 			<label style="margin-top:20px;">Your Twitter
-				<input type="text" class="span3" placeholder="http://twitter.com/yourtwitter" style="margin-left:15px;" value="{{ twitter }}" name="twitter">
+				<input type="text" class="span3" placeholder="http://twitter.com/yourtwitter" style="margin-left:15px;" value="{{ twitter }}" name="twitter"></input>
 			</label>
 			<label> A Few Words About You </label>
 			<textarea type="text" style="height: 150px;width: 450px;" value="{{ bio }}" name="bio"> </textarea>
 			<input class="btn btn-large btn-primary" style="margin-left:400px;margin-top: 20px;" type="submit" value="save"></input>
-		</div>
 	</form>
 </div>
 	
