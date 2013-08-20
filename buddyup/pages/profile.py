@@ -133,6 +133,7 @@ def profile_edit():
         locations = Location.query.all()
         courses = Course.query.all()
         return render_template('my/edit_profile.html',
+                                user_record=user,
                                day_names=day_name,
                                locations=locations,
                                courses=courses,
