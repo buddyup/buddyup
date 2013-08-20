@@ -23,7 +23,7 @@ $(function() {
 
 	<div class="well span5">
 		<h4> Please fill in the information below: </h4>
-		<form action="{{ url_for('event_search') }}" method="POST">
+		<form action="{{ url_for('event_search_results') }}">
 		<label for="course"> Course </label>  
 		<select style="width: 80px" name="course">
 			{#- -1 indicates include all #}
@@ -52,7 +52,7 @@ $(function() {
 		<label>
 			<input type="radio" name="start_time" id="whynotboth" value="whynotboth" style="margin-top:-5px;"> All day
 		</label>
-		<a id ="btn-search" style="margin-top:20px;margin-left:270px;" class="btn btn-large btn-warning" >Search</a>
+		<input type="submit" value="Search" id ="btn-search" style="margin-top:20px;margin-left:270px;" class="btn btn-large btn-warning" >
 		</form>
 	</div>
 {% endblock content %}

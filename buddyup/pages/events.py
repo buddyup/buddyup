@@ -90,7 +90,7 @@ def event_search_results():
     get_int = partial(args_get, type=int)
     # TODO: Addition ordering?
     query = Event.query
-    query = query.order_by(Event.time)
+    query = query.order_by(Event.start)
 
     course = get_int('course')
     # -1 indicates no course selected, so don't filter
@@ -103,6 +103,7 @@ def event_search_results():
     else:
         page = page - 1
         query = query.filter(start < Event.start).filter(end > Event.end)
+    
     
     events = [event for event in query.all()
               if event.time.hour]
