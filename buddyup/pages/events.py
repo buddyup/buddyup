@@ -129,7 +129,7 @@ def event_search_results():
 def create_event():
     if request.method == 'GET':
         # TODO: pass out the user's course to set it as default
-        return render_template('create_event.html', has_errors=False)
+        return render_template('group/create.html', has_errors=False)
     else:
         user = g.user
         name = form_get('name')
