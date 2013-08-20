@@ -1,7 +1,9 @@
 {% extends "layout.html" %}
 {% block title %}Create Group{% endblock %}
 {% block extrahead %}
+<link href="{{ css('jquery-ui') }}" rel="stylesheet">
 <script src="{{ js('jquery-ui') }}"></script>
+
 <script>
 
 $(function() {
@@ -81,14 +83,6 @@ $(function() {
 			<input class="btn btn-large btn-danger" type="submit" value="save">
 		</div>
 	</form>
-	<script>
-	$(function() {
-		$( "#datepicker" ).datepicker({
-			changeMonth: true,
-			changeYear: true
-		});
-	});
-	</script>
 </div>
 
 {% endblock content %}
