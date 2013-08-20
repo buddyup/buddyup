@@ -59,8 +59,8 @@ class User(db.Model):
     courses = db.relationship('Course', secondary=CourseMembership,
                               lazy='dynamic')
     #email = db.Column(db.UnicodeText)
-    #events = db.relationship('Event', secondary=EventMembership,
-                             lazy='dynamic')
+    events = db.relationship('Event', secondary=EventMembership,
+                             #lazy='dynamic')
     #buddies = db.relationship('User', secondary=Buddy, lazy='dynamic',
     #                          foreign_keys='buddy.user1_id')
     tiny_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
@@ -167,7 +167,7 @@ class BuddyInvitation(db.Model):
 
 class EventInvitation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    sender_id = db.Column(db.Integer, db.ForeignKey('eventmembership.user_id'))
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     event_id = db.Column(db.Integer, db.ForeignKey('event.id'))
     rejected = db.Column(db.Boolean, default=False)
