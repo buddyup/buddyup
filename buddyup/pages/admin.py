@@ -4,7 +4,8 @@ from flask import (g, abort, get_flashed_messages, request, flash, redirect,
 from sqlalchemy.sql import functions
 
 from buddyup.app import app
-from buddyup.database import Course, Visit, Event, User, BuddyInvitation, db
+from buddyup.database import (Course, Visit, Event, User, BuddyInvitation,
+                              Location, db)
 from buddyup.templating import render_template
 from buddyup.util import form_get, check_empty
 from functools import partial, wraps

@@ -29,7 +29,7 @@ def profile_create():
         check_empty(name, "Full Name")
         location = form_get('location', convert=int)
         if Location.query.get(location) is None:
-            app.logger.info("Invalid availabiliity %s", availability)
+            app.logger.info("Invalid location %s", location)
             abort(400)
         bio = form_get('bio')
         facebook = form_get('facebook')
@@ -116,7 +116,7 @@ def profile_edit():
         check_empty(name, "Full Name")
         location = form_get('location', convert=int)
         if Location.query.get(location) is None:
-            app.logger.info("Invalid availabiliity %s", availability)
+            app.logger.info("Invalid location %s", location)
             abort(400)
         bio = form_get('bio')
         facebook = form_get('facebook')

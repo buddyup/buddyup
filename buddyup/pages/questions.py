@@ -1,4 +1,5 @@
-from flask import g, request, flash, redirect, url_for, session, abort
+from flask import (g, request, flash, redirect, url_for, session, abort,
+                   get_flashed_messages)
 from datetime import datetime
 import time
 
@@ -40,15 +41,14 @@ def post_question():
         check_empty(text, "Content")
         time = datetime.now()
 
-        if get_flashed_message():
+        if get_flashed_messages():
             return render_template('post_question.html', has_errors=True)
         
         new_question_record = Question(user_id=user.id, title=title,
                                 text=text, time=time)
         db.session.add(new_question_record)
         db.session.commit()
-        #TODO: refer to event_create
-        #question_id = Question.query.filter_
+        question_id = new_question_record.id
         return redirect(url_for('view_question', question_id=question_id))
 
 @app.route('/forum/edit/<int:question_id>', methods=['POST', 'GET'])
@@ -66,7 +66,7 @@ def edit_quesion(question_id):
         check_empty(text, "Text")
         time = datetime.now()
         
-        if get_flashed_message():
+        if get_flashed_messages():
             return render_template('edit_quesion.html', question=question,
                     has_errors=True)
         
