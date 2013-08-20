@@ -1,4 +1,4 @@
-from flask import g, request, flash, redirect, url_for, session, abort, get_flashed_message
+from flask import g, request, flash, redirect, url_for, session, abort, get_flashed_messages
 from datetime import datetime
 import time
 
@@ -32,7 +32,7 @@ def create_answer(question_id):
         check_empty(text, "Text")
         time = datetime.now()
 
-        if get_flashed_message():
+        if get_flashed_messages():
             return render_template('post_answer.html', has_errors=True)
 
         new_answer_record = Answer(user_id=user.id, question_id=question_id,
@@ -58,7 +58,7 @@ def edit_answer(answer_id):
         check_empty(text, "Text")
         time = datetime.now()
 
-        if get_flashed_message():
+        if get_flashed_messages():
             return render_template('edit_answer.html', answer=answer,
                     has_errors=True)
 

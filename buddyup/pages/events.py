@@ -9,7 +9,7 @@ from buddyup.app import app
 from buddyup.database import Event, Course, EventMembership, db
 from buddyup.templating import render_template
 from buddyup.util import (args_get, login_required, form_get, check_empty,
-                          events_to_json)
+                          events_to_json, checked_regexp)
 
 TIME_REGEXP = re.compile(r"""
     (?P<hour>\d\d?)     # hour
@@ -24,7 +24,7 @@ DATE_REGEXP = re.compile(r"""
 
 
 def parse_date(date, label):
-    match = checked_match(DATE_REGEXP, date, label)
+    match = checked_regexp(DATE_REGEXP, date, label)
     if match:
         year = int(match.group('year')) + 2000
         month = int(match.group('month'))
@@ -35,7 +35,7 @@ def parse_date(date, label):
 
 
 def parse_time(time_string, ampm, base, label):
-    match = checked_match(TIME_REGEXP, time_string, label)
+    match = checked_regexp(TIME_REGEXP, time_string, label)
     if match:
         hour = int(match.group('hour'))
         minute = int(match.group('minute')) or 0
@@ -87,7 +87,7 @@ def event_search_results():
     Should this be GET?
     """
 
-    get_int = partial(args_get, type=int)
+    get_int = partial(args_get, convert=int)
     # TODO: Addition ordering?
     query = Event.query
     query = query.order_by(Event.start)
@@ -114,11 +114,11 @@ def event_search_results():
         # Month/Day/Year Hour:Minute
         'timestamp': event.time.strftime("%m/%d/%Y %I:%M %p"),
         'people_count': event.users.count(),
-        'view': url_for('event_view', group_id=event_id),
+        'view': url_for('event_view', group_id=event.id),
         'attending': EventMembership.query.filter_by(user_id=g.user.id,
                      event_id=event.id).count > 0,
-        'attend_link': url_for('event_attend', event_id=event_id),
-        'leave_link': url_for('event_leave', event_id=event_id),
+        'attend_link': url_for('event_attend', event_id=event.id),
+        'leave_link': url_for('event_leave', event_id=event.id),
     }
 
     return render_template('group/search_results.html',

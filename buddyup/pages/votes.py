@@ -1,4 +1,4 @@
-from flask import g, request, flash, redirect, url_for, session, abort, get_flashed_message
+from flask import g, request, flash, redirect, url_for, session, abort, get_flashed_messages
 
 # from datetime import datetime
 # import time

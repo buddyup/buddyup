@@ -1,4 +1,5 @@
-from flask import g, request, redirect, url_for, session, abort
+from flask import (g, request, redirect, url_for, session, abort,
+                   get_flashed_messages)
 from datetime import datetime
 import time
 
@@ -23,7 +24,7 @@ def post_comment(event_id):
         time = datetime.now()
 
     # TODO: flashed_message()
-        if get_flashed_message():
+        if get_flashed_messages():
             return render_template('create_comment.html', has_errors=True)
 
         new_comment_record = EventComment(event_id=event_id, user_id=user.id,
