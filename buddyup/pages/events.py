@@ -12,8 +12,8 @@ from buddyup.util import (args_get, login_required, form_get, check_empty,
                           events_to_json, checked_regexp)
 
 TIME_REGEXP = re.compile(r"""
-    (?P<hour>\d\d?)     # hour
-    (?P<minute>:\d\d?)  # minute (optional)
+    (?P<hour>\d\d?)       # hour
+    (:(?P<minute>\d\d))?  # minute (optional)
 """, flags=re.VERBOSE)
 DATE_REGEXP = re.compile(r"""
     (?P<month>\d{1,2})[-/]  # month
@@ -131,17 +131,18 @@ def event_create():
         # TODO: pass out the user's course to set it as default
         return render_template('group/create.html',
                                courses=g.user.courses.all(),
-                               has_errors=False)
+                               has_errors=False,
+                               selected=lambda record: False)
     else:
         user = g.user
         name = form_get('name')
         check_empty(name, "Event Name")
         course_id = form_get('course', convert=int)
-        location = form_get('location', convert=int)
+        location = form_get('location')
         check_empty(location, "Location")
         note = form_get('note')
         # Date
-        date = parse_date(form_get('date'))
+        date = parse_date(form_get('date'), "Date")
 
         # Start Time
         start = parse_time(form_get('start'), form_get('start_ampm'),
@@ -151,14 +152,27 @@ def event_create():
         
 
         if get_flashed_messages():
-            return render_template('group/create.html', has_errors=True)
-
+            def selected(record):
+                assert isinstance(record, Course)
+                return record.id == course_id
+            return render_template('group/create.html',
+                                   courses=g.user.courses.all(),
+                                   has_errors=True,
+                                   selected=selected,
+                                   name=name,
+                                   location=location,
+                                   note=note,
+                                   date=form_get('date'),
+                                   start=form_get('start'),
+                                   start_ampm=form_get('start_ampm'),
+                                   end=form_get('end'),
+                                   end_ampm=form_get('end_ampm'))
         # Check that the user is in this course
         if user.courses.filter_by(course_id=course_id).count() == 0:
             abort(403)
         # Again, user_id instead of owner_id
         new_event_record = Event(user_id=user.id, course_id=course_id,
-                name=name, location_id=location, start=start, end=end,
+                name=name, location=location, start=start, end=end,
                 note=note)
         db.session.add(new_event_record)
         db.session.commit()

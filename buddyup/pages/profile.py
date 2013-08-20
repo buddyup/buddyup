@@ -55,7 +55,8 @@ def profile_create():
                                    day_names=day_name,
                                    selected=selected,
                                    facebook=facebook,
-                                   twitter=twitter
+                                   twitter=twitter,
+                                   courses=Course.query.all(),
                                    )
 
         user.full_name = name

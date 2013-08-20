@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
+{% from "lib.html" import flashed %}
 {% block title %}Create Group{% endblock %}
-{% block extrahead 
+{% block extrahead %}
 
 <link href="{{ css('jquery-ui') }}" rel="stylesheet">
 <script src="{{ js('jquery-ui') }}"></script>
@@ -22,11 +23,15 @@ $(function() {
 
 <h2 style="text-align:center;"> Create A New Study Group</h2>
 <div class="span3"></div>
+{% for msg in get_flashed_messages() %}
+	{% call flashed() %}
+		{{ msg }}
+	{% endcall %}
+{% endfor %}
 
 <div class="well span6">
-	
 	<h4> Please fill in the information below: </h4>
-	<form action="{{ url_for('create_event') }}" method="POST">
+	<form action="{{ url_for('event_create') }}" method="POST">
 		<label> Group Name </label>  
 		<input type="text" class="span3" placeholder="..." name="name"
 				value="{{ name }}">  
@@ -39,7 +44,8 @@ $(function() {
 		<input type="text" class="span3" id="datepicker" placeholder="mm/dd/yyyy" name="date" value="{{ date }}">
 
 		<label> Time </label>
-		<input type="text" class="span1" placeholder="From" name="start">
+		<input type="text" class="span1" placeholder="From" value="{{ start }}" 
+			name="start">
 		<select style="width:80px" name="start_ampm">
 			{% if start_ampm == 'am' %}
 				<option>AM</option>
@@ -50,7 +56,8 @@ $(function() {
 			{% endif %}
 		</select>
 
-		<input type="text" class="span1" placeholder="To" name="end">
+		<input type="text" class="span1" placeholder="To" name="end"
+			value="{{ end }}">
 		<select style="width:80px" name="end_ampm">
 			{% if end_ampm == 'am' %}
 				<option>AM</option>
@@ -65,18 +72,19 @@ $(function() {
 		<select style="width: 80px" name="course">
 			{% for course_record in courses %}
 				{% if selected(course_record) %}
-					<option value="subject_record.id" selected>
-						{{ subject_record.name }}
+					<option value="{{ course_record.id }}" selected>
+						{{ course_record.name }}
 					</option>
 				{% else %}
-					<option value="subject_record.id">
-						{{ subject_record.name }}
+					<option value="{{ course_record.id }}">
+						{{ course_record.name }}
 					</option>
 				{% endif %}
 			{% endfor %}
 		</select>
 		<label> Note </label>
-		<input type="text" class="span3" placeholder="...">
+		<input type="text" class="span3" placeholder="..." name="note"
+			value="{{ note }}">
 		<div class="btn-group" style="margin-left:350px;margin-top: 20px;">
 			<input class="btn btn-large btn-danger" type="submit" value="Save">
 		</div>

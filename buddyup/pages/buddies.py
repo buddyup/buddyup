@@ -18,8 +18,8 @@ def buddy_view(user_name):
 @login_required
 def buddy_search():
     # TODO: implement this stuff!
-    #buddies = g.user.buddies.all()
-    return render_template('buddy/buddies.html',
+    buddies = g.user.buddies.all()
+    return render_template('buddy/search.html',
                            buddies=buddies)
 
 
