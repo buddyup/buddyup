@@ -51,8 +51,8 @@ class User(db.Model):
     events = db.relationship('Event', lazy="dynamic",
                              secondary=EventMembership,
                              backref=db.backref('users', lazy="dynamic"))
-    #buddies = db.relationship('User', secondary=Buddy, lazy='joined',
-    #                          join_depth=2, foreign_keys='buddy.user1_id')
+    #buddies = db.relationship('User', secondary=Buddy, lazy='dynamic',
+    #                          foreign_keys='buddy.user1_id')
     tiny_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
     thumbnail_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
     large_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
@@ -157,7 +157,7 @@ class BuddyInvitation(db.Model):
 
 class EventInvitation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    sender_id = db.Column(db.Integer, db.ForeignKey('eventmembership.user_id'))
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     event_id = db.Column(db.Integer, db.ForeignKey('event.id'))
     rejected = db.Column(db.Boolean, default=False)
