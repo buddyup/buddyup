@@ -9,7 +9,7 @@ from buddyup.util import login_required
 @app.route("/invite/view")
 @login_required
 def invite_list():
-    invitations = g.user.invitations.all()
+    invitations = g.user.invitation.all()
     return render_template('invite/list.html',
                            invitations=invitations)
 
