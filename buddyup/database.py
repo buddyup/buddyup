@@ -167,7 +167,7 @@ class BuddyInvitation(db.Model):
 
 class EventInvitation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    sender_id = db.Column(db.Integer, db.ForeignKey('eventmembership.user_id'))
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     event_id = db.Column(db.Integer, db.ForeignKey('event.id'))
     rejected = db.Column(db.Boolean, default=False)
