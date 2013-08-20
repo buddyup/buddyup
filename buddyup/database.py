@@ -60,7 +60,7 @@ class User(db.Model):
                               lazy='dynamic')
     #email = db.Column(db.UnicodeText)
     #events = db.relationship('Event', secondary=EventMembership,
-                             lazy='dynamic')
+                             #lazy='dynamic')
     #buddies = db.relationship('User', secondary=Buddy, lazy='dynamic',
     #                          foreign_keys='buddy.user1_id')
     tiny_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
