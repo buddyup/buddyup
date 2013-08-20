@@ -52,6 +52,8 @@ class User(db.Model):
     user_name = db.Column(db.String(8), index=True, unique=True)
     full_name = db.Column(db.UnicodeText, default=u"")
     bio = db.Column(db.UnicodeText, default=u"")
+    facebook = db.Column(db.UnicodeText, default=u"")
+    twitter = db.Column(db.UnicodeText, default=u"")
     initialized = db.Column(db.Boolean, default=False)
     location = db.Column(db.Integer, db.ForeignKey('location.id'))
     courses = db.relationship('Course', secondary=CourseMembership,
@@ -61,9 +63,9 @@ class User(db.Model):
                              lazy='dynamic')
     #buddies = db.relationship('User', secondary=Buddy, lazy='dynamic',
     #                          foreign_keys='buddy.user1_id')
-    tiny_image = db.Column(db.Integer, db.ForeignKey('photo.id'))
-    thumbnail_image = db.Column(db.Integer, db.ForeignKey('photo.id'))
-    large_image = db.Column(db.Integer, db.ForeignKey('photo.id'))
+    tiny_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
+    thumbnail_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
+    large_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
 
 
 class Photo(db.Model):

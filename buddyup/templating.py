@@ -185,6 +185,7 @@ def render_template(template, **variables):
     variables['user_record'] = g.user
     variables['logged_in'] = g.user is not None
     variables['login_url'] = app.cas_login
+    variables['user_name'] = g.user.full_name
     if g.user is None:
         variables['is_admin'] = None
     else:

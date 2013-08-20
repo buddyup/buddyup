@@ -1,9 +1,13 @@
 {% extends "admin/adminlayout.html" %}
+{% from "lib.html" import flashed %}
   
 {% block content %}
 <br>
-{% for flashed in get_flashed_messages() %}
-	<div>{{ }}</div>
+<h1>Dashboard</h1>
+{% for msg in get_flashed_messages() %}
+	{% call flashed() %}
+		{{ msg }}
+	{% endcall %}
 {% endfor %}
 <div class="well span2" style="width: 320px">
 	<h3>Current Website Statistic</h3>
@@ -17,10 +21,10 @@
 <div class="well span3">
 	<h3>Enter a new course</h3>
 	<form action="{{ url_for('admin_add_course') }}" method="POST">
-		Course name: <input type="text" name="newcoursename"></input><br>
-		By Professor: <input type="text" name="newcourseprof"></input><br>
+		Course name: <input type="text" name="name"></input><br>
+		By Professor: <input type="text" name="instructor"></input><br>
 		<input type="submit" value="Add this new course"></input>
-	</form> 
+	</form>
 </div>
 
 <div class="well span4">
@@ -28,7 +32,7 @@
 	<form action="{{ url_for('admin_delete_course') }}" method="POST">
 		<select size=15 width="320" style="width: 320px" name="listcourse" multiple>
 			{% for course in courses %}
-			<option value="{{ course.id }}">{{ course.name }}</option>
+			<option value="{{ course.id }}">{{ course.name }} by {{ course.instructor }}</option>
 			{% endfor %}
 		</select>
 		<br><input type="submit" value="Remove courses"> 

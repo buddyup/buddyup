@@ -25,34 +25,39 @@ color{color:red;}
 <script>
 $(function() {
 	$('.detail').hide();
-}
-$('.toggle').change(function() {
-	$('#'.concat(this.id).concat('detail')).toggle();
+	$('.toggle').change(function() {
+		$('#'.concat(this.id).concat('detail')).toggle();
+	});
 });
 </script>
 
 </head>
 <body>
-	
 
 <h2 style="text-align:center;"> Welcome to BuddyUp! </h2>
 <div class="container">
+
 <div class="span3"></div>
 	<div class="well span7">  
 		<h4> Please fill in</h4>
+		{% for msg in get_flashed_messages() %}
+			{% call flashed() %}
+				{{ msg }}
+			{% endcall %}
+		{% endfor %}
 		<form action="{{ url_for('profile_create') }}" method="POST">
 			<label> Your Name <color> (*Required) </color> </label>  
-			<input type="text" class="span2" placeholder="Your Full Name" value="{{ user_record.full_name }}">    
+			<input type="text" class="span2" placeholder="Your Full Name" value="{{ user_record.full_name }}" name="name">    
 			<label> Your Course <color> (*Required) </color></label>
 				<select style="width: 80px" name="course">
 					{% for course_record in courses %}
 						{% if selected(course_record) %}
-							<option value="{{ subject_record.id }}" selected>
-								{{ subject_record.name }}
+							<option value="{{ course_record.id }}" selected>
+								{{ course_record.name }} by {{ course_record.instructor }}
 							</option>
 						{% else %}
-							<option value="{{ subject_record.id }}">
-								{{ subject_record.name }}
+							<option value="{{ course_record.id }}">
+								{{ course_record.name }} by {{ course_record.instructor }}
 							</option>
 						{% endif %}
 					{% endfor %}
@@ -60,7 +65,7 @@ $('.toggle').change(function() {
 			
 			<label> Location</label>
 			<select name="location">
-			{% for location in location %}
+			{% for location in locations %}
 				{% if selected(location) %}
 				<option value="{{ location.id }}" selected>
 					{{ location.name }}
@@ -75,11 +80,11 @@ $('.toggle').change(function() {
 			
 			<label> Time for Study Group </label>
 			{% for day in day_names %}
-			<label> <input type="checkbox" class="toggle" id="{{ day|lower }}" style="margin-top:-5px; margin-left:10px;">{{ day }}</label>
+			<label> <input type="checkbox" class="toggle" id="{{ day|lower }}" style="margin-top:-5px; margin-left:10px;" name="{{day|lower}}">{{ day }}</label>
 			<div class="detail" id="{{day|lower}}detail" style="margin-left:30px;">
-				<label> <input type="radio" name="{{day|lower}}time" id="{{day|lower}}-am" value="am"> AM </label>
-				<label> <input type="radio" name="{{day|lower}}time" id="{{day|lower}}-pm" value="pm"> PM </label>
-				<label> <input type="radio" name="{{day|lower}}time" id="{{day|lower}}-all" value="all"> All Day </label>
+				<label> <input type="radio" name="{{day|lower}}" id="{{day|lower}}-am" value="am"> AM </label>
+				<label> <input type="radio" name="{{day|lower}}" id="{{day|lower}}-pm" value="pm"> PM </label>
+				<label> <input type="radio" name="{{day|lower}}" id="{{day|lower}}-all" value="all"> All Day </label>
 			</div>
 			{% endfor %}
 
@@ -102,13 +107,14 @@ $('.toggle').change(function() {
 			#}
 
 			<label style="margin-top:20px;">Your Facebook 
-				<input type="text" class="span3" placeholder="http://facebook.com/yourfacebook" style="margin-left:15px;" value="{{ user_record.facebook }}">
+				<input type="text" class="span3" placeholder="http://facebook.com/yourfacebook" style="margin-left:15px;" value="{{ facebook }}" name="facebook">
 			</label>
 			<label style="margin-top:20px;">Your Twitter
-				<input type="text" class="span3" placeholder="http://twitter.com/yourtwitter" style="margin-left:15px;" value="{{ user_record.twitter }}">
+				<input type="text" class="span3" placeholder="http://twitter.com/yourtwitter" style="margin-left:15px;" value="{{ twitter }}" name="twitter">
 			</label>
 			<label> A Few Words About You </label>
-			<textarea type="text" style="height: 150px;width: 450px;" value="{{ user_record.bio }}"> </textarea>
+			<textarea type="text" style="height: 150px;width: 450px;" value="{{ bio }}" name="bio"> </textarea>
+			<input type="submit" value="save">
 			<a class="btn btn-large btn-primary" href="{{ url_for('profile_create') }}" style="margin-left:400px;margin-top: 20px;"> Save </a>
 		</div>
 	</form>

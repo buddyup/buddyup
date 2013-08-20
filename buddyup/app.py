@@ -14,7 +14,8 @@ app.config.from_object(config_object)
 # NO_CDN: Default to using Content Distribution Network for libraries
 # where possible.
 app.config['USE_CDN'] = 'NO_CDN' not in os.environ
-
+if 'ADMIN_USER' in os.environ:
+    app.config['ADMIN_USER'] = os.environ['ADMIN_USER']
 Heroku(app)
 
 runner = Runner(app)
@@ -27,6 +28,7 @@ if not app.debug:
 
 
 from . import database
+from . import photo
 from .templating import render_template
 from .util import login_required
 
