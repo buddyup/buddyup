@@ -75,6 +75,11 @@ BuddyUp must be configured through some environmental variables::
 
     $ heroku config:set BUDDYUP_TYPE=production
 
+The current implementation only allows one admin. Set the admin user name to
+a PSU user name, where ``psuuser`` is replaced by the user name:
+
+    $ heroku config:set ADMIN_USER=psuuser
+
 Mail
 ====
 
