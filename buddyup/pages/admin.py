@@ -32,6 +32,7 @@ def get_stats():
     # Maybe only count users who have logged in?
     variables['total_users'] = User.query.count()
     variables['courses'] = Course.query.all()
+    variables['locations'] = Location.query.all()
     return variables
 
 
@@ -71,7 +72,7 @@ def admin_delete_course():
 @app.route("/admin/location/add", methods=['POST'])
 @admin_required
 def admin_add_location():
-    name = form_get('name')
+    name = form_get('location')
     check_empty(name, "Location Name")
     if not get_flashed_messages():
         loc = Location(name=name)
@@ -95,7 +96,8 @@ def admin_delete_location():
 @app.route("/admin/users")
 @admin_required
 def admin_user_management():
-    pass
+    users = User.query.all()
+    return render_template('admin/userManagement.html', users=users)
 
 
 @app.route("/admin/forums")
