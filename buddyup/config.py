@@ -1,6 +1,7 @@
 class Base:
     CAS_SERVER = 'https://sso.pdx.edu/cas'
     SECRET_KEY = 'foo'
+    ADMIN_USER = 'bforrest'
 
 
 class Dev(Base):

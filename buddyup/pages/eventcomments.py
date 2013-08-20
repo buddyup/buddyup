@@ -45,5 +45,4 @@ def comment_remove(comment_id):
         event_id=comment.event_id
         comment.delete()
         db.session.commit()
-        # TODO: check syntax of the line below
         return redirect(url_for('event_view',event_id=event_id))

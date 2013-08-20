@@ -22,12 +22,12 @@
 		<div class="navbar navbar-inverse navbar-fixed-top" style:"height:30px;">
 			<div class="navbar-inner">
 				<a class="brand" href="{{ url_for('admin_dashboard') }}">
-					<img id="topbar_logo" src="../static/img/BuddyUpLogo_300x88.png"> </img>
+					<img id="topbar_logo" src="{{ img('BuddyUpLogo_300x88.png') }}">
 				</a>
 				<ul class="nav" style="margin-top:10px;">
 					<li><a href="{{ url_for('admin_dashboard') }}">Dashboard</a></li>
-					<li><a href="{{ url_for('admin_userManagement') }}">Users Management</a></li>
-					<li><a href="{{ url_for('admin_forumManagement') }}">Forum Management</a></li>
+					<li><a href="{{ url_for('admin_user_management') }}">Users Management</a></li>
+					<li><a href="{{ url_for('admin_forum_management') }}">Forum Management</a></li>
 				</ul>
 
 				<ul class="nav pull-right" style="margin-top:10px;">
