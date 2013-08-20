@@ -59,7 +59,7 @@ class User(db.Model):
     courses = db.relationship('Course', secondary=CourseMembership,
                               lazy='dynamic')
     #email = db.Column(db.UnicodeText)
-    #events = db.relationship('Event', secondary=EventMembership,
+    events = db.relationship('Event', secondary=EventMembership,
                              #lazy='dynamic')
     #buddies = db.relationship('User', secondary=Buddy, lazy='dynamic',
     #                          foreign_keys='buddy.user1_id')
