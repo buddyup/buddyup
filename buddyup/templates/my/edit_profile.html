@@ -2,49 +2,65 @@
   
 {% block content %}
 <h1 style="text-align:center;"> Edit profile</h1>
-	  {# Photo upload: later!
-<div class="span3">
-	<div style="border:1px solid #e0e0e0;padding:15px;margin-bottom:20px;">
-		<div style="text-align:center;">
-		<strong class=" PIN_1373193698306_hazClick">
-		      Your current avatar
-		  </strong>
-	  </div>
-	  <img src="{{ photo_thumbnail(user_record) }}"></img>
 	  
-	  <div class="fileupload fileupload-new" data-provides="fileupload" style="text-align:center;margin-top:15px;">
-	  <span class="btn btn-file"><span class="fileupload-new">Change Picture</span><span class="fileupload-exists">Change</span><input type="file" /></span>
-	  <span class="fileupload-preview"></span>
-	  <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
-	  </div>
-  </div>
-  
-</div>
-
-	  #}
-<div class="span8">
+<div class="well span">
 		<p> This information will appear in your public profile. Leave the fields blank if you'd prefer not to reveal any information.</p>
-		<form class="well" action="{{ url_for('profile_edit')}}" method="POST">  
-		  <label> Your Name </label>  
-		  <input type="text" class="span3" placeholder="Your Full Name" value="{{ user_record.full_name }}" name="name">    
-		  <label> Location</label>
+		<form action="{{ url_for('profile_edit') }}" method="POST">
+			<label> Your Name <color> (*Required) </color> </label>  
+			<input type="text" class="span2" placeholder="Your Full Name" value="{{ user_record.full_name }}" name="name"></inputt> 
+			
+			<label> Your Course <color> (*Required) </color></label>
+				<select size=10 style="width: 80px" name="course" multiple>
+					{% for course_record in courses %}
+						{% if selected(course_record) %}
+							<option value="{{ course_record.id }}" selected>
+								{{ course_record.name }} by {{ course_record.instructor }}
+							</option>
+						{% else %}
+							<option value="{{ course_record.id }}">
+								{{ course_record.name }} by {{ course_record.instructor }}
+							</option>
+						{% endif %}
+					{% endfor %}
+				</select>
+			
+			<label> Location</label>
 			<select name="location">
 			{% for location in locations %}
 				{% if selected(location) %}
-					<option value="{{ location.id }}" selected>
-						{{ location.name }}
-					</option>  
+				<option value="{{ location.id }}" selected>
+					{{ location.name }}
+				</option>  
 				{% else %}
-					<option value="{{ location.id }}">
-						{{ location.name }}
-					</option>
+				<option value="{{ location.id }}">
+					{{ location.name }}
+				</option>  
 				{% endif %}
 			{% endfor %}
 			</select>
-		  <label> A Few Words About You </label>
-		  <textarea type="text" style="height: 150px;width: 450px;" value="{{ bio }}"> </textarea><br>
-		  <input type="submit" value="Save" class="btn btn-primary" style="margin-left:450px;margin-top: 20px;">
-		</form>
+			
+			<label> Time for Study Group </label>
+			{% for day in day_names %}
+			<label> <input type="checkbox" class="toggle" id="{{ day|lower }}" style="margin-top:-5px; margin-left:10px;" name="{{day|lower}}">{{ day }}</label>
+			<div class="detail" id="{{day|lower}}detail" style="margin-left:30px;">
+				<label> <input type="radio" name="{{day|lower}}" id="{{day|lower}}-am" value="am"> AM </label>
+				<label> <input type="radio" name="{{day|lower}}" id="{{day|lower}}-pm" value="pm"> PM </label>
+				<label> <input type="radio" name="{{day|lower}}" id="{{day|lower}}-all" value="all"> All Day </label>
+			</div>
+			{% endfor %}
+
+			<h4> Please share something about you</h4> 	
+			<label style="margin-top:20px;">Your Facebook 
+				<input type="text" class="span3" placeholder="http://facebook.com/yourfacebook" style="margin-left:15px;" value="{{ facebook }}" name="facebook">
+			</label>
+			<label style="margin-top:20px;">Your Twitter
+				<input type="text" class="span3" placeholder="http://twitter.com/yourtwitter" style="margin-left:15px;" value="{{ twitter }}" name="twitter">
+			</label>
+			<label> A Few Words About You </label>
+			<textarea type="text" style="height: 150px;width: 450px;" value="{{ bio }}" name="bio"> </textarea>
+			<input class="btn btn-large btn-primary" style="margin-left:400px;margin-top: 20px;" type="submit" value="save"></input>
+		</div>
+	</form>
 </div>
 	
 {% endblock %}
