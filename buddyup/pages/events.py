@@ -73,7 +73,7 @@ def event_view(event_id):
 
 @app.route('/event/search')
 @login_required
-def event_search():
+def search_event():
     return render_template('group/search.html')
 
 
@@ -125,7 +125,7 @@ def event_search_results():
 
 @app.route('/event/create', methods=['GET','POST'])
 @login_required
-def event_create():
+def create_event():
     if request.method == 'GET':
         # TODO: pass out the user's course to set it as default
         return render_template('create_event.html', has_errors=False)
@@ -166,7 +166,7 @@ def event_create():
 
 @app.route('/event/cancel/<int:event_id>')
 @login_required
-def event_remove(event_id):
+def remove_event(event_id):
     event = Event.query.get_or_404(event_id)
     if event.owner_id != g.user.id:
         abort(403)
@@ -181,7 +181,7 @@ def event_remove(event_id):
 
 @app.route('/event/attend/<int:event_id>')
 @login_required
-def event_attend(event_id):
+def attend_event(event_id):
     event = Event.query.get_or_404(event_id)
  
     if not is_attend(event_id):
@@ -195,7 +195,7 @@ def event_attend(event_id):
 
 @app.route('/event/leave/<int:event_id>')
 @login_required
-def event_leave(event_id):
+def leave_event(event_id):
     event = Event.query.get_or_404(event_id)
     name = event.name
     attendance_record = EventMembership.query.filter_by(event_id=event_id,
