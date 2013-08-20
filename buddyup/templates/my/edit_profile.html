@@ -11,23 +11,25 @@
 	  </div>
 	  <img src="{{ photo_thumbnail(user_record) }}"></img>
 	  
+	  {# Photo upload: later!
 	  <div class="fileupload fileupload-new" data-provides="fileupload" style="text-align:center;margin-top:15px;">
 	  <span class="btn btn-file"><span class="fileupload-new">Change Picture</span><span class="fileupload-exists">Change</span><input type="file" /></span>
 	  <span class="fileupload-preview"></span>
 	  <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
 	  </div>
+	  #}
   </div>
   
 </div>
 
 <div class="span8">
 		<p> This information will appear in your public profile. Leave the fields blank if you'd prefer not to reveal any information.</p>
-		<form class="well">  
+		<form class="well" action="profile_edit" method="POST">  
 		  <label> Your Name </label>  
 		  <input type="text" class="span3" placeholder="Your Full Name" value="{{ user_record.full_name }}">    
 		  <label> Location</label>
-		  {% for location in location %}
-				<select name="location">
+			<select name="location">
+			{% for location in locations %}
 				{% if selected(location) %}
 					<option value="{{ location.id }}" selected>
 						{{ location.name }}
@@ -37,11 +39,11 @@
 						{{ location.name }}
 					</option>
 				{% endif %}
-	  	  </select>
-		  {% endfor %}
+			{% endfor %}
+			</select>
 		  <label> A Few Words About You </label>
-		  <textarea type="text" style="height: 150px;width: 450px;" value="{{ user_record.bio }}"> </textarea>
-		  <div class="btn btn-primary" style="margin-left:450px;margin-top: 20px;"> Save Changes</div>
+		  <textarea type="text" style="height: 150px;width: 450px;" value="{{ user_record.bio }}"> </textarea><br>
+		  <input type="submit" value="Save" class="btn btn-primary" style="margin-left:450px;margin-top: 20px;">
 		</form>
 </div>
 	

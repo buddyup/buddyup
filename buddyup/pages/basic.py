@@ -31,3 +31,9 @@ def help():
 @login_required
 def suggestions():
     return render_template('setup/suggestions.html')
+
+
+@app.route('/welcome')
+@login_required
+def welcome():
+    return render_template('setup/welcome.html')

@@ -11,7 +11,11 @@
 	<div class="span6">
 		<h2>{{ buddy_record.full_name }}</h2>
 		<address>
-		Location: {{ buddy_record.location }}
+			{% if buddy_record.location %}
+				Location: {{ buddy_record.location }}
+			{% else %}
+				Location: Not Given
+			{% endif %}
 		</address>
 		<div id="profile-social">
 			{% if buddy_record.facebook %}

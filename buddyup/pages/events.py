@@ -73,7 +73,7 @@ def event_view(event_id):
 
 @app.route('/event/search')
 @login_required
-def search_event():
+def event_search():
     return render_template('group/search.html')
 
 
@@ -148,7 +148,7 @@ def create_event():
         
 
         if get_flashed_messages():
-            return render_template('event/create.html', has_errors=True)
+            return render_template('group/create.html', has_errors=True)
 
         # Check that the user is in this course
         if user.courses.filter_by(course_id=course_id).count() == 0:
@@ -190,7 +190,7 @@ def attend_event(event_id):
         db.session.add(new_attendance_record)
         db.session.commit()
     flash("Now attending group")
-    return render_template('event/view.html')
+    return render_template('group/view.html')
 
 
 @app.route('/event/leave/<int:event_id>')
@@ -202,7 +202,7 @@ def leave_event(event_id):
             user_id=g.user.id).first_or_404()
     attendance_record.delete()
     db.session.commit()
-    return render_template('event/left.html', name=name)
+    return render_template('group/left.html', name=name)
 
 
 def is_attend(event_id):
@@ -220,4 +220,5 @@ def calendar(start, end):
 @app.route('/calendar')
 @login_required
 def calendar():
-    return events_to_json([])
+    return render_template("group/calendar.html",
+                           event_json=events_to_json([]))

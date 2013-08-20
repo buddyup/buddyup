@@ -1,7 +1,8 @@
 {% extends "layout.html" %}
 
 {% block content %}
-        <div class="row"><div class="span3"></div>
+<div class="row">
+	<div class="span3"></div>
 	<div class="well span6">
 		<h3>Question &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <button type="button" class="btn btn-primary">Answer this question</button> </h3>
 		<p>&nbsp;&nbsp;&nbsp;&nbsp;By username on date</p>
@@ -34,8 +35,8 @@
 
 
 
+<form action="{{ url_for('post_question') }}" id="usrform">
 <textarea rows="10" cols="100" name="comment" form="usrform"></textarea>
-<form action="demo_form.asp" id="usrform">
   <input type="submit" value="Sumit">
 </form>
 {% endblock %}
