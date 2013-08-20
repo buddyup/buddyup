@@ -50,7 +50,7 @@ $(function() {
 			<label> Your Name <color> (*Required) </color> </label>  
 			<input type="text" class="span2" placeholder="Your Full Name" value="{{ user_record.full_name }}" name="name">    
 			<label> Your Course <color> (*Required) </color></label>
-				<select style="width: 80px" name="course">
+				<select size=10 style="width: 80px" name="course" multiple>
 					{% for course_record in courses %}
 						{% if selected(course_record) %}
 							<option value="{{ course_record.id }}" selected>
