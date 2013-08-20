@@ -88,13 +88,9 @@ def profile_create():
                                       day=i,
                                       time=time)
                 db.add(record)
+        update_courses(map(int, request.form.getlist('course')))
         db.session.commit()
-        
-        for course_id in request.form.getlist('course'):
-            mem = CourseMembership(course_id=course_id, user_id=g.user.id)
-            db.session.add(mem)
-            
-        
+
         return redirect(url_for('welcome'))
 
 
@@ -103,7 +99,23 @@ def profile_create():
 # def photo_create():
 #    pass
  
+def update_courses(course_ids):
+    """
+    Use set manipulation delete removed course links and insert new course
+    links.
+    """
+    current_course_ids = {course.id for course in g.user.courses.all()}
+    new_course_ids = set(course_ids)
 
+    new = new_course_ids - current_course_ids
+    for course_id in new:
+        course = Course.query.get(course_id)
+        g.user.courses.append(course)
+    
+    remove = current_course_ids - new_course_ids
+    for course_id in remove:
+        course = Course.query.get(course_id)
+        g.user.courses.remove(course)
 
 
 @app.route('/user/profile', methods=['POST', 'GET'])
@@ -190,6 +202,8 @@ def profile_edit():
                                       day=i,
                                       time=time)
                 db.add(record)
+
+        update_courses(map(int, request.form.getlist('course')))
         db.session.commit()
         return redirect(url_for('buddy_view', user_name=g.user.user_name))
 

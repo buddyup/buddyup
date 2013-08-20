@@ -43,7 +43,7 @@ class User(db.Model):
     facebook = db.Column(db.UnicodeText, default=u"")
     twitter = db.Column(db.UnicodeText, default=u"")
     initialized = db.Column(db.Boolean, default=False)
-    location = db.Column(db.Integer, db.ForeignKey('location.id'))
+    location_id = db.Column(db.Integer, db.ForeignKey('location.id'))
     courses = db.relationship('Course', backref=db.backref('users', lazy="dynamic"),
                               secondary=CourseMembership,
                               lazy='dynamic')
