@@ -9,6 +9,7 @@ from buddyup.templating import img
 
 Dimensions = namedtuple('Dimensions', 'x y')
 
+TINY_SIZE = Dimensions(10, 10)
 THUMB_SIZE = Dimensions(20, 20)
 LARGE_SIZE = Dimensions(100, 100)
 GENERIC_PHOTO = 'index.jpg'
@@ -20,7 +21,7 @@ def photo_tiny(user_record):
     """
     Get the URL for a User's tiny image
     """
-    return user_record.tiny_photo.url or img(GENERIC_PHOTO)
+    return _get_photo(user_record.tiny_photo, GENERIC_PHOTO)
 
 
 @app.template_global()
@@ -28,7 +29,7 @@ def photo_thumbnail(user_record):
     """
     Get the URL for a User's thumbnail image
     """
-    return user_record.thumbnail_image.url or img(GENERIC_PHOTO)
+    return _get_photo(user_record.thumbnail_photo, GENERIC_PHOTO)
 
 
 @app.template_global()
@@ -36,7 +37,14 @@ def photo_large(user_record):
     """
     Get the URL for a User's large image
     """
-    return user_record.large_photo.url or img(GENERIC_PHOTO)
+    return _get_photo(user_record.large_photo, GENERIC_PHOTO)
+
+
+def _get_photo(photo_record, generic):
+    if photo_record is None:
+        return img(generic)
+    else:
+        return photo_record.url
 
 
 def rescale(image, size):

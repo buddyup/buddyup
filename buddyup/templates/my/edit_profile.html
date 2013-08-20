@@ -9,7 +9,7 @@
 		      Your current avatar
 		  </strong>
 	  </div>
-	  <img src="../static/img/index.jpg"></img>
+	  <img src="{{ photo_thumbnail(user_record) }}"></img>
 	  
 	  <div class="fileupload fileupload-new" data-provides="fileupload" style="text-align:center;margin-top:15px;">
 	  <span class="btn btn-file"><span class="fileupload-new">Change Picture</span><span class="fileupload-exists">Change</span><input type="file" /></span>
@@ -27,17 +27,22 @@
 		  <input type="text" class="span3" placeholder="Your Full Name" value="{{ user_record.full_name }}">    
 		  <label> Location</label>
 		  {% for location in location %}
-		  		{% if selected(location) %}
-		  <select name="location">
-		  	<option value="{{ location.id }}">
-			  	{{ location.name }}
-		 	 </option>  
+				<select name="location">
+				{% if selected(location) %}
+					<option value="{{ location.id }}" selected>
+						{{ location.name }}
+					</option>  
+				{% else %}
+					<option value="{{ location.id }}">
+						{{ location.name }}
+					</option>
+				{% endif %}
 	  	  </select>
 		  {% endfor %}
 		  <label> A Few Words About You </label>
 		  <textarea type="text" style="height: 150px;width: 450px;" value="{{ user_record.bio }}"> </textarea>
 		  <div class="btn btn-primary" style="margin-left:450px;margin-top: 20px;"> Save Changes</div>
-		</form>  
+		</form>
 </div>
 	
 {% endblock %}

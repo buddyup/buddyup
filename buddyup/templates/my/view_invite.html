@@ -1,25 +1,33 @@
 {% extends "layout.html" %}
+{% from lib.html import flashed %}
   
 {% block content %}
 <h2 style="text-align:center;"> Invitations </h2>
 <br>
 <div class="container">
-	<div class="alert alert-success">
-		<button type="button" class="close" data-dismiss="alert">x</button>
-		<strong> You added a <a href="{{ url_for('profile') }} ">friend </a> </strong>
-	</div>
-	<div class="alert alert-success">
-		<button type="button" class="close" data-dismiss="alert">x</button>
-		<strong> You attended to a <a href="{{ url_for('viewevent') }} "> group </a> </strong>
-	</div>
-	<div class="alert alert-block">
-		<button type="button" class="close" data-dismiss="alert">x</button>
-		<strong> You denied to make <a href="{{ url_for('profile') }} ">friend </a> </strong>
-	</div>
-	<div class="alert alert-block">
-		<button type="button" class="close" data-dismiss="alert">x</button>
-		<strong> You denied to attend a <a href="{{ url_for('viewevent') }} "> group </a> </strong>
-	</div>
+	{% if new_friend %}
+		{% call flashed() %}
+			You added a <a href="{{ profile(new_friend) }}"> friend</a>.
+		{% endcall %}
+	{% endif %}
+
+	{% if denied_friend %}
+		{% call flashed(type='block') %}
+			You denied a <a href="{{ profile(denied_friend) }}"> friend</a>.
+		{% endcall %}
+	{% endif %}
+	
+	{% if new_group %}
+		{% call flashed(type='block') %}
+			You attended a <a href="{{ profile(new_group) }}">group</a>.
+		{% endcall %}
+	{% endif %}
+	
+	{% if denied_group %}
+		{% call flashed(type='block') %}
+			You denied a <a href="{{ profile(denied_group) }}">group</a>.
+		{% endcall %}
+	{% endif %}
     <div class="well span5">
 		<strong><font style="margin-left:150px;" color="2896FF"> From Buddies </font></strong>
 		<div style="margin-top:20px;">

@@ -8,8 +8,8 @@ import re
 from buddyup.app import app
 from buddyup.database import Event, Course, EventMembership, db
 from buddyup.templating import render_template
-from buddyup.util import args_get, login_required, form_get, check_empty
-from buddyup.calendar import events_to_json
+from buddyup.util import (args_get, login_required, form_get, check_empty,
+                          events_to_json)
 
 TIME_REGEXP = re.compile(r"""
     (?P<hour>\d\d?)     # hour

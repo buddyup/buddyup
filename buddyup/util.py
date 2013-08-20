@@ -18,7 +18,7 @@ def login_required(func):
         if g.user is None:
             app.logger.info('redirecting not logged in user')
             return redirect(url_for('index'))
-        elif not g.user.initialized:
+        elif not g.user.initialized and f.__name__ != 'profile_create':
             return redirect(url_for('profile_create'))
         else:
             return func(*args, **kwargs)
@@ -33,6 +33,7 @@ def _parameter_get(source, var, convert=None, default=_DEFAULT):
     # default: Default value
     if var not in source:
         if default is _DEFAULT:
+            app.logger.info("Required form parameter %s does not exist", var)
             abort(400)
             # abort raises an exception, so the function ends here
         else:
@@ -41,6 +42,7 @@ def _parameter_get(source, var, convert=None, default=_DEFAULT):
         try:
             return convert(source[var])
         except ValueError:
+            app.logger.info("ValueError when converting variable %s", var)
             abort(400)
     else:
         return source[var]
@@ -96,8 +98,13 @@ def checked_regexp(regexp, value, label):
         return match
     
 
-
 def events_to_json(events):
+    """
+    Convert a list/iterable of events records to a list that can be converted
+    to json to work with the fullcalendar widget. In the template, use::
+    
+        events: {{ events|tojson|safe }}
+    """
     json = []
     for event in events:
         date = event.date.strftime("%Y-%m-%d %H:%M")

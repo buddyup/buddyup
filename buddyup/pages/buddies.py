@@ -1,7 +1,8 @@
 from flask import g
 
 from buddyup.app import app
-from buddyup.database import User, db 
+from buddyup.database import (User, Buddy, BuddyInvitation,
+                              db)
 from buddyup.templating import render_template
 from buddyup.util import login_required, args_get
 from buddyup.database import User
@@ -30,8 +31,8 @@ def buddy_search_results():
     course = args_get('course', convert=int)
     query = Buddy.query
     if name:
-        query = query.filter(Buddy.full_name.like('%' + name + "%"))
+        query = query.filter(User.full_name.like('%' + name + "%"))
     query = query.filter(Buddy.language_id == language)
-    query = query.filter(BuddyMembership.course_id == course)
+    query = query.filter(Buddy.user2.course_id == course)
     buddies = query.all()
     return render_template('buddy/search_results.html', buddies=buddies)
