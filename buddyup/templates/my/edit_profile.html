@@ -61,6 +61,10 @@
 				{% endif %}
 			{% endfor %}
 			</select>
+		  <label> A Few Words About You </label>
+		  <textarea type="text" style="height: 150px;width: 450px;" value = "{{ user_record.bio }}"> {{ user_record.bio }} </textarea><br>
+		  <input type="submit" value="Save" class="btn btn-primary" style="margin-left:450px;margin-top: 20px;">
+		</form>
 			
 			<label> Time for Study Group </label>
 			{% for day in day_names %}
