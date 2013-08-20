@@ -1,24 +1,21 @@
 {% extends "layout.html" %}
 {% block title %}Create Group{% endblock %}
 {% block extrahead 
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+
 <link href="{{ css('jquery-ui') }}" rel="stylesheet">
 <script src="{{ js('jquery-ui') }}"></script>
 
 <script>
-
 $(function() {
-	$( "#datepicker" ).datepicker({
-		changeMonth: true,
-		changeYear: true
-	});
+  $( "#datepicker" ).datepicker({
+    changeMonth: true,
+    changeYear: true
+  });
 });
 </script>
-
 <style type="text/css">
 	.span6 {width: 480px;}
 </style>
-<link rel="stylesheet" href="{{ css('jquery-ui') }}" />
 {% endblock extrahead %}
 
 {% block content %}
@@ -39,7 +36,7 @@ $(function() {
 				value="{{ location }}">
 
 		<label> Date </label>
-		<input type="text" class="span3" id="datepicker" name="date" value="{{ date }}">
+		<input type="text" class="span3" id="datepicker" placeholder="mm/dd/yyyy" name="date" value="{{ date }}">
 
 		<label> Time </label>
 		<input type="text" class="span1" placeholder="From" name="start">
@@ -81,7 +78,7 @@ $(function() {
 		<label> Note </label>
 		<input type="text" class="span3" placeholder="...">
 		<div class="btn-group" style="margin-left:350px;margin-top: 20px;">
-			<input class="btn btn-large btn-danger" type="submit" value="save">
+			<input class="btn btn-large btn-danger" type="submit" value="Save">
 		</div>
 	</form>
 </div>
