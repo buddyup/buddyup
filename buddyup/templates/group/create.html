@@ -3,6 +3,7 @@
 {% block extrahead %}
 <script src="{{ js('jquery-ui') }}"></script>
 <script>
+
 $(function() {
 	$( "#datepicker" ).datepicker({
 		changeMonth: true,
@@ -80,6 +81,14 @@ $(function() {
 			<input class="btn btn-large btn-danger" type="submit" value="save">
 		</div>
 	</form>
+	<script>
+	$(function() {
+		$( "#datepicker" ).datepicker({
+			changeMonth: true,
+			changeYear: true
+		});
+	});
+	</script>
 </div>
 
 {% endblock content %}
