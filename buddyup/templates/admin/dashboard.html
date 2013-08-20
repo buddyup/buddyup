@@ -39,4 +39,24 @@
 	</form>
 </div>                       
 
+<div class="well span3">
+	<h3>Enter a new location</h3>
+	<form action="{{ url_for('admin_add_location') }}" method="POST">
+		New location: <input type="text" name="location"></input><br>
+		<input type="submit" value="Add this new location"></input>
+	</form>
+</div>
+
+<div class="well span4">
+	<h3>Current list of location</h3>
+	<form action="{{ url_for('admin_delete_location') }}" method="POST">
+		<select size=15 width="320" style="width: 320px" name="listcourse" multiple>
+			{% for location in locations %}
+			<option value="{{ location.id }}">{{ location.name }}</option>
+			{% endfor %}
+		</select>
+		<br><input type="submit" value="Remove locations"> 
+	</form>
+</div>
+
 {% endblock %}
