@@ -26,22 +26,10 @@ Buddy = db.Table('buddy',
 
 # Main tables
 
-
-'''class Subject(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    short = db.Column(db.String(3))
-    full = db.Column(db.UnicodeText)
-    def __init__(self, id=None, 
-'''
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.UnicodeText)
     instructor = db.Column(db.UnicodeText)
-    # subject = db.Column(db.Integer, db.ForeignKey('subject.id'))
-    #number = db.Column(db.Integer)
-    students = db.relationship('User',
-            secondary=CourseMembership, lazy='dynamic')
-#            backref=db.backref('courses', lazy='dynamic'))
 
     def __repr__(self):
         return '<Course %r>' % self.crn
@@ -56,11 +44,13 @@ class User(db.Model):
     twitter = db.Column(db.UnicodeText, default=u"")
     initialized = db.Column(db.Boolean, default=False)
     location = db.Column(db.Integer, db.ForeignKey('location.id'))
-    courses = db.relationship('Course', secondary=CourseMembership,
+    courses = db.relationship('Course', backref=db.backref('users', lazy="dynamic"),
+                              secondary=CourseMembership,
                               lazy='dynamic')
-    #email = db.Column(db.UnicodeText)
-    events = db.relationship('Event', secondary=EventMembership,
-                            lazy='dynamic')
+    email = db.Column(db.UnicodeText)
+    events = db.relationship('Event', lazy="dynamic",
+                             secondary=EventMembership,
+                             backref=db.backref('users', lazy="dynamic"))
     #buddies = db.relationship('User', secondary=Buddy, lazy='dynamic',
     #                          foreign_keys='buddy.user1_id')
     tiny_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
@@ -98,8 +88,8 @@ class Event(db.Model):
     end = db.Column(db.DateTime)
     note = db.Column(db.UnicodeText)
     # TODO: this users relationship may be wrong
-    users = db.relationship('User', secondary=EventMembership,
-                            lazy='dynamic')
+    #users = db.relationship('User', secondary=EventMembership,
+    #                        lazy='dynamic')
         #backref=db.backref('events'), lazy='dynamic')
     # TODO
 #    comments = db.relationship('EventComment', backref='event',
