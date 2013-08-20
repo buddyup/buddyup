@@ -60,7 +60,7 @@ class User(db.Model):
                               lazy='dynamic')
     #email = db.Column(db.UnicodeText)
     events = db.relationship('Event', secondary=EventMembership,
-                             #lazy='dynamic')
+                            lazy='dynamic')
     #buddies = db.relationship('User', secondary=Buddy, lazy='dynamic',
     #                          foreign_keys='buddy.user1_id')
     tiny_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
@@ -81,7 +81,7 @@ class Photo(db.Model):
 #    sent_messages = db.relationship('Message', foreign_keys='message.sender_id',
 #                                    lazy='dynamic')
 #    received_messages = db.relationship('Message', backref="receiver",
-#                                        lazy='dynamic')
+                                        lazy='dynamic')
 #    invitations = db.relationship('pages/Invitation',
 #                              foreign_keys='invitation.receiver_id')
 
