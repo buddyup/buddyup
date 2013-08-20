@@ -81,7 +81,7 @@ class Photo(db.Model):
 #    sent_messages = db.relationship('Message', foreign_keys='message.sender_id',
 #                                    lazy='dynamic')
 #    received_messages = db.relationship('Message', backref="receiver",
-                                        lazy='dynamic')
+#                                        lazy='dynamic')
 #    invitations = db.relationship('pages/Invitation',
 #                              foreign_keys='invitation.receiver_id')
 
