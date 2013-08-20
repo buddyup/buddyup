@@ -27,7 +27,7 @@ def setup_cas():
     app.logger.info("Setting CAS log URL to %s", app.cas_login)
     app.cas_logout = "{server}/logout?url={root}".format(
         server=app.cas_server,
-        root=url_for('index'))
+        root=url_for('index', _external=True))
 
 
 @app.route('/login')
@@ -64,7 +64,7 @@ def login():
 @app.route('/logout')
 def logout():
     # TODO: Some indication of success?
-    request.session.clear()
+    session.clear()
     return redirect(app.cas_logout)
 
 
