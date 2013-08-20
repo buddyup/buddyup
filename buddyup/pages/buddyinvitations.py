@@ -12,13 +12,14 @@ from buddyup.pages.eventinvitations import event_invitation_view_all
 def invite_list():
     buddy_invitations = BuddyInvitation.query.filter_by(receiver_id=g.user.id).all()
     event_invitations = event_invitation_view_all()
-
+    for buddy_invitation in buddy_invitations:
+        user = User.query.join(BuddyInvitation,User.id == BuddyInvitation.sender_id).filter_by(BuddyInvitation.id=buddy_invitation.id).first()
     return render_template('my/view_invite.html',
                            buddies=buddy_invitations,
                            groups=event_invitations)
 
 
-@app.route("/invite/send/<user_name>")
+@app.route("/invite/send/<user_name>", methods=['POST'])
 @login_required
 def invite_send(user_name):
     other_user_record = User.query.filter(user_name==user_name).first_or_404()
@@ -31,7 +32,7 @@ def invite_send(user_name):
                            other_user=other_user_record)
 
 
-@app.route("/invite/deny/<user_name>")
+@app.route("/invite/deny/<user_name>", methods=['POST'])
 @login_required
 def invite_deny(user_name):
     other_user_record = User.query.filter(user_name==user_name).first_or_404()
@@ -43,7 +44,7 @@ def invite_deny(user_name):
                            other_user=other_user_record)
 
 
-@app.route("/invite/accept/<user_name>")
+@app.route("/invite/accept/<user_name>", methods=['POST'])
 @login_required
 def invite_accept(user_name):
     other_user_record = User.query.filter(user_name==user_name).first_or_404()

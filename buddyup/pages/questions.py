@@ -16,7 +16,7 @@ def view_all_question(page):
             .paginate(page, per_page=20, error_out=True))
     # TODO: display about 10 questions per page in chronological order.
     # Use pagination?
-    return render_template('qa/question.html', pagination=pagination)
+    return render_template('qa/list.html', pagination=pagination)
 
 
 @app.route('/forum/<int:question_id>')
