@@ -77,5 +77,10 @@ def validate():
         return fail(config['failmsg'], config['failcode'])
 
 
+@app.route('/logout')
+def logout():
+    return redirect(request.args['url'])
+
+
 if __name__ == '__main__':
     runner.run()
