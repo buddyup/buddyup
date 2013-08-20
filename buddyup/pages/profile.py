@@ -132,8 +132,7 @@ def profile_edit():
                 raise TypeError
         locations = Location.query.all()
         courses = Course.query.all()
-        return render_template('my/edit_profile.html',
-                                user_record=user,
+        return render_template('my/edit_profile2.html',
                                day_names=day_name,
                                locations=locations,
                                courses=courses,
