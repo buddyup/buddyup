@@ -4,14 +4,18 @@ from buddyup.app import app
 from buddyup.database import db, BuddyInvitation, User, Buddy
 from buddyup.templating import render_template
 from buddyup.util import login_required
+from buddyup.pages.eventinvitations import event_invitation_view_all
 
 
 @app.route("/invite/view")
 @login_required
 def invite_list():
-    invitations = g.user.invitations.all()
-    return render_template('invite/list.html',
-                           invitations=invitations)
+    buddy_invitations = BuddyInvitation.query.filter_by(receiver_id=g.user.id).all()
+    event_invitations = event_invitation_view_all()
+
+    return render_template('my/view_invite.html',
+                           buddies=buddy_invitations,
+                           groups=event_invitations)
 
 
 @app.route("/invite/send/<user_name>")
