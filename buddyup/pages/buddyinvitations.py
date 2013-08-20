@@ -12,8 +12,8 @@ from buddyup.pages.eventinvitations import event_invitation_view_all
 def invite_list():
     buddy_invitations = BuddyInvitation.query.filter_by(receiver_id=g.user.id).all()
     event_invitations = event_invitation_view_all()
-    for buddy_invitation in buddy_invitations:
-        user = User.query.join(BuddyInvitation,User.id == BuddyInvitation.sender_id).filter_by(BuddyInvitation.id=buddy_invitation.id).first()
+    #for buddy_invitation in buddy_invitations:
+    #    user = User.query.join(BuddyInvitation,User.id == BuddyInvitation.sender_id).filter_by(BuddyInvitation.id=buddy_invitation.id).first()
     return render_template('my/view_invite.html',
                            buddies=buddy_invitations,
                            groups=event_invitations)
