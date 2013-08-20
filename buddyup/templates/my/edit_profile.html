@@ -73,10 +73,10 @@
 			{% endfor %}
 
 			<label style="margin-top:20px;">Your Facebook 
-				<input type="text" class="span3" placeholder="http://facebook.com/yourfacebook" style="margin-left:15px;" value="{{ facebook }}" name="facebook"> {{ user_record.facebook }}</input>
+				<input type="text" class="span3" placeholder="http://facebook.com/yourfacebook" style="margin-left:15px;" value="{{ user_record.facebook }}" name="facebook">
 			</label>
 			<label style="margin-top:20px;">Your Twitter
-				<input type="text" class="span3" placeholder="http://twitter.com/yourtwitter" style="margin-left:15px;" value="{{ twitter }}" name="twitter"> {{ user_record.twitter }}</input>
+				<input type="text" class="span3" placeholder="http://twitter.com/yourtwitter" style="margin-left:15px;" value="{{ user_record.twitter }}" name="twitter">
 			</label>
 			<label> A Few Words About You </label>
 			<textarea type="text" style="height: 150px;width: 450px;" value="{{ bio }}" name="bio"> {{ user_record.bio }} </textarea>
