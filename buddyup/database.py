@@ -51,8 +51,15 @@ class User(db.Model):
     events = db.relationship('Event', lazy="dynamic",
                              secondary=EventMembership,
                              backref=db.backref('users', lazy="dynamic"))
-    #buddies = db.relationship('User', secondary=Buddy, lazy='dynamic',
-    #                          foreign_keys='buddy.user1_id')
+    buddies = db.relationship('User', secondary=Buddy,
+                              primaryjoin=Buddy.c.user1_id == id,
+                              secondaryjoin=Buddy.c.user2_id == id)
+    buddy_inv = db.relationship('User', secondary=Buddy,
+                              primaryjoin=Buddy.c.user1_id == id,
+                              secondaryjoin=Buddy.c.user2_id == id)
+    group_inv = db.relationship('User', secondary=Buddy,
+                              primaryjoin=Buddy.c.user1_id == id,
+                              secondaryjoin=Buddy.c.user2_id == id)
     tiny_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
     thumbnail_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
     large_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
