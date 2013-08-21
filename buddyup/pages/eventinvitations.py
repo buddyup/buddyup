@@ -1,10 +1,9 @@
 from flask import g, request, flash, redirect, url_for, session, abort
-from datetime import datetime
 
 from buddyup.app import app
 from buddyup.database import User, EventInvitation, EventMembership, db, Event
-from buddyup.templating import render_template
-from buddyup.util import args_get, login_required, form_get
+from buddyup.util import login_required
+from buddyup.pages.buddyinvitations import invite_list
 
 @login_required
 def event_invitation_view_all():
@@ -42,19 +41,17 @@ def event_invitation_accept(invitation_id):
         abort(403)
 
     event_invitation = EventInvitation.query.get_or_404(invitation_id)
-    if EventMembership.query.filter_by(event_id=event_invitation.event_id,
-            user_id=event_invitation.user_id).first() is None:
-        new_attendance_record = EventMembership(event_id=event_invitation.event_id,
-                user_id=event_invitation.user_id)
-        db.session.add(new_attendance_record)
+    event = Event.query.get_or_404(event_invitation.event_id)
+    if not g.user.events.filter_by(id=event.id):
+        g.user.events.append(event)
         db.session.delete(event_invitation)
         db.session.commit()
-        #TODO: NOT SURE WHAT'S NEXT!
-        pass
+        flash("The new event has been successfully added.")
 
     else:
-        #TODO: SAYING HES ALREADY IN!
-        pass
+        flash("This event has already been added.")
+
+    return redirect(url_for('invite_list'))
 
 @app.route('/decline/event/<int:invitation_id>', methods=['POST'])
 def event_invitation_decline(invitation_id):
@@ -64,4 +61,5 @@ def event_invitation_decline(invitation_id):
     event_invitation = EventInvitation.query.get_or_404(invitation_id)
     event_invitation.delete()
     db.session.commit()
+    return redirect(url_for('invite_list'))
 
