@@ -2,7 +2,8 @@ from flask import g, request, flash, redirect, url_for, session, abort
 
 from buddyup.app import app
 from buddyup.database import User, EventInvitation, EventMembership, db, Event
-from buddyup.util import login_required, render_template
+from buddyup.util import login_required
+from buddyup.templateing import render_template
 from buddyup.pages.buddyinvitations import invite_list
 
 
