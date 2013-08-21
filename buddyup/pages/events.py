@@ -6,7 +6,7 @@ from functools import partial
 import re
 
 from buddyup.app import app
-from buddyup.database import Event, Course, EventMembership, db
+from buddyup.database import Event, Course, EventInvitation, db
 from buddyup.templating import render_template
 from buddyup.util import (args_get, login_required, form_get, check_empty,
                           events_to_json, checked_regexp)
@@ -77,7 +77,9 @@ def event_view(event_id):
 @app.route('/event/search')
 @login_required
 def event_search():
-    return render_template('group/search.html')
+    return render_template('group/search.html',
+                           courses=g.user.courses.all(),
+                           selected=lambda _: False)
 
 
 @app.route('/event/search_results')
@@ -94,38 +96,66 @@ def event_search_results():
     # TODO: Addition ordering?
     query = Event.query
     query = query.order_by(Event.start)
+    query = query.filter(Event.start > datetime.now())
 
     course = get_int('course')
-    # -1 indicates no course selected, so don't filter
+    # -1 indicates no course selected, so use all courses
     if course >= 0:
-        query = query.filter_by(course=course)
-
-    page = args_get('page', convert=int, default=0)
-    if page < 0:
-        page = 0
+        query = query.filter_by(course_id=course)
     else:
-        page = page - 1
-        query = query.filter(start < Event.start).filter(end > Event.end)
+        course_ids = [course.id for course in g.user.courses.all()]
+        query = query.filter(Event.course_id.in_(course_ids))
     
+    date_text = args_get('date')
+    if date_text:
+        date = parse_date(date_text, "Date")
+        query = query.filter(Event.start > date,
+                             Event.start < (date + timedelta(day=1)))
+    else:
+        query = query.filter(Event.start > datetime.now())
+        
     
-    events = [event for event in query.all()
-              if event.time.hour]
 
-    {
-        'name': event.name,
-        # TODO: strftime
-        # Month/Day/Year Hour:Minute
-        'timestamp': event.time.strftime("%m/%d/%Y %I:%M %p"),
-        'people_count': event.users.count(),
-        'view': url_for('event_view', group_id=event.id),
-        'attending': EventMembership.query.filter_by(user_id=g.user.id,
-                     event_id=event.id).count > 0,
-        'attend_link': url_for('event_attend', event_id=event.id),
-        'leave_link': url_for('event_leave', event_id=event.id),
-    }
+    #page = args_get('page', convert=int, default=0)
+    #if page < 0:
+        #page = 0
+    #else:
+        #page = page - 1
+        #query = query.filter(start < Event.start).filter(end > Event.end)
+    
+    # AM/PM searching is difficult to do cross database, so just filter app
+    # app side.
+    ampm = args_get('start_time', default='whynotboth')
+    if ampm == 'am':
+        events = (event for event in query.all()
+                  if event.start.hour < 12)
+    elif ampm == 'pm':
+        events = (event for event in query.all()
+                  if event.start.hour >= 12)
+    else:  # aka whynotboth
+        events = query.all()
 
-    return render_template('group/search_results.html',
-                           pagination=query.pagination())
+    search_results = []
+    for event in events:
+        search_results.append({
+            'name': event.name,
+            # TODO: strftime
+            # Month/Day/Year Hour:Minute
+            'timestamp': event.time.strftime("%m/%d/%Y %I:%M %p"),
+            'people_count': event.users.count(),
+            'view': url_for('event_view', group_id=event.id),
+            'attending': EventMembership.query.filter_by(user_id=g.user.id,
+                        event_id=event.id).count > 0,
+            'attend_link': url_for('event_attend', event_id=event.id),
+            'leave_link': url_for('event_leave', event_id=event.id),
+        })
+    if get_flashed_messages():
+        return redirect(url_for('event_search'))
+    else:
+        return render_template('group/search_result.html',
+                               groups=search_results)
+    #return render_template('group/search_results.html',
+    #                       pagination=query.pagination())
 
 @app.route('/event/create', methods=['GET','POST'])
 @login_required
@@ -178,7 +208,9 @@ def event_create():
                 name=name, location=location, start=start, end=end,
                 note=note)
         db.session.add(new_event_record)
+        g.user.add(new_event_record)
         db.session.commit()
+        #db.session.commit()
         #TODO: change this query to ensure it works as intended
         event_id = Event.query.filter_by(name=name).first().id
         return redirect(url_for('event_view', event_id=event_id))
@@ -193,9 +225,12 @@ def event_remove(event_id):
     else:
         # TODO: may want to send out messages to all users annoucing
         # This might be unnecessary
+        name = event.name
         db.session.delete(event)
+        EventInvitation.query.filter_by(event_id=event.id).delete()
         db.session.commit()
         # Redirect to view all events
+        flash("Deleted event " + event.name)
         return redirect(url_for('home'))
 
 
@@ -203,12 +238,9 @@ def event_remove(event_id):
 @login_required
 def attend_event(event_id):
     event = Event.query.get_or_404(event_id)
- 
-    if not is_attend(event_id):
-        new_attendance_record = EventMembership(event_id=event_id,
-                user_id=g.user.id)
-        db.session.add(new_attendance_record)
-        db.session.commit()
+    g.user.events.append(event)
+    db.session.commit()
+
     flash("Now attending group")
     return render_template('group/view.html')
 
@@ -218,9 +250,7 @@ def attend_event(event_id):
 def leave_event(event_id):
     event = Event.query.get_or_404(event_id)
     name = event.name
-    attendance_record = EventMembership.query.filter_by(event_id=event_id,
-            user_id=g.user.id).first_or_404()
-    attendance_record.delete()
+    g.user.events.remove(event)
     db.session.commit()
     return render_template('group/left.html', name=name)
 
