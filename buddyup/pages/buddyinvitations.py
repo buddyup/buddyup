@@ -37,7 +37,7 @@ def invite_send(user_name):
             flash("Your invitation is pending")
     else:
         flash("Already added!")
-        return request.referrer
+        return redirect(request.referrer)
 
 @app.route("/invite/deny/<int:inv_id>")
 @login_required
