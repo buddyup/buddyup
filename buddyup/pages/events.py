@@ -136,18 +136,18 @@ def event_search_results():
         events = query.all()
 
     search_results = []
+    already_attending = {event.id for event in g.user.events.all()}
     for event in events:
         search_results.append({
             'name': event.name,
             # TODO: strftime
             # Month/Day/Year Hour:Minute
-            'timestamp': event.time.strftime("%m/%d/%Y %I:%M %p"),
+            'timestamp': event.start.strftime("%m/%d/%Y %I:%M %p"),
             'people_count': event.users.count(),
-            'view': url_for('event_view', group_id=event.id),
-            'attending': EventMembership.query.filter_by(user_id=g.user.id,
-                        event_id=event.id).count > 0,
-            'attend_link': url_for('event_attend', event_id=event.id),
-            'leave_link': url_for('event_leave', event_id=event.id),
+            'view': url_for('event_view', event_id=event.id),
+            'attending': event.id in already_attending,
+            'attend_link': url_for('attend_event', event_id=event.id),
+            'leave_link': url_for('leave_event', event_id=event.id),
         })
     if get_flashed_messages():
         return redirect(url_for('event_search'))
@@ -208,7 +208,7 @@ def event_create():
                 name=name, location=location, start=start, end=end,
                 note=note)
         db.session.add(new_event_record)
-        g.user.add(new_event_record)
+        g.user.events.append(new_event_record)
         db.session.commit()
         #db.session.commit()
         #TODO: change this query to ensure it works as intended
@@ -242,7 +242,8 @@ def attend_event(event_id):
     db.session.commit()
 
     flash("Now attending group")
-    return render_template('group/view.html')
+    #return render_template('group/view.html')
+    return redirect(url_for('event_view', event_id=event_id))
 
 
 @app.route('/event/leave/<int:event_id>')
@@ -250,14 +251,12 @@ def attend_event(event_id):
 def leave_event(event_id):
     event = Event.query.get_or_404(event_id)
     name = event.name
-    g.user.events.remove(event)
+    if g.user.id == event.owner_id:
+        event.delete()
+    else:
+        g.user.events.remove(event)
     db.session.commit()
     return render_template('group/left.html', name=name)
-
-
-def is_attend(event_id):
-    return EventMembership.query.filter_by(event_id=event_id,
-            user_id=g.user.id).count() > 0
 
 
 @app.route('/calendar')
