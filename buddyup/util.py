@@ -107,12 +107,11 @@ def events_to_json(events):
     """
     json = []
     for event in events:
-        date = event.date.strftime("%Y-%m-%d %H:%M")
         json.append({
             'id': event.id,
             'title': event.name,
-            'start': date,
-            'end': date,
+            'start': event.start.strftime("%Y-%m-%d %H:%M"),
+            'end': event.end.strftime("%Y-%m-%d %H:%M"),
             'url': url_for('event_view', event_id=event.id),
         })
     return json

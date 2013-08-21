@@ -2,7 +2,8 @@ from flask import url_for, redirect, g
 
 from buddyup.app import app
 from buddyup.templating import render_template
-from buddyup.util import login_required
+from buddyup.util import login_required, events_to_json
+from buddyup.database import Event
 
 # Expect behavior: '/' redirects to 
 
@@ -18,7 +19,12 @@ def index():
 @app.route('/home')
 @login_required
 def home():
-    return render_template('index.html')
+    # select events for all classes we are in
+    events = []
+    for course in g.user.courses.all():
+        events.extend(course.events)
+    event_json = events_to_json(events)
+    return render_template('index.html', events_json=event_json)
 
 
 @app.route('/help')
