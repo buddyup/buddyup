@@ -48,11 +48,11 @@ $(function() {
 			name="start">
 		<select style="width:80px" name="start_ampm">
 			{% if start_ampm == 'am' %}
-				<option>AM</option>
-				<option>PM</option>
+				<option value="am">AM</option>
+				<option value="pm">PM</option>
 			{% else %}
-				<option>AM</option>
-				<option selected>PM</option>
+				<option value="am">AM</option>
+				<option value="pm" selected>PM</option>
 			{% endif %}
 		</select>
 
@@ -60,11 +60,11 @@ $(function() {
 			value="{{ end }}">
 		<select style="width:80px" name="end_ampm">
 			{% if end_ampm == 'am' %}
-				<option>AM</option>
-				<option>PM</option>
+				<option value="am">AM</option>
+				<option value="pm">PM</option>
 			{% else %}
-				<option>AM</option>
-				<option selected>PM</option>
+				<option value="am">AM</option>
+				<option value="pm" selected>PM</option>
 			{% endif %}
 		</select>
 

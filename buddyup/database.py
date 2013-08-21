@@ -24,6 +24,15 @@ Buddy = db.Table('buddy',
     )
 
 
+class BuddyInvitation(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    text = db.Column(db.UnicodeText)
+    rejected = db.Column(db.Boolean, default=False)
+    #Question: just removed it from the db if rejected?
+
+
 # Main tables
 
 class Course(db.Model):
@@ -54,12 +63,15 @@ class User(db.Model):
     buddies = db.relationship('User', secondary=Buddy,
                               primaryjoin=Buddy.c.user1_id == id,
                               secondaryjoin=Buddy.c.user2_id == id)
-    buddy_inv = db.relationship('User', secondary=Buddy,
-                              primaryjoin=Buddy.c.user1_id == id,
-                              secondaryjoin=Buddy.c.user2_id == id)
-    group_inv = db.relationship('User', secondary=Buddy,
-                              primaryjoin=Buddy.c.user1_id == id,
-                              secondaryjoin=Buddy.c.user2_id == id)
+    buddy_inv = db.relationship('BuddyInvitation', backref='sender',
+                                primaryjoin=BuddyInvitation.sender_id == id)
+    
+#    buddy_inv = db.relationship('User', secondary=BuddyInvitation,
+#                                primaryjoin=BuddyInvitation.c.receiver_id == id,
+#                                secondaryjoin=BuddyInvitation.c.sender_id == id)
+#    group_inv = db.relationship('User', secondary=EventInvitation,
+#                                primaryjoin=EventInvitation.c.event_id == id,
+#                                secondaryjoin=EventInvitation.c.user_id == id)
     tiny_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
     thumbnail_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
     large_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
@@ -154,20 +166,14 @@ class Notes(db.Model):
     def __repr__(self):
         return '<NotesComment %r>' % self.id
 '''
-class BuddyInvitation(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    text = db.Column(db.UnicodeText)
-    rejected = db.Column(db.Boolean, default=False)
-    #Question: just removed it from the db if rejected?
+
 
 class EventInvitation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     event_id = db.Column(db.Integer, db.ForeignKey('event.id'))
-    rejected = db.Column(db.Boolean, default=False)
+
 
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)

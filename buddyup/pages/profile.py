@@ -128,7 +128,7 @@ def profile_edit():
             if isinstance(record, Location):
                 return user.location_id == record.id
             elif isinstance(record, Course):
-                return user.courses.filter_by(id=record.id) is not None
+                return user.courses.filter_by(id=record.id).count() != 0
             else:
                 raise TypeError
         locations = Location.query.all()
