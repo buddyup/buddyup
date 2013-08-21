@@ -35,6 +35,7 @@ def invite_send(user_name):
             return redirect(url_for('invite_list'))
         else:
             flash("Your invitation is pending")
+            return redirect(request.referrer)
     else:
         flash("Already added!")
         return redirect(request.referrer)

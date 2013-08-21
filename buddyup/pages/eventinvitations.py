@@ -13,27 +13,27 @@ def event_invitation_view_all():
 
 @app.route('/invite/event/<int:event_id>/<user_name>', methods=['GET', 'POST'])
 @login_required
-def invite_to_event(event_id, user_name):
-    event_invitation_send(event_id, user_name)
-
-
-@login_required
 def event_invitation_send(event_id, user_name):
+    if (user_name == g.user.user_name):
+        abort(403)
+    
     Event.query.get_or_404(event_id)
     receiver = User.query.filter_by(user_name==user_name).first_or_404()
     
     if EventMembership.query.filter_by(event_id=event_id,
             user_id=receiver.id) is None:
-        if EventInvitation.query.filter_by(sender_id=g.user.id,
-                receiver_id=receiver.id).first() is None:
+        if not EventInvitation.query.filter_by(sender_id=g.user.id,
+                receiver_id=receiver.id):
             new_invitation_record = EventInvitation(sender_id=g.user.id,
                     receiver_id=receiver.id, event_id=event_id)
             db.session.add(new_invitation_record)
             db.session.commit()
-
+        else:
+            flash("Your invitation is pending")
+            return redirect(request.referrer)
     else:
-        #TODO: SAYING THAT USER IS ALREADY IN!
-        pass
+        flash("Already in!")
+        return redirect(request.referrer)
 
 
 @app.route('/accept/event/<int:invitation_id>', methods=['POST'])
