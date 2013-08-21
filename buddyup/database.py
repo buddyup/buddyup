@@ -31,6 +31,13 @@ class BuddyInvitation(db.Model):
     text = db.Column(db.UnicodeText)
     rejected = db.Column(db.Boolean, default=False)
     #Question: just removed it from the db if rejected?
+    
+
+class EventInvitation(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    event_id = db.Column(db.Integer, db.ForeignKey('event.id'))
 
 
 # Main tables
@@ -63,43 +70,29 @@ class User(db.Model):
     buddies = db.relationship('User', secondary=Buddy,
                               primaryjoin=Buddy.c.user1_id == id,
                               secondaryjoin=Buddy.c.user2_id == id)
-    buddy_inv = db.relationship('BuddyInvitation', backref='sender',
-                                primaryjoin=BuddyInvitation.sender_id == id)
-    
-#    buddy_inv = db.relationship('User', secondary=BuddyInvitation,
-#                                primaryjoin=BuddyInvitation.c.receiver_id == id,
-#                                secondaryjoin=BuddyInvitation.c.sender_id == id)
-#    group_inv = db.relationship('User', secondary=EventInvitation,
-#                                primaryjoin=EventInvitation.c.event_id == id,
-#                                secondaryjoin=EventInvitation.c.user_id == id)
-    tiny_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
-    thumbnail_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
-    large_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
+    buddy_inv = db.relationship('BuddyInvitation', backref='receiver',
+                                primaryjoin=BuddyInvitation.receiver_id == id)
+    event_inv = db.relationship('EventInvitation', backref='receiver',
+                                primaryjoin=EventInvitation.receiver_id == id)
+    tiny_photo_id = db.Column(db.Integer, db.ForeignKey('photo.id'))
+    thumbnail_photo_id = db.Column(db.Integer, db.ForeignKey('photo.id'))
+    large_photo_id = db.Column(db.Integer, db.ForeignKey('photo.id'))
 
 
 class Photo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.UnicodeText, default=u"")
+    x = db.Column(db.Integer)
+    y = db.Column(db.Integer)
     # TODO: Amazon S3 bucket and friends
-    
-    
-#    courses = db.relationship('Course', secondary=CourseMembership,
-#                              lazy='dynamic')
-#    events = db.relationship('Event', secondary=EventMembership,
-#                             lazy='dynamic')
-#    sent_messages = db.relationship('Message', foreign_keys='message.sender_id',
-#                                    lazy='dynamic')
-#    received_messages = db.relationship('Message', backref="receiver",
-#                                        lazy='dynamic')
-#    invitations = db.relationship('pages/Invitation',
-#                              foreign_keys='invitation.receiver_id')
 
     def __repr__(self):
-        return '<User %r>' % self.user_name
+        return '<Photo %r>' % self.id
 
 class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    owner = db.relationship("User")
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
     name = db.Column(db.UnicodeText)
     location = db.Column(db.UnicodeText)
@@ -167,12 +160,6 @@ class Notes(db.Model):
         return '<NotesComment %r>' % self.id
 '''
 
-
-class EventInvitation(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    event_id = db.Column(db.Integer, db.ForeignKey('event.id'))
 
 
 class Question(db.Model):

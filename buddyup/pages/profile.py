@@ -26,7 +26,6 @@ def profile_create():
     else:
         user = g.user
         name = form_get('name')
-        course = form_get('course', convert=int)
         check_empty(name, "Full Name")
         location = form_get('location', convert=int)
         if Location.query.get(location) is None:
@@ -38,10 +37,11 @@ def profile_create():
         
         # If anything has been flashed, there was an error
         if get_flashed_messages():
+            course_ids = set(map(int, request.form.getlist('course')))
             # Define the appropriate selected() function
             def selected(record):
                 if isinstance(record, Course):
-                    return record.id == course
+                    return record.id in course_ids
                 elif isinstance(record, Location):
                     return record.id == location
                 else:
@@ -124,11 +124,12 @@ def update_courses(course_ids):
 def profile_edit():
     user = g.user
     if request.method == 'GET':
+        course_ids = {course.id for course in user.courses}
         def selected(record):
             if isinstance(record, Location):
                 return user.location_id == record.id
             elif isinstance(record, Course):
-                return user.courses.filter_by(id=record.id).count() != 0
+                return record.id in course_ids
             else:
                 raise TypeError
         locations = Location.query.all()
@@ -141,7 +142,6 @@ def profile_edit():
                                )
     else:
         name = form_get('name')
-        course = form_get('course', convert=int)
         check_empty(name, "Full Name")
         location = form_get('location', convert=int)
         if Location.query.get(location) is None:
@@ -154,9 +154,10 @@ def profile_edit():
         # If anything has been flashed, there was an error
         if get_flashed_messages():
             # Define the appropriate selected() function
+            course_ids = set(map(int, request.form.getlist('course')))
             def selected(record):
                 if isinstance(record, Course):
-                    return record.id == course
+                    return record.id in course_ids
                 elif isinstance(record, Location):
                     return record.id == location
                 else:

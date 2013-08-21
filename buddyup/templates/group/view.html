@@ -15,7 +15,6 @@
 	<div class="well span2">
 		<h5 style="text-align:center"> Attendants </h5>
 		{% for user in event_users %}
-		{#- Should this be class="container"?
 		<div id="container" style="white-space:nowrap;margin-bottom:2px;">
 			<div id="image" style="display:inline;">
 				<img src="thumbnail(user)" width="30" height="22"/>
@@ -36,8 +35,9 @@
 			<font color="green" style="margin-left:350px;"> Created by <b> {{ owner.full_name }} </b> </font> <br>
 			<!-- TODO: timestamp -->
 			<font style="margin-left:10px;" color="003CC8">
-				Date: {{ owner.time.strftime('') </font> <br>
-			<font style="margin-left:10px;" color="8C4620">Time: {{ owner.time.strftime()</font>
+				Date: {{ event_record.start.strftime('') }} </font> <br>
+			<font style="margin-left:10px;" color="8C4620">Start: {{ event_record.start.strftime('') }}</font><br>
+			<font style="margin-left:10px;" color="8C4620">End: {{ event_record.end.strftime('') }}</font><br>
 			<hr>
 			</text>
 	        <div class="row"><div class="span3"></div> 
@@ -63,7 +63,7 @@
 	        
 	        </div>
 		</div>
-		<div class="btn btn-medium btn-danger" style="margin-left:2px;">Delete Event </div>
+		<a class="btn btn-medium btn-danger" style="margin-left:2px;" href="{{ remove_url }}">Delete Event </a>
 		
 		
 

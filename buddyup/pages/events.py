@@ -70,6 +70,7 @@ def event_view(event_id):
                             event_record=event_record,
                             is_owner=is_owner,
                             remove_url=remove_url,
+                            owner=event_record.owner,
                             )
 
 
@@ -170,10 +171,10 @@ def event_create():
                                    end=form_get('end'),
                                    end_ampm=form_get('end_ampm'))
         # Check that the user is in this course
-        if user.courses.filter_by(course_id=course_id).count() == 0:
+        if user.courses.filter_by(id=course_id).count() == 0:
             abort(403)
         # Again, user_id instead of owner_id
-        new_event_record = Event(user_id=user.id, course_id=course_id,
+        new_event_record = Event(owner_id=user.id, course_id=course_id,
                 name=name, location=location, start=start, end=end,
                 note=note)
         db.session.add(new_event_record)
@@ -185,17 +186,17 @@ def event_create():
 
 @app.route('/event/cancel/<int:event_id>')
 @login_required
-def remove_event(event_id):
+def event_remove(event_id):
     event = Event.query.get_or_404(event_id)
     if event.owner_id != g.user.id:
         abort(403)
     else:
         # TODO: may want to send out messages to all users annoucing
         # This might be unnecessary
-        event.delete()
+        db.session.delete(event)
         db.session.commit()
         # Redirect to view all events
-        return redirect(url_for('event_view'))
+        return redirect(url_for('home'))
 
 
 @app.route('/event/attend/<int:event_id>')
