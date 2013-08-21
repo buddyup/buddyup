@@ -46,6 +46,7 @@ class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.UnicodeText)
     instructor = db.Column(db.UnicodeText)
+    events = db.relationship('Event', backref='course')
 
     def __repr__(self):
         return '<Course %r>' % self.crn

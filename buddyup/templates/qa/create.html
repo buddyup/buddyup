@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block extrahead %}
+<style>
+	.span6  {width: 400px;}
+	.span3  {width: 200px;}
+</style>
+{% endblock %}
+
+{% block content %}
+<br>
+<h1 style="text-align:center;">Start your question</h1>
+
+<form action={{ url_for() }} style="margin-top:50px;margin-left:300px;">
+	<font>Tittle: <input type="textbox" name="question_tittle" class="span3"></input></font>
+	<br><br>
+	<font>Type your question:</font>
+	<br>
+	<textarea class="span5" style="height: 150px;" name="question_contain" form="usrform" ></textarea>
+	<br>
+	<input type="submit" value="Post" class="btn btn-success">
+</form>
+
+{% endblock %}

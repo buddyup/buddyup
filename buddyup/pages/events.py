@@ -230,15 +230,11 @@ def is_attend(event_id):
             user_id=g.user.id).count() > 0
 
 
-def calendar(start, end):
-    query = Event.query
-    query = query.filter(Event.time >= start)
-    query = query.filter(Event.time <= end)
-    return events_to_json(query.all())
-
-
 @app.route('/calendar')
 @login_required
 def calendar():
-    return render_template("group/calendar.html",
-                           event_json=events_to_json([]))
+    events = []
+    for course in g.user.courses.all():
+        events.extend(course.events)
+    event_json = events_to_json(events)
+    return render_template('group/calendar.html', events_json=event_json)
