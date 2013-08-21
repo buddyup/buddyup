@@ -29,8 +29,8 @@
 					<img src="{{ img('twitter.png') }}">
 				</a>
 			{% endif %}
-			<form action="{{ url_for('') }}" method="POST">
-			<input class="btn btn-large btn-primary" type="submit" value="save"> Invite
+			<form action="{{ url_for('invite_send', user_name=buddy_record.user_name) }}" method="POST">
+			<input class="btn btn-large btn-primary" type="submit" value="Invite">
 			</form>
 	</div>
 </div>

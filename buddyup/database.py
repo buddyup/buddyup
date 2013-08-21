@@ -69,6 +69,7 @@ class User(db.Model):
                              secondary=EventMembership,
                              backref=db.backref('users', lazy="dynamic"))
     buddies = db.relationship('User', secondary=Buddy,
+                            lazy='dynamic',
                               primaryjoin=Buddy.c.user1_id == id,
                               secondaryjoin=Buddy.c.user2_id == id)
     sent_bud_inv = db.relationship('BuddyInvitation', backref='sender',

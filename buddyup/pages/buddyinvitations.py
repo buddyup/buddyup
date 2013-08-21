@@ -1,4 +1,4 @@
-from flask import g, flash
+from flask import g, flash, redirect, url_for, abort
 
 from buddyup.app import app
 from buddyup.database import db, BuddyInvitation, User, Buddy
@@ -22,32 +22,37 @@ def invite_list():
 @app.route("/invite/send/<user_name>", methods=['POST'])
 @login_required
 def invite_send(user_name):
-    other_user_record = User.query.filter(user_name==user_name).first_or_404()
-    invite_record = BuddyInvitation(sender_id=g.user_record.id,
-                               receiver_id=other_user_record.id)
-    db.session.add(invite_record)
-    db.session.commit()
-    flash("Sent invitation to " + user_name)
-    return render_template("invite/list.html",
-                           other_user=other_user_record)
+    if (user_name == g.user.user_name):
+        abort(403)
+    other_user_record = User.query.filter_by(user_name=user_name).first_or_404()
+    if g.user.buddies.filter_by(id=other_user_record.id).count() == 0:
+        if not other_user_record.sent_bud_inv:
+            invite_record = BuddyInvitation(sender_id=g.user.id,
+                                receiver_id=other_user_record.id)
+            db.session.add(invite_record)
+            db.session.commit()
+            flash("Sent invitation to " + user_name)
+            return redirect(url_for('invite_list'))
+        else:
+            flash("Your invitation is pending")
+    else:
+        flash("Already added!")
 
-
-@app.route("/invite/deny/<user_name>", methods=['POST'])
+@app.route("/invite/deny/<int:inv_id>")
 @login_required
-def invite_deny(user_name):
-    other_user_record = User.query.filter(user_name==user_name).first_or_404()
-    invite_record = BuddyInvitation.query.filter_by(receiver_id=other_user_record.id).first_or_404()
-    invite_record.delete()
+def invite_deny(inv_id):
+    inv_record = BuddyInvitation.query.get_or_404(inv_id)
+    name = inv_record.sender.full_name
+    db.session.delete(inv_record)
     db.session.commit()
-    flash("Ignored invitation from " + user_name)
-    return render_template("invite/list.html",
-                           other_user=other_user_record)
+    flash("Ignored invitation from " + name)
+    return redirect(url_for('invite_list'))
 
 
-@app.route("/invite/accept/<user_name>", methods=['POST'])
+@app.route("/invite/accept/<int:inv_id>")
 @login_required
-def invite_accept(user_name):
-    other_user_record = User.query.filter(user_name==user_name).first_or_404()
+def invite_accept(inv_id):
+    '''other_user_record = User.query.filter(user_name==user_name).first_or_404()
     invite_record = BuddyInvitation.query.filter_by(receiver_id=other_user_record.id).first_or_404()
     invite_record.delete()
     # Us -> Them record
@@ -60,3 +65,15 @@ def invite_accept(user_name):
     flash("Accepted invitation from " + user_name)
     return render_template("invite/list.html",
                            other_user=other_user_record)
+    '''
+    inv_record = BuddyInvitation.query.get_or_404(inv_id)
+    receiver = g.user
+    sender = inv_record.sender
+    # Sender -> Receiver record
+    sender.buddies.append(receiver)
+    # Receiver -> Sender
+    receiver.buddies.append(sender)
+    db.session.delete(inv_record)
+    db.session.commit()
+    flash("Accepted invitation from " + sender.full_name)
+    return redirect(url_for('invite_list'))
