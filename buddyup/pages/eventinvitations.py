@@ -2,13 +2,37 @@ from flask import g, request, flash, redirect, url_for, session, abort
 
 from buddyup.app import app
 from buddyup.database import User, EventInvitation, EventMembership, db, Event
-from buddyup.util import login_required
+from buddyup.util import login_required, render_template
 from buddyup.pages.buddyinvitations import invite_list
+
 
 @login_required
 def event_invitation_view_all():
     event_invitations = g.user.received_eve_inv
     return event_invitations
+
+
+@app.route('/invite/event/<int:event_id>', methods = ['GET', 'POST'])
+@login_required
+def event_invitation_send_list(event_id):
+    Event.query.get_or_404(event_id)
+    
+    # Only attendances have the permission to invite to the event
+    if not g.user.events.get(event_id):
+        abort(403)
+
+    if request.method == 'GET':
+        return render_template('group/invite.html', event_id=event_id)
+    else:
+        user_ids = map(int, request.form.getlist('users'))
+        for user_id in user_ids:
+            new_inv_record = EventInvitation(sender_id=g.user.id,
+                    receiver_id=user_id,
+                    event_id = event_id)
+            db.session.add(new_inv_record)
+        db.session.commit()
+        return redirect(url_for('event_view', event_id=event_id))
+
 
 @app.route('/invite/event/<int:event_id>/<user_name>', methods=['GET', 'POST'])
 @login_required
