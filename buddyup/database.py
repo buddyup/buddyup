@@ -77,7 +77,6 @@ class User(db.Model):
     buddies = db.relationship('User', secondary=Buddy,
                               primaryjoin=Buddy.c.user1_id == id,
                               secondaryjoin=Buddy.c.user2_id == id)
-<<<<<<< HEAD
     sent_bud_inv = db.relationship('BuddyInvitation', backref='sender',
                                 primaryjoin=BuddyInvitation.sender_id == id)
     received_bud_inv = db.relationship('BuddyInvitation', backref='receiver',
@@ -95,15 +94,6 @@ class User(db.Model):
     tiny_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
     thumbnail_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
     large_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
-=======
-    buddy_inv = db.relationship('BuddyInvitation', backref='receiver',
-                                primaryjoin=BuddyInvitation.receiver_id == id)
-    event_inv = db.relationship('EventInvitation', backref='receiver',
-                                primaryjoin=EventInvitation.receiver_id == id)
-    tiny_photo_id = db.Column(db.Integer, db.ForeignKey('photo.id'))
-    thumbnail_photo_id = db.Column(db.Integer, db.ForeignKey('photo.id'))
-    large_photo_id = db.Column(db.Integer, db.ForeignKey('photo.id'))
->>>>>>> 339999d337329d91d16ebca54cb3719424e376ac
 
 
 class Photo(db.Model):
@@ -115,6 +105,7 @@ class Photo(db.Model):
 
     def __repr__(self):
         return '<Photo %r>' % self.id
+
 
 class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -189,10 +180,6 @@ class Notes(db.Model):
 '''
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 339999d337329d91d16ebca54cb3719424e376ac
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
