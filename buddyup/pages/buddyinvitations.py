@@ -33,22 +33,21 @@ def invite_send(user_name):
     return redirect(url_for('invite_list'))
 
 
-@app.route("/invite/deny/<user_name>", methods=['POST'])
+@app.route("/invite/deny/<int:inv_id>", methods=['POST'])
 @login_required
-def invite_deny(user_name):
-    other_user_record = User.query.filter(user_name==user_name).first_or_404()
-    invite_record = BuddyInvitation.query.filter_by(receiver_id=other_user_record.id).first_or_404()
-    invite_record.delete()
+def invite_deny(inv_id):
+    inv_record = BuddyInvitation.query.get_or_404(inv_id)
+    name = inv_record.sender.full_name
+    inv_record.delete()
     db.session.commit()
-    flash("Ignored invitation from " + user_name)
-    return render_template("invite/list.html",
-                           other_user=other_user_record)
+    flash("Ignored invitation from " + name)
+    return redirect(url_for('invite_list'))
 
 
-@app.route("/invite/accept/<user_name>", methods=['POST'])
+@app.route("/invite/accept/<int:inv_id>", methods=['POST'])
 @login_required
-def invite_accept(user_name):
-    other_user_record = User.query.filter(user_name==user_name).first_or_404()
+def invite_accept(inv_id):
+    '''other_user_record = User.query.filter(user_name==user_name).first_or_404()
     invite_record = BuddyInvitation.query.filter_by(receiver_id=other_user_record.id).first_or_404()
     invite_record.delete()
     # Us -> Them record
@@ -61,3 +60,17 @@ def invite_accept(user_name):
     flash("Accepted invitation from " + user_name)
     return render_template("invite/list.html",
                            other_user=other_user_record)
+    '''
+    inv_record = BuddyInvitation.query.get_or_404(inv_id)
+    receiver = g.user
+    sender = inv_record.sender
+    # Sender -> Receiver record
+    buddy_record1 = Buddy(user1_id = receiver.id, user2_id=sender.id)
+    # Receiver -> Sender
+    buddy_record2 = Buddy(user1_id = sender.id, user2_id=receiver.id)
+    db.session.add(buddy_record1)
+    db.session.add(buddy_record2)
+    inv_record.delete()
+    db.session.commit()
+    flash("Accepted invitation from " + sender.full_name)
+    return redirect(url_for('invite_list'))
