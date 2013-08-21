@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% from "lib.html" import flashed %}
+  
+{% block content %}
+<h2 style="text-align:center;"> My List  </h2>
+<br>
+<div class="container">
+
+    <div class="well span5">
+		<strong><font style="margin-left:150px;" color="2896FF"> My Buddies  </font></strong>
+		<div style="margin-top:20px;">
+			<ul>
+				{% for user in buddies %}
+				<li>
+					<a href="{{ profile(user) }}">
+						<img src="{{ photo_thumbnail(user) }}" width="50px" height="50px">
+						{{ user.full_name }}
+					</a>
+				</li>
+				{% endfor %}
+			</ul>   
+		</div>
+	
+	</div>
+    <div class="well span5">
+		<strong><font style="margin-left:150px;" color="2896FF";> My Groups </font></strong>
+		<div style="margin-top:20px;">
+			<ul>
+				{% for event in groups %}
+				<li>
+					<p style="float: left;"><img src="{{ profile(event) }}" height="50px" width="50px" border="1px"></p>
+						<font style="margin-left:10px;" color="2BA515"><b> {{ event.name }} </b> <br> </font>	
+				</li>
+				{% endfor %}
+			</ul>   
+	</div>
+</div>
+{% endblock %}
