@@ -8,7 +8,7 @@ from buddyup.util import args_get, login_required, form_get
 
 @login_required
 def event_invitation_view_all():
-    event_invitations = EventInvitation.query.filter_by(receiver_id=g.user.id).all()
+    event_invitations = g.user.received_eve_inv
     return event_invitations
 
 @app.route('/invite/event/<int:event_id>/<user_name>', methods=['GET', 'POST'])

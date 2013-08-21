@@ -24,6 +24,15 @@ Buddy = db.Table('buddy',
     )
 
 
+# Main tables
+
+class EventInvitation(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    event_id = db.Column(db.Integer, db.ForeignKey('event.id'))
+
+
 class BuddyInvitation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -32,8 +41,6 @@ class BuddyInvitation(db.Model):
     rejected = db.Column(db.Boolean, default=False)
     #Question: just removed it from the db if rejected?
 
-
-# Main tables
 
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -63,9 +70,14 @@ class User(db.Model):
     buddies = db.relationship('User', secondary=Buddy,
                               primaryjoin=Buddy.c.user1_id == id,
                               secondaryjoin=Buddy.c.user2_id == id)
-    buddy_inv = db.relationship('BuddyInvitation', backref='sender',
+    sent_bud_inv = db.relationship('BuddyInvitation', backref='sender',
                                 primaryjoin=BuddyInvitation.sender_id == id)
-    
+    received_bud_inv = db.relationship('BuddyInvitation', backref='receiver',
+                                primiaryjoin=BuddyInvitation.receiver_id==id)
+    sent_eve_inv = db.relationship('EventInvitation', backref='sender',
+                                primaryjoin=EventInvitation.sender_id==id)
+    received_eve_inv = db.relationship('EventInvitation', backref='receiver',
+                                primaryjoin=EventInvitation.receiver_id==id)
 #    buddy_inv = db.relationship('User', secondary=BuddyInvitation,
 #                                primaryjoin=BuddyInvitation.c.receiver_id == id,
 #                                secondaryjoin=BuddyInvitation.c.sender_id == id)
@@ -106,6 +118,7 @@ class Event(db.Model):
     start = db.Column(db.DateTime)
     end = db.Column(db.DateTime)
     note = db.Column(db.UnicodeText)
+    invitation = relationship('EventInvitation', backref=event)
     # TODO: this users relationship may be wrong
     #users = db.relationship('User', secondary=EventMembership,
     #                        lazy='dynamic')
@@ -166,13 +179,6 @@ class Notes(db.Model):
     def __repr__(self):
         return '<NotesComment %r>' % self.id
 '''
-
-
-class EventInvitation(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    event_id = db.Column(db.Integer, db.ForeignKey('event.id'))
 
 
 class Question(db.Model):
