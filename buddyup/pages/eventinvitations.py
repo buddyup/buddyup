@@ -4,7 +4,6 @@ from buddyup.app import app
 from buddyup.database import User, EventInvitation, EventMembership, db, Event
 from buddyup.util import login_required
 from buddyup.templating import render_template
-from buddyup.pages.buddyinvitations import invite_list
 
 
 @login_required
