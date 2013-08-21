@@ -38,7 +38,7 @@ def invite_send(user_name):
 def invite_deny(inv_id):
     inv_record = BuddyInvitation.query.get_or_404(inv_id)
     name = inv_record.sender.full_name
-    inv_record.delete()
+    db.session.delete(inv_record)
     db.session.commit()
     flash("Ignored invitation from " + name)
     return redirect(url_for('invite_list'))
@@ -65,12 +65,10 @@ def invite_accept(inv_id):
     receiver = g.user
     sender = inv_record.sender
     # Sender -> Receiver record
-    buddy_record1 = Buddy(user1_id = receiver.id, user2_id=sender.id)
+    sender.buddies.append(receiver.id)
     # Receiver -> Sender
-    buddy_record2 = Buddy(user1_id = sender.id, user2_id=receiver.id)
-    db.session.add(buddy_record1)
-    db.session.add(buddy_record2)
-    inv_record.delete()
+    receiver.buddies.append(sender.id)
+    db.session.delete(inv_record)
     db.session.commit()
     flash("Accepted invitation from " + sender.full_name)
     return redirect(url_for('invite_list'))
