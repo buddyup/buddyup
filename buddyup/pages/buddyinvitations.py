@@ -23,7 +23,7 @@ def invite_list():
 @login_required
 def invite_send(user_name):
     other_user_record = User.query.filter(user_name==user_name).first_or_404()
-    invite_record = BuddyInvitation(sender_id=g.user_record.id,
+    invite_record = BuddyInvitation(sender_id=g.user.id,
                                receiver_id=other_user_record.id)
     db.session.add(invite_record)
     db.session.commit()
