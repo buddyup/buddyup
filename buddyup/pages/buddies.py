@@ -10,8 +10,11 @@ from buddyup.database import User
 @app.route("/buddy/view/<user_name>")
 @login_required
 def buddy_view(user_name):
-    buddy_record = User.query.filter_by(user_name=user_name).first_or_404()
-    return render_template('buddy/view.html', buddy_record=buddy_record)
+    if (user_name == g.user.user_name):
+        return render_template('my/profile.html', buddy_record=g.user)
+    else:
+        buddy_record = User.query.filter_by(user_name=user_name).first_or_404()
+        return render_template('buddy/view.html', buddy_record=buddy_record)
 
 
 @app.route("/buddy/search")
