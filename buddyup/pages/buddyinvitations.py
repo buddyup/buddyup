@@ -25,13 +25,16 @@ def invite_send(user_name):
     if (user_name == g.user.user_name):
         abort(403)
     other_user_record = User.query.filter_by(user_name=user_name).first_or_404()
-    invite_record = BuddyInvitation(sender_id=g.user.id,
+    if BuddyInvitation.query.filter_by(sender_id=g.user.id,
+            receiver_id=other_user_record).first() is None:
+        invite_record = BuddyInvitation(sender_id=g.user.id,
                                receiver_id=other_user_record.id)
-    db.session.add(invite_record)
-    db.session.commit()
-    flash("Sent invitation to " + user_name)
-    return redirect(url_for('invite_list'))
-
+        db.session.add(invite_record)
+        db.session.commit()
+        flash("Sent invitation to " + user_name)
+        return redirect(url_for('invite_list'))
+    else:
+        flash("Your invitation is pending")
 
 @app.route("/invite/deny/<int:inv_id>")
 @login_required
@@ -65,9 +68,9 @@ def invite_accept(inv_id):
     receiver = g.user
     sender = inv_record.sender
     # Sender -> Receiver record
-    sender.buddies.append(receiver.id)
+    sender.buddies.append(receiver)
     # Receiver -> Sender
-    receiver.buddies.append(sender.id)
+    receiver.buddies.append(sender)
     db.session.delete(inv_record)
     db.session.commit()
     flash("Accepted invitation from " + sender.full_name)
