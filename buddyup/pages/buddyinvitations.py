@@ -1,4 +1,4 @@
-from flask import g, flash, redirect, url_for, abort
+from flask import g, flash, redirect, url_for, abort, request
 
 from buddyup.app import app
 from buddyup.database import db, BuddyInvitation, User, Buddy
@@ -37,6 +37,7 @@ def invite_send(user_name):
             flash("Your invitation is pending")
     else:
         flash("Already added!")
+        return redirect(request.referrer)
 
 @app.route("/invite/deny/<int:inv_id>")
 @login_required
