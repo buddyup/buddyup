@@ -3,7 +3,7 @@
 	<style>
 		color{color:red;}
 		#a{width:90%;}
-		.span7	{width: 450px;}
+		.span6	{width: 450px;}
 		.detail input
 		{
 			margin-top: -5px;
@@ -23,7 +23,8 @@
 {% block content %}
 <h1 style="text-align:center;"> Edit profile</h1>
 	  
-<div class="well span">
+<div class="span3"></div>
+	<div class="well span6">
 		<p> This information will appear in your public profile. Leave the fields blank if you'd prefer not to reveal any information.</p>
 		<form action="{{ url_for('profile_edit') }}" method="POST">
 			<label> Your Name <color> (*Required) </color> </label>  
