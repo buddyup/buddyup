@@ -33,7 +33,7 @@ def invite_send(user_name):
     return redirect(url_for('invite_list'))
 
 
-@app.route("/invite/deny/<int:inv_id>", methods=['POST'])
+@app.route("/invite/deny/<int:inv_id>")
 @login_required
 def invite_deny(inv_id):
     inv_record = BuddyInvitation.query.get_or_404(inv_id)
@@ -44,7 +44,7 @@ def invite_deny(inv_id):
     return redirect(url_for('invite_list'))
 
 
-@app.route("/invite/accept/<int:inv_id>", methods=['POST'])
+@app.route("/invite/accept/<int:inv_id>")
 @login_required
 def invite_accept(inv_id):
     '''other_user_record = User.query.filter(user_name==user_name).first_or_404()
