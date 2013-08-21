@@ -1,4 +1,4 @@
-from flask import g, flash, redirect, url_for
+from flask import g, flash, redirect, url_for, abort
 
 from buddyup.app import app
 from buddyup.database import db, BuddyInvitation, User, Buddy
@@ -22,6 +22,8 @@ def invite_list():
 @app.route("/invite/send/<user_name>", methods=['POST'])
 @login_required
 def invite_send(user_name):
+    if (user_name == g.user.user_name):
+        abort(403)
     other_user_record = User.query.filter(user_name==user_name).first_or_404()
     invite_record = BuddyInvitation(sender_id=g.user.id,
                                receiver_id=other_user_record.id)
