@@ -12,6 +12,9 @@ a {
 <br>
 <div class="span3"> </div>
  	<div class="well span6">
+		{% if groups|length == 0 %}
+			<p>No results</p>
+		{% endif %}
 		{% for group in groups %}
 		<div style="margin-top:20px;">
 			<text style="margin-left:10px;">
@@ -26,6 +29,7 @@ a {
 				<a href="{{ group.attend_link }}">
 				<div class="btn btn-medium btn-success" style="float: right;"> Attend </div>
 				</a>
+			{% endif %}
 			<hr>    
 		</div>
 		{% endfor %}

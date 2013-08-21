@@ -43,14 +43,14 @@ $(function() {
 		<label for="datepicker"> Date</label>
 			<input id="datepicker" type="text" class="span3" placeholder="mm/dd/yyyy" name="date" value="{{ date }}">
 		<label>Starting time:</label>
-		<label id="starttime" style="margin-left:10px;">
+		<label id="start_time" style="margin-left:10px;">
 			<input type="radio" name="start_time" id="am" value="am" style="margin-top:-5px;"> AM
 		</label>
 		<label>
 			<input type="radio" name="start_time" id="pm" value="pm" style="margin-top:-5px;"> PM
 		</label>
 		<label>
-			<input type="radio" name="start_time" id="whynotboth" value="whynotboth" style="margin-top:-5px;"> All day
+			<input type="radio" name="start_time" id="whynotboth" value="whynotboth" style="margin-top:-5px;" selected> All day
 		</label>
 		<input type="submit" value="Search" id ="btn-search" style="margin-top:20px;margin-left:270px;" class="btn btn-large btn-warning" >
 		</form>
