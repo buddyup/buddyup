@@ -18,7 +18,7 @@ def event_invitation_send_list(event_id):
     Event.query.get_or_404(event_id)
     
     # Only attendances have the permission to invite to the event
-    if not g.user.events.get(event_id):
+    if not g.user.events.filter_by(id=event_id).count():
         abort(403)
 
     if request.method == 'GET':
@@ -46,7 +46,7 @@ def event_invitation_send(event_id, user_name):
     if EventMembership.query.filter_by(event_id=event_id,
             user_id=receiver.id) is None:
         if not EventInvitation.query.filter_by(sender_id=g.user.id,
-                receiver_id=receiver.id):
+                receiver_id=receiver.id).count():
             new_invitation_record = EventInvitation(sender_id=g.user.id,
                     receiver_id=receiver.id, event_id=event_id)
             db.session.add(new_invitation_record)
