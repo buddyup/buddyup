@@ -40,13 +40,6 @@ class BuddyInvitation(db.Model):
     text = db.Column(db.UnicodeText)
     rejected = db.Column(db.Boolean, default=False)
     #Question: just removed it from the db if rejected?
-    
-
-class EventInvitation(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    event_id = db.Column(db.Integer, db.ForeignKey('event.id'))
 
 
 class Course(db.Model):
@@ -80,7 +73,7 @@ class User(db.Model):
     sent_bud_inv = db.relationship('BuddyInvitation', backref='sender',
                                 primaryjoin=BuddyInvitation.sender_id == id)
     received_bud_inv = db.relationship('BuddyInvitation', backref='receiver',
-                                primiaryjoin=BuddyInvitation.receiver_id==id)
+                                primaryjoin=BuddyInvitation.receiver_id==id)
     sent_eve_inv = db.relationship('EventInvitation', backref='sender',
                                 primaryjoin=EventInvitation.sender_id==id)
     received_eve_inv = db.relationship('EventInvitation', backref='receiver',
@@ -117,7 +110,7 @@ class Event(db.Model):
     start = db.Column(db.DateTime)
     end = db.Column(db.DateTime)
     note = db.Column(db.UnicodeText)
-    invitation = relationship('EventInvitation', backref=event)
+    invitation = db.relationship('EventInvitation', backref='event')
     # TODO: this users relationship may be wrong
     #users = db.relationship('User', secondary=EventMembership,
     #                        lazy='dynamic')
