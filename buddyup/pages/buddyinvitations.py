@@ -1,4 +1,4 @@
-from flask import g, flash
+from flask import g, flash, redirect, url_for
 
 from buddyup.app import app
 from buddyup.database import db, BuddyInvitation, User, Buddy
@@ -28,8 +28,7 @@ def invite_send(user_name):
     db.session.add(invite_record)
     db.session.commit()
     flash("Sent invitation to " + user_name)
-    return render_template("invite/list.html",
-                           other_user=other_user_record)
+    return redirect(url_for('invite_list'))
 
 
 @app.route("/invite/deny/<user_name>", methods=['POST'])
