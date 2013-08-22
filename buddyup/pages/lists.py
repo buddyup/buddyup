@@ -4,7 +4,7 @@ from buddyup.app import app
 from buddyup.templating import render_template
 
 
-@app.route("/my/groups_and_events")
+@app.route("/my/buddies_and_groups")
 def buddy_group_list():
     buddies = g.user.buddies.all()
     groups = g.user.events.all()

@@ -2,7 +2,7 @@
 {% block extrahead %}
 <style>
 .span1	{width: 40px;}
-.span2	{width: 100px;}
+.span2	{width: 200px;}
 .span5	{width: 500px;}
 .span6	{width: 550px;}
 </style>
@@ -31,8 +31,8 @@
  	<div class="well span6">
 		<div style="margin-top:10px;">
 			<text style="margin-left:10px;">
-			<font color="red"> <b> Group A </b> </font>	
-			<font color="green" style="margin-left:350px;"> Created by <b> {{ event_record.owner.full_name }} </b> </font> <br>
+			<font color="red"> <b> Group A </b> </font>	<br>
+			<font color="green"> Created by <b> {{ event_record.owner.full_name }} </b> </font> <br>
 			<font style="margin-left:10px;" color="003CC8">
 				Date: {{ event_record.start.strftime('%b %d, %Y') }} </font> <br>
 			<font style="margin-left:10px;" color="8C4620">Start: {{ event_record.start.strftime('%I:%M %p') }}</font><br>
@@ -52,8 +52,11 @@
 	        </div>
 		{% endfor %}
 	        
-	   	</div>
-	</div>
+	        </div>
+			<textarea class="span5" style="height: 150px;" name="answer_contain"></textarea>
+			<input type="submit" value="Submit" class="btn btn-success">
+		</div>
+
 		{% if is_owner %}
 		<a class="btn btn-medium btn-danger" style="margin-left:2px;" href="{{ remove_url }}">Delete Event </a>
 		{% elif in_event %}
