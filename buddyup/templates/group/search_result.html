@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% from "lib.html" import flash_all %}
 {% block extrahead %}
 <style type="text/css">
 a {
@@ -8,6 +9,7 @@ a {
 </style>
 {% endblock %}  
 {% block content %}
+{{ flash_all() }}
 <h1 style="text-align:center"> Group Result Page </h1>
 <br>
 <div class="span3"> </div>

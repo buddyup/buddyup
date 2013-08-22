@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% from "lib.html" import flash_all %}
 
 {% block title %}Home{% endblock %}
 
@@ -31,6 +32,7 @@
 
 
 {% block content %}
+{{ flash_all() }}
 <br>
 <h2 style="text-align:center;"> My Dashboard </h2>
 <div id="wrapper">

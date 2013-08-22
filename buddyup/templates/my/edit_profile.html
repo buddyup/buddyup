@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% from "lib.html" import flash_all %}
  {% block extrahead %}
 	<style>
 		color{color:red;}
@@ -21,6 +22,7 @@
 
 {% endblock %} 
 {% block content %}
+{{ flash_all() }}
 <h1 style="text-align:center;"> Edit profile</h1>
 	  
 <div class="span3"></div>

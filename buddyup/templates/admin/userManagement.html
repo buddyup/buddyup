@@ -1,4 +1,5 @@
 {% extends "admin/adminlayout.html" %}
+{% from "lib.html" import flash_all %}
 
 {% block title %} User Management {% endblock %}
 {% block extrahead %}
@@ -84,6 +85,7 @@
 
 	
 {% block content %}
+{{ flash_all() }}
 <br>
 <div class="span12">
 	<div class="box">

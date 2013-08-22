@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
-	
+{% from "lib.html" import flash_all %}
 {% block content %}
-
+{{ flash_all() }}
 <br>
 <div class="row">
 	<div class="span4 offset1">
