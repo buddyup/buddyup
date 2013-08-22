@@ -1,16 +1,12 @@
 {% extends "admin/adminlayout.html" %}
-{% from "lib.html" import flashed %}
+{% from "lib.html" import flash_all %}
 
 {% block title %} Dashboard {% endblock %}
   
 {% block content %}
 <br>
 <h1>Dashboard</h1>
-{% for msg in get_flashed_messages() %}
-	{% call flashed() %}
-		{{ msg }}
-	{% endcall %}
-{% endfor %}
+{{ flash_all() }}
 <div class="well span2" style="width: 320px">
 	<h3>Current Website Statistic</h3>
 	<p>Number of total visits: {{ total_visits }}</p>

@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-
+{% from "lib.html" import flash_all %}
 {% block extrahead %}
 
 <style type="text/css">
@@ -29,6 +29,7 @@
 {% endblock extrahead %}
   
 {% block content %}
+{{ flash_all() }}
 <h1 style="text-align:center"> Buddies  Result Page </h1>
 <br>
 

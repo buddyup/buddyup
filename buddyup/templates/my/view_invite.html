@@ -18,7 +18,7 @@
 	{% endif %}
 	
 	{% if new_group %}
-		{% call flashed(type='block') %}
+		{% call flashed() %}
 			You attended a <a href="{{ profile(new_group) }}">group</a>.
 		{% endcall %}
 	{% endif %}

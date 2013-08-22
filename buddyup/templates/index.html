@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% from "lib.html" import flash_all %}
 
 {% block title %}Home{% endblock %}
 
@@ -31,6 +32,7 @@
 
 
 {% block content %}
+{{ flash_all() }}
 <br>
 <h2 style="text-align:center;"> My Dashboard </h2>
 <div id="wrapper">
@@ -42,19 +44,19 @@
 	<ul class="thumbnails">
 		<li class="span4" style="margin-top:20px;">
 			<a href="{{ url_for('event_search') }}">
-			<p style="float: left;"><img src="{{ img('search.jpg') }}" height="80px" width="80px" border="1px"></p>
+			<p style="float: left;"><img src="{{ img('search.jpg') }}" height="80px" width="80px" border="1px" alt="logga"/></p>
 			<p style="margin-top:25px;font-size:25px"> Find Group </p>	
 			</a>
 		</li>
 		<li class="span4" style="margin-top:20px;">
 			<a href="{{ url_for('buddy_search') }}">
-			<p style="float: left;"><img src="{{ img('user_search.png') }}" height="80px" width="80px" border="1px"></p>
+			<p style="float: left;"><img src="{{ img('user_search.png') }}" height="80px" width="80px" border="1px" alt="logga" /></p>
 		    <p style="margin-top:25px;font-size:25px;"> Find Buddies </p>	
 		    </a>
 		</li>
 		<li class="span4" style="margin-top:20px;">
 			<a href="{{ view_url(user_record) }}">
-		    <p style="float: left;"><img src="{{ img('profile.jpg') }}" height="80px" width="80px" border="1px"></p>
+		    <p style="float: left;"><img src="{{ img('profile.jpg') }}" height="80px" width="80px" border="1px" alt="logga" /></p>
 		    <p style="margin-top:25px;font-size:25px;"> My Profile </p>	
 		    </a>
 		</li>
