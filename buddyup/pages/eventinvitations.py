@@ -22,7 +22,8 @@ def event_invitation_send_list(event_id):
         abort(403)
 
     if request.method == 'GET':
-        return render_template('group/invite.html', event_id=event_id)
+        return render_template('group/invite.html', event_id=event_id,
+                buddies=g.user.buddies)
     else:
         user_ids = map(int, request.form.getlist('users'))
         for user_id in user_ids:
