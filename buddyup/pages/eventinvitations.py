@@ -62,9 +62,6 @@ def event_invitation_send(event_id, user_name):
 
 @app.route('/accept/event/<int:invitation_id>')
 def event_invitation_accept(invitation_id):
-    if request.method == 'GET':
-        abort(403)
-
     event_invitation = EventInvitation.query.get_or_404(invitation_id)
     event = Event.query.get_or_404(event_invitation.event_id)
     if not g.user.events.filter_by(id=event.id):
@@ -80,9 +77,6 @@ def event_invitation_accept(invitation_id):
 
 @app.route('/decline/event/<int:invitation_id>')
 def event_invitation_decline(invitation_id):
-    if request.method == 'GET':
-        abort(403)
-
     event_invitation = EventInvitation.query.get_or_404(invitation_id)
     event_invitation.delete()
     db.session.commit()
