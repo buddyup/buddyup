@@ -10,6 +10,7 @@ from buddyup.database import Event, Course, EventInvitation, db, EventComment
 from buddyup.templating import render_template
 from buddyup.util import (args_get, login_required, form_get, check_empty,
                           events_to_json, checked_regexp)
+from buddyup.pages.eventinvitations import event_invitation_send_list
 
 TIME_REGEXP = re.compile(r"""
     (?P<hour>\d\d?)       # hour
@@ -219,7 +220,7 @@ def event_create():
         db.session.add(new_event_record)
         g.user.events.append(new_event_record)
         db.session.commit()
-        return redirect(url_for('event_view', event_id=new_event_record.id))
+        return redirect(url_for('event_invitation_send_list', event_id=new_event_record.id))
 
 
 @app.route('/event/cancel/<int:event_id>')
