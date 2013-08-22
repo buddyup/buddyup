@@ -60,7 +60,7 @@ def event_invitation_send(event_id, user_name):
         return redirect(request.referrer)
 
 
-@app.route('/accept/event/<int:invitation_id>', methods=['POST'])
+@app.route('/accept/event/<int:invitation_id>')
 def event_invitation_accept(invitation_id):
     if request.method == 'GET':
         abort(403)
@@ -78,7 +78,7 @@ def event_invitation_accept(invitation_id):
 
     return redirect(url_for('invite_list'))
 
-@app.route('/decline/event/<int:invitation_id>', methods=['POST'])
+@app.route('/decline/event/<int:invitation_id>')
 def event_invitation_decline(invitation_id):
     if request.method == 'GET':
         abort(403)
