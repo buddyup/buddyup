@@ -39,10 +39,12 @@ def parse_time(time_string, ampm, base, label):
     if match:
         hour = int(match.group('hour'))
         minute = int(match.group('minute') or 0)
+        # Convert 12-hour time to 24-hour time
         if ampm == 'am':
-            hour -= 1
+            if hour == 12:
+                hour = 0
         elif ampm == 'pm':
-            hour += 11
+            hour += 12
         else:
             # Must be AM or PM!
             abort(400)
