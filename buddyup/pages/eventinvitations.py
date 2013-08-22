@@ -41,8 +41,8 @@ def event_invitation_send(event_id, user_name):
     Event.query.get_or_404(event_id)
     receiver = User.query.filter_by(user_name=user_name).first_or_404()
     
-    if EventMembership.query.filter_by(event_id=event_id,
-            user_id=receiver.id) is None:
+    if db.session.query(EventMembership).filter_by(event_id=event_id,
+            user_id=receiver.id).count() == 0:
         if not EventInvitation.query.filter_by(sender_id=g.user.id,
                 receiver_id=receiver.id).count():
             new_invitation_record = EventInvitation(sender_id=g.user.id,
