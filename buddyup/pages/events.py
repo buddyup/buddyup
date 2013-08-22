@@ -158,6 +158,8 @@ def event_search_results():
             'view': url_for('event_view', event_id=event.id),
             'attending': event.id in already_attending,
             'attend_link': url_for('attend_event', event_id=event.id),
+            'is_owner': event.owner.id == g.user.id,
+            'delete_link': url_for('event_remove', event_id=event.id),
             'leave_link': url_for('leave_event', event_id=event.id),
         })
     if get_flashed_messages():

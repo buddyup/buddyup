@@ -25,7 +25,7 @@
 	
 	</div>
     <div class="well span5">
-		<strong><font style="margin-left:150px;" color="2896FF";> My Groups </font></strong>
+		<strong><font style="margin-left:150px;" color="2896FF"> My Groups </font></strong>
 		<div style="margin-top:20px;">
 			<ul>
 				{% for event in groups %}
@@ -34,7 +34,7 @@
 						<a href="{{ profile(event) }}">
 						<font style="margin-left:10px;" color="2BA515"><b> {{ event.name }} </b> <br> </font>	
 						</a>
-						<a class="btn btn-danger" style="float:left;"> Leave</a>
+						<a class="btn btn-danger" style="float:left;" href="{{ url_for('leave_event', event_id=event.id) }}"> Leave</a>
 					</p>
 				</li>
 				{% endfor %}

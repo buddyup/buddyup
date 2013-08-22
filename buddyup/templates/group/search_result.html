@@ -23,7 +23,11 @@ a {
 			<a href="{{ group.view }}"> <b> {{ group.name }} </b> <br> </a>	
 			<font style="margin-left:10px;" color="003CC8"> {{ group.timestamp }}</font>
 			<font style="margin-left:10px;" color="FE8E4B"> {{ group.people_count }}</font>
-			{% if group.attending %}
+			{% if group.is_owner %}
+				<a href="{{ group.delete_link }}">
+				<div class="btn btn-medium btn-danger" style="float: right;"> Delete </div>
+				</a>
+			{% elif group.attending %}
 				<a href="{{ group.leave_link }}">
 				<div class="btn btn-medium btn-danger" style="float: right;"> Leave </div>
 				</a>
