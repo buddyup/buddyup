@@ -27,11 +27,8 @@ def event_invitation_send_list(event_id):
     else:
         user_ids = map(int, request.form.getlist('users'))
         for user_id in user_ids:
-            new_inv_record = EventInvitation(sender_id=g.user.id,
-                    receiver_id=user_id,
-                    event_id = event_id)
-            db.session.add(new_inv_record)
-        db.session.commit()
+            user=User.query.get_or_404(user_id)
+            event_invitation_send(event_id, user.user_name)
         return redirect(url_for('event_view', event_id=event_id))
 
 
@@ -42,10 +39,10 @@ def event_invitation_send(event_id, user_name):
         abort(403)
     
     Event.query.get_or_404(event_id)
-    receiver = User.query.filter_by(user_name==user_name).first_or_404()
+    receiver = User.query.filter_by(user_name=user_name).first_or_404()
     
-    if EventMembership.query.filter_by(event_id=event_id,
-            user_id=receiver.id) is None:
+    if db.session.query(EventMembership).filter_by(event_id=event_id,
+            user_id=receiver.id).count() == 0:
         if not EventInvitation.query.filter_by(sender_id=g.user.id,
                 receiver_id=receiver.id).count():
             new_invitation_record = EventInvitation(sender_id=g.user.id,
@@ -60,14 +57,11 @@ def event_invitation_send(event_id, user_name):
         return redirect(request.referrer)
 
 
-@app.route('/accept/event/<int:invitation_id>', methods=['POST'])
+@app.route('/accept/event/<int:invitation_id>')
 def event_invitation_accept(invitation_id):
-    if request.method == 'GET':
-        abort(403)
-
     event_invitation = EventInvitation.query.get_or_404(invitation_id)
     event = Event.query.get_or_404(event_invitation.event_id)
-    if not g.user.events.filter_by(id=event.id):
+    if not g.user.events.filter_by(id=event.id).count():
         g.user.events.append(event)
         db.session.delete(event_invitation)
         db.session.commit()
@@ -78,11 +72,8 @@ def event_invitation_accept(invitation_id):
 
     return redirect(url_for('invite_list'))
 
-@app.route('/decline/event/<int:invitation_id>', methods=['POST'])
+@app.route('/decline/event/<int:invitation_id>')
 def event_invitation_decline(invitation_id):
-    if request.method == 'GET':
-        abort(403)
-
     event_invitation = EventInvitation.query.get_or_404(invitation_id)
     event_invitation.delete()
     db.session.commit()
