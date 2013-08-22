@@ -17,8 +17,13 @@ def buddy_view(user_name):
     else:
         buddy_record = User.query.filter_by(user_name=user_name).first_or_404()
         is_buddy = g.user.buddies.filter_by(id=buddy_record.id).count() == 1
+        is_invited = (BuddyInvitation.query.filter_by(receiver_id=g.user.id,
+                                                     sender_id=buddy_record.id)
+                                     .count() == 1)
         return render_template('buddy/view.html',
-                               buddy_record=buddy_record)
+                               buddy_record=buddy_record,
+                               is_buddy=is_buddy,
+                               is_invited=is_invited)
 
 
 @app.route("/buddy/search")

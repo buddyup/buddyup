@@ -25,7 +25,6 @@ DATE_REGEXP = re.compile(r"""
 
 def parse_date(date, label):
     match = checked_regexp(DATE_REGEXP, date, label)
-    print match.groups()
     if match:
         year = int(match.group('year')) + 2000
         month = int(match.group('month'))
@@ -37,7 +36,6 @@ def parse_date(date, label):
 
 def parse_time(time_string, ampm, base, label):
     match = checked_regexp(TIME_REGEXP, time_string, label)
-    print match.groups()
     if match:
         hour = int(match.group('hour'))
         minute = int(match.group('minute') or 0)
