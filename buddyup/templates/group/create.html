@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% from "lib.html" import flashed %}
+{% from "lib.html" import flash_all %}
 {% block title %}Create Group{% endblock %}
 {% block extrahead %}
 
@@ -23,11 +23,7 @@ $(function() {
 
 <h2 style="text-align:center;"> Create A New Study Group</h2>
 <div class="span3"></div>
-{% for msg in get_flashed_messages() %}
-	{% call flashed() %}
-		{{ msg }}
-	{% endcall %}
-{% endfor %}
+{{ flash_all() }}
 
 <div class="well span6">
 	<h4> Please fill in the information below: </h4>

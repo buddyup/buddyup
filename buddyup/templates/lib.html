@@ -4,3 +4,11 @@
 	<strong> {{ caller() }} </strong>
 </div>
 {%- endmacro %}
+
+{% macro flash_all(type='success') %}
+	{% for msg in get_flashed_messages() %}
+		{% call flashed() %}
+			{{ msg }}
+		{% endcall %}
+	{% endfor %}
+{% endmacro %}
