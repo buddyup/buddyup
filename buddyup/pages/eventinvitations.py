@@ -39,7 +39,7 @@ def event_invitation_send(event_id, user_name):
         abort(403)
     
     Event.query.get_or_404(event_id)
-    receiver = User.query.filter_by(user_name==user_name).first_or_404()
+    receiver = User.query.filter_by(user_name=user_name).first_or_404()
     
     if EventMembership.query.filter_by(event_id=event_id,
             user_id=receiver.id) is None:
