@@ -1,4 +1,4 @@
-from flask import g, request, abort
+from flask import g, request, abort, redirect
 
 from buddyup.app import app
 from buddyup.database import (User, Buddy, BuddyInvitation, CourseMembership,
@@ -63,3 +63,4 @@ def unfriend(user_name):
         user.buddies.remove(other_user)
         other_user.buddies.remove(user)
         db.session.commit()
+        return redirect(request.referrer)
