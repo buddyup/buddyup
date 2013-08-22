@@ -16,6 +16,7 @@
 						<img src="{{ photo_thumbnail(user) }}" width="50px" height="50px">
 						{{ user.full_name }}
 					</a>
+					<a class="btn btn-danger" style="float:left;"> Unfriend</a>
 				</li>
 				{% endfor %}
 			</ul>   
@@ -32,6 +33,8 @@
 						<a href="{{ profile(event) }}">
 						<font style="margin-left:10px;" color="2BA515"><b> {{ event.name }} </b> <br> </font>	
 						</a>
+						<a class="btn btn-danger" style="float:left;"> Leave</a>
+					</p>
 				</li>
 				{% endfor %}
 			</ul>   
