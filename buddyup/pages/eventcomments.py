@@ -35,6 +35,25 @@ def post_comment(event_id):
         return redirect(url_for('event_view',event_id=event_id))
 
 
+@app.route('/event/comment/edit/<int:comment_id>', methods=['GET', 'POST'])
+@login_required
+def comment_edit(comment_id):
+    comment = EventComment.query.filter(id=comment_id, user_id=g.user.id).first_or_404()
+    
+    if request.method == 'GET':
+        return render_template('/group/edit_comment.html', comment = comment)
+    else:
+        contents = form_get('contents')
+        check_empty(contents, "Contents")
+        if get_flashed_messages():
+            return render_template('/group/edit_comment.html',
+                    comment = comment)
+        comment.contents=contents
+        comment.time = datetime.now()
+        db.session.commit()
+        return redirect(url_for('event_view', event_id = comment.event_id))
+
+
 @app.route('/event/comment/remove/<int:comment_id>', methods=['POST'])
 @login_required
 def comment_remove(comment_id):
