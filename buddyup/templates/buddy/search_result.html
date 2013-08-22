@@ -56,6 +56,9 @@
 </div>
 
 <div class="well span6">
+	{% if search_results|length == 0 %}
+		<p style="text-align: center;">No Results Found</p>
+	{% endif %}
 	{% for user in search_results %}
 	<div style="margin-top:20px;">
 		<p style="float: left;"><img src="{{ photo_thumbnail(user) }}" height="50px" width="50px" border="1px"></p>
@@ -65,7 +68,7 @@
 		<font style="margin-left:10px;" color="E8A40D">
 			Location: {{ user.location.name }}
 		</font>
-		<div class="btn btn-medium btn-primary" style="float: right;"> Invite </div>	
+		<a class="btn btn-medium btn-primary" style="float: right;" href="{{ url_for('invite_send', user_name=user.user_name) }}">Invite</a>
 		<hr>
 	</div>
 	{% endfor %}

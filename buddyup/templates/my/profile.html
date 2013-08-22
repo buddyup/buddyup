@@ -11,7 +11,7 @@
 	<div class="span6">
 		<h2>{{ user_record.full_name }}</h2>
 		<address>
-		Location: {{ user_record.location }}
+		Location: {{ user_record.location.name }}
 		</address>
 		<div id="profile-social">
 			{% if user_record.facebook %}

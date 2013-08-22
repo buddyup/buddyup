@@ -12,7 +12,7 @@
 		<h2>{{ buddy_record.full_name }}</h2>
 		<address>
 			{% if buddy_record.location %}
-				Location: {{ buddy_record.location }}
+				Location: {{ buddy_record.location.name }}
 			{% else %}
 				Location: Not Given
 			{% endif %}
@@ -29,9 +29,10 @@
 					<img src="{{ img('twitter.png') }}">
 				</a>
 			{% endif %}
-			<form action="{{ url_for('invite_send', user_name=buddy_record.user_name) }}" method="POST">
-			<input class="btn btn-large btn-primary" type="submit" value="Invite">
-			</form>
+			{% if not is_buddy %}
+			<a href="{{ url_for('invite_send', user_name=buddy_record.user_name) }}"
+				 class="btn btn-large btn-primary">Invite</a>
+			{% endif %}
 	</div>
 </div>
 
