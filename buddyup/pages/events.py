@@ -261,7 +261,7 @@ def leave_event(event_id):
     event = Event.query.get_or_404(event_id)
     name = event.name
     if g.user.id == event.owner_id:
-        event.delete()
+        db.session.delete(event)
     else:
         g.user.events.remove(event)
     db.session.commit()
