@@ -52,7 +52,7 @@ def buddy_search_results():
                            search_results=buddies)
 
 
-@app.route('/buddy/unfriend/user_name', methods = ['POST'])
+@app.route('/buddy/unfriend/<user_name>')
 def unfriend(user_name):
     user = g.user
     other_user = User.query.filter_by(user_name=user_name).first_or_404()

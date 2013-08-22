@@ -17,15 +17,15 @@ def post_comment(event_id):
         return render_template('create_comment.html', has_errors=False)
     else:
         user = g.user
-        title = form_get('title')
-        check_empty(title, "Title")
+        #title = form_get('title')
+        #check_empty(title, "Title")
         content = form_get('content')
         check_empty(content, "Content")
         time = datetime.now()
 
     # TODO: flashed_message()
-        if get_flashed_messages():
-            return render_template('create_comment.html', has_errors=True)
+        #if get_flashed_messages():
+            #return render_template('create_comment.html', has_errors=True)
 
         new_comment_record = EventComment(event_id=event_id, user_id=user.id,
             contents=content, time=time)
