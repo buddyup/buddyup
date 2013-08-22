@@ -64,7 +64,7 @@ def event_invitation_send(event_id, user_name):
 def event_invitation_accept(invitation_id):
     event_invitation = EventInvitation.query.get_or_404(invitation_id)
     event = Event.query.get_or_404(event_invitation.event_id)
-    if not g.user.events.filter_by(id=event.id):
+    if not g.user.events.filter_by(id=event.id).count():
         g.user.events.append(event)
         db.session.delete(event_invitation)
         db.session.commit()
