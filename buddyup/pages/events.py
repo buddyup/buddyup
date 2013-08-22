@@ -219,10 +219,7 @@ def event_create():
         db.session.add(new_event_record)
         g.user.events.append(new_event_record)
         db.session.commit()
-        #db.session.commit()
-        #TODO: change this query to ensure it works as intended
-        event_id = Event.query.filter_by(name=name).first().id
-        return redirect(url_for('event_view', event_id=event_id))
+        return redirect(url_for('event_view', event_id=new_event_record.id))
 
 
 @app.route('/event/cancel/<int:event_id>')
