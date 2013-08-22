@@ -62,11 +62,11 @@
 			
 			<label> Time for Study Group </label>
 			{% for day in day_names %}
-			<label> <input type="checkbox" class="toggle" id="{{ day|lower }}" style="margin-top:-5px; margin-left:10px;" name="{{day|lower}}">{{ day }}</label>
+			<label> <input type="checkbox" class="toggle" id="{{ day|lower }}" style="margin-top:-5px; margin-left:10px;" name="{{day|lower}}">&nbsp; {{ day }}</label>
 			<div class="detail" id="{{day|lower}}detail" style="margin-left:50px;">
-				<label> <input type="radio" name="{{day|lower}}" id="{{day|lower}}-am" value="am" style="margin-top:-5px;"> &nbsp;AM </label>
-				<label> <input type="radio" name="{{day|lower}}" id="{{day|lower}}-pm" value="pm" style="margin-top:-5px;"> &nbsp;PM </label>
-				<label> <input type="radio" name="{{day|lower}}" id="{{day|lower}}-all" value="all" style="margin-top:-5px;"> &nbsp;All Day </label>
+				<label> <input type="radio" name="{{day|lower}}" id="{{day|lower}}-am" value="am" style="margin-top:-5px;"> AM </label>
+				<label> <input type="radio" name="{{day|lower}}" id="{{day|lower}}-pm" value="pm" style="margin-top:-5px;"> PM </label>
+				<label> <input type="radio" name="{{day|lower}}" id="{{day|lower}}-all" value="all" style="margin-top:-5px;"> All Day </label>
 			</div>
 			{% endfor %}
 
