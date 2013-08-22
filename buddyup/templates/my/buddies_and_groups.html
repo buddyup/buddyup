@@ -12,15 +12,13 @@
 		<div style="margin-top:20px;">	
 			<ul>
 				{% for user in buddies %}
-				<form action="{{url_for('unfriend', user_name=user.user_name) }}" method="POST">
 				<li>
 					<a href="{{ profile(user) }}">
 						<img src="{{ photo_thumbnail(user) }}" width="50px" height="50px">
 						{{ user.full_name }}
 					</a>
-					<input class="btn btn-danger" style="float:right;" type="submit" value="Unfriend">
+					<a class="btn btn-danger" style="float:right;" href="{{url_for('unfriend', user_name=user.user_name) }}"> Unfriend </a>
 				</li>
-				</form>
 				{% endfor %}
 			</ul>   
 		</div>

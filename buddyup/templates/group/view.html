@@ -55,8 +55,9 @@
 		{% endfor %}
 	        
 	        </div>
-			<textarea class="span5" style="height: 150px;" name="content"></textarea>
+
 			<form action="{{url_for('post_comment', event_id=event_record.id) }}" method="POST">
+			<textarea class="span5" style="height: 150px;" name="content"></textarea>
 			<input type="submit" value="Submit" class="btn btn-success">
 			</form>
 		</div>
