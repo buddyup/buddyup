@@ -160,7 +160,8 @@ def profile(record):
     elif isinstance(record, User):
         return url_for('buddy_view', user_name=record.user_name)
     else:
-        raise TypeError("profile(record) requires an Event or User")
+        raise TypeError("profile(record) requires an Event or User, not %s" %
+                        record.__class__.__name__)
 
 
 @app.template_global()

@@ -11,11 +11,13 @@ config_type = os.getenv('BUDDYUP_TYPE', 'dev').capitalize()
 config_object = "{name}.config.{type}".format(name=__name__.split('.')[0],
                                               type=config_type)
 app.config.from_object(config_object)
-# NO_CDN: Default to using Content Distribution Network for libraries
-# where possible.
+# NO_CDN: Set the CDN environmental variable to use local files instead of
+# CDN files.
 app.config['USE_CDN'] = 'NO_CDN' not in os.environ
 if 'ADMIN_USER' in os.environ:
     app.config['ADMIN_USER'] = os.environ['ADMIN_USER']
+if 'SECRET_KEY' in os.environ:
+    app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
 Heroku(app)
 
 runner = Runner(app)
