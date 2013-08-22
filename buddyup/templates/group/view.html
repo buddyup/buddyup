@@ -14,10 +14,10 @@
 <div class="span1"> </div>
 	<div class="well span2">
 		<h5 style="text-align:center"> Attendants </h5>
-		{% for user in event_users %}
+		{% for user in event_record.users.all() %}
 		<div id="container" style="white-space:nowrap;margin-bottom:2px;">
 			<div id="image" style="display:inline;">
-				<img src="thumbnail(user)" width="30" height="22"/>
+				<img src="{{ photo_thumbnail(user) }}" width="30" height="22"/>
 			</div>
 
 			<a id="texts" style="display:inline; white-space:nowrap;" href="{{ profile(user) }}"> 
@@ -62,8 +62,13 @@
 	        
 	        </div>
 		</div>
+		{% if is_owner %}
 		<a class="btn btn-medium btn-danger" style="margin-left:2px;" href="{{ remove_url }}">Delete Event </a>
-		
+		{% elif in_event %}
+		<a class="btn btn-medium btn-danger" style="margin-left:2px;" href="{{ leave_url }}">Leave Event </a>
+		{% else %}
+		<a class="btn btn-medium btn-danger" style="margin-left:2px;" href="{{ join_url }}">Join Event </a>
+		{% endif %}
 		
 
  {% endblock %}

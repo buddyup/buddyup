@@ -6,6 +6,7 @@ from . import buddyinvitations
 from . import eventinvitations
 from . import events
 from . import errorhandlers
+from . import lists
 from . import login
 from . import profile
 from . import questions

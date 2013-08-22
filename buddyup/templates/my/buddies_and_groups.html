@@ -28,8 +28,10 @@
 			<ul>
 				{% for event in groups %}
 				<li>
-					<p style="float: left;"><img src="{{ profile(event) }}" height="50px" width="50px" border="1px"></p>
+					<p style="float: left;">
+						<a href="{{ profile(event) }}">
 						<font style="margin-left:10px;" color="2BA515"><b> {{ event.name }} </b> <br> </font>	
+						</a>
 				</li>
 				{% endfor %}
 			</ul>   

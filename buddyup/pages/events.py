@@ -65,12 +65,21 @@ def event_view_all():
 def event_view(event_id):
     event_record = Event.query.get_or_404(event_id)
     is_owner = event_record.owner_id  == g.user.id
+    if is_owner:
+        in_event = True
+    else:
+        in_event = event_record.users.filter_by(id=g.user.id).count() == 1
     remove_url = url_for('event_remove', event_id=event_record.id)
+    leave_url = url_for('leave_event', event_id=event_record.id)
+    join_url = url_for('attend_event', event_id=event_record.id)
     return render_template('group/view.html',
                             event_record=event_record,
                             is_owner=is_owner,
                             remove_url=remove_url,
+                            leave_url=leave_url,
+                            join_url=join_url,
                             owner=event_record.owner,
+                            in_event=in_event,
                             )
 
 
@@ -256,7 +265,8 @@ def leave_event(event_id):
     else:
         g.user.events.remove(event)
     db.session.commit()
-    return render_template('group/left.html', name=name)
+    flash('Left Group')
+    return redirect(url_for('event_view', event_id=event_id))
 
 
 @app.route('/calendar')
