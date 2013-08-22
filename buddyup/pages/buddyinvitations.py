@@ -19,7 +19,7 @@ def invite_list():
                            event_invitations=event_invitations)
 
 
-@app.route("/invite/send/<user_name>", methods=['POST'])
+@app.route("/invite/send/<user_name>")
 @login_required
 def invite_send(user_name):
     if (user_name == g.user.user_name):
