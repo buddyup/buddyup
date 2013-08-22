@@ -54,3 +54,7 @@ def unfriend(user_name):
     if (user.buddies.filter_by(id=other_user.id).count() == 0 or
             other_user.buddies.filter_by(id=user.id).count() == 0):
         abort(404)
+    else:
+        user.buddies.remove(other_user)
+        other_user.buddies.remove(user)
+        db.session.commit()

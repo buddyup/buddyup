@@ -6,7 +6,7 @@ from functools import partial
 import re
 
 from buddyup.app import app
-from buddyup.database import Event, Course, EventInvitation, db
+from buddyup.database import Event, Course, EventInvitation, db, EventComment
 from buddyup.templating import render_template
 from buddyup.util import (args_get, login_required, form_get, check_empty,
                           events_to_json, checked_regexp)
@@ -64,6 +64,7 @@ def event_view_all():
 @login_required
 def event_view(event_id):
     event_record = Event.query.get_or_404(event_id)
+    event_comments = EventComment.query.filter_by(event_id=event_id).order_by(EventComment.time).all()
     is_owner = event_record.owner_id  == g.user.id
     if is_owner:
         in_event = True
@@ -74,6 +75,7 @@ def event_view(event_id):
     join_url = url_for('attend_event', event_id=event_record.id)
     return render_template('group/view.html',
                             event_record=event_record,
+                            event_comments=event_comments,
                             is_owner=is_owner,
                             remove_url=remove_url,
                             leave_url=leave_url,
