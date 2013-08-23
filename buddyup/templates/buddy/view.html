@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% from "lib.html" import flash_all %}
+{% block title %} {{ buddy_record.full_name }} {% endblock %}
 {% block content %}
 {{ flash_all() }}
 <br>

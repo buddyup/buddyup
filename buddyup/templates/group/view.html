@@ -10,7 +10,7 @@
 {% endblock %} 
 
 {% block content %}
-<h1 style="text-align:center"> Event Page </h1>
+<h2 style="text-align:center">{{ event_record.name }}</h2>
 <br>
 {{ flash_all() }}
 <div class="span1"> </div>
@@ -63,11 +63,11 @@
 		</div>
 
 		{% if is_owner %}
-		<a class="btn btn-medium btn-danger" style="margin-left:2px;" href="{{ remove_url }}">Delete Event </a>
+		<a class="btn btn-medium btn-danger" style="margin-left:2px;" href="{{ remove_url }}">Cancel Study Group </a>
 		{% elif in_event %}
-		<a class="btn btn-medium btn-danger" style="margin-left:2px;" href="{{ leave_url }}">Leave Event </a>
+		<a class="btn btn-medium btn-danger" style="margin-left:2px;" href="{{ leave_url }}">Leave Study Group </a>
 		{% else %}
-		<a class="btn btn-medium btn-primary" style="margin-left:2px;" href="{{ join_url }}">Join Event </a>
+		<a class="btn btn-medium btn-primary" style="margin-left:2px;" href="{{ join_url }}">Join Study Group </a>
 		{% endif %}
 		
 
