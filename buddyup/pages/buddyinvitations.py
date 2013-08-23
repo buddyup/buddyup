@@ -36,9 +36,11 @@ def invite_send(user_name):
             return redirect(url_for('invite_list'))
         else:
             flash("Your invitation is pending")
+            # TODO: Don't redirect to the referrer (security threat)
             return redirect(request.referrer)
     else:
         flash("Already added!")
+        # TODO: Don't redirect to the referrer (security threat)
         return redirect(request.referrer)
 
 @app.route("/invite/deny/<int:inv_id>")

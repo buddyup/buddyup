@@ -33,7 +33,7 @@
  	<div class="well span6">
 		<div style="margin-top:10px;">
 			<text style="margin-left:10px;">
-			<font color="red"> <b> Group A </b> </font>	<br>
+			<font color="red"> {{ event_record.name }} </font>	<br>
 			<font color="green"> Created by <b> {{ event_record.owner.full_name }} </b> </font> <br>
 			<font style="margin-left:10px;" color="003CC8">
 				Date: {{ event_record.start.strftime('%b %d, %Y') }} </font> <br>

@@ -46,7 +46,7 @@ $(function() {
 		<form action="{{ url_for('profile_create') }}" method="POST">
 			<label> Your Name <color> (*Required) </color> </label>  
 			<input type="text" class="span2" placeholder="Your Full Name" value="{{ user_record.full_name }}" name="name">    
-			<label> Your Course <color> (*Required) </color></label>
+			<label> Your Course (can select multiple courses)</label>
 				<select size=10 style="width: 80px" name="course" multiple>
 					{% for course_record in courses %}
 						{% if selected(course_record) %}
