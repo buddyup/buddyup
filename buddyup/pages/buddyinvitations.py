@@ -25,23 +25,33 @@ def invite_send(user_name):
     if (user_name == g.user.user_name):
         abort(403)
     other_user_record = User.query.filter_by(user_name=user_name).first_or_404()
-    if ((g.user.buddies.filter_by(id=other_user_record.id).count() == 0) or
-        (other_user_record.buddies.filter_by(id=g.user.id).count() == 0)):
-        if not other_user_record.sent_bud_inv:
-            invite_record = BuddyInvitation(sender_id=g.user.id,
-                                receiver_id=other_user_record.id)
-            db.session.add(invite_record)
-            db.session.commit()
-            flash("Sent invitation to " + user_name)
-            return redirect(url_for('invite_list'))
-        else:
-            flash("Your invitation is pending")
-            # TODO: Don't redirect to the referrer (security threat)
-            return redirect(request.referrer)
-    else:
+    other_id = other_user_record.id
+    # already a friend
+    if g.user.buddies.filter_by(id=other_id).count() == 1:
         flash("Already added!")
-        # TODO: Don't redirect to the referrer (security threat)
-        return redirect(request.referrer)
+    # Other user sent an invite, accept
+    elif (BuddyInvitation.query.filter_by(sender_id=other_id,
+                                          receiver_id=g.user.id).count() == 1):
+        g.user.buddies.append(other_user_record)
+        other_user_record.buddies.append(g.user)
+        flash("Accepted pending invitation")
+    # Already sent an invitation
+    elif (BuddyInvitation.query.filter_by(sender_id=g.user.id,
+                                          receiver_id=other_id).count() == 1):
+        flash("Invitation already pending")
+    # No problems, send the invitation
+    else:
+        invite_record = BuddyInvitation(sender_id=g.user.id,
+                            receiver_id=other_user_record.id)
+        db.session.add(invite_record)
+        db.session.commit()
+        flash("Sent invitation to " + user_name)
+    # TODO: Don't redirect to referrer (potential security risk?)
+    # the 'or' picks referrer if its available, but uses buddy_view as a
+    # fallback
+    return redirect(request.referrer or url_for('buddy_view',
+                                                user_name=user_name))
+
 
 @app.route("/invite/deny/<int:inv_id>")
 @login_required
