@@ -33,29 +33,6 @@
 <h1 style="text-align:center"> Buddies  Result Page </h1>
 <br>
 
-<div class="well span3 buddies">
-	<form class="navbar-search pull-left">
-		<input type="text" class="search-query" placeholder="Search Friends">
-	</form>
-	<br>
-	<br>
-	<a style="margin-left:15px;">
-		Search All Users
-	</a>
-	<br>
-	<h5> My Buddies </h5>
-	<ul>
-		{% for user in buddies %}
-		<li>
-			<a href="{{ profile(user) }}">
-				<img src="{{ photo_tiny(user) }}" width="30px" height="22px">
-				{{ user.full_name }}
-			</a>
-		</li>
-		{% endfor %}
-	</ul>
-</div>
-
 <div class="well span6">
 	{% if search_results|length == 0 %}
 		<p style="text-align: center;">No Results Found</p>
