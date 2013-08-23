@@ -1,4 +1,4 @@
-from flask import g, request, abort
+from flask import g, request, abort, redirect
 
 from buddyup.app import app
 from buddyup.database import (User, Buddy, BuddyInvitation, CourseMembership,
@@ -52,7 +52,7 @@ def buddy_search_results():
                            search_results=buddies)
 
 
-@app.route('/buddy/unfriend/user_name', methods = ['POST'])
+@app.route('/buddy/unfriend/<user_name>')
 def unfriend(user_name):
     user = g.user
     other_user = User.query.filter_by(user_name=user_name).first_or_404()
@@ -63,3 +63,4 @@ def unfriend(user_name):
         user.buddies.remove(other_user)
         other_user.buddies.remove(user)
         db.session.commit()
+        return redirect(request.referrer)
