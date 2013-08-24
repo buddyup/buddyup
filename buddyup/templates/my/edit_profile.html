@@ -49,17 +49,19 @@
 			
 			<label> Location</label>
 			<select name="location">
-			{% for location in locations %}
-				{% if selected(location) %}
-				<option value="{{ location.id }}" selected>
-					{{ location.name }}
-				</option>  
-				{% else %}
-				<option value="{{ location.id }}">
-					{{ location.name }}
-				</option>  
-				{% endif %}
-			{% endfor %}
+				{# -1 signifies None on the backend #}
+				<option value="-1">None</option>
+				{% for location in locations %}
+					{% if selected(location) %}
+					<option value="{{ location.id }}" selected>
+						{{ location.name }}
+					</option>  
+					{% else %}
+					<option value="{{ location.id }}">
+						{{ location.name }}
+					</option>  
+					{% endif %}
+				{% endfor %}
 			</select>
 			
 			<label> Time for Study Group </label>

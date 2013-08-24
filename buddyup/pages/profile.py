@@ -27,8 +27,10 @@ def profile_create():
         user = g.user
         name = form_get('name')
         check_empty(name, "Full Name")
+        # Note: -1 is a marker for an empty location
         location = form_get('location', convert=int)
-        if Location.query.get(location) is None:
+
+        if location != -1 and Location.query.get(location) is None:
             app.logger.info("Invalid location %s", location)
             abort(400)
         bio = form_get('bio')
@@ -60,7 +62,10 @@ def profile_create():
                                    )
 
         user.full_name = name
-        user.location_id = location
+        if location == -1:
+            user.location_id = None
+        else:
+            user.location_id = location
         user.bio = bio
         user.initialized = True
         user.facebook = facebook
@@ -143,8 +148,9 @@ def profile_edit():
     else:
         name = form_get('name')
         check_empty(name, "Full Name")
+        # Note: -1 is a marker for an empty location
         location = form_get('location', convert=int)
-        if Location.query.get(location) is None:
+        if location != -1 and Location.query.get(location) is None:
             app.logger.info("Invalid location %s", location)
             abort(400)
         bio = form_get('bio')
@@ -175,7 +181,10 @@ def profile_edit():
                                    )
 
         user.full_name = name
-        user.location_id = location
+        if location == -1:
+            user.location_id = None
+        else:
+            user.location_id = location
         user.bio = bio
         user.initialized = True
         user.facebook = facebook
