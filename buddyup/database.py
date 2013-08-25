@@ -57,6 +57,7 @@ class User(db.Model):
     user_name = db.Column(db.String(8), index=True, unique=True)
     full_name = db.Column(db.UnicodeText, default=u"")
     bio = db.Column(db.UnicodeText, default=u"")
+    major = db.Column(db.ForeignKey('major.id'))
     facebook = db.Column(db.UnicodeText, default=u"")
     twitter = db.Column(db.UnicodeText, default=u"")
     initialized = db.Column(db.Boolean, default=False)
@@ -222,5 +223,10 @@ class Visit(db.Model):
 
 
 class Location(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.UnicodeText)
+
+
+class Major(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.UnicodeText)
