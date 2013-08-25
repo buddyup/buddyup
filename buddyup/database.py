@@ -18,6 +18,11 @@ EventMembership = db.Table('eventmembership',
     )
 
 
+MajorMembership = db.Table('majormembership',
+    db.Column('major_id', db.Integer, db.ForeignKey('major.id')),
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    )
+
 Buddy = db.Table('buddy',
     db.Column('user1_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('user2_id', db.Integer, db.ForeignKey('user.id')),
@@ -57,14 +62,14 @@ class User(db.Model):
     user_name = db.Column(db.String(8), index=True, unique=True)
     full_name = db.Column(db.UnicodeText, default=u"")
     bio = db.Column(db.UnicodeText, default=u"")
-    major = db.Column(db.ForeignKey('major.id'))
     facebook = db.Column(db.UnicodeText, default=u"")
     twitter = db.Column(db.UnicodeText, default=u"")
     initialized = db.Column(db.Boolean, default=False)
     location_id = db.Column(db.Integer, db.ForeignKey('location.id'))
     location = db.relationship('Location')
-    courses = db.relationship('Course', backref=db.backref('users', lazy="dynamic"),
+    courses = db.relationship('Course',
                               secondary=CourseMembership,
+                              backref=db.backref('users', lazy="dynamic"),
                               lazy='dynamic')
     email = db.Column(db.UnicodeText)
     events = db.relationship('Event', lazy="dynamic",
@@ -82,6 +87,9 @@ class User(db.Model):
                                 primaryjoin=EventInvitation.sender_id==id)
     received_eve_inv = db.relationship('EventInvitation', backref='receiver',
                                 primaryjoin=EventInvitation.receiver_id==id)
+    majors = db.relationship('Major', lazy="dynamic",
+                             secondary=MajorMembership,
+                             backref='users')
 #    buddy_inv = db.relationship('User', secondary=BuddyInvitation,
 #                                primaryjoin=BuddyInvitation.c.receiver_id == id,
 #                                secondaryjoin=BuddyInvitation.c.sender_id == id)
