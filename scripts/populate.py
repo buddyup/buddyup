@@ -14,7 +14,10 @@ parser.add_argument('--clear', '-c', action="store_true",
                     help="Clear old records")
 parser.add_argument('--verbose', '-v', action="store_true",
                     help="Print while you insert!")
-parser.add_argument('targets', nargs='+')
+parser.add_argument('--list-targets', '-l', action="store_true",
+                    help="List populate targets")
+parser.add_argument('targets', nargs='*')
+
 
 populators = {}
 
@@ -62,13 +65,17 @@ def main():
     if args.verbose:
         logger.addHandler(logging.StreamHandler())
         logger.setLevel(logging.INFO)
+    if args.list_targets:
+        for name in sorted(["all"] + populators.keys()):
+            print name
+        exit(0)
     target_names = set(args.targets)
     if 'all' in target_names:
         targets = [target for name, target in sorted(populators.items())]
     else:
         targets = map(populators.get, sorted(target_names))
         if None in targets:
-            print("Unknown target")
+            print "Unknown target"
             exit(1)
     for target in targets:
         target(args)
