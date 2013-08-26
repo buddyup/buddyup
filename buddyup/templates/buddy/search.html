@@ -16,9 +16,6 @@
 	<div class="well span6">
 		<h4> Please fill in the information below: </h4>
 		<form action="{{ url_for('buddy_search_results') }}">
-			<label> Name </label>  
-			<input type="text" class="span2" placeholder="Full Name" name="name">
-
 			<label> Course </label>
 			<select size=10 style="width: 300px" name="course" multiple>
 			{% for course_record in courses %}
@@ -27,6 +24,9 @@
 				</option>
 			{% endfor %}
 			</select>
+
+			<label> Name </label>  
+			<input type="text" class="span2" placeholder="Full Name" name="name">
 			<div class="btn-group" style="margin-left:300px;margin-top: 20px;">
 				<input class="btn btn-large btn-danger" style="margin-left:10px;" value="Search" type="submit">
 			</div>
