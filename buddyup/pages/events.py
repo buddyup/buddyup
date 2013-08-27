@@ -122,7 +122,7 @@ def event_search_results():
     if date_text:
         date = parse_date(date_text, "Date")
         query = query.filter(Event.start > date,
-                             Event.start < (date + timedelta(day=1)))
+                             Event.start < (date + timedelta(days=1)))
     else:
         query = query.filter(Event.start > datetime.now())
         
