@@ -2,7 +2,7 @@ from flask import g, request, abort, redirect
 
 from buddyup.app import app
 from buddyup.database import (User, Buddy, BuddyInvitation, CourseMembership,
-                              Course, db)
+                              Course, Major, MajorMembership, db)
 from buddyup.templating import render_template
 from buddyup.util import login_required, args_get
 from buddyup.database import User
@@ -11,17 +11,21 @@ from buddyup.database import User
 @login_required
 def buddy_view(user_name):
     if (user_name == g.user.user_name):
+        majors = [major.name for major in g.user.majors]
         return render_template('my/profile.html',
                                buddy_record=g.user,
+                               majors=majors,
                                is_buddy=False)
     else:
         buddy_record = User.query.filter_by(user_name=user_name).first_or_404()
+        majors = [major.name for major in g.user.majors]
         is_buddy = g.user.buddies.filter_by(id=buddy_record.id).count() == 1
         is_invited = (BuddyInvitation.query.filter_by(receiver_id=g.user.id,
                                                      sender_id=buddy_record.id)
                                      .count() == 1)
         return render_template('buddy/view.html',
                                buddy_record=buddy_record,
+                               majors=majors,
                                is_buddy=is_buddy,
                                is_invited=is_invited)
 
@@ -30,13 +34,16 @@ def buddy_view(user_name):
 @login_required
 def buddy_search():
     courses = g.user.courses.all()
-    return render_template('buddy/search.html', courses=courses)
+    return render_template('buddy/search.html',
+                           courses=courses,
+                           majors=Major.query.all())
 
 
 @app.route("/buddy/search_result")
 @login_required
 def buddy_search_results():
     name = args_get('name')
+    major = args_get('major')
     query = User.query
     if name:
         query = query.filter(User.full_name.ilike('%' + name + "%"))
@@ -46,6 +53,9 @@ def buddy_search_results():
     else:
         course_ids = query.filter(CourseMembership.c.course_id == Course.id,
                                   CourseMembership.c.user_id == User.id)
+    if major != -1:
+        query = query.filter(MajorMembership.c.major_id == Major.id,
+                             MajorMembership.c.user_id == User.id)
     query = query.filter(User.id != g.user.id)
     buddies = query.all()
     return render_template('buddy/search_result.html',
