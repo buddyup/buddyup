@@ -6,7 +6,7 @@ from flask import (request, session, flash, g, redirect, url_for, abort,
 
 from buddyup.app import app
 from buddyup.database import (User, Availability, Location, Course,
-                              CourseMembership, db)
+                              CourseMembership, Major, db)
 from buddyup.util import form_get, login_required, check_empty
 from buddyup.templating import render_template
 
@@ -17,11 +17,13 @@ def profile_create():
     if request.method == 'GET':
         locations = Location.query.all()
         courses = Course.query.all()
+        majors = Major.query.all()
         return render_template('setup/landing.html',
                                day_names=day_name,
                                locations=locations,
                                courses=courses,
                                selected=lambda record: False,
+                               majors=majors,
                                )
     else:
         user = g.user
@@ -39,13 +41,16 @@ def profile_create():
         
         # If anything has been flashed, there was an error
         if get_flashed_messages():
-            course_ids = set(map(int, request.form.getlist('course')))
+            course_ids = set(request.form.getlist('course'))
+            major_ids = set(request.form.getlist('majors'))
             # Define the appropriate selected() function
             def selected(record):
                 if isinstance(record, Course):
-                    return record.id in course_ids
+                    return unicode(record.id) in course_ids
                 elif isinstance(record, Location):
-                    return record.id == location
+                    return unicode(record.id) == location
+                elif isinstance(record, Major):
+                    return unicode(record.id) in major_ids
                 else:
                     raise TypeError("Incorrect type %s" %
                                     record.__class__.__name__)
@@ -59,6 +64,7 @@ def profile_create():
                                    facebook=facebook,
                                    twitter=twitter,
                                    courses=Course.query.all(),
+                                   majors=Major.query.all()
                                    )
 
         user.full_name = name
@@ -70,6 +76,21 @@ def profile_create():
         user.initialized = True
         user.facebook = facebook
         user.twitter = twitter
+        for major_id_text in request.form.getlist('majors'):
+            try:
+                major_id = int(major_id_text)
+            except ValueError:
+                app.logger.warning("non-integer major id %r sent by client",
+                                   major_id_text)
+                continue
+            major_record = Major.query.get(major_id)
+            if major_record is None:
+                app.logger.warning("Non-existent major id %i sent by client",
+                                   major_id_text)
+                continue
+            user.majors.append(major_record)
+            
+            
         
         AVAILABILITIES = {
             'am': ('am',),

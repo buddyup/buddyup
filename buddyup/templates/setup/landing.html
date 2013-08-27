@@ -61,17 +61,18 @@ $(function() {
 					{% endfor %}
 				</select>
 			<label> Your Major (can select multiple majors)</label>
-				<select size=10 style="width: 80px" name="course" multiple>
-				{% for majors in  %}
-					{% if selected(majors) %}
-						<option value="{{ majors }}" selected>
-							{{ majors| join(' , ') }}
+				<select size=10 style="width: 180px" name="majors" multiple>
+				{% for major in majors %}
+					{% if selected(major) %}
+						<option value="{{ major.id }}" selected>
+							{{ major.name }}
 						</option>
 					{% else %}
-						<option value="{{ majors }}">
-							{{ majors| join(' , ') }}
+						<option value="{{ major.id }}">
+							{{ major.name }}
 						</option>
 					{% endif %}
+				{% endfor %}
 				</select>
 			
 
