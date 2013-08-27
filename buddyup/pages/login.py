@@ -43,7 +43,7 @@ def login():
                 db.session.add(new_user_record)
                 db.session.commit()
                 user_id = new_user_record.id
-                url = url_for('profile_create')
+                url = url_for('welcome')
             else:
                 url = url_for('home')
                 user_id = user_record.id
