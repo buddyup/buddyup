@@ -44,7 +44,7 @@
 							<option value="{{ location.id }}">{{ location.name }}</option>
 							{% endfor %}
 						</select>
-						<br><input class="btn-danger" type="submit" value="Remove location"> 
+						<br><input class="btn-danger" type="submit" value="Remove location(s)"> 
 					</form>
 				</div>
 				<div class="well span3">
@@ -60,11 +60,11 @@
 					<h3>Current list of majors</h3>
 					<form action="{{ url_for('admin_delete_major') }}" method="POST">
 						<select size=15 width="300" style="width: 300px" name="listmajor" multiple>
-							{% for major in locations %}
-							<option value="{{ location.id }}">{{ location.name }}</option>
+							{% for major in majors %}
+							<option value="{{ major.id }}">{{ major.name }}</option>
 							{% endfor %}
 						</select>
-						<br><input class="btn-danger" type="submit" value="Remove Major"> 
+						<br><input class="btn-danger" type="submit" value="Remove Majors"> 
 					</form>
 				</div>
 				<div class="well span3">
