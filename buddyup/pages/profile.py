@@ -97,7 +97,7 @@ def profile_create():
         update_courses(map(int, request.form.getlist('course')))
         db.session.commit()
 
-        return redirect(url_for('welcome'))
+        return redirect(url_for('suggestions'))
 
 
 # @app.route('/setup/photo', methods=['POST', 'GET'])
