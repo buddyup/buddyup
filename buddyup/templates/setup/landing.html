@@ -47,7 +47,7 @@ $(function() {
 			<label> Your Name <color> (*Required) </color> </label>  
 			<input type="text" class="span2" placeholder="Your Full Name" value="{{ user_record.full_name }}" name="name">    
 			<label> Your Course (can select multiple courses)</label>
-				<select size=10 style="width: 80px" name="course" multiple>
+				<select size=10 style="width: 180px" name="course" multiple>
 					{% for course_record in courses %}
 						{% if selected(course_record) %}
 							<option value="{{ course_record.id }}" selected>
@@ -96,9 +96,9 @@ $(function() {
 			{% for day in day_names %}
 			<label> <input type="checkbox" class="toggle" id="{{ day|lower }}" style="margin-top:-5px; margin-left:10px;" name="{{day|lower}}">{{ day }}</label>
 			<div class="detail" id="{{day|lower}}detail" style="margin-left:30px;">
-				<label> <input type="radio" name="{{day|lower}}" id="{{day|lower}}-am" value="am"> AM </label>
-				<label> <input type="radio" name="{{day|lower}}" id="{{day|lower}}-pm" value="pm"> PM </label>
-				<label> <input type="radio" name="{{day|lower}}" id="{{day|lower}}-all" value="all"> All Day </label>
+				<label> <input type="radio" name="{{day|lower}}" id="{{day|lower}}-am" value="am" style="margin-top:-5px;"> AM </label>
+				<label> <input type="radio" name="{{day|lower}}" id="{{day|lower}}-pm" value="pm" style="margin-top:-5px;"> PM </label>
+				<label> <input type="radio" name="{{day|lower}}" id="{{day|lower}}-all" value="all" style="margin-top:-5px;"> All Day </label>
 			</div>
 			{% endfor %}
 
@@ -124,11 +124,11 @@ $(function() {
 				<input type="text" class="span3" placeholder="http://facebook.com/yourfacebook" style="margin-left:15px;" value="{{ facebook }}" name="facebook">
 			</label>
 			<label style="margin-top:20px;">Your Twitter
-				<input type="text" class="span3" placeholder="http://twitter.com/yourtwitter" style="margin-left:15px;" value="{{ twitter }}" name="twitter">
+				<input type="text" class="span3" placeholder="http://twitter.com/yourtwitter" style="margin-left:35px;" value="{{ twitter }}" name="twitter">
 			</label>
 			<label> A Few Words About You </label>
 			<textarea type="text" style="height: 150px;width: 450px;" value="{{ bio }}" name="bio"> </textarea>
-			<input class="btn btn-large btn-primary" style="margin-left:400px;margin-top: 20px;" type="submit" value="save">
+			<input class="btn btn-large btn-primary" style="margin-left:350px;margin-top: 20px;" type="submit" value="Save">
 		</div>
 	</form>
 </div>   
