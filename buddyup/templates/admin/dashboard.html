@@ -56,24 +56,7 @@
 				</div>
 			</div>
 			<div class="tab-pane" id="tab3">
-				<div class="well span4">
-					<h3>Current list of majors</h3>
-					<form action="{{ url_for('admin_delete_major') }}" method="POST">
-						<select size=15 width="300" style="width: 300px" name="listmajor" multiple>
-							{% for major in locations %}
-							<option value="{{ location.id }}">{{ location.name }}</option>
-							{% endfor %}
-						</select>
-						<br><input class="btn-danger" type="submit" value="Remove Major"> 
-					</form>
-				</div>
-				<div class="well span3">
-					<h3>Enter a new major</h3>
-					<form action="{{ url_for('admin_add_major') }}" method="POST">
-						New major: <input type="text" name="major"></input><br>
-						<input class="btn-primary" type="submit" value="Add this new major"></input>
-					</form>
-				</div>
+				
 			</div>
 			<div class="well span1" style="width: 200px;float:right;">
 				<h3>Website Statistic</h3>
