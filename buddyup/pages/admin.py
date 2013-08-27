@@ -31,9 +31,9 @@ def get_stats():
     variables['total_invites'] = BuddyInvitation.query.count()
     # Maybe only count users who have logged in?
     variables['total_users'] = User.query.count()
-    variables['courses'] = Course.query.all()
-    variables['locations'] = Location.query.all()
+    variables['courses'] = Course.query.order_by(Course.name).all()
     variables['majors'] = Major.query.order_by(Major.name).all()
+    variables['locations'] = Location.query.order_by(Location.name).all()
     return variables
 
 

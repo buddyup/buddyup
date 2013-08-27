@@ -36,7 +36,7 @@ def buddy_search():
     courses = g.user.courses.all()
     return render_template('buddy/search.html',
                            courses=courses,
-                           majors=Major.query.all())
+                           majors=Major.query.order_by(Major.name).all())
 
 
 @app.route("/buddy/search_result")
@@ -45,6 +45,7 @@ def buddy_search_results():
     name = args_get('name')
     major = args_get('major')
     query = User.query
+    query = query.order_by(User.full_name)
     if name:
         query = query.filter(User.full_name.ilike('%' + name + "%"))
     course_ids = map(int, request.args.getlist('course'))
