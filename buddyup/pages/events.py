@@ -116,7 +116,9 @@ def event_search_results():
         query = query.filter_by(course_id=course)
     else:
         course_ids = [course.id for course in g.user.courses.all()]
-        query = query.filter(Event.course_id.in_(course_ids))
+        # Only include courses if they specified a course
+        if course_ids:
+            query = query.filter(Event.course_id.in_(course_ids))
     
     date_text = args_get('date')
     if date_text:
