@@ -4,9 +4,9 @@
 {% block title %} Dashboard {% endblock %}
 {% block content %}
 <br>
+{{ flash_all() }}
 <h2 class="text-center"> Admin Dashboard </h2>
 <br>
-{{ flash_all() }}
 <div class="tabbable"> 
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="#tab1" data-toggle="tab">Manage Course</a></li>
