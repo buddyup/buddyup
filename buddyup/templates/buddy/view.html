@@ -18,7 +18,11 @@
 				Location: Not Given
 			{% endif %}
 			<br>
-			Major: {{ majors| join(' , ') }}
+			{% if len(majors) > 0 %}
+				Major: {{ majors| join(' , ') }}
+			{% else %}
+				Major: Unspecified
+			{% endif %}
 		</address>
 		<div id="profile-social">
 			{% if buddy_record.facebook %}

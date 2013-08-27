@@ -48,7 +48,7 @@
 				</select>
 			
 			<label> Location</label>
-			<select name="location">
+			<select size=10 style="width: 180px" name="location">
 				{# -1 signifies None on the backend #}
 				<option value="-1">None</option>
 				{% for location in locations %}
@@ -63,6 +63,20 @@
 					{% endif %}
 				{% endfor %}
 			</select>
+
+			<label> Your Major (can select multiple majors)</label>
+				<select size=10 style="width: 80px" name="majors" multiple>
+				{% for major in majors %}
+					{% if selected(major) %}
+						<option value="{{ major.id }}" selected>
+							{{ major.name }}
+						</option>
+					{% else %}
+						<option value="{{ major.id }}">
+							{{ major.name }}
+						</option>
+					{% endif %}
+				</select>
 			
 			<label> Time for Study Group </label>
 			{% for day in day_names %}
