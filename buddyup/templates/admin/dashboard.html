@@ -5,56 +5,64 @@
   
 {% block content %}
 <br>
-<h1>Dashboard</h1>
+<h1 class="text-center"> Admin Dashboard </h1>
+<br>
 {{ flash_all() }}
-<div class="well span2" style="width: 320px">
-	<h3>Current Website Statistic</h3>
-	<p>Number of total visits: {{ total_visits }}</p>
-	<p>Number of unique visitors: {{ unique_visits }}</p>
-	<p>Number of groups: {{ group_count }}</p>
-	<p>Number of invites sent: {{ total_invites }}</p>
-	<p>Number of registered users: {{ total_users }}</p>
+<div class="tabbable"> 
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="#tab1" data-toggle="tab">Manage Course</a></li>
+		<li><a href="#tab2" data-toggle="tab">Manage Location</a></li>
+	</ul>
+		<div class="tab-content">
+			<div class="tab-pane active" id="tab1">
+				<div class="well span4">
+					<h3>Current list of courses</h3>
+					<form action="{{ url_for('admin_delete_course') }}" method="POST">
+						<select size=15 width="300" style="width: 300px" name="listcourse" multiple>
+							{% for course in courses %}
+							<option value="{{ course.id }}">{{ course.name }} by {{ course.instructor }}</option>
+							{% endfor %}
+						</select>
+						<br><input class="btn-danger" type="submit" value="Remove course"> 
+					</form>
+				</div>
+				<div class="well span3">
+					<h3>Enter a new course</h3>
+					<form action="{{ url_for('admin_add_course') }}" method="POST">
+						Course name: <input type="text" name="name"></input><br>
+						By Professor: <input type="text" name="instructor"></input><br>
+						<input class="btn-primary" type="submit" value="Add this new course"></input>
+					</form>
+				</div>
+			</div>
+			<div class="tab-pane" id="tab2">
+				<div class="well span4">
+					<h3>Current list of locations</h3>
+					<form action="{{ url_for('admin_delete_location') }}" method="POST">
+						<select size=15 width="300" style="width: 300px" name="listcourse" multiple>
+							{% for location in locations %}
+							<option value="{{ location.id }}">{{ location.name }}</option>
+							{% endfor %}
+						</select>
+						<br><input class="btn-danger" type="submit" value="Remove location"> 
+					</form>
+				</div>
+				<div class="well span3">
+					<h3>Enter a new location</h3>
+					<form action="{{ url_for('admin_add_location') }}" method="POST">
+						New location: <input type="text" name="location"></input><br>
+						<input class="btn-primary" type="submit" value="Add this new location"></input>
+					</form>
+				</div>
+			</div>
+			<div class="well span1" style="width: 320px">
+				<h3>Current Website Statistic</h3>
+				<p>Total visits: {{ total_visits }}</p>
+				<p>Unique visitors: {{ unique_visits }}</p>
+				<p>Groups: {{ group_count }}</p>
+				<p>Invites sent: {{ total_invites }}</p>
+				<p>Registered users: {{ total_users }}</p>
+			</div>	
+		</div>
 </div>
-	
-<div class="well span3">
-	<h3>Enter a new course</h3>
-	<form action="{{ url_for('admin_add_course') }}" method="POST">
-		Course name: <input type="text" name="name"></input><br>
-		By Professor: <input type="text" name="instructor"></input><br>
-		<input type="submit" value="Add this new course"></input>
-	</form>
-</div>
-
-<div class="well span4">
-	<h3>Current user list courses</h3>
-	<form action="{{ url_for('admin_delete_course') }}" method="POST">
-		<select size=15 width="320" style="width: 320px" name="listcourse" multiple>
-			{% for course in courses %}
-			<option value="{{ course.id }}">{{ course.name }} by {{ course.instructor }}</option>
-			{% endfor %}
-		</select>
-		<br><input type="submit" value="Remove courses"> 
-	</form>
-</div>
-
-<div class="well span3">
-	<h3>Enter a new location</h3>
-	<form action="{{ url_for('admin_add_location') }}" method="POST">
-		New location: <input type="text" name="location"></input><br>
-		<input type="submit" value="Add this new location"></input>
-	</form>
-</div>
-
-<div class="well span4">
-	<h3>Current list of location</h3>
-	<form action="{{ url_for('admin_delete_location') }}" method="POST">
-		<select size=15 width="320" style="width: 320px" name="listcourse" multiple>
-			{% for location in locations %}
-			<option value="{{ location.id }}">{{ location.name }}</option>
-			{% endfor %}
-		</select>
-		<br><input type="submit" value="Remove locations"> 
-	</form>
-</div>
-
 {% endblock %}
