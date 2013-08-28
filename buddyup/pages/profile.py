@@ -150,20 +150,25 @@ def profile_edit():
     user = g.user
     if request.method == 'GET':
         course_ids = {course.id for course in user.courses}
+        major_ids = {major.id for major in user.majors}
         def selected(record):
             if isinstance(record, Location):
                 return user.location_id == record.id
             elif isinstance(record, Course):
                 return record.id in course_ids
+            elif isinstance(record, Major):
+                return record.id in major_ids
             else:
                 raise TypeError
-        locations = Location.query.all()
-        courses = Course.query.all()
+        locations = Location.query.order_by('name').all()
+        courses = Course.query.order_by('name').all()
+        majors = Major.query.order_by('name').all()
         return render_template('my/edit_profile.html',
                                day_names=day_name,
                                locations=locations,
                                courses=courses,
                                selected=selected,
+                               majors=majors,
                                )
     else:
         name = form_get('name')
@@ -180,18 +185,23 @@ def profile_edit():
         # If anything has been flashed, there was an error
         if get_flashed_messages():
             # Define the appropriate selected() function
-            course_ids = set(map(int, request.form.getlist('course')))
+            course_ids = set(request.form.getlist('course'))
+            major_ids = set(request.form.getlist('major'))
             def selected(record):
                 if isinstance(record, Course):
-                    return record.id in course_ids
+                    return unicode(record.id) in course_ids
                 elif isinstance(record, Location):
                     return record.id == location
+                elif isinstance(record, Major):
+                    return unicode(record.id) in major_ids
                 else:
                     raise TypeError("Incorrect type %s" %
                                     record.__class__.__name__)
-            locations = Location.query.all()
+            locations = Location.query.order_by('name').all()
+            majors = Major.query.order_by('name').all()
             return render_template('my/edit_profile.html',
                                    locations=locations,
+                                   majors=majors,
                                    name=name,
                                    bio=bio,
                                    day_names=day_name,

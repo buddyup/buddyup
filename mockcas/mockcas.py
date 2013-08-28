@@ -9,6 +9,7 @@ from urllib import unquote
 
 from flask import Flask, request, redirect
 from flask.ext.runner import Runner
+from pprint import pformat
 
 app = Flask(__name__)
 runner = Runner(app)
@@ -35,6 +36,7 @@ def success(username):
 </cas:serviceResponse>
 """.format(username=username)
 
+
 def fail(message, code=None):
     if code is None:
         code = message
@@ -55,7 +57,16 @@ def set_config(key):
 
 @app.route('/get/<key>')
 def get_config(key):
-    return config.get(key, "DNE")
+    return config.get(key, "Does Not Exist")
+
+
+@app.route('/')
+@app.route('/get/')
+def get_print():
+    strings = []
+    for key, value in config.iteritems():
+        strings.append("%s => '%s'" % (key, value))
+    return "<code>" + "<br>".join(strings) + "</code>"
 
 
 @app.route('/login')

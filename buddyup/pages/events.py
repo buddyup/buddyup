@@ -176,10 +176,14 @@ def event_search_results():
 @app.route('/event/create', methods=['GET','POST'])
 @login_required
 def event_create():
+    user = g.user
+    if user.courses.count() == 0:
+        flash("Join a course before creating an event")
+        return redirect(url_for('profile_edit'))
     if request.method == 'GET':
         # TODO: pass out the user's course to set it as default
         return render_template('group/create.html',
-                               courses=g.user.courses.all(),
+                               courses=user.courses.all(),
                                has_errors=False,
                                selected=lambda record: False)
     else:
