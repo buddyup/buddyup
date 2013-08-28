@@ -4,7 +4,7 @@ from buddyup.app import app
 from buddyup.database import (User, Buddy, BuddyInvitation, CourseMembership,
                               Course, Major, MajorMembership, db)
 from buddyup.templating import render_template
-from buddyup.util import login_required, form_get
+from buddyup.util import login_required, args_get
 from buddyup.database import User
 
 @app.route("/buddy/view/<user_name>")
@@ -36,13 +36,13 @@ def buddy_search():
     courses = g.user.courses.all()
     return render_template('buddy/search.html',
                            courses=courses,
-                           majors=Major.query.order_by(Major.name).all())
+                           )
 
 
-@app.route("/buddy/search_result", methods=['POST'])
+@app.route("/buddy/search_result")
 @login_required
 def buddy_search_results():
-    name = form_get('name')
+    name = args_get('name')
     #major = args_get('major')
     query = User.query
     query = query.order_by(User.full_name)

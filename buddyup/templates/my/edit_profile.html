@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% block title %}Edit Profile{% endblock %}
 {% from "lib.html" import flash_all %}
  {% block extrahead %}
 	<style>
@@ -22,8 +23,8 @@
 
 {% endblock %} 
 {% block content %}
-{{ flash_all() }}
 <h1 style="text-align:center;"> Edit profile</h1>
+{{ flash_all() }}
 	  
 <div class="span3"></div>
 	<div class="well span6">
@@ -48,7 +49,7 @@
 				</select>
 			
 			<label> Location</label>
-			<select size=10 style="width: 180px" name="location">
+			<select style="width: 180px" name="location">
 				{# -1 signifies None on the backend #}
 				<option value="-1">None</option>
 				{% for location in locations %}
@@ -65,7 +66,7 @@
 			</select>
 
 			<label> Your Major (can select multiple majors)</label>
-				<select size=10 style="width: 80px" name="majors" multiple>
+				<select size=10 style="width: 180px" name="majors" multiple>
 				{% for major in majors %}
 					{% if selected(major) %}
 						<option value="{{ major.id }}" selected>
@@ -76,7 +77,9 @@
 							{{ major.name }}
 						</option>
 					{% endif %}
+				{% endfor %}
 				</select>
+				<br>
 			
 			<label> Time for Study Group </label>
 			{% for day in day_names %}
