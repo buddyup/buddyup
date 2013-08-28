@@ -54,17 +54,16 @@ def profile_create():
                 else:
                     raise TypeError("Incorrect type %s" %
                                     record.__class__.__name__)
-            locations = Location.query.all()
             return render_template('setup/landing.html',
-                                   locations=locations,
                                    name=name,
                                    bio=bio,
                                    day_names=day_name,
                                    selected=selected,
                                    facebook=facebook,
                                    twitter=twitter,
-                                   courses=Course.query.all(),
-                                   majors=Major.query.all()
+                                   courses=Course.query.order_by('name').all(),
+                                   locations=Location.query.order_by('name').all(),
+                                   majors=Major.query.order_by('name').all()
                                    )
 
         user.full_name = name
@@ -103,7 +102,7 @@ def profile_create():
             day_lower = day.lower()
             availability = form_get('availability-{}'.format(day_lower), default=None)
             # Skip if the user unchecked the day's box
-            if day.lower() not in request.form:
+            if day_lower not in request.form:
                 continue
             # Error on invalid am/pm values
             if availability not in AVAILABILITIES:

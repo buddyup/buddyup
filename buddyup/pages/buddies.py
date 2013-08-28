@@ -4,7 +4,7 @@ from buddyup.app import app
 from buddyup.database import (User, Buddy, BuddyInvitation, CourseMembership,
                               Course, Major, MajorMembership, db)
 from buddyup.templating import render_template
-from buddyup.util import login_required, args_get
+from buddyup.util import login_required, form_get
 from buddyup.database import User
 
 @app.route("/buddy/view/<user_name>")
@@ -36,26 +36,27 @@ def buddy_search():
     courses = g.user.courses.all()
     return render_template('buddy/search.html',
                            courses=courses,
-                           majors=Major.query.all())
+                           majors=Major.query.order_by(Major.name).all())
 
 
-@app.route("/buddy/search_result")
+@app.route("/buddy/search_result", methods=['POST'])
 @login_required
 def buddy_search_results():
-    name = args_get('name')
-    major = args_get('major')
+    name = form_get('name')
+    #major = args_get('major')
     query = User.query
+    query = query.order_by(User.full_name)
     if name:
         query = query.filter(User.full_name.ilike('%' + name + "%"))
-    course_ids = map(int, request.args.getlist('course'))
+    course_ids = map(int, request.form.getlist('course'))
     if course_ids:
         query = query.filter(CourseMembership.c.course_id.in_(course_ids))
     else:
         course_ids = query.filter(CourseMembership.c.course_id == Course.id,
                                   CourseMembership.c.user_id == User.id)
-    if major != -1:
-        query = query.filter(MajorMembership.c.major_id == Major.id,
-                             MajorMembership.c.user_id == User.id)
+    #if major != -1:
+        #query = query.filter(MajorMembership.c.major_id == Major.id,
+                             #MajorMembership.c.user_id == User.id)
     query = query.filter(User.id != g.user.id)
     buddies = query.all()
     return render_template('buddy/search_result.html',

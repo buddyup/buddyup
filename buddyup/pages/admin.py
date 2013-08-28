@@ -5,7 +5,7 @@ from sqlalchemy.sql import functions
 
 from buddyup.app import app
 from buddyup.database import (Course, Visit, Event, User, BuddyInvitation,
-                              Location, db)
+                              Location, Major, db)
 from buddyup.templating import render_template
 from buddyup.util import form_get, check_empty
 from functools import partial, wraps
@@ -31,8 +31,9 @@ def get_stats():
     variables['total_invites'] = BuddyInvitation.query.count()
     # Maybe only count users who have logged in?
     variables['total_users'] = User.query.count()
-    variables['courses'] = Course.query.all()
-    variables['locations'] = Location.query.all()
+    variables['courses'] = Course.query.order_by(Course.name).all()
+    variables['majors'] = Major.query.order_by(Major.name).all()
+    variables['locations'] = Location.query.order_by(Location.name).all()
     return variables
 
 
@@ -90,6 +91,30 @@ def admin_delete_location():
         Location.query.filter_by(id=location_id).delete()
     db.session.commit()
     flash('Location deleted')
+    return redirect(url_for('admin_dashboard'))
+
+
+@app.route("/admin/major/add", methods=['POST'])
+@admin_required
+def admin_add_major():
+    name = form_get('major')
+    check_empty(name, "Major Name")
+    if not get_flashed_messages():
+        major = Major(name=name)
+        db.session.add(major)
+        db.session.commit()
+        flash("Added Course " + name)
+    return redirect(url_for('admin_dashboard'))
+
+
+@app.route("/admin/major/delete", methods=['POST'])
+@admin_required
+def admin_delete_major():
+    major_ids = map(int, request.form.getlist('listmajors'))
+    for major_id in major_ids:
+        Major.query.filter_by(id=major_id).delete()
+    db.session.commit()
+    flash('Majors deleted')
     return redirect(url_for('admin_dashboard'))
 
 

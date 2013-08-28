@@ -107,7 +107,7 @@ def event_search_results():
     get_int = partial(args_get, convert=int)
     # TODO: Addition ordering?
     query = Event.query
-    query = query.order_by(Event.start)
+    query = query.order_by(Event.start.desc())
     query = query.filter(Event.start > datetime.now())
 
     course = get_int('course')
