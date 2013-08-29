@@ -14,11 +14,17 @@
 <br>
 {{ flash_all() }}
 {% if is_owner %}
-<a class="btn btn-medium btn-danger" style="margin-left:500px;" href="{{ remove_url }}">Cancel Study Group </a>
+<div style="text-align:center">
+	<a class="btn btn-medium btn-danger" href="{{ remove_url }}">Cancel Study Group </a>
+</div>
 {% elif in_event %}
-<a class="btn btn-medium btn-danger" style="margin-left:500px;" href="{{ leave_url }}">Leave Study Group </a>
+<div style="text-align:center">
+	<a class="btn btn-medium btn-danger" href="{{ leave_url }}">Leave Study Group </a>
+</div>
 {% else %}
-<a class="btn btn-medium btn-primary" style="margin-left:500px;" href="{{ join_url }}">Join Study Group </a>
+<div style="text-align:center">
+	<a class="btn btn-medium btn-primary" href="{{ join_url }}">Join Study Group </a>
+</div>
 {% endif %}
 <br><br>
 <div class="span1"> </div>
