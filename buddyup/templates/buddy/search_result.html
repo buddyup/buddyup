@@ -25,6 +25,8 @@
 .buddies a {
 	white-space: nowrap;
 }
+.span2	{width: 300px;}
+.span6	{width: 400px;}
 </style>
 
 {% endblock extrahead %}
@@ -33,7 +35,7 @@
 {{ flash_all() }}
 <h1 style="text-align:center"> Buddies Search Results</h1>
 <br>
-
+<div class="span2"></div>
 <div class="well span6">
 	{% if search_results|length == 0 %}
 		<p style="text-align: center;">No Results Found</p>

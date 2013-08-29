@@ -36,7 +36,7 @@
 						<a href="{{ profile(event) }}">
 						<font style="margin-left:10px;" color="2BA515"><b> {{ event.name }} </b> <br> </font>	
 						</a>
-						<a class="btn btn-danger" style="float:left;" href="{{ url_for('leave_event', event_id=event.id) }}"> Leave</a>
+						<a class="btn btn-danger" style="float:right;" href="{{ url_for('leave_event', event_id=event.id) }}"> Leave</a>
 					</p>
 				</li>
 				{% endfor %}

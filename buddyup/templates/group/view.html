@@ -13,6 +13,13 @@
 <h2 style="text-align:center">{{ event_record.name }}</h2>
 <br>
 {{ flash_all() }}
+{% if is_owner %}
+<a class="btn btn-medium btn-danger" style="margin-left:40px;" href="{{ remove_url }}">Cancel Study Group </a>
+{% elif in_event %}
+<a class="btn btn-medium btn-danger" style="margin-left:40px;" href="{{ leave_url }}">Leave Study Group </a>
+{% else %}
+<a class="btn btn-medium btn-primary" style="margin-left:40px;" href="{{ join_url }}">Join Study Group </a>
+{% endif %}
 <div class="span1"> </div>
 	<div class="well span2">
 		<h5 style="text-align:center"> Attendants </h5>
@@ -34,7 +41,7 @@
 		<div style="margin-top:10px;">
 			<text style="margin-left:10px;">
 			<font color="red"> {{ event_record.name }} </font>	<br>
-			<font color="green"> Created by <b> {{ event_record.owner.full_name }} </b> </font> <br>
+			<font style="margin-left:10px;" color="green"> Created by <b> {{ event_record.owner.full_name }} </b> </font> <br>
 			<font style="margin-left:10px;" color="003CC8">
 				Date: {{ event_record.start.strftime('%b %d, %Y') }} </font> <br>
 			<font style="margin-left:10px;" color="8C4620">Start: {{ event_record.start.strftime('%I:%M %p') }}</font><br>
@@ -61,14 +68,6 @@
 			<input type="submit" value="Submit" class="btn btn-success">
 			</form>
 		</div>
-
-		{% if is_owner %}
-		<a class="btn btn-medium btn-danger" style="margin-left:2px;" href="{{ remove_url }}">Cancel Study Group </a>
-		{% elif in_event %}
-		<a class="btn btn-medium btn-danger" style="margin-left:2px;" href="{{ leave_url }}">Leave Study Group </a>
-		{% else %}
-		<a class="btn btn-medium btn-primary" style="margin-left:2px;" href="{{ join_url }}">Join Study Group </a>
-		{% endif %}
 		
 
  {% endblock %}
