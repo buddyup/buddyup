@@ -55,7 +55,7 @@
 				<font style="margin-left:10px;" color="E8A40D"> You are invited to a group </font>
 		  	 <div class="btn-group" style="margin-left:240px;">
 		  	    <a class="btn btn-success" href=" {{ url_for('event_invitation_accept', invitation_id=event_inv.id) }}"> Accept</a>
-		  	  	<a class="btn btn-deny" href=" {{ url_for('event_invitation_decline', invitation_id=event_inv.id) }}"> Deny </a>
+		  	  	<a class="btn btn-danger" href=" {{ url_for('event_invitation_decline', invitation_id=event_inv.id) }}"> Deny </a>
 			</div>	
 			<hr>
 			{% endfor %}     

@@ -21,6 +21,7 @@
 					</a>
 					<a class="btn btn-danger" style="float:right;" href="{{url_for('unfriend', user_name=user.user_name) }}"> Unfriend </a>
 				</li>
+				<hr>
 				{% endfor %}
 			</ul>   
 		</div>
@@ -37,6 +38,7 @@
 						</a>
 						<a class="btn btn-danger" style="float:right;" href="{{ url_for('leave_event', event_id=event.id) }}"> Leave</a>
 				</li>
+				<hr>
 				{% endfor %}
 			</ul>   
 	</div>
