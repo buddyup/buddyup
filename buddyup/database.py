@@ -137,7 +137,9 @@ class Event(db.Model):
 class EventComment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     event_id = db.Column(db.Integer, db.ForeignKey('event.id'))
+    event = db.relationship("Event")
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship("User")
     contents = db.Column(db.UnicodeText)
     #TODO: submission time
     time = db.Column(db.DateTime)
