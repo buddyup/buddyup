@@ -115,3 +115,9 @@ def events_to_json(events):
             'url': url_for('event_view', event_id=event.id),
         })
     return json
+
+
+@app.template_global()
+@app.template_filter()
+def email(user):
+    return user.email or (user.user_name + u"@pdx.edu")
