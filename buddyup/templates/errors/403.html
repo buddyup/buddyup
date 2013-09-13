@@ -1,15 +1,15 @@
 {% extends "layout.html" %} 
-{% block forstyle %}
-	body 
-	{
+{% block extrahead %}
+<style type="text/css">
+body {
 	background-image:url('../static/img/forbidden.jpg');
 	background-position:center; 
 	background-repeat:no-repeat;
-	
-	}
-{% endblock %}
-{% block content %}  
-<h1 style="color:red;text-align:center;"> Error 403: Forbidden! </h1>
-<h3 style="color:brown;text-align:center;"> You do NOT have permission to access those files.</h3>
+}
+</style>
+{% endblock extrahead %}
+{% block content %}
+<h1 style="color:red"> Error 403: Forbidden! </h1>
+<h3 style="color:brown"> You do NOT have permission to access those files.</h3>
 
 {% endblock %}

@@ -1,13 +1,15 @@
 {% extends "layout.html" %} 
-{% block forstyle %}
-	body 
+{% block extrahead %}
+<style type="text/css">
+body 
 	{
 	background-image:url('../static/img/incorrect.jpg');
 	background-position:center; 
 	background-repeat:no-repeat;
-	}
+}
+</style>
 {% endblock %}
 {% block content %}  
-<h1 style="color:red;text-align:center;"> Error 400: Incorrect Requests! </h1>
-<h3 style="color:blue;text-align:center;"> Sorry, the server could not understand your request.</h3>
+<h1 style="color:red"> Error 400: Incorrect Requests! </h1>
+<h3 style="color:blue"> Sorry, the server could not understand your request.</h3>
 {% endblock %}
