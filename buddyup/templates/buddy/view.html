@@ -24,7 +24,7 @@
 				Major: Unspecified
 			{% endif %}
 		</address>
-		<div id="profile-social">
+		<div id="profile-external">
 			{% if buddy_record.facebook %}
 				<a href="{{ buddy_record.facebook }}">
 					<img src="{{ img('facebook.png') }}">
@@ -36,6 +36,11 @@
 					<img src="{{ img('twitter.png') }}">
 				</a>
 			{% endif %}
+			
+			<a href="mailto:{{ buddyup_record|email }}">
+				<img src="{{ img('email.png') }}">
+			</a>
+
 			{% if not is_buddy %}
 			<a href="{{ url_for('invite_send', user_name=buddy_record.user_name) }}"
 				 class="btn btn-large btn-primary">Invite</a>
@@ -45,6 +50,7 @@
 			<a href="{{ url_for('invite_deny', user_name=buddy_record.user_name) }}"
 				 class="btn btn-large btn-danger">Reject Invitation</a>
 			{% endif %}
+		</div>
 	</div>
 </div>
 
