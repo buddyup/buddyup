@@ -96,7 +96,24 @@ def checked_regexp(regexp, value, label):
         return None
     else:
         return match
-    
+
+
+def check_course_membership(course, user=None):
+    """
+    Check that the given user belongs to the course. Defaults to g.user.
+    Aborts with a 403 on error.
+    """
+    if user is None:
+        user = g.user
+
+    if isinstance(course, Course):
+        course_id = course.id
+    else:
+        course_id = course
+
+    if user.courses.filter(Course.id == course_id).count() == 0:
+        abort(403)
+
 
 def events_to_json(events):
     """
