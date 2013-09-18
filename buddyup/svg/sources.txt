@@ -1,0 +1,8 @@
+Email-button.svg
+http://openclipart.org/detail/167084/email-button-by-pnoq
+
+upvote-active.svg
+upvote-inactive.svg
+downvote-active.svg
+downvote-inactive.svg
+Custom made by Aaron DeVore
