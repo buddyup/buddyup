@@ -1,5 +1,5 @@
 from . import admin
-from . import answer
+#from . import answer
 from . import basic
 from . import buddies
 from . import buddyinvitations
@@ -10,4 +10,5 @@ from . import errorhandlers
 from . import lists
 from . import login
 from . import profile
-from . import questions
+from . import qa
+#from . import questions
