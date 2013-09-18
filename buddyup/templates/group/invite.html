@@ -4,29 +4,28 @@
 {% block extrahead %}
 <script type="text/javascript">
 function toggle(source) {
-  checkboxes = document.getElementsByName('foo');
-  for(var i=0, n=checkboxes.length;i<n;i++) {
-    checkboxes[i].checked = source.checked;
-  }
+	$('input[type="users"]').prop('checked', $(source).prop("checked"));
 }
 </script>
 {% endblock extrahead %}
 
 {% block content %}
 {{ flash_all() }}
-<h2 style="text-align:center;"> Invite to Group</h2>
-<form action="{{ url_for('event_invitation_send_list', event_id=event_id) }}" method="POST">
+<h2> Invite to Group</h2>
+<form action="{{ url_for('event_invitation_send_list', event_id=event.id) }}" method="POST">
 <div class="container">
-    <div class="span3"></div>
-    <div class="well span5">
-		<input type="checkbox" onClick="toggle(this)" style="margin-top:-5px;"/> Select/Unselect All <br>
-		{% for user in buddies %}
+	<div class="span3"></div>
+	<div class="well span5">
+	<input type="checkbox" onclick="toggle(this)" style="margin-top:-5px;"/> Select/Unselect All <br>
+	{% for user in buddies %}
 		<label class="checkbox">
 			<input type="checkbox" name="users" value="{{user.id}}" style="margin-top:20px;">  
-				<p style="float: left;"><img src="{{ profile(user) }}" height="50px" width="50px" border="1px"></p>
-				<font style="margin-left:10px;" color="2BA515"><b> {{ user.full_name }} </b> <br> </font>	
-				<font style="margin-left:10px;" color="E8A40D"> Location: {{ user.location.name }} </font>
-				<hr>    
+			<p style="float: left;"><img src="{{ profile(user) }}" height="50px" width="50px" border="1px"></p>
+			<font style="margin-left:10px;" color="2BA515"><b> {{ user.full_name }} </b> <br> </font>	
+			<font style="margin-left:10px;" color="E8A40D"> Location: {{ user.location.name }} </font>
+			{% if not loop.last %}
+				<hr>
+			{% endif %}
 		</label>
 		{% endfor %}
 		<input class="btn btn-default btn-primary" style="float:right;" value="Invite" type="Submit">
