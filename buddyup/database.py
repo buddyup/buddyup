@@ -29,6 +29,12 @@ Buddy = db.Table('buddy',
     )
 
 
+LanguageMembership = db.Table('languagemembership',
+    db.Column('language_id', db.Integer, db.ForeignKey('language.id')),
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    )
+
+
 # Main tables
 
 class EventInvitation(db.Model):
@@ -90,6 +96,9 @@ class User(db.Model):
     majors = db.relationship('Major', lazy="dynamic",
                              secondary=MajorMembership,
                              backref='users')
+    languages = db.relationship('Language', lazy='dynamic',
+                                secondary=LanguageMembership,
+                                backref=db.backref('users', lazy="dynamic"))
 #    buddy_inv = db.relationship('User', secondary=BuddyInvitation,
 #                                primaryjoin=BuddyInvitation.c.receiver_id == id,
 #                                secondaryjoin=BuddyInvitation.c.sender_id == id)
@@ -238,5 +247,10 @@ class Location(db.Model):
 
 
 class Major(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.UnicodeText)
+
+
+class Language(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.UnicodeText)

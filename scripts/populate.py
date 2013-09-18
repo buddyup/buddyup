@@ -5,8 +5,7 @@ logger = logging.getLogger('populate')
 
 sys.path.insert(0, os.getcwd())
 
-import buddyup.database
-from buddyup.database import db, Location, Major
+from buddyup.database import db, Location, Major, Language
 
 
 parser = argparse.ArgumentParser()
@@ -22,9 +21,15 @@ parser.add_argument('targets', nargs='*')
 populators = {}
 
 
-def populate_location(args):
+def populator(f):
+    populators[f.__name__] = f
+    return f
+
+
+@populator
+def location(args):
     if args.clear:
-        Major.query.delete()
+        Location.query.delete()
     for location in read_defaults('locations'):
         if Location.query.filter_by(name=location).count() < 1:
             logger.info("Inserting location '%s'", location)
@@ -35,10 +40,8 @@ def populate_location(args):
     db.session.commit()
 
 
-populators['location'] = populate_location
-
-
-def populate_majors(args):
+@populator
+def major(args):
     if args.clear:
         Major.query.delete()
     for major in read_defaults('major'):
@@ -51,11 +54,23 @@ def populate_majors(args):
     db.session.commit()
 
 
-populators['major'] = populate_majors
+@populator
+def language(args):
+    if args.clear:
+        Language.query.delete()
+    for language in read_defaults('language'):
+        if Language.query.filter_by(name=language).count() < 1:
+            logger.info("Inserting language '%s'", language)
+            record = Language(name=language)
+            db.session.add(record)
+        else:
+            logger.info("Skipping language '%s'", language)
+    db.session.commit()
 
 
 def read_defaults(target):
-    with io.open(os.path.join('defaults', target + '.txt')) as f:
+    path = os.path.join('defaults', target + '.txt')
+    with io.open(path, encoding='utf8') as f:
         for line in f:
             yield line.rstrip('\r\n')
 
