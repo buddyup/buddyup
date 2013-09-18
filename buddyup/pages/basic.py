@@ -3,7 +3,6 @@ from flask import url_for, redirect, g
 from buddyup.app import app
 from buddyup.templating import render_template
 from buddyup.util import login_required, events_to_json
-from buddyup.database import Event
 
 # Expect behavior: '/' redirects to 
 
@@ -30,7 +29,11 @@ def home():
 @app.route('/help')
 @login_required
 def help():
-    return render_template('help.html')
+    help_url = app.config.get('HELP_URL')
+    if help_url is None:
+        return render_template('help.html')
+    else:
+        return redirect(help_url)
 
 
 @app.route('/suggestions')

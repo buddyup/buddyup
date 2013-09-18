@@ -18,6 +18,8 @@ if 'ADMIN_USER' in os.environ:
     app.config['ADMIN_USER'] = os.environ['ADMIN_USER']
 if 'SECRET_KEY' in os.environ:
     app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
+if 'HELP_URL' in os.environ:
+    app.config['HELP_URL'] = os.environ['HELP_URL']
 Heroku(app)
 
 runner = Runner(app)
@@ -31,7 +33,6 @@ if not app.debug:
 
 from . import database
 from . import photo
-from .templating import render_template
 from .util import login_required
 
 
