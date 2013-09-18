@@ -243,14 +243,14 @@ class Visit(db.Model):
 
 class Location(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.UnicodeText)
+    name = db.Column(db.UnicodeText, unique=True)
 
 
 class Major(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.UnicodeText)
+    name = db.Column(db.UnicodeText, unique=True)
 
 
 class Language(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.UnicodeText)
+    name = db.Column(db.UnicodeText, unique=True)
