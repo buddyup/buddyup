@@ -1,11 +1,10 @@
 from flask import g, request, abort, redirect
 
 from buddyup.app import app
-from buddyup.database import (User, Buddy, BuddyInvitation, CourseMembership,
-                              Course, Major, MajorMembership, db)
+from buddyup.database import (User, BuddyInvitation, Major,
+                              Course, CourseMembership, db)
 from buddyup.templating import render_template
 from buddyup.util import login_required, args_get
-from buddyup.database import User
 
 @app.route("/buddy/view/<user_name>")
 @login_required

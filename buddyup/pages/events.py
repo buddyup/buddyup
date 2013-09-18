@@ -110,10 +110,10 @@ def event_search_results():
     query = query.order_by(Event.start.desc())
     query = query.filter(Event.start > datetime.now())
 
-    course = get_int('course')
+    course_id = get_int('course')
     # -1 indicates no course selected, so use all courses
-    if course >= 0:
-        query = query.filter_by(course_id=course)
+    if course_id >= 0:
+        query = query.filter_by(course_id=course_id)
     else:
         course_ids = [course.id for course in g.user.courses.all()]
         # Only include courses if they specified a course

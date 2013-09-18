@@ -1,10 +1,9 @@
 from flask import g, flash, redirect, url_for, abort, request
 
 from buddyup.app import app
-from buddyup.database import db, BuddyInvitation, User, Buddy
+from buddyup.database import db, BuddyInvitation, User
 from buddyup.templating import render_template
 from buddyup.util import login_required
-from buddyup.pages.eventinvitations import event_invitation_view_all
 
 
 @app.route("/invite/view")

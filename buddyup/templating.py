@@ -83,7 +83,7 @@ def format_event(event, format, datef=None, timef=None):
     return format.format(**variables)
 
 
-@app.template_global
+@app.template_global()
 def format_user(user, format):
     """
     Render a buddyup.database.Event according to a format string

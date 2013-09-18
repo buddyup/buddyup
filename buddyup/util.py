@@ -3,7 +3,7 @@ import re
 
 from flask import flash, request, abort, g, redirect, url_for
 
-from buddyup import database
+from buddyup.database import Course
 from buddyup.app import app
 
 _DEFAULT = object()

@@ -1,4 +1,4 @@
-from flask import g, request, flash, redirect, url_for, session, abort
+from flask import g, request, flash, redirect, url_for, abort
 
 from buddyup.app import app
 from buddyup.database import User, EventInvitation, EventMembership, db, Event
@@ -6,24 +6,19 @@ from buddyup.util import login_required
 from buddyup.templating import render_template
 
 
-@login_required
-def event_invitation_view_all():
-    event_invitations = g.user.received_eve_inv
-    return event_invitations
-
-
 @app.route('/invite/event/<int:event_id>', methods = ['GET', 'POST'])
 @login_required
 def event_invitation_send_list(event_id):
-    Event.query.get_or_404(event_id)
+    event = Event.query.get_or_404(event_id)
     
     # Only attendances have the permission to invite to the event
     if not g.user.events.filter_by(id=event_id).count():
         abort(403)
 
     if request.method == 'GET':
-        return render_template('group/invite.html', event_id=event_id,
-                buddies=g.user.buddies)
+        return render_template('group/invite.html',
+                               event=event,
+                               buddies=g.user.buddies)
     else:
         user_ids = map(int, request.form.getlist('users'))
         for user_id in user_ids:
@@ -51,6 +46,8 @@ def event_invitation_send(event_id, user_name):
             db.session.commit()
         else:
             flash("Your invitation is pending")
+            # TODO: Redirect to sender is ridiculously insecure. Find
+            # another way!
             return redirect(request.referrer)
     else:
         flash("Already in!")
@@ -66,11 +63,11 @@ def event_invitation_accept(invitation_id):
         db.session.delete(event_invitation)
         db.session.commit()
         flash("The new event has been successfully added.")
-
     else:
         flash("This event has already been added.")
 
     return redirect(url_for('invite_list'))
+
 
 @app.route('/decline/event/<int:invitation_id>')
 def event_invitation_decline(invitation_id):
