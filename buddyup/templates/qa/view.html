@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	{{ question.title }} - {{ question.course.name }}
+{% endblock %}
+
+{% block extrahead %}
+<link href="{{ css('style-qa') }}" rel="stylesheet">
+<script src="{{ js('qa') }}" rel="stylesheet"></script>
+{% endblock extrahead %}
+
+
+{% macro qabox(post) %}
+<div class="post">
+	{# Vote -#}
+	<div class="votebox {{post.status}}" id="{{post.html_id}}">
+		<div class="uparrow" onclick="upvote({{ post.html_id }})"></div>
+		<div class="score">{{ post.score }}</div>
+		<div class="downarrow" onclick="downvote({{ post.html_id }})"></div>
+	</div>
+	{# Text #}
+	<div class="textbox">
+		{% for p in post.text|paragraphs %}
+			<p>{{ p }}</p>
+		{% endfor %}
+	</div>
+	{# Other information -#}
+	<div class="labelbox">
+		<img src="{{post.thumbnail}}" width="20px" height="20px">
+		<div class=""></div>
+	</div>
+</div>
+{% endmacro %}
+
+
+{% block content %}
+<h1>{{ question.title }}</h1>
+
+<div class="span8 offset2">
+	qabox(question)
+	<div class="answerbox">
+		{{ form.hidden_tag() }}
+		{{ form.
+	</div>
+	{% for answer in question.answers %}
+		{{ qabox(answer) }}
+	{% endfor %}
+</div>
+{% endblock content %}

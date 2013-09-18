@@ -1,13 +1,9 @@
 {% extends "layout.html" %}
 {% block extrahead %}
-<style>
-	.span6  {width: 400px;}
-	.span3  {width: 200px;}
-</style>
+<link src="{{ css('style-qa') }}" type="text/css">
 {% endblock %}
 
 {% block content %}
-<br>
 <h1 style="text-align:center;">Start your question</h1>
 
 <form action={{ url_for() }} style="margin-top:50px;margin-left:300px;">

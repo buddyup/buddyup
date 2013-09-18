@@ -2,11 +2,13 @@
 
 {% block extrahead %}
 <script>
+$(function() {
 	$('.answerbox').hide();
 	$('.answerbutton').click(function(){
 		$('.answerbox').show();
 		$('.answerbutton').hide();
 	});
+});
 </script>
 {% endblock %}
 

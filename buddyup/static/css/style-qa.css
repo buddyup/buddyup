@@ -1,0 +1,33 @@
+.votebox {
+    float:left;
+    width:40px;
+}
+
+.votebox .upbox, .votebox .downbox {
+    width:40px;
+    height:20px;
+}
+
+.upvoted .upbox {
+    background: url("../img/upvote-active-40x20.png");
+}
+
+.downvoted .upbox, .neutral .upbox {
+    background: url("../img/upvote-inactive-40x20.png");
+}
+
+.upvoted .downbox, .neutral .upbox {
+    background: url("../img/downvote-inactive-40x20.png");
+}
+
+.downvoted .upbox {
+    background: url("../img/downvote-active-40x20.png");
+}
+
+.textbox {
+    float:right;
+}
+
+.labelbox {
+    clear: both;
+}
