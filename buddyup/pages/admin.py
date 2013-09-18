@@ -5,7 +5,7 @@ from sqlalchemy.sql import functions
 
 from buddyup.app import app
 from buddyup.database import (Course, Visit, User, BuddyInvitation,
-                              Location, Major, Event, db)
+                              Location, Major, Event, Language, db)
 from buddyup.templating import render_template
 from buddyup.util import form_get, check_empty
 from functools import wraps
@@ -21,7 +21,9 @@ def admin_required(f):
     return func
 
 
-def get_stats():
+@app.route("/admin")
+@admin_required
+def admin_dashboard():
     variables = {}
     variables['group_count'] = Event.query.count()
     variables['unique_visits'] = Visit.query.count()
@@ -34,13 +36,8 @@ def get_stats():
     variables['courses'] = Course.query.order_by(Course.name).all()
     variables['majors'] = Major.query.order_by(Major.name).all()
     variables['locations'] = Location.query.order_by(Location.name).all()
-    return variables
-
-
-@app.route("/admin")
-@admin_required
-def admin_dashboard():
-    return render_template('admin/dashboard.html', **get_stats())
+    variables['languages'] = Language.query.order_by(Language.name).all()
+    return render_template('admin/dashboard.html', **variables)
 
 
 @app.route("/admin/course/add", methods=['POST'])
@@ -62,7 +59,7 @@ def admin_add_course():
 @app.route("/admin/course/delete", methods=['POST'])
 @admin_required
 def admin_delete_course():
-    course_ids = map(int, request.form.getlist('listcourse'))
+    course_ids = map(int, request.form.getlist('courses'))
     for course_id in course_ids:
         Course.query.filter_by(id=course_id).delete()
     db.session.commit()
@@ -86,7 +83,7 @@ def admin_add_location():
 @app.route("/admin/location/delete", methods=['POST'])
 @admin_required
 def admin_delete_location():
-    location_ids = map(int, request.form.getlist('listlocation'))
+    location_ids = map(int, request.form.getlist('location'))
     for location_id in location_ids:
         Location.query.filter_by(id=location_id).delete()
     db.session.commit()
@@ -110,11 +107,35 @@ def admin_add_major():
 @app.route("/admin/major/delete", methods=['POST'])
 @admin_required
 def admin_delete_major():
-    major_ids = map(int, request.form.getlist('listmajors'))
+    major_ids = map(int, request.form.getlist('majors'))
     for major_id in major_ids:
         Major.query.filter_by(id=major_id).delete()
     db.session.commit()
     flash('Majors deleted')
+    return redirect(url_for('admin_dashboard'))
+
+
+@app.route("/admin/language/add", methods=['POST'])
+@admin_required
+def admin_add_language():
+    name = form_get('language')
+    check_empty(name, "Language Name")
+    if not get_flashed_messages():
+        language = Language(name=name)
+        db.session.add(language)
+        db.session.commit()
+        flash("Added Language " + name)
+    return redirect(url_for('admin_dashboard'))
+
+
+@app.route("/admin/language/delete", methods=['POST'])
+@admin_required
+def admin_delete_language():
+    language_ids = map(int, request.form.getlist('languages'))
+    for language_id in language_ids:
+        Language.query.filter_by(id=language_id).delete()
+    db.session.commit()
+    flash('Languages deleted')
     return redirect(url_for('admin_dashboard'))
 
 
