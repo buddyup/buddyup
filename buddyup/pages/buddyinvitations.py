@@ -9,9 +9,7 @@ from buddyup.util import login_required
 @app.route("/invite/view")
 @login_required
 def invite_list():
-    event_invitations = event_invitation_view_all()
-    #for buddy_invitation in buddy_invitations:
-    #    user = User.query.join(BuddyInvitation,User.id == BuddyInvitation.sender_id).filter_by(BuddyInvitation.id=buddy_invitation.id).first()
+    event_invitations = g.user.received_event_inv
     buddy_invitations = g.user.received_bud_inv
     return render_template('my/view_invite.html',
                            buddy_invitations=buddy_invitations,
