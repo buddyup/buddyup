@@ -1,10 +1,10 @@
 {% extends "layout.html" %}
 {% from "lib.html" import flashed %}
-  
+
+{% block title %}Invites{% endblock %}
+
 {% block content %}
 <h2> Invitations </h2>
-<br>
-<div class="container">
 	{% if new_friend %}
 		{% call flashed() %}
 			You added a <a href="{{ profile(new_friend) }}"> friend</a>.
@@ -45,8 +45,8 @@
 		</div>
 	
 	</div>
-    <div class="well span5">
-		<strong><font style="margin-left:150px;" color="2896FF";> From Groups </font></strong>
+	<div class="well span5">
+		<strong><font style="margin-left:150px;" color="2896FF"> From Groups </font></strong>
 		<div style="margin-top:20px;">
 			{% for event_inv in event_invitations %}
 			{% set event = event_inv.event %}
@@ -54,12 +54,11 @@
 				<font style="margin-left:10px;" color="2BA515"><b> {{ event.name }} </b> <br> </font>	
 				<font style="margin-left:10px;" color="E8A40D"> You are invited to a group </font>
 		  	 <div class="btn-group" style="margin-left:240px;">
-		  	    <a class="btn btn-success" href=" {{ url_for('event_invitation_accept', invitation_id=event_inv.id) }}"> Accept</a>
-		  	  	<a class="btn btn-danger" href=" {{ url_for('event_invitation_decline', invitation_id=event_inv.id) }}"> Deny </a>
+		  	    <a class="btn btn-success" href="{{ url_for('event_invitation_accept', invitation_id=event_inv.id) }}"> Accept</a>
+		  	  	<a class="btn btn-danger" href="{{ url_for('event_invitation_decline', invitation_id=event_inv.id) }}"> Deny </a>
 			</div>	
 			<hr>
 			{% endfor %}     
 		</div>
-	</div>
 </div>
 {% endblock %}
