@@ -58,31 +58,97 @@ class Course(db.Model):
     name = db.Column(db.UnicodeText)
     instructor = db.Column(db.UnicodeText)
     events = db.relationship('Event', backref='course')
+    questions = db.relationship('Question', backref='course',
+                                lazy='dynamic')
 
     def __repr__(self):
         return '<Course %r>' % self.crn
 
+
+class Answer(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
+    title = db.Column(db.UnicodeText)
+    text = db.Column(db.UnicodeText)
+    time = db.Column(db.DateTime)
+    votes = db.relationship("AnswerVote", backref="answer", lazy='dynamic')
+    
+    @property
+    def html_id(self):
+        return 'a%d' % self.id
+ 
+
+class Question(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
+    title = db.Column(db.UnicodeText)
+    text = db.Column(db.UnicodeText)
+    time = db.Column(db.DateTime)
+    #TODO: Add a counter of views?
+    answers = db.relationship("Answer",
+            backref="Question", lazy='dynamic',
+            primaryjoin=Answer.question_id == id)
+    votes = db.relationship("QuestionVote", backref="question",
+                            lazy='dynamic')
+
+    def __repr__(self):
+        return '<Question %r>' % self.id
+ 
+    @property
+    def html_id(self):
+        return 'q%d' % self.id
+
+
+class AnswerVote(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    answer_id = db.Column(db.Integer, db.ForeignKey('answer.id'))
+    # May change value into boolean
+    value = db.Column(db.Integer)
+
+
+class QuestionVote(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
+    # May change value into boolean
+    value = db.Column(db.Integer)
+
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    # PSU user names are always <= 8 ASCII characters
+    # PSU user names are always <= 8 ASCII characters due to Solaris
+    # restrictions
     user_name = db.Column(db.String(8), index=True, unique=True)
     full_name = db.Column(db.UnicodeText, default=u"")
     bio = db.Column(db.UnicodeText, default=u"")
     facebook = db.Column(db.UnicodeText, default=u"")
     twitter = db.Column(db.UnicodeText, default=u"")
-    initialized = db.Column(db.Boolean, default=False)
     location_id = db.Column(db.Integer, db.ForeignKey('location.id'))
+    email = db.Column(db.UnicodeText)
+
+    # Initialized flag
+    initialized = db.Column(db.Boolean, default=False)
+    
+    # Photos
+    tiny_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
+    thumbnail_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
+    large_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
+
+    
+    # Relationships
     location = db.relationship('Location')
     courses = db.relationship('Course',
                               secondary=CourseMembership,
                               backref=db.backref('users', lazy="dynamic"),
                               lazy='dynamic')
-    email = db.Column(db.UnicodeText)
     events = db.relationship('Event', lazy="dynamic",
                              secondary=EventMembership,
                              backref=db.backref('users', lazy="dynamic"))
     buddies = db.relationship('User', secondary=Buddy,
-                            lazy='dynamic',
+                              lazy='dynamic',
                               primaryjoin=Buddy.c.user1_id == id,
                               secondaryjoin=Buddy.c.user2_id == id)
     sent_bud_inv = db.relationship('BuddyInvitation', backref='sender',
@@ -91,7 +157,7 @@ class User(db.Model):
                                 primaryjoin=BuddyInvitation.receiver_id==id)
     sent_eve_inv = db.relationship('EventInvitation', backref='sender',
                                 primaryjoin=EventInvitation.sender_id==id)
-    received_eve_inv = db.relationship('EventInvitation', backref='receiver',
+    received_event_inv = db.relationship('EventInvitation', backref='receiver',
                                 primaryjoin=EventInvitation.receiver_id==id)
     majors = db.relationship('Major', lazy="dynamic",
                              secondary=MajorMembership,
@@ -99,15 +165,16 @@ class User(db.Model):
     languages = db.relationship('Language', lazy='dynamic',
                                 secondary=LanguageMembership,
                                 backref=db.backref('users', lazy="dynamic"))
+    questions = db.relationship('Question', lazy="dynamic", backref='user',
+                                primaryjoin=Question.user_id == id)
+    answers = db.relationship('Answer', lazy="dynamic", backref='user',
+                              primaryjoin=Answer.user_id == id)
 #    buddy_inv = db.relationship('User', secondary=BuddyInvitation,
 #                                primaryjoin=BuddyInvitation.c.receiver_id == id,
 #                                secondaryjoin=BuddyInvitation.c.sender_id == id)
 #    group_inv = db.relationship('User', secondary=EventInvitation,
 #                                primaryjoin=EventInvitation.c.event_id == id,
 #                                secondaryjoin=EventInvitation.c.user_id == id)
-    tiny_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
-    thumbnail_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
-    large_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
 
 
 class Photo(db.Model):
@@ -195,37 +262,7 @@ class Notes(db.Model):
         return '<NotesComment %r>' % self.id
 '''
 
-
-class Question(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    title = db.Column(db.UnicodeText)
-    text = db.Column(db.UnicodeText)
-    time = db.Column(db.DateTime)
-    #TODO: Add a counter of views?
-    answers = db.relationship("Answer",
-            backref="Question", lazy='dynamic')
-
-    def __repr__(self):
-        return '<Question %r>' % self.id
-
-
-class Answer(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
-    title = db.Column(db.UnicodeText)
-    text = db.Column(db.UnicodeText)
-    time = db.Column(db.DateTime)
-    votes = db.relationship("Vote", backref="Answer", lazy='dynamic')
-
-
-class Vote(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    answer_id = db.Column(db.Integer, db.ForeignKey('answer.id'))
-    # May change value into boolean
-    value = db.Column(db.Integer)
+   
 
 
 class Availability(db.Model):
