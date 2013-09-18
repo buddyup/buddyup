@@ -13,8 +13,7 @@ from buddyup.templating import render_template
 
 
 def calculate_score(post_record, model):
-    filter = func.sum(model.value)
-    return post_record.votes.filter(filter).scalar()
+    return post_record.votes.sum(model.value)
 
 
 @app.route('/qa/question/post', methods=('GET', 'POST'))
