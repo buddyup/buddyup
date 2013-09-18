@@ -60,8 +60,6 @@ def profile_create():
         languages = sorted_languages()
         def selected(record):
             if isinstance(record, Language):
-                app.logger.error(repr(record))
-                print record
                 return record.name == u"English"
             else:
                 return False
