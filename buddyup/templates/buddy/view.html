@@ -10,20 +10,26 @@
 	</div>
 
 	<div class="span6">
-		<h2>{{ buddy_record.full_name }}</h2>
-		<address>
-			{% if buddy_record.location %}
-				Location: {{ buddy_record.location.name }}
-			{% else %}
-				Location: Not Given
-			{% endif %}
-			<br>
-			{% if majors|length > 0 %}
-				Major: {{ majors| join(' , ') }}
-			{% else %}
-				Major: Unspecified
-			{% endif %}
-		</address>
+		<h2 style="text-align:left">{{ buddy_record.full_name }}</h2>
+		{% if buddy_record.location %}
+			Location: {{ buddy_record.location.name }}
+		{% else %}
+			Location: Not Given
+		{% endif %}
+		<br>
+		{% if majors|length > 0 %}
+			Major: {{ majors| join(', ') }}
+		{% else %}
+			Major: Unspecified
+		{% endif %}
+		<br>
+		{% if languages|length == 1 %}
+			Language: {{ languages[0] }}
+		{% elif languages|length > 0 %}
+			Languages: {{ languages|join(', ') }}
+		{% else %}
+			Languages: Unspecified
+		{% endif %}
 		<div id="profile-external">
 			{% if buddy_record.facebook %}
 				<a href="{{ buddy_record.facebook }}">
@@ -37,7 +43,7 @@
 				</a>
 			{% endif %}
 			
-			<a href="mailto:{{ buddyup_record|email }}">
+			<a href="mailto:{{ buddy_record|email }}">
 				<img src="{{ img('email.png') }}">
 			</a>
 

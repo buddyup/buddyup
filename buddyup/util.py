@@ -3,7 +3,7 @@ import re
 
 from flask import flash, request, abort, g, redirect, url_for
 
-from buddyup.database import Course
+from buddyup.database import Course, Language
 from buddyup.app import app
 
 _DEFAULT = object()
@@ -138,3 +138,17 @@ def events_to_json(events):
 @app.template_filter()
 def email(user):
     return user.email or (user.user_name + u"@pdx.edu")
+
+
+def sorted_languages():
+    """
+    Get all languages sorted, with English always as the first language.
+    """
+    def compare(a, b):
+        if a.name == u"English":
+            return -1
+        elif b.name == u"English":
+            return 1
+        else:
+            return cmp(a, b)
+    return sorted(Language.query.all(), cmp=compare)

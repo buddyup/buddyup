@@ -6,6 +6,7 @@
 <link href="{{ css('bootstrap') }}" rel="stylesheet">
 <link href="{{ css('bootstrap-responsive') }}" rel="stylesheet">
 <link href="{{ css('bootstrap-fileupload') }}" rel="stylesheet">
+<link href="{{ css('style') }}" rel="stylesheet">
 <script src="{{ js('jquery') }}"></script>
 <script src="{{ js('bootstrap') }}"></script>
 <script src="{{ js('bootstrap-button') }}"></script>
@@ -22,6 +23,7 @@ color{color:red;}
 .detail input {
 	margin-top: -5px;
 }
+
 </style>
 <script>
 $(function() {
@@ -36,44 +38,57 @@ $(function() {
 </head>
 <body>
 
-<h2> Welcome to BuddyUp! </h2>
 <div class="container">
-
-<div class="span3"></div>
-	<div class="well span7">  
-		<h4> Please fill in</h4>
+	<div class="well span7 offset3">  
+		<h2> Welcome to BuddyUp! </h2>
 		{{ flash_all() }}
 		<form action="{{ url_for('profile_create') }}" method="POST">
 			<label> Your Name <color> (*Required) </color> </label>  
 			<input type="text" class="span2" placeholder="Your Full Name" value="{{ user_record.full_name }}" name="name">    
 			<label> Your Course (can select multiple courses)</label>
-				<select size=10 style="width: 180px" name="course" multiple>
-					{% for course_record in courses %}
-						{% if selected(course_record) %}
-							<option value="{{ course_record.id }}" selected>
-								{{ course_record.name }} by {{ course_record.instructor }}
-							</option>
-						{% else %}
-							<option value="{{ course_record.id }}">
-								{{ course_record.name }} by {{ course_record.instructor }}
-							</option>
-						{% endif %}
-					{% endfor %}
-				</select>
-			<label> Your Major (can select multiple majors)</label>
-				<select size=10 style="width: 180px" name="majors" multiple>
-				{% for major in majors %}
-					{% if selected(major) %}
-						<option value="{{ major.id }}" selected>
-							{{ major.name }}
+			<select size=10 style="width: 180px" name="course" multiple>
+				{% for course_record in courses %}
+					{% if selected(course_record) %}
+						<option value="{{ course_record.id }}" selected>
+							{{ course_record.name }} by {{ course_record.instructor }}
 						</option>
 					{% else %}
-						<option value="{{ major.id }}">
-							{{ major.name }}
+						<option value="{{ course_record.id }}">
+							{{ course_record.name }} by {{ course_record.instructor }}
 						</option>
 					{% endif %}
 				{% endfor %}
-				</select>
+			</select>
+
+			<label> Your Major (can select multiple majors)</label>
+			<select size=10 style="width: 180px" name="majors" multiple>
+			{% for major in majors %}
+				{% if selected(major) %}
+					<option value="{{ major.id }}" selected>
+						{{ major.name }}
+					</option>
+				{% else %}
+					<option value="{{ major.id }}">
+						{{ major.name }}
+					</option>
+				{% endif %}
+			{% endfor %}
+			</select>
+
+			<label>Language(s)</label>
+			<select size=10 style="width:180px" name="language" multiple>
+				{% for language_record in languages %}
+					{% if selected(language_record) %}
+						<option value="{{ language_record.id }}" selected>
+							{{ language_record.name }}
+						</option>
+					{% else %}
+						<option value="{{ language_record.id }}">
+							{{ language_record.name }}
+						</option>
+					{% endif %}
+				{% endfor %}
+			</select>
 			
 
 			<label> Location</label>
@@ -97,9 +112,9 @@ $(function() {
 			{% for day in day_names %}
 			<label> <input type="checkbox" class="toggle" id="{{ day|lower }}" style="margin-top:-5px; margin-left:10px;" name="{{day|lower}}">{{ day }}</label>
 			<div class="detail" id="{{day|lower}}detail" style="margin-left:30px;">
-				<label> <input type="radio" name="{{day|lower}}" id="{{day|lower}}-am" value="am" style="margin-top:-5px;"> AM </label>
-				<label> <input type="radio" name="{{day|lower}}" id="{{day|lower}}-pm" value="pm" style="margin-top:-5px;"> PM </label>
-				<label> <input type="radio" name="{{day|lower}}" id="{{day|lower}}-all" value="all" style="margin-top:-5px;"> All Day </label>
+				<label> <input type="radio" name="{{day|lower}}" id="{{day|lower}}-am" value="am"> AM </label>
+				<label> <input type="radio" name="{{day|lower}}" id="{{day|lower}}-pm" value="pm"> PM </label>
+				<label> <input type="radio" name="{{day|lower}}" id="{{day|lower}}-all" value="all"> All Day </label>
 			</div>
 			{% endfor %}
 

@@ -24,6 +24,26 @@
 				</option>
 			{% endfor %}
 			</select>
+			
+			<label> Major </label>
+			<select style="width: 100%" name="major">
+				<option value="-1">Any Major</option>
+				{% for major_record in majors %}
+					<option value="{{ major_record.id }}">
+						{{ major_record.name }}
+					</option>
+				{% endfor %}
+			</select>
+			
+			<label> Language </label>
+			<select style="width: 100%" name="language">
+				<option value="-1">Any Language</option>
+				{% for language_record in languages %}
+					<option value="{{ language_record.id }}">
+						{{ language_record.name }}
+					</option>
+				{% endfor %}
+			</select>
 
 			<label> Name </label>  
 			<input type="text" class="span2" placeholder="Full Name" name="name">

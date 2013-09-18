@@ -1,14 +1,53 @@
 from calendar import day_name
 
-from flask import (request, session, flash, g, redirect, url_for, abort,
+from flask import (request, g, redirect, url_for, abort,
                    get_flashed_messages)
-
-
 from buddyup.app import app
-from buddyup.database import (User, Availability, Location, Course,
-                              CourseMembership, Major, db)
-from buddyup.util import form_get, login_required, check_empty
+from buddyup.database import (Availability, Location, Course,
+                              Major, Language, db)
+from buddyup.util import (form_get, login_required, check_empty,
+                          sorted_languages)
 from buddyup.templating import render_template
+
+
+# TODO: Rewrite profile_create with WTForms
+
+
+
+def update_relationship(ids, relationship, model):
+    """
+    Use set manipulation to update a relationship using simple ids. Would
+    be faster to directly use table manipulation, but we get a few extra
+    nicities here.
+    """
+    current_ids = {record.id for record in relationship.all()}
+    
+    # Build a 
+    new_ids = set()
+    for id in ids:
+        try:
+            new_ids.add(int(id))
+        except ValueError:
+            app.logger.warning("Ignoring invalid id value %r for model %s",
+                               id, model.__class__.__name__)
+
+    insert_ids = new_ids - current_ids
+    for id in insert_ids:
+        record = model.query.get(id)
+        if record is None:
+            app.logger.warning("No record for id %i for model %s",
+                               id, model.__class__.__name__)
+        else:
+            relationship.append(record)
+
+    remove_ids = current_ids - new_ids
+    for id in remove_ids:
+        record = model.query.get(id)
+        if record is None:
+            app.logger.warning("No record for id %i for model %s",
+                               id, model.__class__.__name__)
+        else:
+            relationship.append(record)
 
 
 @app.route('/setup/profile', methods=['POST', 'GET'])
@@ -18,12 +57,21 @@ def profile_create():
         locations = Location.query.all()
         courses = Course.query.all()
         majors = Major.query.all()
+        languages = sorted_languages()
+        def selected(record):
+            if isinstance(record, Language):
+                app.logger.error(repr(record))
+                print record
+                return record.name == u"English"
+            else:
+                return False
         return render_template('setup/landing.html',
                                day_names=day_name,
                                locations=locations,
                                courses=courses,
-                               selected=lambda record: False,
+                               selected=selected,
                                majors=majors,
+                               languages=languages,
                                )
     else:
         user = g.user
@@ -43,6 +91,7 @@ def profile_create():
         if get_flashed_messages():
             course_ids = set(request.form.getlist('course'))
             major_ids = set(request.form.getlist('majors'))
+            language_ids = set(request.form.getlist('languages'))
             # Define the appropriate selected() function
             def selected(record):
                 if isinstance(record, Course):
@@ -51,20 +100,23 @@ def profile_create():
                     return unicode(record.id) == location
                 elif isinstance(record, Major):
                     return unicode(record.id) in major_ids
+                elif isinstance(record, Language):
+                    return unicode(record.id) in language_ids
                 else:
                     raise TypeError("Incorrect type %s" %
                                     record.__class__.__name__)
             return render_template('setup/landing.html',
-                                   name=name,
-                                   bio=bio,
-                                   day_names=day_name,
-                                   selected=selected,
-                                   facebook=facebook,
-                                   twitter=twitter,
-                                   courses=Course.query.order_by('name').all(),
-                                   locations=Location.query.order_by('name').all(),
-                                   majors=Major.query.order_by('name').all()
-                                   )
+                name=name,
+                bio=bio,
+                day_names=day_name,
+                selected=selected,
+                facebook=facebook,
+                twitter=twitter,
+                courses=Course.query.order_by('name').all(),
+                locations=Location.query.order_by('name').all(),
+                majors=Major.query.order_by('name').all(),
+                languages=sorted_languages(),
+            )
 
         user.full_name = name
         if location == -1:
@@ -85,10 +137,22 @@ def profile_create():
             major_record = Major.query.get(major_id)
             if major_record is None:
                 app.logger.warning("Non-existent major id %i sent by client",
-                                   major_id_text)
+                                   major_id)
                 continue
             user.majors.append(major_record)
-            
+        for language_id_text in request.form.getlist('languages'):
+            try:
+                language_id = int(language_id_text)
+            except ValueError:
+                app.logger.warning("non-integer language id %r sent by client",
+                                   language_id_text)
+                continue
+            language_record = Language.query.get(language_id)
+            if language_record is None:
+                app.logger.warning("Non-existent language id %i sent by client",
+                                   language_id)
+                continue
+            user.languages.append(language_record)
             
         
         AVAILABILITIES = {
@@ -114,7 +178,9 @@ def profile_create():
                                       day=i,
                                       time=time)
                 db.add(record)
-        update_courses(map(int, request.form.getlist('course')))
+        update_relationship(request.form.getlist('course'), g.user.courses, Course)
+        update_relationship(request.form.getlist('language'),
+                            g.user.languages, Language)
         db.session.commit()
 
         return redirect(url_for('suggestions'))
@@ -124,24 +190,7 @@ def profile_create():
 # @login_required
 # def photo_create():
 #    pass
- 
-def update_courses(course_ids):
-    """
-    Use set manipulation delete removed course links and insert new course
-    links.
-    """
-    current_course_ids = {course.id for course in g.user.courses.all()}
-    new_course_ids = set(course_ids)
 
-    new = new_course_ids - current_course_ids
-    for course_id in new:
-        course = Course.query.get(course_id)
-        g.user.courses.append(course)
-    
-    remove = current_course_ids - new_course_ids
-    for course_id in remove:
-        course = Course.query.get(course_id)
-        g.user.courses.remove(course)
 
 
 @app.route('/user/profile', methods=['POST', 'GET'])
@@ -163,12 +212,14 @@ def profile_edit():
         locations = Location.query.order_by('name').all()
         courses = Course.query.order_by('name').all()
         majors = Major.query.order_by('name').all()
+        languages = sorted_languages()
         return render_template('my/edit_profile.html',
                                day_names=day_name,
                                locations=locations,
                                courses=courses,
                                selected=selected,
                                majors=majors,
+                               languages=languages,
                                )
     else:
         name = form_get('name')
@@ -244,7 +295,10 @@ def profile_edit():
                                       time=time)
                 db.add(record)
 
-        update_courses(map(int, request.form.getlist('course')))
+        course_ids = map(int, request.form.getlist('course'))
+        update_relationship(course_ids, g.user.courses, Course)
+        language_ids = map(int, request.form.getlist('languages'))
+        update_relationship(language_ids, g.user.languages, Language)
         db.session.commit()
         return redirect(url_for('buddy_view', user_name=g.user.user_name))
 
