@@ -10,28 +10,20 @@ from buddyup.util import login_required, form_get, check_empty
 from buddyup.pages.events import event_view
 
 
-@app.route('/event/comment/create/<int:event_id>', methods=['GET', 'POST'])
+@app.route('/event/comment/create/<int:event_id>', methods=['POST'])
 @login_required
 def post_comment(event_id):
-    event_record = Event.query.get_or_404(event_id)
-    if request.method == 'GET':
-        return render_template('create_comment.html', has_errors=False)
-    else:
-        user = g.user
-        content = form_get('content')
-        check_empty(content, "Content")
-        time = datetime.now()
+    Event.query.get_or_404(event_id)
+    content = form_get('content')
+    check_empty(content, "Content")
+    time = datetime.now()
 
-    # TODO: flashed_message()
-        #if get_flashed_messages():
-            #return render_template('create_comment.html', has_errors=True)
-
-        new_comment_record = EventComment(event_id=event_id, user_id=user.id,
-            contents=content, time=time)
-        db.session.add(new_comment_record)
-        db.session.commit()
-        # TODO: decide how to show the comments
-        return redirect(url_for('event_view',event_id=event_id))
+    comment_record = EventComment(event_id=event_id, user_id=g.user.id,
+        contents=content, time=time)
+    db.session.add(comment_record)
+    db.session.commit()
+    # TODO: decide how to show the comments
+    return redirect(url_for('event_view', event_id=event_id))
 
 
 @app.route('/event/comment/edit/<int:comment_id>', methods=['GET', 'POST'])
