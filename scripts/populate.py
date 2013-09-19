@@ -1,11 +1,11 @@
 #!/usr/bin/env python
-import sys, os, argparse, io, logging, logging.handlers
+import sys, os, argparse, io, logging, logging.handlers, csv
 
 logger = logging.getLogger('populate')
 
 sys.path.insert(0, os.getcwd())
 
-from buddyup.database import db, Location, Major, Language
+from buddyup.database import db, Location, Major, Language, Course
 
 
 parser = argparse.ArgumentParser()
@@ -30,7 +30,7 @@ def populator(f):
 def location(args):
     if args.clear:
         Location.query.delete()
-    for location in read_defaults('locations'):
+    for (location,) in read_defaults('locations'):
         if Location.query.filter_by(name=location).count() < 1:
             logger.info("Inserting location '%s'", location)
             record = Location(name=location)
@@ -44,7 +44,7 @@ def location(args):
 def major(args):
     if args.clear:
         Major.query.delete()
-    for major in read_defaults('major'):
+    for (major,) in read_defaults('major'):
         if Major.query.filter_by(name=major).count() < 1:
             logger.info("Inserting major '%s'", major)
             record = Major(name=major)
@@ -58,7 +58,7 @@ def major(args):
 def language(args):
     if args.clear:
         Language.query.delete()
-    for language in read_defaults('language'):
+    for (language,) in read_defaults('language'):
         if Language.query.filter_by(name=language).count() < 1:
             logger.info("Inserting language '%s'", language)
             record = Language(name=language)
@@ -68,11 +68,29 @@ def language(args):
     db.session.commit()
 
 
+@populator
+def course(args):
+    if args.clear:
+        Course.query.delete()
+    for name, instructor in read_defaults('course'):
+        if Course.query.filter_by(name=name,
+            instructor=instructor).count() < 1:
+            logger.info("Inserting course '%s' by '%s'",
+                          name, instructor)
+            record = Course(name=name, instructor=instructor)
+            db.session.add(record)
+        else:
+            logger.info("Skipping course '%s' by '%s'",
+                        name, instructor)
+    db.session.commit()
+
+
 def read_defaults(target):
     path = os.path.join('defaults', target + '.txt')
-    with io.open(path, encoding='utf8') as f:
-        for line in f:
-            yield line.rstrip('\r\n')
+    with open(path, 'rb') as f:
+        reader = csv.reader(f)
+        for row in reader:
+            yield [s.decode('utf8') for s in row]
 
 
 def main():

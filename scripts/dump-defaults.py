@@ -1,11 +1,11 @@
 #!/usr/bin/env python
-import sys, os, argparse, io, logging, logging.handlers
+import sys, os, argparse, io, logging, logging.handlers, csv
 
 logger = logging.getLogger('populate')
 
 sys.path.insert(0, os.getcwd())
 
-from buddyup.database import db, Location, Major, Language
+from buddyup.database import db, Location, Major, Language, Course
 
 parser = argparse.ArgumentParser(
     description="Dump defaults from the database")
@@ -31,19 +31,25 @@ def field_dumper(model, field):
 @dumper
 def location():
     for i in field_dumper(Location, "name"):
-        yield i
+        yield i,
 
 
 @dumper
 def language():
     for i in field_dumper(Language, "name"):
-        yield i
+        yield i,
 
 
 @dumper
 def major():
     for i in field_dumper(Major, "name"):
-        yield i
+        yield i,
+
+
+@dumper
+def course():
+    for record in Course.query.all():
+        yield record.name, record.instructor
 
 
 def main():
@@ -59,10 +65,16 @@ def main():
     if args.out == '-':
         f = sys.stdout
     else:
-        f = io.open()
-    for item in sorted(dumper()):
-        f.write((item + u'\n').encode('utf8'))
+        f = io.open(args.out, 'rb')
+    writer = csv.writer(f)
+    try:
+        for item in sorted(dumper()):
+            encoded = [s.encode('utf8') for s in item]
+            writer.writerow(encoded)
+            
+    finally:
+        f.close()
 
-    
+ 
 if __name__ == "__main__":
     main()
