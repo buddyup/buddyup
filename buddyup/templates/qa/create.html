@@ -3,17 +3,38 @@
 <link src="{{ css('style-qa') }}" type="text/css">
 {% endblock %}
 
-{% block content %}
-<h1 style="text-align:center;">Start your question</h1>
+{% macro render_field(field) %}
+	{{ field.label }}
+	{% if field.errors %}
+		<p style="color: red">{{ field.errors|join(", ") }}</p>
+	{% endif %}
+	{{ field(**kwargs) }}
+{% endmacro %}
 
-<form action={{ url_for() }} style="margin-top:50px;margin-left:300px;">
-	<font>Tittle: <input type="textbox" name="question_tittle" class="span3"></input></font>
-	<br><br>
-	<font>Type your question:</font>
-	<br>
-	<textarea class="span5" style="height: 150px;" name="question_contain" form="usrform" ></textarea>
-	<br>
+{% block content %}
+<div class="span12">
+	<h1>Start your question</h1>
+	<div class="container">
+		<form action="{{ url_for('question_create') }}" method="POST">
+			{{ form.hidden_tag() }}
+			
+			{{ render_field(form.course) }}
+			{{ render_field(form.title, class="span3") }}
+			{{ render_field(form.text, class="span5", style="height:150px") }}
+
+			{#
+			{{ form.title.label }}
+			{% if form.title.errors %}
+				<p>{{ form.title.errors|join(", ") }}</p>
+			{% endif %}
+			{{ form.title(class="span3") }}
+			
+			{{ form.text.label }}
+			{{ form.text.errors|join(", ") }}
+			{{ form.text(class="span5", style="height:150px") }}
+			#}
 	<input type="submit" value="Post" class="btn btn-success">
+	</div>
 </form>
 
 {% endblock %}

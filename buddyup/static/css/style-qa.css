@@ -1,9 +1,9 @@
 .votebox {
-    float:left;
+    /*float:left;*/
     width:40px;
 }
 
-.votebox .upbox, .votebox .downbox {
+.votebox .upbox, .votebox .downbox, .votebox .score{
     width:40px;
     height:20px;
 }
@@ -27,7 +27,7 @@
 .textbox {
     float:right;
 }
-
+/*
 .labelbox {
     clear: both;
-}
+}*/

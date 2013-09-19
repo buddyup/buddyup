@@ -12,8 +12,9 @@ from buddyup.util import check_course_membership, login_required
 from buddyup.templating import render_template
 
 
-def calculate_score(post_record, model):
-    return post_record.votes.sum(model.value)
+def calculate_score(post_record):
+    # TODO: Find the way to do the question using the SQL sum() function
+    return sum(vote.value for vote in post_record.votes.all())
 
 
 @app.route('/qa/question/post', methods=('GET', 'POST'))
@@ -21,11 +22,11 @@ def calculate_score(post_record, model):
 def question_create():
     form = QuestionForm()
     if form.validate_on_submit():
-        check_course_membership(form.course_id)
-        question = Question(course_id=form.course_id,
+        question = Question(course_id=form.course.data.id,
                             user_id=g.user.id,
-                            title=form.title,
-                            time=datetime.now())
+                            title=form.title.data,
+                            time=datetime.now(),
+                            text=form.text.data)
         db.session.add(question)
         db.session.commit()
         return redirect(url_for('question_view',
@@ -85,7 +86,7 @@ def question_list_course(course_id):
                            course=course)
 
 
-def post_for_template(record, vote_model):
+def post_for_template(record):
     vote = record.votes.filter_by(user_id=g.user.id).first()
     if vote is None:
         status = 'neutral'
@@ -98,7 +99,8 @@ def post_for_template(record, vote_model):
     return {
         'status': status,
         'html_id': record.html_id,
-        'score': calculate_score(record, vote_model)
+        'score': calculate_score(record),
+        'text': record.text,
         }
 
 
@@ -110,17 +112,18 @@ def question_view(question_id, form=None):
     question_record = Question.query.get(question_id)
     question = post_for_template(question_record)
 
-    answers = map(post_for_template(question.answers))
+    answers = map(post_for_template, question_record.answers.all())
     return render_template('qa/view.html',
                            form=form,
                            question=question,
                            answers=answers,
+                           course=question_record.course,
                            )
 
 
 @app.route('/qa/answer/post', methods=['POST'])
 @login_required
-def answer_post():
+def answer_create():
     form = AnswerForm()
     if form.validate_on_submit():
         check_course_membership(form.question_id)

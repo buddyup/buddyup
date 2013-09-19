@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-	{{ question.title }} - {{ question.course.name }}
+	{{ question.title }} - {{ course.name }}
 {% endblock %}
 
 {% block extrahead %}
@@ -11,12 +11,12 @@
 
 
 {% macro qabox(post) %}
-<div class="post">
+<div class="post well">
 	{# Vote -#}
 	<div class="votebox {{post.status}}" id="{{post.html_id}}">
-		<div class="uparrow" onclick="upvote({{ post.html_id }})"></div>
+		<div class="upbox" onclick="upvote({{ post.html_id }})"></div>
 		<div class="score">{{ post.score }}</div>
-		<div class="downarrow" onclick="downvote({{ post.html_id }})"></div>
+		<div class="downbox" onclick="downvote({{ post.html_id }})"></div>
 	</div>
 	{# Text #}
 	<div class="textbox">
@@ -37,10 +37,17 @@
 <h1>{{ question.title }}</h1>
 
 <div class="span8 offset2">
-	qabox(question)
+	{{ qabox(question) }}
 	<div class="answerbox">
-		{{ form.hidden_tag() }}
-		{{ form.
+		<form target="{{ url_for('answer_create') }}" method="POST">
+			{{ form.hidden_tag() }}
+			
+			{{ form.text.label }}
+			{{ form.text.errors|join(", ") }}
+			{{ form.text }}
+			
+			<input type="submit" value="Post" class="btn btn-success">
+		</form>
 	</div>
 	{% for answer in question.answers %}
 		{{ qabox(answer) }}
