@@ -33,11 +33,11 @@ $(function() {
 			<option value="-1">All</option>
 			{% for course_record in courses %}
 				{% if selected(course_record) %}
-					<option value="course_record.id" selected>
+					<option value="{{ course_record.id }}" selected>
 						{{ course_record.name }}
 					</option>
 				{% else %}
-					<option value="course_record.id">
+					<option value="{{ course_record.id }}">
 						{{ course_record.name }}
 					</option>
 				{% endif %}

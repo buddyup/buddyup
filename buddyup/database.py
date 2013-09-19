@@ -62,7 +62,7 @@ class Course(db.Model):
                                 lazy='dynamic')
 
     def __repr__(self):
-        return '<Course %r>' % self.crn
+        return '<Course %d>' % self.id
 
 
 class Answer(db.Model):

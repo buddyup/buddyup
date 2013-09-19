@@ -3,9 +3,11 @@ body {
     padding-top: 60px;
     background-color:white;
 }
+
 a {
     color: #00759A;
 }
+
 .navbar .navbar-inner{
     min-height:50px;
 }
@@ -14,7 +16,8 @@ a {
     overflow: visible;
     margin-left:0px;
 }
-.me_icon{
+
+.me_icon {
     background-image: url(../img/glyphicons-halflings.png);
 }
 

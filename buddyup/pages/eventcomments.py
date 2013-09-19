@@ -9,6 +9,7 @@ from buddyup.templating import render_template
 from buddyup.util import login_required, form_get, check_empty
 from buddyup.pages.events import event_view
 
+
 @app.route('/event/comment/create/<int:event_id>', methods=['GET', 'POST'])
 @login_required
 def post_comment(event_id):
@@ -17,8 +18,6 @@ def post_comment(event_id):
         return render_template('create_comment.html', has_errors=False)
     else:
         user = g.user
-        #title = form_get('title')
-        #check_empty(title, "Title")
         content = form_get('content')
         check_empty(content, "Content")
         time = datetime.now()
