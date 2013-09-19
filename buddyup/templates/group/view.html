@@ -48,7 +48,10 @@
 		<div style="margin-top:10px;">
 			<text style="margin-left:10px;">
 			<font color="red"> {{ event_record.name }} </font>	<br>
-			<font style="margin-left:10px;" color="green"> Created by <b> {{ event_record.owner.full_name }} </b> </font> <br>
+			<font style="margin-left:10px;" color="green"> Created by <b> <a href="{{ profile(event_record.owner) }}" style="color:green">{{ event_record.owner.full_name }}</a> </b> </font> <br>
+			<font style="margin-left:10px;" color="8C4620">
+				Location: {{ event_record.location }}
+			</font><br>
 			<font style="margin-left:10px;" color="003CC8">
 				Date: {{ event_record.start.strftime('%b %d, %Y') }} </font> <br>
 			<font style="margin-left:10px;" color="8C4620">Start: {{ event_record.start.strftime('%I:%M %p') }}</font><br>
@@ -75,6 +78,6 @@
 			<input type="submit" value="Submit" class="btn btn-success">
 			</form>
 		</div>
-		
+
 
  {% endblock %}
