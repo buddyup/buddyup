@@ -240,11 +240,9 @@ def event_remove(event_id):
     if event.owner_id != g.user.id:
         abort(403)
     else:
-        # TODO: may want to send out messages to all users annoucing
-        # This might be unnecessary
-        name = event.name
-        db.session.delete(event)
         EventInvitation.query.filter_by(event_id=event.id).delete()
+        EventComment.query.filter_by(event_id=event.id).delete()
+        db.session.delete(event)
         db.session.commit()
         # Redirect to view all events
         flash("Deleted event " + event.name)
