@@ -119,6 +119,7 @@ $(function() {
 			{% endfor %}
 
 			<h4> Please share something about you</h4> 	
+
 			{# Save file upload for later
 			<div class="fileupload fileupload-new" data-provides="fileupload">
 
@@ -142,6 +143,10 @@ $(function() {
 			<label style="margin-top:20px;">Your Twitter
 				<input type="text" class="span3" placeholder="http://twitter.com/yourtwitter" style="margin-left:35px;" value="{{ twitter }}" name="twitter">
 			</label>
+			<label style="margin-top:20px;">Email Address
+				<input type="text" class="span3" placeholder="{{ user_record.user_name}}@pdx.edu" value="{{ email_address }}" name="email">
+			</label>
+
 			<label> A Few Words About You </label>
 			<textarea type="text" style="height: 150px;width: 450px;" value="{{ bio }}" name="bio"> </textarea>
 			<input class="btn btn-large btn-primary" style="margin-left:350px;margin-top: 20px;" type="submit" value="Save">

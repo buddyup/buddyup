@@ -21,7 +21,26 @@
 		});
 	</script>
 
-{% endblock %} 
+{% endblock %}
+
+{% macro render_select(records, name, label) %}
+
+<label>{{ label }}</label>
+<select size=10 style="width: 100%" name="{{ name }}" multiple>
+	{% for record in records %}
+		{% if selected(record) %}
+			<option value="{{ record.id }}" selected>
+				{{ caller(record) }}
+			</option>
+		{% else %}
+			<option value="{{ record.id }}">
+				{{ caller(record) }}
+			</option>
+		{% endif %}
+	{% endfor %}
+</select>
+{% endmacro %}
+
 {% block content %}
 <h1> Edit profile</h1>
 {{ flash_all() }}
@@ -33,20 +52,9 @@
 			<label> Your Name <color> (*Required) </color> </label>  
 			<input type="text" class="span2" placeholder="Your Full Name" value="{{ user_record.full_name }}" name="name"></input> 
 			
-			<label> Your Course <color> (*Required) </color></label>
-				<select size=10 style="width: 180px" name="course" multiple>
-					{% for course_record in courses %}
-						{% if selected(course_record) %}
-							<option value="{{ course_record.id }}" selected>
-								{{ course_record.name }} by {{ course_record.instructor }}
-							</option>
-						{% else %}
-							<option value="{{ course_record.id }}">
-								{{ course_record.name }} by {{ course_record.instructor }}
-							</option>
-						{% endif %}
-					{% endfor %}
-				</select>
+			{% call(record) render_select(courses, 'course', "Your Course(s)") %}
+				{{ record.name }} by {{ record.instructor }}
+			{% endcall %}
 			
 			<label> Location</label>
 			<select style="width: 180px" name="location">
@@ -65,21 +73,13 @@
 				{% endfor %}
 			</select>
 
-			<label> Your Major (can select multiple majors)</label>
-				<select size=10 style="width: 180px" name="majors" multiple>
-				{% for major in majors %}
-					{% if selected(major) %}
-						<option value="{{ major.id }}" selected>
-							{{ major.name }}
-						</option>
-					{% else %}
-						<option value="{{ major.id }}">
-							{{ major.name }}
-						</option>
-					{% endif %}
-				{% endfor %}
-				</select>
-				<br>
+			{% call(record) render_select(majors, 'major', "Your Majors(s)") %}
+				{{ record.name }}
+			{% endcall %}
+	
+			{% call(record) render_select(languages, 'language', "Your Languages(s)") %}
+				{{ record.name }}
+			{% endcall %}
 			
 			<label> Time for Study Group </label>
 			{% for day in day_names %}
@@ -96,6 +96,10 @@
 			</label>
 			<label style="margin-top:20px;">Your Twitter
 				<input type="text" class="span3" placeholder="http://twitter.com/yourtwitter" style="margin-left:35px;" value="{{ user_record.twitter }}" name="twitter">
+			</label>
+			<label style="margin-top:20px;">Email Address
+				<input type="text" class="span3"
+					placeholder="{{ user_record.user_name }}@pdx.edu" value="{{ email_address }}" name="email">
 			</label>
 			<label> A Few Words About You </label>
 			<textarea type="text" style="height: 150px;width: 450px;" value="{{ bio }}" name="bio"> {{ user_record.bio }} </textarea>

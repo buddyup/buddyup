@@ -13,7 +13,6 @@ from buddyup.templating import render_template
 # TODO: Rewrite profile_create with WTForms
 
 
-
 def update_relationship(ids, relationship, model):
     """
     Use set manipulation to update a relationship using simple ids. Would
@@ -198,6 +197,7 @@ def profile_edit():
     if request.method == 'GET':
         course_ids = {course.id for course in user.courses}
         major_ids = {major.id for major in user.majors}
+        language_ids = {lang.id for lang in user.languages}
         def selected(record):
             if isinstance(record, Location):
                 return user.location_id == record.id
@@ -205,12 +205,15 @@ def profile_edit():
                 return record.id in course_ids
             elif isinstance(record, Major):
                 return record.id in major_ids
+            elif isinstance(record, Language):
+                return record.id in language_ids
             else:
                 raise TypeError
         locations = Location.query.order_by('name').all()
         courses = Course.query.order_by('name').all()
         majors = Major.query.order_by('name').all()
         languages = sorted_languages()
+        email_address = user.email or ''
         return render_template('my/edit_profile.html',
                                day_names=day_name,
                                locations=locations,
@@ -218,6 +221,7 @@ def profile_edit():
                                selected=selected,
                                majors=majors,
                                languages=languages,
+                               email_address=email_address,
                                )
     else:
         name = form_get('name')
@@ -230,12 +234,14 @@ def profile_edit():
         bio = form_get('bio')
         facebook = form_get('facebook')
         twitter = form_get('twitter')
-        
+        email_address = form_get('email')
+
         # If anything has been flashed, there was an error
         if get_flashed_messages():
             # Define the appropriate selected() function
             course_ids = set(request.form.getlist('course'))
             major_ids = set(request.form.getlist('major'))
+            language_ids = set(request.form.getlist('language'))
             def selected(record):
                 if isinstance(record, Course):
                     return unicode(record.id) in course_ids
@@ -243,6 +249,8 @@ def profile_edit():
                     return record.id == location
                 elif isinstance(record, Major):
                     return unicode(record.id) in major_ids
+                elif isinstance(record, Language):
+                    return unicode(record.id) in language_ids
                 else:
                     raise TypeError("Incorrect type %s" %
                                     record.__class__.__name__)
@@ -256,7 +264,8 @@ def profile_edit():
                                    day_names=day_name,
                                    selected=selected,
                                    facebook=facebook,
-                                   twitter=twitter
+                                   twitter=twitter,
+                                   email_address=email_address,
                                    )
 
         user.full_name = name
