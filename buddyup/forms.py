@@ -3,6 +3,7 @@ from flask import g, abort
 from flask.ext.wtf import Form
 from wtforms import TextField, HiddenField, TextAreaField
 from wtforms.validators import DataRequired
+from wtforms.ext.sqlalchemy.fields import QuerySelectField
 
 from buddyup.database import Course
 
@@ -16,8 +17,13 @@ def course_required(form, field):
         abort(403)
 
 
+def query_user_courses():
+    return g.user.courses.all()
+
+
 class QuestionForm(Form):
-    course_id = HiddenField(validators=[DataRequired(), course_required])
+    course = QuerySelectField(query_factory=query_user_courses,
+                              get_label="name")
     title = TextField(u'Title', validators=[DataRequired()])
     text = TextAreaField(u'Question')
 
