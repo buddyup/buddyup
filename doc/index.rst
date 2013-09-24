@@ -11,7 +11,8 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   install.rst
+   deploying.rst
+   run-locally.rst
    templates.rst
 
 

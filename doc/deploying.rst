@@ -26,6 +26,7 @@ app-name.herokuapp.com. Run::
     $ git push heroku master
     
 
+
 Deploy Using Git
 ================
 
@@ -69,7 +70,25 @@ To drop and recreate the tables, run::
     $ heroku run scripts/reset
     
 
-Set Heroku variables
+Amazon S3
+=========
+
+Amazon's Simple Storage System is used to store and serve photos.
+
+First sign up for an Amazon account. Go to the
+`Security Credentials`_ page. Scroll down to Access Credentials, create a
+new access key, and download the key file. This is your only chance to
+get the secret key!
+
+Find the AWS Management Console. Create an S3 bucket. It must have a name
+that is unique across all Amazon S3 buckets. If price is a concern, use
+US Standard for the location. The images will take a negligibly longer time
+to load, but Amazon waives the transfer cost because Heroku's US region is
+hosted on Amazon's Virginia/US Standard region servers.
+
+.. _Security Credentials: https://console.aws.amazon.com/iam/home?#security_credential
+
+Set Heroku Variables
 ====================
 
 BuddyUp must be configured through some environmental variables::
@@ -92,6 +111,11 @@ with a backup page included if no help page is set.::
 
     $ heroku config:set HELP_URL=http://...
 
+To enable photo support, look in the rootkey.csv file that you downloaded
+from Amazon's Security Credentials page. Configure Heroku using::
+
+    $ heroku config:set AWS_ACCESS_KEY_ID=xxx AWS_SECRET_ACCESS_KEY=xxx
+
 Populating Database
 ===================
 
@@ -110,14 +134,8 @@ Mail
 
 Mail alerts are not implemented yet.
 
-Amazon S3
-=========
-
-Amazon services have not been implemented yet
-
 Initial Log In
 ==============
 
 When you first log in, you are directed to /setup/profile. Manually go to
-``/admin`` (as in http://buddyup.herokuapp.com/admin). Add all locations
-and courses.
+``/admin`` (as in http://buddyup.herokuapp.com/admin) and set up courses.
