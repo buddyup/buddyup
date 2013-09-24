@@ -128,16 +128,13 @@ class User(db.Model):
     twitter = db.Column(db.UnicodeText, default=u"")
     location_id = db.Column(db.Integer, db.ForeignKey('location.id'))
     email = db.Column(db.UnicodeText)
+    has_photos = db.Column(db.Boolean, default=False)
 
     # Initialized flag
     initialized = db.Column(db.Boolean, default=False)
     
     # Photos
-    tiny_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
-    thumbnail_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
-    large_photo = db.Column(db.Integer, db.ForeignKey('photo.id'))
-
-    
+   
     # Relationships
     location = db.relationship('Location')
     courses = db.relationship('Course',
