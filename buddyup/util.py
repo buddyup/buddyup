@@ -144,6 +144,7 @@ def sorted_languages():
     """
     Get all languages sorted, with English always as the first language.
     """
+    # Python 3: Use functools.cmp_to_key
     def compare(a, b):
         if a.name == u"English":
             return -1
