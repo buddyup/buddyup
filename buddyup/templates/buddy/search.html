@@ -18,6 +18,9 @@
 		<form action="{{ url_for('buddy_search_results') }}">
 			<label> Course </label>
 			<select style="width: 300px" name="course">
+				<option value="-1">
+					All Enrolled Courses
+				</option>
 			{% for course_record in courses %}
 				<option value="{{ course_record.id }}">
 					{{ course_record.name }} by {{ course_record.instructor }}
