@@ -1,3 +1,5 @@
 English
-Spanish
+Chinese
+Korean
 Russian
+Spanish

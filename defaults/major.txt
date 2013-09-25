@@ -10,7 +10,7 @@ Black Studies
 Business
 Chemistry
 Chicano/Latino Studies
-Chald and Family Studies
+Child and Family Studies
 Civil Engineering
 Civic Leadership
 Communication
@@ -23,14 +23,14 @@ Conflict Resolution
 Contemporary Turkish Studies
 Criminology and Criminal Justice
 Dance
-Earth, Environment, and Society
+"Earth, Environment, and Society"
 Earth Science
 Economics
 Education
 Electric Engineering
 Electrical and Computer Engineering
 Engineering & Technology Management
-Engliish: Writing
+English: Writing
 Environmental Engineering
 Environmental Management
 Environmental & Resource Economics
