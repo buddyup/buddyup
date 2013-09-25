@@ -5,7 +5,7 @@ from wtforms import TextField, HiddenField, TextAreaField
 from wtforms.validators import DataRequired
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 
-from buddyup.database import Course
+from buddyup.database import Course, Location, Major
 
 
 def course_required(form, field):
