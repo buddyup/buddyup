@@ -55,12 +55,15 @@ def buddy_search_results():
     query = query.order_by(User.full_name)
     if name:
         query = query.filter(User.full_name.ilike('%' + name + "%"))
-    course_ids = map(int, request.form.getlist('course'))
-    if course_ids:
-        query = query.filter(CourseMembership.c.course_id.in_(course_ids))
+    course_id = args_get('course', convert=int)
+    # -1 -> all courses we're in
+    if course_id == -1:
+        query = query.filter(CourseMembership.c.course_id == Course.id,
+                             CourseMembership.c.user_id == User.id)
+    # != -1 -> one course (course_id)
     else:
-        course_ids = query.filter(CourseMembership.c.course_id == Course.id,
-                                  CourseMembership.c.user_id == User.id)
+        query = query.filter(CourseMembership.c.course_id == course_id,
+                             CourseMembership.c.user_id == User.id)
     if major_id != -1:
         query = query.filter(MajorMembership.c.major_id == Major.id,
                              MajorMembership.c.user_id == User.id)
