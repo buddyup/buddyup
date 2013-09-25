@@ -166,6 +166,8 @@ class User(db.Model):
                                 primaryjoin=Question.user_id == id)
     answers = db.relationship('Answer', lazy="dynamic", backref='user',
                               primaryjoin=Answer.user_id == id)
+    available = db.relationship('Availability', lazy="dynamic",
+                                backref="user")
 #    buddy_inv = db.relationship('User', secondary=BuddyInvitation,
 #                                primaryjoin=BuddyInvitation.c.receiver_id == id,
 #                                secondaryjoin=BuddyInvitation.c.sender_id == id)
