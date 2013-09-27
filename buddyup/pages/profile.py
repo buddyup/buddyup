@@ -19,6 +19,8 @@ from buddyup.photo import change_profile_photo, clear_images
 
 
 PHOTO_EXTS = ['jpg', 'jpe', 'jpeg', 'png', 'gif', 'bmp', 'tif', 'tiff']
+# Python 3: infinite loop because map() is lazy, use list(map(...))
+PHOTO_EXTS.extend(map(str.upper, PHOTO_EXTS))
 
 
 def ordered_factory(record_type, field="name"):
