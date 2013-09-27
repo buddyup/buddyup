@@ -23,7 +23,7 @@ GENERIC_PHOTO = 'default-profile-{0.x}x{0.y}.png'
 
 
 # def to_image_name(user, x, y):
-#     return "{user}-{x}-{y}.png".format(user=user, x=x, y=y)
+#     return "{}-{}-{}.png".format(user.user_name, x, y)
 to_image_name = "{.user_name}-{}-{}.png".format
 
 
