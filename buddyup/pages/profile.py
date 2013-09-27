@@ -39,7 +39,7 @@ class ProfileForm(Form):
     majors = QuerySelectMultipleField(u"Major(s)",
                                       get_label=u"name",
                                       query_factory=ordered_factory(Major))
-    languages = QuerySelectMultipleField(u"Language(s)",
+    languages = QuerySelectMultipleField(u"Foreign Language(s)",
                                          get_label=u"name",
                                          query_factory=sorted_languages)
     location = QuerySelectField(u"Location",
@@ -177,7 +177,9 @@ class PhotoForm(Form):
 
 
 class PhotoDeleteForm(Form):
-    pass
+    """
+    Empty form to get crsf support
+    """
 
 
 @app.route("/my/photo", methods=["GET", "POST"])
