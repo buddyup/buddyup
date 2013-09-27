@@ -15,7 +15,7 @@ Dimensions = namedtuple('Dimensions', 'x y')
 
 TINY_SIZE = Dimensions(10, 10)
 THUMB_SIZE = Dimensions(20, 20)
-LARGE_SIZE = Dimensions(100, 100)
+LARGE_SIZE = Dimensions(200, 200)
 
 SIZES = [TINY_SIZE, THUMB_SIZE, LARGE_SIZE]
 # TODO: generic photos in all sizes from an SVG file
