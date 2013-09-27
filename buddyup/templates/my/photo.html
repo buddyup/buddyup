@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block title %}Change Profile Photo{% endblock %}
+{% macro render_errors(field) %}
+	{% if field.errors %}
+		<ul class="errors">
+		{% for error in field.errors %}
+			<li>{{ error }}</li>
+		{% endfor %}
+		</ul>
+	{% endif %}
+{% endmacro %}
+{% macro render_field(field) %}
+	{{ field.label }}
+	{{ render_errors(field) }}
+	{{ field(**kwargs)|safe }}
+{% endmacro %}
+{% block extrahead %}
+{% endblock extrahead %}
+
+{% block content %}
+<div class="well span6 offset3">
+	<h1>Change Profile Photo</h1>
+	<div>
+		<p>Current Photo</p>
+		<img src="{{ photo_large(user_record) }}" class="img-rounded"
+			height="100" width="100">
+	</div>
+	<div>
+		<form action="" method="POST" enctype="multipart/form-data">
+			{{ form.csrf_token }}
+			{{ render_field(form.photo) }}
+			<input class="btn bnt-primary" type="submit" value="Change">
+		</form>
+		<form action="{{ url_for('profile_photo_delete') }}" method="POST">
+			{{ delete_form.csrf_token }}
+			<input class="btn btn-primary" type="submit"
+				value="Delete Profile Photo">
+		</form>
+	</div>
+</div>
+{% endblock content %}
