@@ -39,7 +39,7 @@ class ProfileForm(Form):
     majors = QuerySelectMultipleField(u"Major(s)",
                                       get_label=u"name",
                                       query_factory=ordered_factory(Major))
-    languages = QuerySelectMultipleField(u"Foreign Language(s)",
+    languages = QuerySelectMultipleField(u"Other Language(s)",
                                          get_label=u"name",
                                          query_factory=sorted_languages)
     location = QuerySelectField(u"Location",
@@ -178,7 +178,7 @@ class PhotoForm(Form):
 
 class PhotoDeleteForm(Form):
     """
-    Empty form to get crsf support
+    Empty form to get crsf token support
     """
 
 
