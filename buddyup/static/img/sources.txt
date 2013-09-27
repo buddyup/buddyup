@@ -14,7 +14,7 @@ glyphicons-halflings.png
 Twitter Bootstrap
 
 incorrect.jpg
-index.jpg
+default-photo.jpg
 logo.png
 missing.jpg
 profile.jpg

@@ -18,7 +18,8 @@ THUMB_SIZE = Dimensions(20, 20)
 LARGE_SIZE = Dimensions(100, 100)
 
 SIZES = [TINY_SIZE, THUMB_SIZE, LARGE_SIZE]
-GENERIC_PHOTO = 'index.jpg'
+# TODO: generic photos in all sizes from an SVG file
+GENERIC_PHOTO = 'default-profile-{0.x}x{0.y}.png'
 
 
 # def to_image_name(user, x, y):
@@ -34,14 +35,13 @@ class ImageError(Exception):
     pass
 
 
-# TODO: better name than 'index.jpg' for the generic profile photo
 
 @app.template_global()
 def photo_tiny(user_record):
     """
     Get the URL for a User's tiny image
     """
-    return _get_photo(user_record, TINY_SIZE, GENERIC_PHOTO)
+    return _get_photo(user_record, TINY_SIZE)
 
 
 @app.template_global()
@@ -49,7 +49,7 @@ def photo_thumbnail(user_record):
     """
     Get the URL for a User's thumbnail image
     """
-    return _get_photo(user_record, THUMB_SIZE, GENERIC_PHOTO)
+    return _get_photo(user_record, THUMB_SIZE)
 
 
 @app.template_global()
@@ -57,16 +57,16 @@ def photo_large(user_record):
     """
     Get the URL for a User's large image
     """
-    return _get_photo(user_record, LARGE_SIZE, GENERIC_PHOTO)
+    return _get_photo(user_record, LARGE_SIZE)
 
 
-def _get_photo(user_record, size, generic):
+def _get_photo(user_record, size):
     if user_record.has_photos:
         return "http://{bucket}.s3.amazonaws.com/{key}".format(
             bucket=app.config['AWS_S3_BUCKET'],
             key=to_image_name(user_record, size.x, size.y))
     else:
-        return img(generic)
+        return img(GENERIC_PHOTO.format(size))
 
 
 def scale(image, size):
