@@ -27,10 +27,6 @@ GENERIC_PHOTO = 'default-profile-{0.x}x{0.y}.png'
 to_image_name = "{.user_name}-{}-{}.png".format
 
 
-import logging
-logging.basicConfig(filename="boto.log", level=logging.INFO)
-
-
 class ImageError(Exception):
     pass
 
