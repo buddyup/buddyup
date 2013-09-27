@@ -1,6 +1,7 @@
 class Base:
     CAS_SERVER = 'https://sso.pdx.edu/cas'
     SECRET_KEY = 'foo'
+    DEFAULT_EMAIL_FORMAT = "{user}@pdx.edu"
 
 
 class Dev(Base):

@@ -153,3 +153,10 @@ def sorted_languages():
         else:
             return cmp(a, b)
     return sorted(Language.query.all(), cmp=compare)
+
+
+@app.template_global()
+def default_email(user=None):
+    if user is None:
+        user = g.user
+    return app.config['DEFAULT_EMAIL_FORMAT'].format(user=user.user_name)
