@@ -7,6 +7,9 @@
 <div class="row">
 	<div class="span4 offset1">
 		<img src="{{ photo_large(user_record) }}" class="img-rounded">
+		<a href="{{ url_for('profile_photo') }}" class="btn btn-primary">
+			Change Profile Photo
+		</a>
 	</div>
 
 	<div class="span6">
@@ -18,7 +21,7 @@
 			{% endif %}
 		<br>
 		{% if majors|length > 0 %}
-			Major: {{ majors| join(' , ') }}
+			Major: {{ majors| join(', ') }}
 		{% else %}
 			Major: Unspecified
 		{% endif %}

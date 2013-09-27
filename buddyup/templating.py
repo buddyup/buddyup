@@ -12,6 +12,9 @@ from buddyup.database import User, Event
 STATIC_ALIASES_INI = "buddyup/aliases.ini"
 
 
+app.add_template_global(zip)
+
+
 @app.template_filter()
 @app.template_global()
 def paragraphs(string):

@@ -23,7 +23,15 @@ GENERIC_PHOTO = 'index.jpg'
 
 # def to_image_name(user, x, y):
 #     return "{user}-{x}-{y}.png".format(user=user, x=x, y=y)
-to_image_name = "{}-{}-{}.png".format
+to_image_name = "{.user_name}-{}-{}.png".format
+
+
+import logging
+logging.basicConfig(filename="boto.log", level=logging.INFO)
+
+
+class ImageError(Exception):
+    pass
 
 
 # TODO: better name than 'index.jpg' for the generic profile photo
@@ -54,7 +62,7 @@ def photo_large(user_record):
 
 def _get_photo(user_record, size, generic):
     if user_record.has_photos:
-        return "http://{bucket}.s3.amazon.com/{key}".format(
+        return "http://{bucket}.s3.amazonaws.com/{key}".format(
             bucket=app.config['AWS_S3_BUCKET'],
             key=to_image_name(user_record, size.x, size.y))
     else:
@@ -73,11 +81,11 @@ def scale(image, size):
     overlay_x, overlay_y = resized.size
     new_x, new_y = size
     box = ((new_x - overlay_x) // 2, (new_y - overlay_y) // 2)
-    final.paste(image, box)
+    final.paste(resized, box)
     return final
 
 
-def change_profile_photo(user, stream):
+def change_profile_photo(user, storage):
     """
     user: User record. The record is modified but not committed.
     stream: File or file-like object
@@ -85,11 +93,15 @@ def change_profile_photo(user, stream):
     
     # request.file doesn't have tell() so we have to wrap it in BytesIO
     # instead of stream.
-    if hasattr(stream, "tell") and hasattr(stream, "seek"):
-        base_image = Image.open(stream)
-    else:
-        base_image = Image.open(BytesIO(stream.read()))
-    images = [scale(base_image, size) for size in SIZES]
+    stream = storage.stream
+    try:
+        if hasattr(stream, "tell") and hasattr(stream, "seek"):
+            base_image = Image.open(stream)
+        else:
+            base_image = Image.open(BytesIO(stream.read()))
+        images = [scale(base_image, size) for size in SIZES]
+    except IndexError:
+        raise ImageError("Incorrectly formatted image")
     upload(user, images)
     user.has_photos = True
 
@@ -106,8 +118,14 @@ def upload(user, images):
 
 def upload_one(bucket, image, user):
     x, y = image.size
-    k = Key(bucket, to_image_name(user, x, y))
-    k.set_contents_from_string(image.tobytes("PNG"))
+    name = to_image_name(user, x, y)
+    app.logger.info("Uploading to %s for user %s", name, user.user_name)
+    k = Key(bucket, name)
+    k.content_type = "image/png"
+    pseudofile = BytesIO()
+    image.save(pseudofile, format="png")
+    k.set_contents_from_string(pseudofile.getvalue())
+    k.set_acl("public-read")
 
 
 def clear_images(user):

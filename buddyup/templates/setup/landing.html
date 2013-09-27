@@ -1,4 +1,18 @@
 {% from "lib.html" import flash_all %}
+{% macro render_errors(field) %}
+	{% if field.errors %}
+		<ul class="errors">
+		{% for error in field.errors %}
+			<li>{{ error }}</li>
+		{% endfor %}
+		</ul>
+	{% endif %}
+{% endmacro %}
+{% macro render_field(field) %}
+	{{ field.label }}
+	{{ render_errors(field) }}
+	{{ field(**kwargs)|safe }}
+{% endmacro %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,16 +28,23 @@
 
 
 <style>
-color{color:red;}
-#a{width:90%;}
-.dropdown-menu {
-	background-color:#4169E1;
-}
-.span7	{width: 450px;}
-.detail input {
-	margin-top: -5px;
+select, input[type=text], textarea {
+	width: 100%;
 }
 
+table {
+	width: 100%;
+}
+th {
+	width: 20%;
+	text-align: center;
+}
+.times input {
+	margin: 0 auto;
+}
+.errors {
+	color: red;
+}
 </style>
 <script>
 $(function() {
@@ -39,119 +60,58 @@ $(function() {
 <body>
 
 <div class="container">
-	<div class="well span7 offset3">  
+	<div class="well span6 offset3">  
 		<h2> Welcome to BuddyUp! </h2>
-		{{ flash_all() }}
-		<form action="{{ url_for('profile_create') }}" method="POST">
-			<label> Your Name <color> (*Required) </color> </label>  
-			<input type="text" class="span2" placeholder="Your Full Name" value="{{ user_record.full_name }}" name="name">    
-			<label> Your Course (can select multiple courses)</label>
-			<select size=10 style="width: 180px" name="course" multiple>
-				{% for course_record in courses %}
-					{% if selected(course_record) %}
-						<option value="{{ course_record.id }}" selected>
-							{{ course_record.name }} by {{ course_record.instructor }}
-						</option>
-					{% else %}
-						<option value="{{ course_record.id }}">
-							{{ course_record.name }} by {{ course_record.instructor }}
-						</option>
-					{% endif %}
+		<form action="{{ url_for('profile_create') }}" method="POST"
+			enctype="multipart/form-data">
+			{% set fb_placeholder = "http://www.facebook.com/you" -%}
+			{% set tw_placeholder = "http://twitter.com/you" -%}
+			{% set email_placeholder = default_email() -%}
+			{{ form.csrf_token }}
+			{{ render_field(form.full_name, placeholder="Your Full Name") }}
+			{{ render_field(form.courses) }}
+			{{ render_field(form.majors) }}
+			{{ render_field(form.languages) }}
+			{{ render_field(form.location) }}
+			{{ render_field(form.facebook, placeholder=fb_placeholder) }}
+			{{ render_field(form.twitter, placeholder=tw_placeholder) }}
+			{{ render_field(form.email, placeholder=email_placeholder) }}
+			{{ render_field(form.bio) }}
+
+			<h3>Time for Study Group</h3>
+			{{ render_errors(form.availability) }}
+			<table class="times">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Unavailable</th>
+						<th>AM</th>
+						<th>PM</th>
+						<th>All Day</th>
+					</tr>
+				</thead>
+				<tbody>
+				{% for day, field in zip(day_names, form.availability) %}
+					<tr>
+						<td>{{ day }}</td>
+						{% for subfield in field %}
+							<td>
+								<div class="radiowrap">
+									{{ subfield(class="center") | safe }}
+								</div>
+							</td>
+						{% endfor %}
+					</tr>
 				{% endfor %}
-			</select>
+				</tbody>
+			</table>
 
-			<label> Your Major (can select multiple majors)</label>
-			<select size=10 style="width: 180px" name="majors" multiple>
-			{% for major in majors %}
-				{% if selected(major) %}
-					<option value="{{ major.id }}" selected>
-						{{ major.name }}
-					</option>
-				{% else %}
-					<option value="{{ major.id }}">
-						{{ major.name }}
-					</option>
-				{% endif %}
-			{% endfor %}
-			</select>
-
-			<label>Language(s)</label>
-			<select size=10 style="width:180px" name="language" multiple>
-				{% for language_record in languages %}
-					{% if selected(language_record) %}
-						<option value="{{ language_record.id }}" selected>
-							{{ language_record.name }}
-						</option>
-					{% else %}
-						<option value="{{ language_record.id }}">
-							{{ language_record.name }}
-						</option>
-					{% endif %}
-				{% endfor %}
-			</select>
-			
-
-			<label> Location</label>
-			<select name="location">
-				{# -1 signifies None on the backend #}
-				<option value="-1">None</option>
-				{% for location in locations %}
-					{% if selected(location) %}
-					<option value="{{ location.id }}" selected>
-						{{ location.name }}
-					</option>  
-					{% else %}
-					<option value="{{ location.id }}">
-						{{ location.name }}
-					</option>  
-					{% endif %}
-				{% endfor %}
-			</select>
-
-			<label> Time for Study Group </label>
-			{% for day in day_names %}
-			<label> <input type="checkbox" class="toggle" id="{{ day|lower }}" style="margin-top:-5px; margin-left:10px;" name="{{day|lower}}">{{ day }}</label>
-			<div class="detail" id="{{day|lower}}detail" style="margin-left:30px;">
-				<label> <input type="radio" name="{{day|lower}}" id="{{day|lower}}-am" value="am"> AM </label>
-				<label> <input type="radio" name="{{day|lower}}" id="{{day|lower}}-pm" value="pm"> PM </label>
-				<label> <input type="radio" name="{{day|lower}}" id="{{day|lower}}-all" value="all"> All Day </label>
-			</div>
-			{% endfor %}
-
-			<h4> Please share something about you</h4> 	
-
-			{# Save file upload for later
-			<div class="fileupload fileupload-new" data-provides="fileupload">
-
-			<font> Profile Picture </font>
-			<span class="btn btn-file" style="margin-left:20px;"><span class="fileupload-new">Choose Picture</span><span class="fileupload-exists">Change</span><input type="file" /></span>
-			<span class="fileupload-preview"></span>
-			<br>
-
-			<font>
-					<br> Current avatar
-			</font>
-		
-			<img src="../static/img/index.jpg" class="img-rounded" width="100" height="100" style="margin-left:20px;">
-			<br>
-			<a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
-			#}
-
-			<label style="margin-top:20px;">Your Facebook 
-				<input type="text" class="span3" placeholder="http://facebook.com/yourfacebook" style="margin-left:15px;" value="{{ facebook }}" name="facebook">
-			</label>
-			<label style="margin-top:20px;">Your Twitter
-				<input type="text" class="span3" placeholder="http://twitter.com/yourtwitter" style="margin-left:35px;" value="{{ twitter }}" name="twitter">
-			</label>
-			<label style="margin-top:20px;">Email Address
-				<input type="text" class="span3" placeholder="{{ user_record.user_name}}@pdx.edu" value="{{ email_address }}" name="email">
-			</label>
-
-			<label> A Few Words About You </label>
-			<textarea type="text" style="height: 150px;width: 450px;" value="{{ bio }}" name="bio"> </textarea>
+			<h3>{{ form.photo.label.text }}</h3>
+			{{ render_errors(form.photo) }}
+			{{ form.photo }}
 			<input class="btn btn-large btn-primary" style="margin-left:350px;margin-top: 20px;" type="submit" value="Save">
-		</div>
-	</form>
+		</form>
+	</div>
 </div>   
 
 </body>

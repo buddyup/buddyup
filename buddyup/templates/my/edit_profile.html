@@ -1,109 +1,95 @@
 {% extends "layout.html" %}
 {% block title %}Edit Profile{% endblock %}
-{% from "lib.html" import flash_all %}
- {% block extrahead %}
-	<style>
-		color{color:red;}
-		#a{width:90%;}
-		.span6	{width: 450px;}
-		.detail input
-		{
-			margin-top: -5px;
-		}
-	</style>
+{% macro render_errors(field) %}
+	{% if field.errors %}
+		<ul class="errors">
+		{% for error in field.errors %}
+			<li>{{ error }}</li>
+		{% endfor %}
+		</ul>
+	{% endif %}
+{% endmacro %}
+{% macro render_field(field) %}
+	{{ field.label }}
+	{{ render_errors(field) }}
+	{{ field(**kwargs)|safe }}
+{% endmacro %}
+{% block extrahead %}
+<style>
+select, input[type=text], textarea {
+	width: 100%;
+}
+table {
+	width: 100%;
+}
+th {
+	width: 20%;
+	text-align: center;
+}
+.errors {
+	color: red;
+}
+</style>
 
-	<script>
-		$(function() {
-		$('.detail').hide();
-		$('.toggle').change(function() {
-			$('#'.concat(this.id).concat('detail')).toggle();
-		});
-		});
-	</script>
+<script>
+$(function() {
+	$('.detail').hide();
+	$('.toggle').change(function() {
+		$('#'.concat(this.id).concat('detail')).toggle();
+	});
+});
+</script>
 
 {% endblock %}
 
-{% macro render_select(records, name, label) %}
-
-<label>{{ label }}</label>
-<select size=10 style="width: 100%" name="{{ name }}" multiple>
-	{% for record in records %}
-		{% if selected(record) %}
-			<option value="{{ record.id }}" selected>
-				{{ caller(record) }}
-			</option>
-		{% else %}
-			<option value="{{ record.id }}">
-				{{ caller(record) }}
-			</option>
-		{% endif %}
-	{% endfor %}
-</select>
-{% endmacro %}
-
 {% block content %}
-<h1> Edit profile</h1>
-{{ flash_all() }}
-	  
-<div class="span3"></div>
-	<div class="well span6">
-		<p> This information will appear in your public profile. Leave the fields blank if you'd prefer not to reveal any information.</p>
-		<form action="{{ url_for('profile_edit') }}" method="POST">
-			<label> Your Name <color> (*Required) </color> </label>  
-			<input type="text" class="span2" placeholder="Your Full Name" value="{{ user_record.full_name }}" name="name"></input> 
-			
-			{% call(record) render_select(courses, 'course', "Your Course(s)") %}
-				{{ record.name }} by {{ record.instructor }}
-			{% endcall %}
-			
-			<label> Location</label>
-			<select style="width: 180px" name="location">
-				{# -1 signifies None on the backend #}
-				<option value="-1">None</option>
-				{% for location in locations %}
-					{% if selected(location) %}
-					<option value="{{ location.id }}" selected>
-						{{ location.name }}
-					</option>  
-					{% else %}
-					<option value="{{ location.id }}">
-						{{ location.name }}
-					</option>  
-					{% endif %}
-				{% endfor %}
-			</select>
+<div class="well span6 offset3">
+	<h1> Edit profile</h1>
+	<p> This information will appear in your public profile. Leave the fields blank if you'd prefer not to reveal any information.</p>
+	<form action="{{ url_for('profile_edit') }}" method="POST"
+		enctype="multipart/form-data">
+		{% set fb_placeholder = "http://www.facebook.com/you" %}
+		{% set tw_placeholder = "http://twitter.com/you" %}
+		{% set email_placeholder = default_email() %}
+		{{ form.csrf_token }}
+		{{ render_field(form.full_name, placeholder="Your Full Name") }}
+		{{ render_field(form.courses) }}
+		{{ render_field(form.majors) }}
+		{{ render_field(form.languages) }}
+		{{ render_field(form.location) }}
+		{{ render_field(form.facebook, placeholder=fb_placeholder) }}
+		{{ render_field(form.twitter, placeholder=tw_placeholder) }}
+		{{ render_field(form.email, placeholder=email_placeholder) }}
+		{{ render_field(form.bio, rows="8") }}
 
-			{% call(record) render_select(majors, 'major', "Your Majors(s)") %}
-				{{ record.name }}
-			{% endcall %}
-	
-			{% call(record) render_select(languages, 'language', "Your Languages(s)") %}
-				{{ record.name }}
-			{% endcall %}
-			
-			<label> Time for Study Group </label>
-			{% for day in day_names %}
-			<label> <input type="checkbox" class="toggle" id="{{ day|lower }}" style="margin-top:-5px; margin-left:10px;" name="{{day|lower}}">&nbsp; {{ day }}</label>
-			<div class="detail" id="{{day|lower}}detail" style="margin-left:30px;">
-				<label> <input type="radio" name="{{day|lower}}" id="{{day|lower}}-am" value="am" style="margin-top:-5px;"> AM </label>
-				<label> <input type="radio" name="{{day|lower}}" id="{{day|lower}}-pm" value="pm" style="margin-top:-5px;"> PM </label>
-				<label> <input type="radio" name="{{day|lower}}" id="{{day|lower}}-all" value="all" style="margin-top:-5px;"> All Day </label>
-			</div>
+		<h3>Time for Study Group</h3>
+		{{ render_errors(form.availability) }}
+		<table>
+			<thead>
+				<tr>
+					<th></th>
+					<th>Unavailable</th>
+					<th>AM</th>
+					<th>PM</th>
+					<th>All Day</th>
+				</tr>
+			</thead>
+			<tbody>
+			{% for day, field in zip(day_names, form.availability) %}
+				<tr>
+					<td>{{ day }}</td>
+					{% for subfield in field %}
+						<td>{{ subfield }}</td>
+					{% endfor %}
+				</tr>
 			{% endfor %}
-
-			<label style="margin-top:20px;">Your Facebook 
-				<input type="text" class="span3" placeholder="http://facebook.com/yourfacebook" style="margin-left:15px;" value="{{ user_record.facebook }}" name="facebook">
-			</label>
-			<label style="margin-top:20px;">Your Twitter
-				<input type="text" class="span3" placeholder="http://twitter.com/yourtwitter" style="margin-left:35px;" value="{{ user_record.twitter }}" name="twitter">
-			</label>
-			<label style="margin-top:20px;">Email Address
-				<input type="text" class="span3"
-					placeholder="{{ user_record.user_name }}@pdx.edu" value="{{ email_address }}" name="email">
-			</label>
-			<label> A Few Words About You </label>
-			<textarea type="text" style="height: 150px;width: 450px;" value="{{ bio }}" name="bio"> {{ user_record.bio }} </textarea>
-			<input class="btn btn-large btn-primary" style="margin-left:350px;margin-top: 20px;" type="submit" value="Save">
+			</tbody>
+		</table>
+		
+		<h3>{{ form.photo.label.text }}</h3>
+		{{ render_errors(form.photo) }}
+		{{ form.photo }}
+		<input class="btn btn-large btn-primary" style="margin-left:350px;margin-top: 20px;" type="submit" value="Save">
 	</form>
 </div>
 	
