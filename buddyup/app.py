@@ -47,7 +47,7 @@ def setup():
         g.user = database.User.query.get(session['user_id'])
         # Invalid user id, kill the session with fire!
         if g.user is None:
-            app.logger.warning("Session with uid %i is invalid, clearing session")
+            app.logger.warning("Session with uid %i is invalid, clearing session", session['user_id'])
             session.clear()
     else:
         g.user = None
