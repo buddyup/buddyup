@@ -6,6 +6,7 @@ from wtforms.validators import DataRequired
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 
 from buddyup.database import Course, Location, Major
+from buddyup.app import app
 
 
 def course_required(form, field):
@@ -15,6 +16,14 @@ def course_required(form, field):
         abort(400)
     if g.user.courses.filter(Course.id == course_id).count() == 0:
         abort(403)
+
+
+def log_form_errors(form):
+    """
+    """
+    for name, errors in form.errors.items():
+        for error in errors:
+            app.logger.warn("field %s: %s", name, errors)
 
 
 def query_user_courses():
