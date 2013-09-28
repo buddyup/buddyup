@@ -29,6 +29,7 @@ def paragraphs(string):
     return [line.strip() for line in string.split('\n')]
 
 
+@app.template_filter()
 @app.template_global()
 def format_course(course, format):
     """
@@ -45,10 +46,9 @@ def format_course(course, format):
     """
     return format.format(
         id=course.id,
-        crn=course.crn,
-        subject=course.subject,
-        number=course.number,
-        section=course.section,
+        name=course.name,
+        instructor=course.instructor,
+        instr=course.instructor,
         )
 
 

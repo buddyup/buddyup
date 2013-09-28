@@ -15,7 +15,8 @@ def buddy_view(user_name):
         return render_template('my/profile.html',
                                buddy_record=g.user,
                                majors=majors,
-                               is_buddy=False)
+                               is_buddy=False,
+                               )
     else:
         buddy_record = User.query.filter_by(user_name=user_name).first_or_404()
         majors = [major.name for major in g.user.majors]
@@ -29,7 +30,8 @@ def buddy_view(user_name):
                                majors=majors,
                                languages=languages,
                                is_buddy=is_buddy,
-                               is_invited=is_invited)
+                               is_invited=is_invited,
+                               )
 
 
 @app.route("/buddy/search")

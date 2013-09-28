@@ -30,6 +30,15 @@
 		{% else %}
 			Languages: Unspecified
 		{% endif %}
+		
+		{% if courses|length == 1 %}
+			Course: {{ courses[0].name }}
+		{% elif courses|length > 0 %}
+			Courses: {{ [course.name for course in buddy_record.courses]
+									| sorted | join(', ') }}
+		{% else %}
+			Courses: Not enrolled
+		{% endif %}
 		<div id="profile-external">
 			{% if buddy_record.facebook %}
 				<a href="{{ buddy_record.facebook }}">
