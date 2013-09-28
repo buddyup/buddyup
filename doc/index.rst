@@ -13,6 +13,7 @@ Contents:
 
    deploying.rst
    run-locally.rst
+   notes.rst
    templates.rst
 
 

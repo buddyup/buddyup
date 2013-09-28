@@ -1,3 +1,4 @@
+=======================
 Running BuddyUp Locally
 =======================
 
@@ -6,9 +7,8 @@ BuddyUp can be run locally for testing purposes.
 Requirements
 ============
 
-* Python 2.7 (2.6 is not supported)
+* Python 2.7 with SQLite support
 * virtualenv
-* 
 
 Pillow, the image manipulation library, has these optional requirements
 that are relevant:
@@ -26,11 +26,18 @@ Create a virtualenv
 In the repository, run::
 
     $ ./script/create-venv
+    $ . venv/bin/activate
+
+Create the database
+===================
+
+Running BuddyUp locally requires a SQLite database
+
     $ ./script/create-database.py
     # Optionally, populate with default values
     $ ./script/populate.py all
 
-Any time you want 
+
 
 Commands
 ========

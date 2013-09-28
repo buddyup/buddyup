@@ -62,24 +62,51 @@ Extra Variables and Functions
     groups
         Iterable of ``buddyup.database.Group`` instances. Use a for loop.
 
+.. data:: is_admin
+
+    Is the user an administrator? None if the user is not logged in
+
+.. data:: user_name
+
+    Full name of the user, or an empty string if the user is not logged in.n
+
+.. function:: js(filename)
+
+    Get the URL for a static JavaScript file. A js extension is added if it
+    is not already present. The file will be looked up in aliases.ini to
+    find an externally hosted or local minified file if available. The
+    directory /static/js/ is used for 
+
+.. function:: css(filename)
+
+    Same as with :func:`js()`, but for CSS and the /static/css/
+    directory.
+
+.. function:: img(filename)
+
+    Same as with :func:`js()`, but for images and the /static/img
+    directory. No file extensions are added.
+
 .. function:: format_course(course, format)
 
-    Render a ``buddyup.database.Course`` according to a format string in the syle::
+    Render a ``buddyup.database.Course`` according to a format string in the style:
     
-        "{subject} {number}"
-    
+    .. code-block:: python
+
+        "{name} by {instr}"
+
     Variables:
+
     * id
-    * crn
-    * subject
-    * number
-    * section
+    * name
+    * instructor
+    * instr (alias for instructor)
     
     Example:
 
-    ..code-block:: jinja
+    .. code-block:: jinja
     
-        {{ course|format_course("{subject}{number} #{section}") }}
+        {{ course|format_course("{name} by {instr}") }}
 
 .. function format_event(event, format)
 
@@ -117,38 +144,18 @@ Extra Variables and Functions
             <p>{{ p }}</p>
         {% endfor %}
 
-.. function:: url_for_user(user, **kwargs)
+.. function:: profile(record)
 
-    Return a URL based on a specific user record or user id. Arguments are 
-    otherwise identical to Flask's ``url_for()``. To get a full URL, use::
+    Return a URL based on a specific SQLAlchemy record with a view page.
+    Currently allows:
     
-        url_for_user(user, external=True)
-    
-    ``user`` is either the integer id of the user or an instance of 
-    ``buddyup.user.User``.
+    * Group
+    * User
     
     For a basic setup in a template, use Jinja's filter feature:
 
     .. code-block:: jinja
         
-        <a href="{{ user_record|url_for_user }}">
+        <a href="{{ user_record|profile }}">
             {{ user_record.full_name }}
         </a>
-
-    If necessary, add additional arguments:
-    
-    .. code-block:: jinja
-
-        <a href="{{ user_record|url_for_user(external=True) }}">
-            {{ user_record.full_name }}
-        </a>
-
-.. function:: url_for_event(event, **kwargs)
-
-    Return a URL based on a specific event record or event id. Otherwise
-    identical to ``url_for_user()``.
-
-.. function:: url_for_course(event, **kwargs)
-
-    Return a URL based on a specific course record or course id. Otherwise
-    identical to ``url_for_user()``.

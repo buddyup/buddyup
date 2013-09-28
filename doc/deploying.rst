@@ -1,3 +1,7 @@
+~~~~~~~~~~~~~~~~~
+Deploying BuddyUp
+~~~~~~~~~~~~~~~~~
+
 Register for a Heroku Account
 =============================
 
@@ -57,11 +61,11 @@ To find it, run::
     $ heroku config | grep HEROKU_POSTGRESQL
 
 If multiple variables are present, you accidentally added multiple databases.
-Then run::
+Then run something like::
 
     $ heroku pg:promote HEROKU_POSTGRESQL_BLUE_URL
 
-Next create the database tables::
+Replacing "BLUE" with the correct color. Next create the database tables::
 
     $ heroku run init
     
