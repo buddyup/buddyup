@@ -126,6 +126,7 @@ class User(db.Model):
     bio = db.Column(db.UnicodeText, default=u"")
     facebook = db.Column(db.UnicodeText, default=u"")
     twitter = db.Column(db.UnicodeText, default=u"")
+    linkedin = db.Column(db.UnicodeText, default=u"")
     location_id = db.Column(db.Integer, db.ForeignKey('location.id'))
     email = db.Column(db.UnicodeText)
     has_photos = db.Column(db.Boolean, default=False)

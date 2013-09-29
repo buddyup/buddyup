@@ -66,6 +66,7 @@ $(function() {
 			enctype="multipart/form-data">
 			{% set fb_placeholder = "http://www.facebook.com/you" -%}
 			{% set tw_placeholder = "http://twitter.com/you" -%}
+			{% set li_placeholder = "http://www.linkedin.com/in/you" %}
 			{% set email_placeholder = default_email() -%}
 			{{ form.csrf_token }}
 			{{ render_field(form.full_name, placeholder="Your Full Name") }}
@@ -75,6 +76,7 @@ $(function() {
 			{{ render_field(form.location) }}
 			{{ render_field(form.facebook, placeholder=fb_placeholder) }}
 			{{ render_field(form.twitter, placeholder=tw_placeholder) }}
+			{{ render_field(form.linkedin, placeholder=li_placeholder) }}
 			{{ render_field(form.email, placeholder=email_placeholder) }}
 			{{ render_field(form.bio) }}
 

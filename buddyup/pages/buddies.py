@@ -7,28 +7,41 @@ from buddyup.database import (User, BuddyInvitation, Major, MajorMembership,
 from buddyup.templating import render_template
 from buddyup.util import login_required, args_get, sorted_languages
 
+
+def extract_names(records):
+    return sorted(record.name for record in records)
+
+
 @app.route("/buddy/view/<user_name>")
 @login_required
 def buddy_view(user_name):
     if (user_name == g.user.user_name):
-        majors = [major.name for major in g.user.majors]
+        majors = extract_names(g.user.majors)
+        courses = extract_names(g.user.courses)
+        languages = extract_names(g.user.languages)
         return render_template('my/profile.html',
                                buddy_record=g.user,
                                majors=majors,
+                               courses=courses,
+                               languages=languages,
                                is_buddy=False,
                                )
     else:
         buddy_record = User.query.filter_by(user_name=user_name).first_or_404()
-        majors = [major.name for major in g.user.majors]
-        languages = [language.name for language in g.user.languages]
-        is_buddy = g.user.buddies.filter_by(id=buddy_record.id).count() == 1
-        is_invited = (BuddyInvitation.query.filter_by(receiver_id=g.user.id,
-                                                     sender_id=buddy_record.id)
-                                     .count() == 1)
+        majors = extract_names(buddy_record.majors)
+        languages = extract_names(buddy_record.languages)
+        courses = extract_names(buddy_record.courses)
+        is_buddy = buddy_record in g.user.buddies
+        is_invited = buddy_record in g.user.sent_bud_inv
+        #is_buddy = g.user.buddies.filter_by(id=buddy_record.id).count() == 1
+        #is_invited = (BuddyInvitation.query.filter_by(receiver_id=g.user.id,
+        #                                             sender_id=buddy_record.id)
+        #                             .count() == 1)
         return render_template('buddy/view.html',
                                buddy_record=buddy_record,
                                majors=majors,
                                languages=languages,
+                               courses=courses,
                                is_buddy=is_buddy,
                                is_invited=is_invited,
                                )

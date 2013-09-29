@@ -33,12 +33,12 @@
 		{% else %}
 			Languages: Unspecified
 		{% endif %}
+		<br>
 
 		{% if courses|length == 1 %}
-			Course: {{ courses[0].name }}
+			Course: {{ courses[0] }}
 		{% elif courses|length > 0 %}
-			Courses: {{ [course.name for course in buddy_record.courses]
-									| sorted | join(', ') }}
+			Courses: {{ courses | join(', ') }}
 		{% else %}
 			Courses: Not enrolled
 		{% endif %}
@@ -52,6 +52,12 @@
 			{% if user_record.twitter %}
 				<a href="{{ user_record.twitter }}">
 					<img src="{{ img('twitter.png') }}" height="50" width="50">
+				</a>
+			{% endif %}
+			
+			{% if user_record.linkedin %}
+				<a href="{{ user_record.linkedin }}">
+					<img src="{{ img('linkedin-50x50.png') }}">
 				</a>
 			{% endif %}
 			

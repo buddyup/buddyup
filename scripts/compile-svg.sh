@@ -12,3 +12,5 @@ function svg-compile() {
 for name in {upvote,downvote}-{active,inactive}; do
     svg-compile $name 40 20
 done
+
+svg-compile linkedin 50 50

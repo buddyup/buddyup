@@ -31,13 +31,17 @@ In the repository, run::
 Create the database
 ===================
 
-Running BuddyUp locally requires a SQLite database
+Running BuddyUp locally requires a SQLite database::
 
     $ ./script/create-database.py
     # Optionally, populate with default values
     $ ./script/populate.py all
 
+This gives you a database at /tmp/buddyup.db. To change the location, set
+the environmental variable ``DATABASE_URL``::
 
+    $ export DATABASE_URL=sqlite:///tmp/foo.db
+    $ ./script/create-database.py
 
 Commands
 ========
@@ -46,7 +50,10 @@ When running locally with ``./runserver.py``, BuddyUp runs Flask's
 built-in development server. The recommended command is::
 
     $ ./runserver.py --debug --reload
-    
+
+.. note:: If you set ``DATABASE_URL`` in the database creation stage then
+    it must also be set for ``./runserver.py``.
+ 
 This opens a fantastic debugger on exceptions and reloads the application
 when modified. Reloading will end the process if there is a SyntaxError.
 Also run MockCAS, a partial implementation of the CAS log in system for

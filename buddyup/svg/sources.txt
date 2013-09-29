@@ -1,8 +1,27 @@
-Email-button.svg
+Email
+=====
+
+* Email-button.svg
+
 http://openclipart.org/detail/167084/email-button-by-pnoq
 
-upvote-active.svg
-upvote-inactive.svg
-downvote-active.svg
-downvote-inactive.svg
+QA Votes
+========
+
+* upvote-active.svg
+* upvote-inactive.svg
+* downvote-active.svg
+* downvote-inactive.svg
+
 Custom made by Aaron DeVore
+
+LinkedIn
+========
+
+* linkedin.svg
+
+Released as public domain from the Open Icon Library's webpage package
+by the author. LinkedIn has its own icons, but no SVG version.
+
+* http://commons.wikimedia.org/wiki/File:Linkedin.svg
+* http://developer.linkedin.com/documents/branding-guidelines

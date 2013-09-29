@@ -15,11 +15,12 @@ from buddyup.app import app
 from buddyup.database import Course, Major, Location, Availability, db
 from buddyup.util import sorted_languages, login_required
 from buddyup.templating import render_template
-from buddyup.photo import change_profile_photo, clear_images
+from buddyup.photo import change_profile_photo, clear_images, ImageError
 
 
 PHOTO_EXTS = ['jpg', 'jpe', 'jpeg', 'png', 'gif', 'bmp', 'tif', 'tiff']
 # Python 3: infinite loop because map() is lazy, use list(map(...))
+# The next version of Flask-WTF will have a fix to be case-insensitive.
 PHOTO_EXTS.extend(map(str.upper, PHOTO_EXTS))
 
 
@@ -62,6 +63,7 @@ class ProfileForm(Form):
                       FileAllowed(PHOTO_EXTS, u"Images only!")])
     facebook = TextField(u"Facebook")
     twitter = TextField(u"Twitter")
+    linkedin = TextField(u"LinkedIn")
     email = TextField(u"Email Address", validators=[Optional(), Email()])
     bio = TextAreaField(u'A Few Words About You')
 
@@ -99,7 +101,8 @@ def profile_edit():
             form.full_name.data = user.full_name
             form.facebook.data = user.facebook
             form.twitter.data = user.twitter
-            form.email.data = user.twitter
+            form.email.data = user.email
+            form.linkedin.data = user.linkedin
             form.bio.data = user.bio
             form.majors.data = user.majors.all()
             form.languages.data = user.languages.all()
@@ -145,6 +148,7 @@ def copy_form(form):
     user.location = form.location.data
     user.facebook = form.facebook.data
     user.twitter = form.twitter.data
+    user.linkedin = form.linkedin.data
     user.bio = form.bio.data
     user.email = form.email.data
     

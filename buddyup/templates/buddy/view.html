@@ -30,6 +30,7 @@
 		{% else %}
 			Languages: Unspecified
 		{% endif %}
+		<br>
 		
 		{% if courses|length == 1 %}
 			Course: {{ courses[0].name }}
@@ -49,6 +50,12 @@
 			{% if buddy_record.twitter %}
 				<a href="{{ buddy_record.twitter }}">
 					<img src="{{ img('twitter.png') }}">
+				</a>
+			{% endif %}
+
+			{% if buddy_record.linkedin %}
+				<a href="{{ buddy_record.linkedin }}">
+					<img src="{{ img('linkedin-50x50.png') }}">
 				</a>
 			{% endif %}
 			
