@@ -32,11 +32,11 @@
 		{% endif %}
 		<br>
 		
+
 		{% if courses|length == 1 %}
-			Course: {{ courses[0].name }}
+			Course: {{ courses[0] }}
 		{% elif courses|length > 0 %}
-			Courses: {{ [course.name for course in buddy_record.courses]
-									| sorted | join(', ') }}
+			Courses: {{ courses | join(', ') }}
 		{% else %}
 			Courses: Not enrolled
 		{% endif %}
