@@ -106,6 +106,7 @@ def profile_edit():
             form.bio.data = user.bio
             form.majors.data = user.majors.all()
             form.languages.data = user.languages.all()
+            form.courses.data = user.courses.all()
             form.location.data = user.location
 
             times_to_choices = {
