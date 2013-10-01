@@ -37,7 +37,7 @@ def photo_tiny(user_record):
     """
     Get the URL for a User's tiny image
     """
-    return _get_photo(user_record, TINY_SIZE)
+    return get_photo_url(user_record, TINY_SIZE)
 
 
 @app.template_global()
@@ -45,7 +45,7 @@ def photo_thumbnail(user_record):
     """
     Get the URL for a User's thumbnail image
     """
-    return _get_photo(user_record, THUMB_SIZE)
+    return get_photo_url(user_record, THUMB_SIZE)
 
 
 @app.template_global()
@@ -53,10 +53,13 @@ def photo_large(user_record):
     """
     Get the URL for a User's large image
     """
-    return _get_photo(user_record, LARGE_SIZE)
+    return get_photo_url(user_record, LARGE_SIZE)
 
 
-def _get_photo(user_record, size):
+def get_photo_url(user_record, size):
+    """
+    Get a photo size's URL based on the given Dimensions
+    """
     if user_record.has_photos:
         return "http://{bucket}.s3.amazonaws.com/{key}".format(
             bucket=app.config['AWS_S3_BUCKET'],
@@ -89,7 +92,7 @@ def change_profile_photo(user, storage):
     
     # request.file doesn't have tell() so we have to wrap it in BytesIO
     # instead of stream.
-    stream = storage.stream
+    stream = getattr(storage, "stream", storage)
     try:
         if hasattr(stream, "tell") and hasattr(stream, "seek"):
             base_image = Image.open(stream)
@@ -126,7 +129,8 @@ def upload_one(bucket, image, user):
 
 def clear_images(user):
     """
-    Remove all images for the given user.
+    Remove all images for the given user. Changes to the record are not
+    committed!
     """
     conn = boto.connect_s3()
     try:

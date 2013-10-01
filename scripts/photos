@@ -1,0 +1,140 @@
+#!/usr/bin/env python
+
+from __future__ import print_function
+
+import argparse
+import sys
+import os
+from shutil import copyfileobj
+import urllib2
+import logging
+
+logger = logging.getLogger('photo')
+
+sys.path.insert(0, os.getcwd())
+
+from buddyup.database import User, db
+from buddyup import photo
+from buddyup.app import app
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--verbose", '-v', action="store_true",
+                    help="Verbose output")
+
+subparsers = parser.add_subparsers()
+
+parser_clear = subparsers.add_parser("clear", help="clear a user's photos")
+parser_clear.add_argument("user", help="user name")
+
+parser_upload = subparsers.add_parser("upload", help="upload a photo for a user")
+parser_upload.add_argument("user", help="user name")
+parser_upload.add_argument("file", type=argparse.FileType(),
+                           help="photo file name (- for stdin)")
+
+parser_download = subparsers.add_parser("download",
+                                        help="download photos for a user")
+parser_download.add_argument("user", help="user name ('+' for all users)")
+parser_download.add_argument("sizes", nargs="+",
+                             choices=['tiny', 'thumb', 'large', 'all'],
+                             help="sizes to download")
+parser_download.add_argument("--dir", '-d', default=".",
+                             help="output directory")
+
+parser_list = subparsers.add_parser("list", help="list users with photos")
+
+parser_has_photos = subparsers.add_parser("has-photos",
+                                          help="Test for user having a photo")
+parser_has_photos.add_argument("user", help="user name")
+
+
+def add_cmd(subparser):
+    def add(func):
+        subparser.set_defaults(func=func)
+        return func
+    return add
+
+
+@add_cmd(parser_clear)
+def cmd_clear(args):
+    user = get_user(args.user)
+    photo.clear_images(user)
+    db.session.commit()
+
+
+@add_cmd(parser_upload)
+def cmd_upload(args):
+    user = get_user(args.user)
+    photo.change_profile_photo(user, args.file)
+    db.session.commit()
+
+
+@add_cmd(parser_download)
+def cmd_download(args):
+    if args.user == "+":
+        for user in User.query.filter_by(has_photos=True).all():
+            download_photos(user, args.sizes, args.dir)
+    else:
+        user = get_user(args.user)
+        download_photos(user, args.sizes, args.dir)
+
+
+def download_photos(user, sizes, dir):
+    if not user.has_photos:
+        logger.error("User does not have any photos")
+        exit(1)
+
+    names_to_sizes = {
+        'tiny': photo.TINY_SIZE,
+        'thumb': photo.THUMB_SIZE,
+        'large': photo.LARGE_SIZE,
+    }
+    if 'all' in sizes:
+        sizes = sorted(names_to_sizes.values())
+    else:
+        sizes = map(names_to_sizes.get, sizes)
+    for size in sizes:
+        url = photo.get_photo_url(user, size)
+        image_name = photo.to_image_name(user, size.x, size.y)
+        if dir.startswith("~"):
+            dir = os.path.expanduser(dir)
+        file_path = os.path.join(dir, image_name)
+        logger.info("%s -> %s", url, file_path)
+        with open(file_path, 'wb') as dest:
+            src = urllib2.urlopen(url)
+            copyfileobj(src, dest)
+
+
+@add_cmd(parser_list)
+def cmd_list(args):
+    users = User.query.filter_by(has_photos=True).all()
+    for user in users:
+        print(user.user_name)
+
+
+@add_cmd(parser_has_photos)
+def cmd_has_photos(args):
+    user = get_user(args.user)
+    print(user.has_photos)
+
+
+def get_user(name):
+    user = User.query.filter_by(user_name=name).first()
+    if user is None:
+        logger.error("user %s does not exist", name)
+        exit(1)
+    return user
+
+def main():
+    args = parser.parse_args()
+    log_handler = logging.StreamHandler()
+    logger.addHandler(log_handler)
+    if args.verbose:
+        logger.setLevel(logging.INFO)
+        app.logger.addHandler(log_handler)
+    else:
+        logger.setLevel(logging.ERROR)
+    args.func(args)
+    
+if __name__ == '__main__':
+    main()
