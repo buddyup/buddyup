@@ -13,8 +13,8 @@ from buddyup.templating import img
 
 Dimensions = namedtuple('Dimensions', 'x y')
 
-TINY_SIZE = Dimensions(10, 10)
-THUMB_SIZE = Dimensions(20, 20)
+TINY_SIZE = Dimensions(20, 20)
+THUMB_SIZE = Dimensions(50, 50)
 LARGE_SIZE = Dimensions(200, 200)
 
 SIZES = [TINY_SIZE, THUMB_SIZE, LARGE_SIZE]

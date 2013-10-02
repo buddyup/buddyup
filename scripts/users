@@ -1,0 +1,127 @@
+#!/usr/bin/env python
+
+from __future__ import print_function
+
+import argparse
+import sys
+import os
+import logging
+
+logger = logging.getLogger('photo')
+
+sys.path.insert(0, os.getcwd())
+
+from sqlalchemy import or_
+
+from buddyup.database import User, db
+from buddyup import photo
+from buddyup.app import app
+from buddyup.util import email
+
+USER_FILTERS = ["linkedin", "twitter", "facebook", "bio", "email"]
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--verbose", "-v", action="store_true",
+                    help="Verbose output")
+
+subparsers = parser.add_subparsers()
+
+def add_filter(parser, name, help_yes=None, help_no=None):
+    if help_yes is None:
+        help_yes = "only with " + name
+    if help_no is None:
+        help_no = "only without " + name
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("--" + name, action="store_true",
+                       help=help_yes)
+    group.add_argument("--no-" + name, action="store_true",
+                       help=help_no)
+
+
+def add_user_filters(parser):
+    for name in USER_FILTERS:
+        add_filter(parser, name)
+    add_filter(parser, "photos")
+
+parser_list = subparsers.add_parser("list", help="list users")
+add_user_filters(parser_list)
+
+parser_count = subparsers.add_parser("count", help="count users")
+add_user_filters(parser_count)
+
+parser_email = subparsers.add_parser("email", help="email formatted names")
+add_user_filters(parser_email)
+parser_email.add_argument("--single", action="store_true",
+                          help="everything on one line")
+
+
+def add_cmd(subparser):
+    def add(func):
+        subparser.set_defaults(func=func)
+        return func
+    return add
+
+
+def filter_contains(args, query, name):
+    field = getattr(User, name)
+    if getattr(args, name):
+        query = query.filter(or_(field != u'', field != None))
+    elif getattr(args, "no_" + name):
+        query = query.filter(or_(field == u'', field == None))
+    return query
+
+
+def user_filter(args):
+    query = User.query
+    if args.photos:
+        query = query.filter_by(has_photos=True)
+    elif args.no_photos:
+        query = query.filter_by(has_photos=False)
+
+    for name in USER_FILTERS:
+        query = filter_contains(args, query, name)
+    return query
+
+
+@add_cmd(parser_list)
+def cmd_list(args):
+    query = user_filter(args)
+    for user in query.all():
+        print(user.user_name)
+
+
+@add_cmd(parser_count)
+def cmd_count(args):
+    query = user_filter(args)
+    print(query.count())
+
+
+@add_cmd(parser_email)
+def cmd_email(args):
+    query = user_filter(args)
+    addresses = []
+    for user in query.all():
+        addresses.append("{name} <{address}>".format(
+            name=user.full_name or user.user_name,
+            address=email(user)))
+    if args.single:
+        seperator = ', '
+    else:
+        seperator = "\n"
+    print(seperator.join(addresses))
+
+
+def main():
+    args = parser.parse_args()
+    log_handler = logging.StreamHandler()
+    logger.addHandler(log_handler)
+    if args.verbose:
+        logger.setLevel(logging.INFO)
+        app.logger.addHandler(log_handler)
+    else:
+        logger.setLevel(logging.ERROR)
+    args.func(args)
+    
+
+if __name__ == '__main__':
+    main()
