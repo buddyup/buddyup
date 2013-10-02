@@ -11,7 +11,7 @@ logger = logging.getLogger('photo')
 
 sys.path.insert(0, os.getcwd())
 
-from sqlalchemy import or_
+from sqlalchemy import or_, and_
 
 from buddyup.database import User, db
 from buddyup import photo
@@ -65,7 +65,7 @@ def add_cmd(subparser):
 def filter_contains(args, query, name):
     field = getattr(User, name)
     if getattr(args, name):
-        query = query.filter(or_(field != u'', field != None))
+        query = query.filter(and_(field != u'', field != None))
     elif getattr(args, "no_" + name):
         query = query.filter(or_(field == u'', field == None))
     return query
