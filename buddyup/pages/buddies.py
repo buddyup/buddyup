@@ -80,10 +80,10 @@ def buddy_search_results():
         query = query.filter(CourseMembership.c.course_id == course_id,
                              CourseMembership.c.user_id == User.id)
     if major_id != -1:
-        query = query.filter(MajorMembership.c.major_id == Major.id,
+        query = query.filter(MajorMembership.c.major_id == major_id,
                              MajorMembership.c.user_id == User.id)
     if language_id != -1:
-        query = query.filter(LanguageMembership.c.language_id == Language.id,
+        query = query.filter(LanguageMembership.c.language_id == language_id,
                              LanguageMembership.c.user_id == User.id)
     query = query.filter(User.id != g.user.id)
     buddies = query.all()
