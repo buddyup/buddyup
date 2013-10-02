@@ -101,6 +101,7 @@ def post_for_template(record):
         'html_id': record.html_id,
         'score': calculate_score(record),
         'text': record.text,
+        'user': record.user,
         }
 
 
