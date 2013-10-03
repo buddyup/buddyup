@@ -58,7 +58,7 @@ class ProfileForm(Form):
     # Append a field for each day
 #    for i in range(7):
 #        availability.append_entry()
-    photo = FileField(u"Profile Photo", validators=[
+    photo = FileField(u"Profile Photo (strong encouraged)", validators=[
                       Optional(),
                       FileAllowed(PHOTO_EXTS, u"Images only!")])
     facebook = TextField(u"Facebook")
