@@ -12,7 +12,7 @@ class Dev(Base):
 
 
 class Testing(Base):
-    CAS_SERVER = 'http://http://ec2-54-201-89-140.us-west-2.compute.amazonaws.com:80'
+    CAS_SERVER = 'http://ec2-54-201-89-140.us-west-2.compute.amazonaws.com:80'
     ADMIN_USER = 'mockuser'
 
 
