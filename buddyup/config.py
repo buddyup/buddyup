@@ -12,7 +12,8 @@ class Dev(Base):
 
 
 class Testing(Base):
-    pass
+    CAS_SERVER = 'http://http://ec2-54-201-89-140.us-west-2.compute.amazonaws.com:80'
+    ADMIN_USER = 'mockuser'
 
 
 class Production(Base):
