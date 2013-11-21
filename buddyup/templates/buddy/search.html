@@ -48,6 +48,16 @@
 				{% endfor %}
 			</select>
 
+			<label> Location </label>
+			<select style="width: 100%" name="location">
+				<option value="-1">Any Location</option>
+				{% for location_record in locations %}
+					<option value="{{ location_record.id }}">
+						{{ location_record.name }}
+					</option>
+				{% endfor %}
+			</select>
+
 			<label> Name </label>  
 			<input type="text" class="span2" placeholder="Full Name" name="name">
 			<div class="btn-group" style="margin-left:300px;margin-top: 20px;">
