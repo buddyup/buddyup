@@ -53,10 +53,12 @@ def buddy_search():
     courses = g.user.courses.all()
     majors = Major.query.all()
     languages = sorted_languages()
+    locations = Location.query.order_by(Location.name).all()
     return render_template('buddy/search.html',
                            courses=courses,
                            majors=majors,
                            languages=languages,
+                           locations=locations,
                            )
 
 
@@ -66,6 +68,7 @@ def buddy_search_results():
     name = args_get('name')
     major_id = args_get('major', convert=int)
     language_id = args_get('language', convert=int)
+    location_id = args_get('location', convert=int)
     query = User.query
     query = query.order_by(User.full_name)
     if name:
@@ -85,6 +88,8 @@ def buddy_search_results():
     if language_id != -1:
         query = query.filter(LanguageMembership.c.language_id == language_id,
                              LanguageMembership.c.user_id == User.id)
+
+    query = query.filter(User.id == location_id)
     query = query.filter(User.id != g.user.id)
     buddies = query.all()
     return render_template('buddy/search_result.html',
