@@ -3,7 +3,8 @@ from flask import g, request, abort, redirect
 from buddyup.app import app
 from buddyup.database import (User, BuddyInvitation, Major, MajorMembership,
                               Language, LanguageMembership,
-                              Course, CourseMembership, db)
+                              Course, CourseMembership, db,
+                              Location)
 from buddyup.templating import render_template
 from buddyup.util import login_required, args_get, sorted_languages
 
