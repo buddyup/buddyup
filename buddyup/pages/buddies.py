@@ -89,8 +89,7 @@ def buddy_search_results():
     if language_id != -1:
         query = query.filter(LanguageMembership.c.language_id == language_id,
                              LanguageMembership.c.user_id == User.id)
-
-    if language_id != -1:
+    if location_id != -1:
         query = query.filter(User.location_id == location_id)
 
     query = query.filter(User.id != g.user.id)
