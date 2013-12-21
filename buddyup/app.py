@@ -3,10 +3,12 @@ import os, logging
 from flask import Flask, g, session
 from flask.ext.runner import Runner
 from flask.ext.heroku import Heroku
+import mandrill
 
 
 
 app = Flask(__name__)
+mandrill_client = mandrill.Mandrill('mZJ6dAVvZLkZ4faSdZRpvg')
 config_type = os.getenv('BUDDYUP_TYPE', 'dev').capitalize()
 config_object = "{name}.config.{type}".format(name=__name__.split('.')[0],
                                               type=config_type)

@@ -1,9 +1,11 @@
 from flask import g, flash, redirect, url_for, abort, request
+import mandrill
 
-from buddyup.app import app
+from buddyup.app import app, mandrill_client
 from buddyup.database import db, BuddyInvitation, User
 from buddyup.templating import render_template
-from buddyup.util import login_required
+from buddyup.util import login_required, email
+from flask.ext.mail import Message
 
 
 @app.route("/invite/view")
@@ -46,6 +48,29 @@ def invite_send(user_name):
     # TODO: Don't redirect to referrer (potential security risk?)
     # the 'or' picks referrer if its available, but uses buddy_view as a
     # fallback
+    try:
+        message = {'from_email': 'noreply@buddyup.com',
+                   'from_name': 'Buddyup noreply',
+                   'headers': {'Reply-To': 'noreply@buddyup.com'},
+                   'html': """<p>
+                            You have received a buddy request on BuddyUp.  
+                            Click this link to accept the invitation: %s
+                            or this link to decline: %s
+                            </p>""" %\
+                            (url_for('invite_accept', inv_id=invite_record.id),
+                             url_for('invite_deny', inv_id=invite_record.id)),
+                   'subject': '%s has added you on Buddyup' % email(g.user),
+                   'to': [{'email': email(other_user_record),
+                           'name': other_user_record.full_name,
+                           'type': 'to'}],}
+        result = mandrill_client.messages.send(message=message,
+                                               async=False,
+                                               ip_pool='Main Pool')
+    except mandrill.Error, e:
+        # Mandrill errors are thrown as exceptions
+        print 'A mandrill error occurred: %s - %s' % (e.__class__, e)
+        # A mandrill error occurred: <class 'mandrill.UnknownSubaccountError'> - No subaccount exists with the id 'customer-123'    
+        raise
     return redirect(request.referrer or url_for('buddy_view',
                                                 user_name=user_name))
 

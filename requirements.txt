@@ -28,3 +28,4 @@ sqlalchemy-migrate==0.7.2
 texttable==0.8.1
 wsgiref==0.1.2
 alembic==0.6.0
+mandrill==1.0.53
