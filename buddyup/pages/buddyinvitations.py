@@ -59,7 +59,7 @@ def invite_send(user_name):
                             </p>""" %\
                             ('buddyup.herokuapp.com' + url_for('invite_accept', inv_id=invite_record.id),
                              'buddyup.herokuapp.com' + url_for('invite_deny', inv_id=invite_record.id)),
-                   'subject': '%s has added you on Buddyup' % email(g.user),
+                   'subject': '%s wants to be your buddy on Buddyup' % email(g.user),
                    'to': [{'email': email(other_user_record),
                            'name': other_user_record.full_name,
                            'type': 'to'}],}
