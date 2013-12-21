@@ -57,8 +57,8 @@ def invite_send(user_name):
                             Click this link to accept the invitation: %s
                             or this link to decline: %s
                             </p>""" %\
-                            (url_for('invite_accept', inv_id=invite_record.id),
-                             url_for('invite_deny', inv_id=invite_record.id)),
+                            ('buddyup.herokuapp.com' + url_for('invite_accept', inv_id=invite_record.id),
+                             'buddyup.herokuapp.com' + url_for('invite_deny', inv_id=invite_record.id)),
                    'subject': '%s has added you on Buddyup' % email(g.user),
                    'to': [{'email': email(other_user_record),
                            'name': other_user_record.full_name,
