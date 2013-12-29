@@ -14,6 +14,9 @@ from functools import wraps
 def admin_required(f):
     @wraps(f)
     def func(*args, **kwargs):
+        if app.config.get("BUDDYUP_ENABLE_ADMIN_ALL_USERS", False):
+            # Every user has admin access.  Only for testing and development!
+            return f(*args, **kwargs)
         if g.user and g.user.user_name == app.config.get("ADMIN_USER", u""):
             return f(*args, **kwargs)
         else:
