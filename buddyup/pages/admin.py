@@ -1,5 +1,10 @@
+# Python 3: Switch to io.StringIO
+#from io import StringIO
+from cStringIO import StringIO
+import csv
+
 from flask import (g, abort, get_flashed_messages, request, flash, redirect,
-                   url_for)
+                   url_for, Response)
 
 from sqlalchemy.sql import functions
 
@@ -7,7 +12,7 @@ from buddyup.app import app
 from buddyup.database import (Course, Visit, User, BuddyInvitation,
                               Location, Major, Event, Language, db)
 from buddyup.templating import render_template
-from buddyup.util import form_get, check_empty
+from buddyup.util import form_get, args_get, check_empty
 from functools import wraps
 
 
@@ -65,6 +70,21 @@ def admin_delete_course():
     db.session.commit()
     flash('Course deleted')
     return redirect(url_for('admin_dashboard'))
+
+
+@app.route("/admin/course/roster")
+@admin_required
+def admin_roster():
+    course_id = args_get('course', convert=int)
+    course = Course.query.get_or_404(course_id)
+    fake_file = StringIO()
+    writer = csv.writer(fake_file)
+    for student in course.users.all():
+        user_name = student.user_name
+        # Python 3: Don't encode
+        full_name = student.full_name.encode('utf8')
+        writer.writerow([user_name, full_name])
+    return Response(fake_file.getvalue(), content_type="text/csv")
 
 
 @app.route("/admin/location/add", methods=['POST'])

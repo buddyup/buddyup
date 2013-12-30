@@ -20,6 +20,7 @@
 		<li><a href="#tab2" data-toggle="tab">Manage Location</a></li>
 		<li><a href="#tab3" data-toggle="tab">Manage Major</a></li>
 		<li><a href="#tab4" data-toggle="tab">Manage Language</a></li>
+		<li><a href="#tab5" data-toggle="tab">Rosters</a></li>
 	</ul>
 	<div class="tab-content">
 		<div class="tab-pane active" id="tab1">
@@ -100,6 +101,22 @@
 				<form action="{{ url_for('admin_add_language') }}" method="POST">
 					New language: <input type="text" name="language"><br>
 					<input class="btn-primary" type="submit" value="Add language">
+				</form>
+			</div>
+		</div>
+		<div class="tab-pane" id="tab5">
+			<div class="well span7">
+				<h3>Download Roster</h3>
+				<form action="{{ url_for('admin_roster') }}">
+					<select width="100%" name="course">
+					{% for course in courses %}
+						<option value="{{ course.id }}">
+							{{ course.name }} by {{ course.instructor }}
+						</option>
+					{% endfor %}
+					</select>
+					<br>
+					<input type="submit" value="Download" class="btn-primary">
 				</form>
 			</div>
 		</div>
