@@ -7,6 +7,7 @@ from wtforms.validators import required, Email, Optional
 from wtforms.fields import TextField, RadioField, FieldList, TextAreaField
 from wtforms.ext.sqlalchemy.fields import (QuerySelectMultipleField,
                                            QuerySelectField)
+from buddyup.app import app
 from buddyup.database import Course, Major, Location, Availability, db
 from buddyup.util import sorted_languages, login_required
 
@@ -48,9 +49,11 @@ class ProfileForm(Form):
     # Append a field for each day
 #    for i in range(7):
 #        availability.append_entry()
-    photo = FileField(u"Profile Photo (required)", validators=[
-                      required(),
-                      FileAllowed(PHOTO_EXTS, u"Images only!")])
+    validators = [FileAllowed(PHOTO_EXTS, u"Images only!")]
+    if app.config.get("BUDDYUP_REQUIRE_PHOTO", True):
+        validators.append(required())
+
+    photo = FileField(u"Profile Photo (required)", validators=validators)
     facebook = TextField(u"Facebook (optional)")
     twitter = TextField(u"Twitter")
     linkedin = TextField(u"LinkedIn")

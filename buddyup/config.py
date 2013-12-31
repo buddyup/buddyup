@@ -10,6 +10,7 @@ class Base:
     CAS_SERVER = 'https://sso.pdx.edu/cas'
     SECRET_KEY = 'foo'
     DEFAULT_EMAIL_FORMAT = "{user}@pdx.edu"
+    BUDDYUP_REQUIRE_PHOTO = True
 
 
 class Dev(Base):
@@ -19,6 +20,7 @@ class Dev(Base):
     # MockCAS server for testing
     CAS_SERVER = 'http://localhost:8000'
     ADMIN_USER = 'mockuser'
+    BUDDYUP_REQUIRE_PHOTO = False
 
 
 class Testing(Base):
@@ -26,7 +28,13 @@ class Testing(Base):
     BUDDYUP_ENABLE_ADMIN_ALL_USERS = True
     CAS_SERVER = 'http://ec2-54-201-89-140.us-west-2.compute.amazonaws.com:80'
     ADMIN_USER = 'mockuser'
+    BUDDYUP_REQUIRE_PHOTO = False
 
+class Rob_bednark(Base):
+    BUDDYUP_ENABLE_AUTHENTICATION = False
+    BUDDYUP_ENABLE_ADMIN_ALL_USERS = True
+    SQLALCHEMY_DATABASE_URI = 'postgresql://buddyup_user:buddyup_password@localhost/buddyup_db'
+    BUDDYUP_REQUIRE_PHOTO = False
 
 class Production(Base):
     pass
