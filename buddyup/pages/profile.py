@@ -58,9 +58,11 @@ class ProfileForm(Form):
     # Append a field for each day
 #    for i in range(7):
 #        availability.append_entry()
-    photo = FileField(u"Profile Photo (encouraged)", validators=[
-                      Optional(),
-                      FileAllowed(PHOTO_EXTS, u"Images only!")])
+    validators = [FileAllowed(PHOTO_EXTS, u"Images only!")]
+    if app.config.get("BUDDYUP_REQUIRE_PHOTO", True):
+        validators.append(required())
+
+    photo = FileField(u"Profile Photo (required)", validators=validators)
     facebook = TextField(u"Facebook")
     twitter = TextField(u"Twitter")
     linkedin = TextField(u"LinkedIn")
