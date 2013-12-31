@@ -32,8 +32,15 @@ def setup_cas():
 
 @app.route('/login')
 def login():
-    if 'ticket' in request.args:
-        status, message = validate(args_get('ticket'))
+    authentication_enabled = app.config.get('BUDDYUP_ENABLE_AUTHENTICATION', True)
+    if ('ticket' in request.args) or (not authentication_enabled):
+        username = args_get('username')
+        if authentication_enabled:
+            status, message = validate(ticket=args_get('ticket'), username=username)
+        else:
+            # Authentication is disabled, so just log the user in.
+            status = 0
+            message = username
         if status == 0:
             user_name = message
             user_record = User.query.filter(User.user_name == user_name).first()
@@ -65,7 +72,10 @@ def login():
 def logout():
     # TODO: Some indication of success?
     session.clear()
-    return redirect(app.cas_logout)
+    if app.config.get('BUDDYUP_ENABLE_AUTHENTICATION', True):
+        return redirect(app.cas_logout)
+    else:
+        return redirect(url_for('index'))
 
 
 def validate(ticket):
