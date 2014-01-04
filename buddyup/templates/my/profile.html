@@ -2,49 +2,18 @@
 
 {% block title %} {{ buddy_record.full_name }} {% endblock %}
 {% block content %}
-
+<body class="suggestion"
 <br>
 <div class="row">
-	<div class="span4 offset1" style="margin-right:-130px;">
-		<img src="{{ photo_large(user_record) }}" class="img-rounded"><br>
-		<a href="{{ url_for('profile_photo') }}" class="btn btn-primary">
-			Change Profile Photo
+	<div class="span4 offset1 pictures" >
+        <div class="profile-photo">
+		<img src="{{ photo_large(user_record) }}" alt="Profile picture" class="img-rounded"></img><br>
+		<a href="{{ url_for('profile_photo') }}" class="profile2">
+			Edit Photo
 		</a>
-	</div>
-
-	<div class="span6" >
-		<h3 style="text-align:left;">{{ user_record.full_name }}</h3><br>
-			{% if buddy_record.location %}
-				Location: {{ buddy_record.location.name }}
-			{% else %}
-				Location: Not Given
-			{% endif %}
-		<br>
-		{% if majors|length > 0 %}
-			Major: {{ majors| join(', ') }}
-		{% else %}
-			Major: Unspecified
-		{% endif %}
-		<br>
-		{% if languages|length == 1 %}
-			Language: {{ languages[0] }}
-		{% elif languages|length > 0 %}
-			Languages: {{ languages|join(', ') }}
-		{% else %}
-			Languages: Unspecified
-		{% endif %}
-		<br>
-
-		{% if courses|length == 1 %}
-			Course: {{ courses[0] }}
-		{% elif courses|length > 0 %}
-			Courses: {{ courses | join(', ') }}
-		{% else %}
-			Courses: Not enrolled
-		{% endif %}
-	</div>
-	<div class="profile-social">
-	<ul class="social">
+        </div>
+		<div class="profile-social" style="margin-left:-20px;">
+		<ul class=" profile-social social">
 			{% if user_record.facebook %}
 				<li><a href="{{ user_record.facebook }}">
 					<img src="{{ img('facebook.png') }}" height="50" width="50">
@@ -71,20 +40,51 @@
 			{% endif %}  
 			    </li>
 			    
-                     
+                    
 				<li><a href="mailto:{{ buddy_record|email }}">
 				<img src="{{ img('email-50x50.png') }}" width="50" height="50">
 					</a> 
 			 		<h6><font color ="blue", size = "1"> Email </font></h6>
 	         	</li>
-	  </ul>
-
-		<div class="about-me">
-	 		<h4 >About Me</h4>
+	 		</ul>
+		</div>
+    </div>
+	<div class="span6 name" >
+		<h3 style="text-align:left; margin-top:10px;">{{ user_record.full_name }}</h3>
+			<div class="about-me"><i>
 			{% for p in user_record.bio|paragraphs %}
     <p>{{ p }}</p>
 	 	{% endfor %}
-	 	</div>
+	 	</i></div>
+			{% if buddy_record.location %}
+				<b>Location:</b> {{ buddy_record.location.name }}
+			{% else %}
+				<b>Location:</b> Not Given
+			{% endif %}
+		<br>
+		{% if majors|length > 0 %}
+			<b>Major:</b> {{ majors| join(', ') }}
+		{% else %}
+			<b>Major:</b> Unspecified
+		{% endif %}
+		<br>
+		{% if languages|length == 1 %}
+			<b>Language:</b> {{ languages[0] }}
+		{% elif languages|length > 0 %}
+			<b>Languages:</b> {{ languages|join(', ') }}
+		{% else %}
+			<b>Languages:</b> Unspecified
+		{% endif %}
+		<br>
+
+		{% if courses|length == 1 %}
+			<b>Course:</b> {{ courses[0] }}
+		{% elif courses|length > 0 %}
+			<b>Courses:</b> {{ courses | join(', ') }}
+		{% else %}
+			<b>Courses:</b> Not enrolled
+		{% endif %}
+	</div>
    </div>
 	 
 </div>
