@@ -4,7 +4,7 @@ import mandrill
 from buddyup.app import app, mandrill_client
 from buddyup.database import db, BuddyInvitation, User
 from buddyup.templating import render_template
-from buddyup.util import login_required, email
+from buddyup.util import login_required, email, events_to_json
 from flask.ext.mail import Message
 
 
