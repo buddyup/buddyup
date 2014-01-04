@@ -24,11 +24,13 @@ def index():
 @login_required
 def home():
     # select events for all classes we are in
-    events = []
-    for course in g.user.courses.all():
-        events.extend(course.events)
-    event_json = events_to_json(events)
-    return render_template('index.html', events_json=event_json)
+    users = User.query.all()
+    for user in users:
+        if user.has_photos == True:
+            continue
+        else:
+            users.remove(user)
+    return render_template('index.html', users = users)
 
 
 @app.route('/help')
