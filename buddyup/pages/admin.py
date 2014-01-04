@@ -189,3 +189,15 @@ def admin_stats():
     variables['total_users'] = User.query.filter(User.activated == True).count()
     
     render_template('admin_stats.html', **variables)
+
+
+@app.route("/admin/student_class", methods=['POST'])
+@admin_required
+def admin_student_class():
+    course_ids = map(int, request.form.getlist('courses'))
+    student_class = {}
+    for course_id in course_ids:
+        course_name = Course.query.get_or_404(course_id)
+        curr_database = User.query.join(Course.users).filter(Course.name == course_name.name).all()
+        student_class.update({course_name.name:len(curr_database)})
+    return render_template('admin/NumberofStudent.html', student_class = student_class)
