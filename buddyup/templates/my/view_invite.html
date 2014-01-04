@@ -3,8 +3,39 @@
 
 {% block title %}Invites{% endblock %}
 
+{% block extrahead %}
+<style type="text/css">
+	#wrapper {
+		width:350px;
+	}
+h2{
+ font-family:Georgia, 'Times New Roman', Times, serif;
+}
+
+</style>
+
+<script src="{{ js('jquery-ui') }}" type="text/javascript"></script>
+<script src="{{ js('fullcalendar') }}"></script>
+
+<script>
+	$(document).ready(function() {
+		$('#calendar').fullCalendar({
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'month,basicWeek,basicDay'
+			},
+			editable: false,
+			events: {{ events_json|tojson|safe }}
+		});
+	});
+</script>
+{% endblock %}
+
 {% block content %}
-<h2> Invitations </h2>
+<br><br>
+<h2 style="color:blue;"> Groups </h2>
+<br><br>
 	{% if new_friend %}
 		{% call flashed() %}
 			You added a <a href="{{ profile(new_friend) }}"> friend</a>.
@@ -28,8 +59,9 @@
 			You denied a <a href="{{ profile(denied_group) }}">group</a>.
 		{% endcall %}
 	{% endif %}
-    <div class="well span5">
-		<strong><font style="margin-left:150px;" color="2896FF"> From Buddies </font></strong>
+    <div style=" width:300px; " class="well span5">
+
+		<strong><font style="margin-left:100px;" color="2896FF"> From Buddies </font></strong>
 		<div style="margin-top:20px;">
 			{% for buddy_inv in buddy_invitations %}
 			{% set user = buddy_inv.sender %}
@@ -45,20 +77,13 @@
 		</div>
 	
 	</div>
-	<div class="well span5">
-		<strong><font style="margin-left:150px;" color="2896FF"> From Groups </font></strong>
-		<div style="margin-top:20px;">
-			{% for event_inv in event_invitations %}
-			{% set event = event_inv.event %}
-			<p style="float: left;"><img src="{{ profile(event) }}" height="50px" width="50px" border="1px"></p>
-				<font style="margin-left:10px;" color="2BA515"><b> {{ event.name }} </b> <br> </font>	
-				<font style="margin-left:10px;" color="E8A40D"> You are invited to a group </font>
-		  	 <div class="btn-group" style="margin-left:240px;">
-		  	    <a class="btn btn-success" href="{{ url_for('event_invitation_accept', invitation_id=event_inv.id) }}"> Accept</a>
-		  	  	<a class="btn btn-danger" href="{{ url_for('event_invitation_decline', invitation_id=event_inv.id) }}"> Deny </a>
-			</div>	
-			<hr>
-			{% endfor %}     
+	<div style=" width:600px; " class = "well span5">
+		<div id="wrapper">
+			<div style="float: left; width: 600px;" id='calendar'>
+				<a href="{{ url_for('calendar') }}"> <font size="2"> View Larger Version. </font></a>
+				<a href="{{url_for('event_create')}}" > <font size="2" style="padding-left:350px;"> Create New Events. </font></a>
+			</div>
 		</div>
+	</div>
 </div>
 {% endblock %}

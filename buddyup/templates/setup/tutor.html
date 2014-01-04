@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block title %}Edit Profile{% endblock %}
+{% block title %}Apply Profile{% endblock %}
 {% macro render_errors(field) %}
 	{% if field.errors %}
 		<ul class="errors">
@@ -45,10 +45,10 @@ $(function() {
 {% block content %}
 <div class="well span6 offset3">
 	<br>
-	<h1> Edit profile</h1>
+	<h1> Tutor Application </h1>
 	<br>
 	<p> This information will appear in your public profile. Leave the fields blank if you'd prefer not to reveal any information.</p>
-	<form action="{{ url_for('profile_edit') }}" method="POST"
+	<form action="{{ url_for('profile_tutor_create') }}" method="POST"
 		enctype="multipart/form-data">
 		{% set fb_placeholder = "http://www.facebook.com/you" %}
 		{% set tw_placeholder = "http://twitter.com/you" %}
@@ -56,8 +56,7 @@ $(function() {
 		{% set email_placeholder = default_email() %}
 		{{ form.csrf_token }}
 		{{ render_field(form.full_name, placeholder="Your Full Name") }}
-		{{ render_field(form.courses) }}
-		{{ render_field(form.majors) }}
+		{{ render_field(form.subjects) }}
 		{{ render_field(form.languages) }}
 		{{ render_field(form.location) }}
 		{{ render_field(form.facebook, placeholder=fb_placeholder) }}

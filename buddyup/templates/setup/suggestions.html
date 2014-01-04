@@ -11,14 +11,22 @@
 h1 {
 	color:blue;
 }
+#LEN{
+	padding-top: 30px;
+}
+body {
+  background-image: url("../img/background.jpg");
+
+
+}
 </style>
 </head>
-<body>
-
-
+<body class="suggestion">
 <div class="container">
-<div class="offset3 span6 well">
-<h1> A Few Suggestions </h2>
+<div class="offset3 span13 well"style="box-shadow: 10px 10px 5px #888888;">
+<div class= "LEN" >
+<h1> A Few Suggestions </h1>
+	<br><br>
 	<p>
 		If you don't use your pdx email account very much, be sure to set up email 
 		forwarding to your main account so you don't miss messages from potential
@@ -36,7 +44,9 @@ h1 {
 		...and don't be afraid to advertise your group during class.
 	</p>
 	<a class="btn btn-large btn-primary" href="{{ url_for('home') }}" 
-style="margin-left:340px;margin-top: 30px;">  Get Started </a>
+		style="margin-left:340px;margin-top: 30px;">  Get Started </a>
 </div>   
+</div>
+
 </body>
 </html>

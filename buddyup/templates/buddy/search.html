@@ -10,14 +10,54 @@
 {% endblock %}
 {% block content %}
 {{ flash_all() }}
-<h2> Search Buddies </h2>
-<div class="container">
-	<div class="span2"></div>
-	<div class="well span6">
-		<h4> Please fill in the information below: </h4>
+<br><br>
+<div class="container2">
+<div class="photos"> 
+<h3> Your classmates on Buddyup </h3><br>
+<table class="classmate">
+{% for user in users %}
+<tr>
+   <td><a href= "{{ profile(user) }}"<img src="{{ photo_large(user) }}" width="170" height="170"></a></td>
+   <!--<td><img src="{{ img('Remj.jpg') }}" alt="Smiley face" width="170" height="170"> </td>
+   <td><img src="{{ img('2.jpg')}}" alt="Smiley face"  width="170" height="170"> </td>
+      <td><img src="{{ img('cat.jpeg') }}" alt="Smiley face"  width="170" height="170"></td>
+</tr> 
+<tr>  
+    <td> <img src="{{ img('tom.jpg') }}"alt="Smiley face"  width="170" height="170"></td>
+    <td> <img src="{{ img('abc.jpg') }}"alt="Smiley face" width="170" height="170"></td>
+    <td><img src="{{ img('Herry.jpg') }}"alt="Smiley face"  width="170" height="170"> </td>
+     <td><img src="{{ img('Min.jpg') }}" alt="Smiley face"  width="170" height="170"></td>
+</tr>
+<tr>   
+    <td> <img src="{{ img('5.jpg') }}"alt="Smiley face"  width="170" height="170"> </td>
+    <td> <img src="{{ img('Remj.jpg') }}" alt="Smiley face" width="170" height="170">  </td>
+    <td> <img src="{{ img('thuom.jpg') }}"alt="Smiley face" width="170" height="170"> </td>
+       <td><img src="{{ img('David.jpg') }}" alt="Smiley face"  width="170" height="170"></td>
+</tr>
+<tr>   
+    <td> <img src="{{ img('Jenifer.jpg') }}" alt="Smiley face"  width="170" height="170"> </td>
+    <td><img src="{{ img('Rose.jpg') }}"alt="Smiley face" width="170" height="170"> </td>
+    <td> <img src="{{ img('minh vu.jpg') }}" alt="Smiley face"  width="170" height="170"> </td>
+       <td><img src="{{ img('e.jpeg') }}" alt="Smiley face"  width="170" height="170"></td>
+</tr>
+<tr>
+   <td><img src="{{ img('4.jpg') }}" alt="Smiley face"  width="170" height="170"></td>
+   <td><img src="{{ img('b.jpeg') }}" alt="Smiley face"  width="170" height="170"> </td>
+   <td><img src="{{ img('tom.jpg')}}" alt="Smiley face"  width="170" height="170"> </td>
+      <td><img src="{{ img('a.jpeg') }}" alt="Smiley face"  width="170" height="170"></td>-->
+</tr> 
+{% endfor %}
+</table>         
+</div>
+
+<div class="buddy-search">
+<img src="{{ img('search.jpg') }}" alt="search"  width="40" height="40" style="padding-left:70px;">
+<br>
+
+
 		<form action="{{ url_for('buddy_search_results') }}">
 			<label> Course </label>
-			<select style="width: 300px" name="course">
+			<select style="width: 220px" name="course">
 				<option value="-1">
 					All Enrolled Courses
 				</option>
@@ -29,7 +69,7 @@
 			</select>
 			
 			<label> Major </label>
-			<select style="width: 100%" name="major">
+			<select style="width: 220px" name="major">
 				<option value="-1">Any Major</option>
 				{% for major_record in majors %}
 					<option value="{{ major_record.id }}">
@@ -39,7 +79,7 @@
 			</select>
 			
 			<label> Language </label>
-			<select style="width: 100%" name="language">
+			<select style="width: 220px" name="language">
 				<option value="-1">Any Language</option>
 				{% for language_record in languages %}
 					<option value="{{ language_record.id }}">
@@ -48,20 +88,10 @@
 				{% endfor %}
 			</select>
 
-			<label> Location </label>
-			<select style="width: 100%" name="location">
-				<option value="-1">Any Location</option>
-				{% for location_record in locations %}
-					<option value="{{ location_record.id }}">
-						{{ location_record.name }}
-					</option>
-				{% endfor %}
-			</select>
-
 			<label> Name </label>  
-			<input type="text" class="span2" placeholder="Full Name" name="name">
-			<div class="btn-group" style="margin-left:300px;margin-top: 20px;">
-				<input class="btn btn-large btn-danger" style="margin-left:10px;" value="Search" type="submit">
+			<input type="text" placeholder="Full Name" name="name" style="width:200px;" >
+			<div class="btn-group">
+				<input class="btn btn-large btn-danger" style="" value="Search" type="submit" >
 			</div>
 	  </form>
   </div>

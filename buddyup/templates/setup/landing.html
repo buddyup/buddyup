@@ -45,6 +45,8 @@ th {
 .errors {
 	color: red;
 }
+
+
 </style>
 <script>
 $(function() {
@@ -60,10 +62,20 @@ $(function() {
 <body>
 
 <div class="container">
-	<div class="well span6 offset3">  
+	<div class="well span6 offset3">
 		<h2> Welcome to BuddyUp! </h2>
+		<br>
 		<form action="{{ url_for('profile_create') }}" method="POST"
 			enctype="multipart/form-data">
+			<!--{% set fb_placeholder = "http://www.facebook.com/you" -%}
+			{% set tw_placeholder = "http://twitter.com/you" -%}
+			{% set li_placeholder = "http://www.linkedin.com/in/you" %}-->
+			{% set email_placeholder = default_email() -%}
+			{{ form.csrf_token }}
+			{{ render_field(form.full_name, placeholder="Your Full Name") }}
+			{{ render_field(form.email, placeholder=email_placeholder) }}
+			{{ render_field(form.courses) }}
+			<!--{{ render_field(form.majors) }}
 			{% set fb_placeholder = "http://www.facebook.com/you" -%}
 			{% set tw_placeholder = "http://twitter.com/you" -%}
 			{% set li_placeholder = "http://www.linkedin.com/in/you" %}
@@ -73,14 +85,15 @@ $(function() {
 			{{ render_field(form.courses) }}
 			{{ render_field(form.majors) }}
 			{{ render_field(form.languages) }}
-			{{ render_field(form.location) }}
+			{{ render_field(form.location) }}-->
 			{{ render_field(form.facebook, placeholder=fb_placeholder) }}
-			{{ render_field(form.twitter, placeholder=tw_placeholder) }}
+			<!--{{ render_field(form.twitter, placeholder=tw_placeholder) }}
 			{{ render_field(form.linkedin, placeholder=li_placeholder) }}
 			{{ render_field(form.email, placeholder=email_placeholder) }}
 			{{ render_field(form.bio) }}
 
 			<h3>Time for Study Group</h3>
+			<br>
 			{{ render_errors(form.availability) }}
 			<table class="times">
 				<thead>
@@ -106,9 +119,12 @@ $(function() {
 					</tr>
 				{% endfor %}
 				</tbody>
+<<<<<<< HEAD
+			</table>-->
 			</table>
 
 			<h3>{{ form.photo.label.text }}</h3>
+			<br>
 			{{ render_errors(form.photo) }}
 			{{ form.photo }}
 			<input class="btn btn-large btn-primary" style="margin-left:350px;margin-top: 20px;" type="submit" value="Save">

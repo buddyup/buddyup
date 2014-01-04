@@ -10,13 +10,16 @@
 {% endblock %} 
 
 {% block content %}
+<br>
 <h2>{{ event_record.name }}</h2>
 <br>
 {{ flash_all() }}
 {% if is_owner %}
-<div style="text-align:center">
-	<a class="btn btn-medium btn-danger" href="{{ remove_url }}">Cancel Study Group </a>
+<div style="padding-left:500px">
+   <a href="{{ remove_url }}"style="padding-left:10px; padding-top:100px" ><img src = "{{ img ('cancel.jpg') }}" alt="Cancel Button" width="100px" height="25px"></a>
+    <a href="{{ edit_event_url }}" style="padding-left:15px; padding-top:100px" ><img src = "{{ img ('Edit.jpg') }}" alt="Edit Button" width="100px" height="25px"></a>
 </div>
+
 {% elif in_event %}
 <div style="text-align:center">
 	<a class="btn btn-medium btn-danger" href="{{ leave_url }}">Leave Study Group </a>
@@ -47,15 +50,15 @@
  	<div class="well span6">
 		<div style="margin-top:10px;">
 			<text style="margin-left:10px;">
-			<font color="red"> {{ event_record.name }} </font>	<br>
-			<font style="margin-left:10px;" color="green"> Created by <b> <a href="{{ profile(event_record.owner) }}" style="color:green">{{ event_record.owner.full_name }}</a> </b> </font> <br>
-			<font style="margin-left:10px;" color="8C4620">
+			<font color="black"> {{ event_record.name }} </font>	<br>
+			<font style="margin-left:10px;" color="black"> Created by <b> <a href="{{ profile(event_record.owner) }}" style="color:black">{{ event_record.owner.full_name }}</a> </b> </font> <br>
+			<font style="margin-left:10px;" color="black">
 				Location: {{ event_record.location }}
 			</font><br>
-			<font style="margin-left:10px;" color="003CC8">
+			<font style="margin-left:10px;" color="black">
 				Date: {{ event_record.start.strftime('%b %d, %Y') }} </font> <br>
-			<font style="margin-left:10px;" color="8C4620">Start: {{ event_record.start.strftime('%I:%M %p') }}</font><br>
-			<font style="margin-left:10px;" color="8C4620">End: {{ event_record.end.strftime('%I:%M %p') }}</font><br>
+			<font style="margin-left:10px;" color="black">Start: {{ event_record.start.strftime('%I:%M %p') }}</font><br>
+			<font style="margin-left:10px;" color="black">End: {{ event_record.end.strftime('%I:%M %p') }}</font><br>
 			<hr>
 			</text>
 
