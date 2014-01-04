@@ -16,6 +16,7 @@ from buddyup.database import Course, Major, Location, Availability, db
 from buddyup.util import sorted_languages, login_required
 from buddyup.templating import render_template
 from buddyup.photo import change_profile_photo, clear_images, ImageError
+from buddyup.pages.form_profile import *
 
 
 PHOTO_EXTS = ['jpg', 'jpe', 'jpeg', 'png', 'gif', 'bmp', 'tif', 'tiff']
@@ -28,48 +29,6 @@ def ordered_factory(record_type, field="name"):
     def factory():
         return record_type.query.order_by(field)
     return factory
-
-
-class ProfileForm(Form):
-    """
-    Base class for the create and edit forms
-    """
-    full_name = TextField(u'Full Name (required)', validators=[required()])
-    COURSE_FORMAT = u"{0.name} by {0.instructor}"
-    courses = QuerySelectMultipleField(u"Course(s)",
-                                       get_label=COURSE_FORMAT.format,
-                                       query_factory=ordered_factory(Course))
-    majors = QuerySelectMultipleField(u"Major(s)",
-                                      get_label=u"name",
-                                      query_factory=ordered_factory(Major))
-    languages = QuerySelectMultipleField(u"Other Language(s)",
-                                         get_label=u"name",
-                                         query_factory=sorted_languages)
-    location = QuerySelectField(u"Location",
-                                get_label=u"name",
-                                allow_blank=True,
-                                query_factory=ordered_factory(Location))
-    availability = FieldList(RadioField(choices=[('none', None),
-                                                 ('am', 'AM'),
-                                                 ('pm', 'PM'),
-                                                 ('all', 'All Day')],
-                                        default="none"),
-                             min_entries=7, max_entries=7)
-    # Append a field for each day
-#    for i in range(7):
-#        availability.append_entry()
-    photo = FileField(u"Profile Photo (encouraged)", validators=[
-                      Optional(),
-                      FileAllowed(PHOTO_EXTS, u"Images only!")])
-    facebook = TextField(u"Facebook")
-    twitter = TextField(u"Twitter")
-    linkedin = TextField(u"LinkedIn")
-    email = TextField(u"Email Address", validators=[Optional(), Email()])
-    bio = TextAreaField(u'A Few Words About You')
-
-
-class ProfileCreateForm(ProfileForm):
-    pass
 
 
 @app.route('/setup/profile', methods=['GET', 'POST'])
@@ -94,8 +53,11 @@ class ProfileEditForm(ProfileForm):
 @app.route('/user/profile', methods=['GET', 'POST'])
 @login_required
 def profile_edit():
-    form = ProfileEditForm()
     user = g.user
+    if user.has_photos == True:
+        form = ProfileUpdateForm()
+    else:
+        form = ProfileCreateForm()
     if not form.validate_on_submit():
         if request.method == 'GET':
             form.full_name.data = user.full_name
@@ -127,20 +89,7 @@ def profile_edit():
                                )
     else:
         copy_form(form)
-        return redirect(url_for('home'))
-
-
-def update_relationship(rel, records):
-    current = {record.id: record for record in rel.all()}
-    new = {record.id: record for record in records}
-
-    insert_ids = new.viewkeys() - current.viewkeys()
-    for id in insert_ids:
-        rel.append(new[id])
-    
-    remove_ids = current.viewkeys() - new.viewkeys()
-    for id in remove_ids:
-        rel.remove(current[id])
+        return redirect(url_for('buddy_view', user_name=user.user_name))
 
 
 def copy_form(form):
@@ -176,18 +125,6 @@ def copy_form(form):
         change_profile_photo(user, storage)
     user.initialized = True
     db.session.commit()
-
-
-class PhotoForm(Form):
-    photo = FileField(u"Profile Photo", validators=[
-                      FileAllowed(PHOTO_EXTS, u"Images only!")])
-
-
-class PhotoDeleteForm(Form):
-    """
-    Empty form to get crsf token support
-    """
-
 
 @app.route("/my/photo", methods=["GET", "POST"])
 def profile_photo():
