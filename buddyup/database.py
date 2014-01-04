@@ -297,6 +297,12 @@ class Availability(db.Model):
     time = db.Column(db.Enum('am', 'pm', name="ampm"), primary_key=True)
 
 
+class AvailabilityTutor(db.Model):
+    tutor_id = db.Column(db.Integer, db.ForeignKey('tutor.id'), primary_key = True)
+    day = db.Column(db.Integer, primary_key = True)
+    time = db.Column(db.Enum('am', 'pm', name="ampm"), primary_key = True)
+
+
 class Visit(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
