@@ -11,7 +11,7 @@
 {% block content %}
 {{ flash_all() }}
 <br><br>
-<div class="container2">
+<div class="container">
 <div class="photos"> 
 <h3> Your classmates on Buddyup </h3><br>
 <table class="classmate">
@@ -84,6 +84,16 @@
 				{% for language_record in languages %}
 					<option value="{{ language_record.id }}">
 						{{ language_record.name }}
+					</option>
+				{% endfor %}
+			</select>
+
+			<label> Location </label>
+			<select style="width: 100%" name="location">
+				<option value="-1">Any Location</option>
+				{% for location_record in locations %}
+					<option value="{{ location_record.id }}">
+						{{ location_record.name }}
 					</option>
 				{% endfor %}
 			</select>
