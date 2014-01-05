@@ -45,32 +45,33 @@ def invite_send(user_name):
         db.session.add(invite_record)
         db.session.commit()
         flash("Sent invitation to " + user_name)
+        try:
+            domain_name = app.config.get('DOMAIN_NAME', 'buddyup.herokuapp.com')
+            message = {'from_email': 'noreply@buddyup.com',
+                       'from_name': 'Buddyup noreply',
+                       'headers': {'Reply-To': 'noreply@buddyup.com'},
+                       'html': """<p>
+                                You have received a buddy request on BuddyUp.  
+                                Click this link to accept the invitation: %s
+                                or this link to decline: %s
+                                </p>""" %\
+                                (domain_name + url_for('invite_accept', inv_id=invite_record.id),
+                                 domain_name + url_for('invite_deny', inv_id=invite_record.id)),
+                       'subject': '%s wants to be your buddy on Buddyup' % email(g.user),
+                       'to': [{'email': email(other_user_record),
+                               'name': other_user_record.full_name,
+                               'type': 'to'}],}
+            result = mandrill_client.messages.send(message=message,
+                                                   async=False,
+                                                   ip_pool='Main Pool')
+        except mandrill.Error, e:
+            # Mandrill errors are thrown as exceptions
+            print 'A mandrill error occurred: %s - %s' % (e.__class__, e)
+            # A mandrill error occurred: <class 'mandrill.UnknownSubaccountError'> - No subaccount exists with the id 'customer-123'    
+            raise
     # TODO: Don't redirect to referrer (potential security risk?)
     # the 'or' picks referrer if its available, but uses buddy_view as a
     # fallback
-    try:
-        message = {'from_email': 'noreply@buddyup.com',
-                   'from_name': 'Buddyup noreply',
-                   'headers': {'Reply-To': 'noreply@buddyup.com'},
-                   'html': """<p>
-                            You have received a buddy request on BuddyUp.  
-                            Click this link to accept the invitation: %s
-                            or this link to decline: %s
-                            </p>""" %\
-                            ('buddyup.herokuapp.com' + url_for('invite_accept', inv_id=invite_record.id),
-                             'buddyup.herokuapp.com' + url_for('invite_deny', inv_id=invite_record.id)),
-                   'subject': '%s wants to be your buddy on Buddyup' % email(g.user),
-                   'to': [{'email': email(other_user_record),
-                           'name': other_user_record.full_name,
-                           'type': 'to'}],}
-        result = mandrill_client.messages.send(message=message,
-                                               async=False,
-                                               ip_pool='Main Pool')
-    except mandrill.Error, e:
-        # Mandrill errors are thrown as exceptions
-        print 'A mandrill error occurred: %s - %s' % (e.__class__, e)
-        # A mandrill error occurred: <class 'mandrill.UnknownSubaccountError'> - No subaccount exists with the id 'customer-123'    
-        raise
     return redirect(request.referrer or url_for('buddy_view',
                                                 user_name=user_name))
 
