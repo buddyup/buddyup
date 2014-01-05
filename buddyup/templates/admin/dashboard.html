@@ -28,6 +28,7 @@
                 <div class="tab-pane active" id="tab1">
                         <div class="well span4">
                                 <h3>Current list of courses</h3>
+                                <br>
                                 <form action="{{ url_for('admin_delete_course') }}" method="POST">
                                         <select size=15 name="courses" multiple>
                                                 {% for course in courses %}
@@ -39,6 +40,7 @@
                         </div>
                         <div class="well span3">
                                 <h3>Enter a new course</h3>
+                                <br><br><br>
                                 <form action="{{ url_for('admin_add_course') }}" method="POST">
                                         Course name: <input type="text" name="name"><br>
                                         By Professor: <input type="text" name="instructor"><br>
@@ -49,6 +51,7 @@
                 <div class="tab-pane" id="tab2">
                         <div class="well span4">
                                 <h3>Current list of locations</h3>
+                                <br>
                                 <form action="{{ url_for('admin_delete_location') }}" method="POST">
                                         <select size=15 name="courses" multiple>
                                                 {% for location in locations %}
@@ -60,6 +63,7 @@
                         </div>
                         <div class="well span3">
                                 <h3>Enter a new location</h3>
+                                <br><br><br>
                                 <form action="{{ url_for('admin_add_location') }}" method="POST">
                                         New location: <input type="text" name="locations"><br>
                                         <input class="btn-primary" type="submit" value="Add this new location"></input>
@@ -69,6 +73,7 @@
                 <div class="tab-pane" id="tab3">
                         <div class="well span4">
                                 <h3>Current list of majors</h3>
+                                <br>
                                 <form action="{{ url_for('admin_delete_major') }}" method="POST">
                                         <select size=15 name="majors" multiple>
                                                 {% for major in majors %}
@@ -80,6 +85,7 @@
                         </div>
                         <div class="well span3">
                                 <h3>Enter a new major</h3>
+                                <br>
                                 <form action="{{ url_for('admin_add_major') }}" method="POST">
                                         New major: <input type="text" name="major"><br>
                                         <input class="btn-primary" type="submit" value="Add this new major">
@@ -89,6 +95,7 @@
                 <div class="tab-pane" id="tab4">
                         <div class="well span4">
                                 <h3>Current list of languages</h3>
+                                <br>
                                 <form action="{{ url_for('admin_delete_language') }}" method="POST">
                                         <select size=15 name="languages" multiple>
                                                 {% for lang in languages %}
@@ -100,6 +107,7 @@
                         </div>
                         <div class="well span3">
                                 <h3>Enter a new language</h3>
+                                <br><br><br>
                                 <form action="{{ url_for('admin_add_language') }}" method="POST">
                                         New language: <input type="text" name="language"><br>
                                         <input class="btn-primary" type="submit" value="Add language">
@@ -109,6 +117,7 @@
                 <div class="tab-pane" id="tab5">
                         <div class="well span7">
                                 <h3>Download Roster</h3>
+                                <br>
                                 <form action="{{ url_for('admin_roster') }}">
                                         <select width="100%" name="course">
                                         {% for course in courses %}
