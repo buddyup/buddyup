@@ -37,8 +37,15 @@ def profile_create():
     form = ProfileCreateForm()
 
     if form.validate_on_submit():
-        copy_form(form)
-        return redirect(url_for('suggestions'))
+        term_condition = request.form.getlist('term_condition')
+        print term_condition
+        if term_condition == []:
+            flash("Please check in the box")
+            return render_template('setup/landing.html', form=form,
+                            day_names=day_names,)
+        else:
+            copy_form(form)
+            return redirect(url_for('suggestions'))
     else:
         return render_template('setup/landing.html',
                                 form=form,
