@@ -47,14 +47,15 @@ $(function() {
 <div class="well span6 offset3">
 	<br>
 	<h1> Tutor Application </h1>
-	<br>
-	<p> This information will appear in your public profile. Leave the fields blank if you'd prefer not to reveal any information.</p>
+	<br><br>
+	<p> This information will appear in your public profile. Leave the fields blank if you'd prefer not to reveal any information.</p> <br>
 	<form action="{{ url_for('profile_tutor_create') }}" method="POST"
 		enctype="multipart/form-data">
 		<!--{% set fb_placeholder = "http://www.facebook.com/you" %}
 		{% set tw_placeholder = "http://twitter.com/you" %}
 		{% set li_placeholder = "http://www.linkedin.com/in/you" %}
 		{% set email_placeholder = default_email() %} -->
+		{% set bio_placeholder = "Few words about your tutor experiments" %}
 		{{ form.csrf_token }}
 		{{ render_field(form.full_name, placeholder="Your Full Name") }}
 		{{ render_field(form.subjects) }}
@@ -64,7 +65,7 @@ $(function() {
 		{{ render_field(form.twitter, placeholder=tw_placeholder) }}
 		{{ render_field(form.linkedin, placeholder=li_placeholder) }}
 		{{ render_field(form.email, placeholder=email_placeholder) }}-->
-		{{ render_field(form.bio, rows="8") }}
+		{{ render_field(form.bio, rows="8", placeholder=bio_placeholder) }}
 
 		<h3>Time for Study Group</h3>
 		<br>
