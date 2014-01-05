@@ -40,6 +40,7 @@ $(function() {
 });
 </script>
 
+
 {% endblock %}
 
 {% block content %}
@@ -50,19 +51,19 @@ $(function() {
 	<p> This information will appear in your public profile. Leave the fields blank if you'd prefer not to reveal any information.</p>
 	<form action="{{ url_for('profile_tutor_create') }}" method="POST"
 		enctype="multipart/form-data">
-		{% set fb_placeholder = "http://www.facebook.com/you" %}
+		<!--{% set fb_placeholder = "http://www.facebook.com/you" %}
 		{% set tw_placeholder = "http://twitter.com/you" %}
 		{% set li_placeholder = "http://www.linkedin.com/in/you" %}
-		{% set email_placeholder = default_email() %}
+		{% set email_placeholder = default_email() %} -->
 		{{ form.csrf_token }}
 		{{ render_field(form.full_name, placeholder="Your Full Name") }}
 		{{ render_field(form.subjects) }}
 		{{ render_field(form.languages) }}
-		{{ render_field(form.location) }}
+		<!--{{ render_field(form.location) }}
 		{{ render_field(form.facebook, placeholder=fb_placeholder) }}
 		{{ render_field(form.twitter, placeholder=tw_placeholder) }}
 		{{ render_field(form.linkedin, placeholder=li_placeholder) }}
-		{{ render_field(form.email, placeholder=email_placeholder) }}
+		{{ render_field(form.email, placeholder=email_placeholder) }}-->
 		{{ render_field(form.bio, rows="8") }}
 
 		<h3>Time for Study Group</h3>
@@ -90,10 +91,10 @@ $(function() {
 			</tbody>
 		</table>
 		<br>
-		<h3>{{ form.photo.label.text }}</h3>
+		<!--<h3>{{ form.photo.label.text }}</h3>
 		<br>
 		{{ render_errors(form.photo) }}
-		{{ form.photo }}
+		{{ form.photo }} -->
 		<input class="btn btn-large btn-primary" style="margin-left:350px;margin-top: 20px;" type="submit" value="Save">
 	</form>
 </div>
