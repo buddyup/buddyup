@@ -112,7 +112,7 @@ class ProfileTutor(Form):
     twitter = TextField(u"Twitter")
     linkedin = TextField(u"LinkedIn")
     email = TextField(u"Email Address", validators=[Optional(), Email()])
-    bio = TextAreaField(u'A Few Words About You')
+    bio = TextAreaField(u'A Few Words About You (required)', validators=[required()])
 
 class CreateProfileTutor(ProfileTutor):
   pass
