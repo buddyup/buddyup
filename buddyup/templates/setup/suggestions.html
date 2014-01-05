@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title> BuddyUp </title>
+<title> Welcome message</title>
 	<link href="{{ css('bootstrap') }}" rel="stylesheet">
 	<link href="{{ css('style') }}" rel="stylesheet">
 	<script src="{{ js('jquery') }}"></script>
@@ -11,7 +11,7 @@
 h1 {
 	color:blue;
 }
-#LEN{
+.welcome{
 	padding-top: 30px;
 }
 body {
@@ -22,31 +22,13 @@ body {
 </style>
 </head>
 <body class="suggestion">
-<div class="container">
-<div class="offset3 span13 well"style="box-shadow: 10px 10px 5px #888888;">
-<div class= "LEN" >
-<h1> A Few Suggestions </h1>
-	<br><br>
-	<p>
-		If you don't use your pdx email account very much, be sure to set up email 
-		forwarding to your main account so you don't miss messages from potential
-		buddies!
-	</p>
-	<p>
-		Before creating a new study group be sure to make sure none of the other
-		groups will work for you.
-	</p>
-	<p>
-		Out of respect for others, please do your best to show up to the groups
-		you've RSVP'd to.
-	</p>
-	<p>
-		...and don't be afraid to advertise your group during class.
-	</p>
-	<a class="btn btn-large btn-primary" href="{{ url_for('home') }}" 
-		style="margin-left:340px;margin-top: 30px;">  Get Started </a>
-</div>   
+	<div class="container welcome">
+ 	<h2 style="color:blue;">Welcome to BuddyUp!
+ 	</h2>
+ 	<br>
+         <h4> Here at BuddyUp we believe your most valuable resource is each other. We're students, like you, so we're learning as we go, but planning to take BuddyUp worldwide. Your feedback, ideas and loyalty are very important to us. Now go make some buddies!</h4>
+       
+		<a class="btn btn-large btn-primary" href="{{ url_for('home') }}" style="margin-left:650px;margin-top: 48px;"> Get Started</a>
 </div>
-
 </body>
 </html>
