@@ -58,12 +58,23 @@ $(function() {
 
 </script>
 
+<script>
+
+function myFunction()
+{
+alert("I am an alert box!");
+}
+</script>
+
+
 </head>
 <body>
-
+{{ flash_all() }}
 <div class="container">
 	<div class="well span6 offset3">
 		<h2> Welcome to BuddyUp! </h2>
+		<br><br>
+		<p> This information will appear in your public profile. Having a good profile will help people get to know you. You may add additional information later. </p>
 		<br>
 		<form action="{{ url_for('profile_create') }}" method="POST"
 			enctype="multipart/form-data">
@@ -127,6 +138,9 @@ $(function() {
 			<br>
 			{{ render_errors(form.photo) }}
 			{{ form.photo }}
+
+			<input type="checkbox" name="term_condition" value="True" style="margin-top:-5px"/> I agree to <a onclick='return myFunction()'>Term and Conditions</a> of BuddyUp <br>
+
 			<input class="btn btn-large btn-primary" style="margin-left:350px;margin-top: 20px;" type="submit" value="Save">
 		</form>
 	</div>
