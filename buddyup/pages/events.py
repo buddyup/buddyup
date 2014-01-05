@@ -74,6 +74,7 @@ def event_view(event_id):
     remove_url = url_for('event_remove', event_id=event_record.id)
     leave_url = url_for('leave_event', event_id=event_record.id)
     join_url = url_for('attend_event', event_id=event_record.id)
+    edit_event_url = url_for('event_edit', event_id = event_record.id)
     return render_template('group/view.html',
                             event_record=event_record,
                             event_comments=event_comments,
@@ -81,6 +82,7 @@ def event_view(event_id):
                             remove_url=remove_url,
                             leave_url=leave_url,
                             join_url=join_url,
+                            edit_event_url=edit_event_url,
                             owner=event_record.owner,
                             in_event=in_event,
                             )
