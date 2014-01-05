@@ -14,6 +14,16 @@
 	<link href="{{ css('fullcalendar.print') }}" rel="stylesheet" media="print">
 	<link href="{{ css('style') }}" rel="stylesheet">
 	{% block extrahead %}{% endblock %}
+
+
+<script>
+
+function myFunction()
+{
+alert("This function is under construcion. If you want to be a tutor, please submit this form and it will be sent to the admin.");
+}
+</script>
+
 </head>
 
 
@@ -44,7 +54,7 @@
 						<img id = "buddies_img" src = "{{ img('buddyup1.png')}}"></a>
 					<h6><font color ="white", size = "1"> Buddies </font></h6>
 				</li>
-				<li> <a  style="padding-top:12px;"> 
+				<li> <a  href = "{{ url_for('profile_tutor_create') }}" onclick='return myFunction()' style="padding-top:12px;"> 
 				     <img id = "buddies_img" src = "{{ img('cap2.png')}}">
 				    </a>
 					<h6><font color ="white", size = "1"> Tutors </font></h6>
