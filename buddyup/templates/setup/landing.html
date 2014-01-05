@@ -68,10 +68,10 @@ alert("I am an alert box!");
 
 
 </head>
-<body>
+<body class="suggestion">
 {{ flash_all() }}
 <div class="container">
-	<div class="well span6 offset3">
+	<div class="well span6 offset3" style="padding-bottom:5px; box-shadow: 3px 3px 5px #888888;">
 		<h2> Welcome to BuddyUp! </h2>
 		<br><br>
 		<p> This information will appear in your public profile. Having a good profile will help people get to know you. You may add additional information later. </p>
@@ -138,10 +138,10 @@ alert("I am an alert box!");
 			<br>
 			{{ render_errors(form.photo) }}
 			{{ form.photo }}
+            <br><br>
+			<input type="checkbox" name="term_condition" value="True" class="Condition"> I agree to <a onclick='return myFunction()'>Term and Conditions</a> of BuddyUp <br>
 
-			<input type="checkbox" name="term_condition" value="True" style="margin-top:-5px"/> I agree to <a onclick='return myFunction()'>Term and Conditions</a> of BuddyUp <br>
-
-			<input class="btn btn-large btn-primary" style="margin-left:350px;margin-top: 20px;" type="submit" value="Save">
+			<input class="btn btn-large btn-primary" style="margin-left:470px;margin-top:5px;" type="submit" value="Save">
 		</form>
 	</div>
 </div>   
