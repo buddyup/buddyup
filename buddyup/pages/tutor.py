@@ -37,14 +37,14 @@ def profile_tutor_create():
         form.full_name.data = g.user.full_name
     if form.validate_on_submit():
         copy_form_tutor(form)
-        return redirect(url_for('suggestions'))
+        return redirect(url_for('tutor/view.html'))
     else:
         return render_template('setup/tutor.html',
                                 form=form,
                                 day_names = day_names)
 
 def copy_form_tutor(form):
-    tutor = Tutor(user_name = g.user.user_name)
+    tutor = Tutor(user_name = g.user.user_name, bio = form.bio.data)
 
     db.session.add(tutor)
     db.session.commit()
@@ -73,7 +73,6 @@ def copy_form_tutor(form):
 #            app.logger.info("%s: %r", name, getattr(form.photo, name))
         storage = request.files[u"photo"]
         change_profile_photo(tutor, storage)
-    tutor.initialized = True
     g.user.tutor = True
     db.session.commit()
 
@@ -81,15 +80,20 @@ def copy_form_tutor(form):
 @login_required
 def profile_tutor(user_name):
     buddy_record = User.query.filter_by(user_name=user_name).first_or_404()
-    tutor = Tutor.query.filter_by(user_name = user_name).first_or_404()
-    majors = extract_names(buddy_record.majors)
-    languages = extract_names(buddy_record.languages)
-    subjects_tutoring = extract_names(tutor.subject_tutoring)
-    return render_template('tutor/view.html',
-                            buddy_record = buddy_record,
-                            majors = majors,
-                            languages = languages,
-                            subject_tutoring = subjects_tutoring)
+    if buddy_record.tutor == False:
+        flash("You are not applying for tutor")
+        return redirect(url_for('profile_tutor_create'))
+    else:
+        tutor = Tutor.query.filter_by(user_name = user_name).first_or_404()
+        majors = extract_names(buddy_record.majors)
+        languages = extract_names(buddy_record.languages)
+        subjects_tutoring = extract_names(tutor.subject_tutoring)
+        bio = extract_names(tutor.bio)
+        return render_template('tutor/view.html',
+                                buddy_record = buddy_record,
+                                majors = majors,
+                                languages = languages,
+                                subject_tutoring = subjects_tutoring)
 
 
 '''@app.route("/tutor/delete/<user_name")
