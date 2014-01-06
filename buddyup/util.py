@@ -33,7 +33,7 @@ def _parameter_get(source, var, convert=None, default=_DEFAULT):
     # default: Default value
     if var not in source:
         if default is _DEFAULT:
-            app.logger.info("Required form parameter %s does not exist", var)
+            app.logger.info("Required form parameter [%s] does not exist; source=%s" % (var, source))
             abort(400)
             # abort raises an exception, so the function ends here
         else:
