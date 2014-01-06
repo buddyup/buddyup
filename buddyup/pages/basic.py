@@ -53,3 +53,7 @@ def suggestions():
 @login_required
 def welcome():
     return render_template('setup/welcome.html')
+
+@app.route('/term_and_conditions')
+def term_conditions():
+    return render_template('setup/term_conditions.html')
