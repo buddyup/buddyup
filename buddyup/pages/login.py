@@ -34,12 +34,12 @@ def setup_cas():
 def login():
     authentication_enabled = app.config.get('BUDDYUP_ENABLE_AUTHENTICATION', True)
     if ('ticket' in request.args) or (not authentication_enabled):
-        username = args_get('username')
         if authentication_enabled:
-            status, message = validate(ticket=args_get('ticket'), username=username)
+            status, message = validate(ticket=args_get('ticket'))
         else:
             # Authentication is disabled, so just log the user in.
             status = 0
+            username = args_get('username')
             message = username
         if status == 0:
             user_name = message
