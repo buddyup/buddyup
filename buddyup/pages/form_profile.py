@@ -37,8 +37,8 @@ class ProfileForm(Form):
                                          get_label=u"name",
                                          query_factory=sorted_languages)
     location = QuerySelectField(u"Location",
-                                get_label=u"name",
-                                allow_blank=True,
+                                get_label=u"name"
+,                                allow_blank=True,
                                 query_factory=ordered_factory(Location))
     availability = FieldList(RadioField(choices=[('none', None),
                                                  ('am', 'AM'),
