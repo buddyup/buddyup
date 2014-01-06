@@ -2,7 +2,6 @@
 
 {% block title %} {{ buddy_record.full_name }} {% endblock %}
 {% block content %}
-<body class="suggestion"
 <br>
 <div class="row">
 	<div class="span4 offset1 pictures" >
@@ -18,14 +17,12 @@
 				<li><a href="{{ user_record.facebook }}">
 					<img src="{{ img('facebook.png') }}" height="50" width="50">
 					</a>
-					<h6><font color ="Blue", size = "1"> Facebook </font></h6>
 			    </li>
 			{% endif %}
 			   
 			{% if not user_record.facebook %}
 				<li>
 					<img src="{{ img('facebook.png') }}" height="50" width="50">
-					<h6><font color ="Blue", size = "1"> Facebook </font></h6>
 			    </li>
 			{% endif %}
 
@@ -33,44 +30,37 @@
 				<li><a href="{{ user_record.twitter }}">
 					<img src="{{ img('twitter.png') }}" height="50" width="50">
 					</a>
-				     <h6><font color ="blue", size = "1"> Twitter </font></h6>
 				</li>
 			{% endif %}
 
 			{% if not user_record.twitter %}
 				<li>
 					<img src="{{ img('twitter.png') }}" height="50" width="50">
-					<h6><font color ="Blue", size = "1"> Twitter </font></h6>
 			    </li>
 			{% endif %}
 			
 			{% if user_record.linkedin %}
 				<li><a href="{{ user_record.linkedin }}">
-					<img src="{{ img('linkedin-50x50.png') }}">
-					<h6><font color ="blue", size = "1"> Linkedin </font></h6>
-					</a>
+					<img src="{{ img('linkedin.png') }}">
 				</li>
 			{% endif %}
 
 			{% if not user_record.linkedin %}
 				<li>
-					<img src="{{ img('linkedin-50x50.png') }}" height="50" width="50">
-					<h6><font color ="Blue", size = "1"> Facebook </font></h6>
+					<img src="{{ img('linkedin.png') }}" height="50" width="50">
 			    </li>
 			{% endif %}  
 			    
 			{% if user_record.email %}       
 				<li><a href="mailto:{{ buddy_record|email }}">
-				<img src="{{ img('email-50x50.png') }}" width="50" height="50">
-					</a> 
-			 		<h6><font color ="blue", size = "1"> Email </font></h6>
+				<img src="{{ img('email.png') }}" width="50" height="50">
+					</a>
 	         	</li>
 	        {% endif %}
 
 	        {% if not user_record.email %}
 	        	<li>
-					<img src="{{ img('email-50x50.png') }}" height="50" width="50">
-					<h6><font color ="Blue", size = "1"> Email </font></h6>
+					<img src="{{ img('email.png') }}" height="50" width="50">
 			    </li>
 			{% endif %}
 	 		</ul>
@@ -112,8 +102,49 @@
 			<b>Courses:</b> Not enrolled
 		{% endif %}
 	</div>
-   </div>
+   
+    <div class="friend">
+    <h3> {{ user_record.full_name }}'s Buddy </h3>
+    <br><br><br>
+	 <table class="people" style="margin-left:180px;border-top:3px solid #CCC;;">
 	 
-</div>
+	 <tr>
+  	<td> <img src="{{ img('n.jpeg') }}"alt="Smiley face"  width="160" height="160"></td>
+   <td><img src="{{ img('Remj.jpg') }}" alt="Smiley face" width="160" height="160"> </td>
+   <td><img src="{{ img('2.jpg')}}" alt="Smiley face" width="160" height="160"></td>
+    <td><img src="{{ img('cat.jpeg') }}" alt="Smiley face"width="160" height="160"></td>
+    <td> <img src="{{ img('b.jpeg') }}"alt="Smiley face" width="160" height="160"></td>
+</tr> 
+<tr>  
+    <td> <img src="{{ img('tom.jpg') }}"alt="Smiley face"  width="160" height="160"></td>
+    <td> <img src="{{ img('abc.jpg') }}"alt="Smiley face" width="160" height="160"></td>
+    <td><img src="{{ img('Herry.jpg') }}"alt="Smiley face" width="160" height="160"> </td>
+     <td><img src="{{ img('Min.jpg') }}" alt="Smiley face"  width="160" height="160"></td>
+     <td> <img src="{{ img('n.jpeg') }}"alt="Smiley face"  width="160" height="160"></td>
+</tr>
+<tr>   
+    <td> <img src="{{ img('5.jpg') }}"alt="Smiley face"  width="160" height="160"> </td>
+    <td> <img src="{{ img('Remj.jpg') }}" alt="Smiley face" width="160" height="160">  </td>
+    <td> <img src="{{ img('thuom.jpg') }}"alt="Smiley face" width="160" height="160"> </td>
+    <td><img src="{{ img('David.jpg') }}" alt="Smiley face"  width="160" height="160"></td>
+    <td> <img src="{{ img('d.jpeg') }}"alt="Smiley face" width="160" height="160"></td>
+</tr>
+<tr>   
+    <td> <img src="{{ img('Jenifer.jpg') }}" alt="Smiley face" width="160" height="160"> </td>
+    <td><img src="{{ img('Rose.jpg') }}"alt="Smiley face" width="160" height="160"> </td>
+    <td> <img src="{{ img('minh vu.jpg') }}" alt="Smiley face"  width="160" height="160"> </td>
+     <td><img src="{{ img('e.jpeg') }}" alt="Smiley face"  width="160" height="160"></td>
+     <td> <img src="{{ img('f.jpeg') }}"alt="Smiley face"  width="160" height="160"></td>
+</tr>
+<tr>
+   <td><img src="{{ img('4.jpg') }}" alt="Smiley face"  width="160" height="160"></td>
+   <td><img src="{{ img('b.jpeg') }}" alt="Smiley face"  width="160" height="160"> </td>
+   <td><img src="{{ img('tom.jpg')}}" alt="Smiley face"  width="160" height="160"> </td>
+    <td><img src="{{ img('a.jpeg') }}" alt="Smiley face" width="160" height="160"></td>
+    <td> <img src="{{ img('g.jpeg') }}"alt="Smiley face" width="160" height="160"></td>
+		</tr>
+		</table>
+       </div>
 
+</div>
 {% endblock %}
