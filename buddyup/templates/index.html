@@ -8,25 +8,21 @@
 <script src="{{ js('jquery-ui') }}" type="text/javascript"></script>
 <script src="{{ js('fullcalendar') }}"></script>
 </script>
-<body class"suggestion">
+
 {% endblock %}
 
 
 {% block content %}
 {{ flash_all() }}
-
 <br><br>
-
 <div class="homepage">
-<h2> Buddyup <br> - Conect Together and Share Ideas</h2>
-<h3> </h3>
+<h2> <i>Welcome to Buddyup!</i> </h2>
 <table class="people">
-{% for user in users %}
 <tr>
+{% for user in users %}
    <td><a href="{{ profile(user) }}"><img src="{{ photo_large(user) }}" width="220" height="220"></a></td>
-</tr>
 {% endfor %}
+</tr>
 </table>
 </div>
-</body>
 {% endblock %}
