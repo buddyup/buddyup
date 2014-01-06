@@ -48,6 +48,7 @@ th {
 
 
 </style>
+
 <script>
 $(function() {
 	$('.detail').hide();
@@ -56,14 +57,6 @@ $(function() {
 	});
 });
 
-</script>
-
-<script>
-
-function myFunction()
-{
-alert("I am an alert box!");
-}
 </script>
 
 
@@ -95,8 +88,8 @@ alert("I am an alert box!");
 			{{ render_field(form.full_name, placeholder="Your Full Name") }}
 			{{ render_field(form.courses) }}
 			{{ render_field(form.majors) }}
-			{{ render_field(form.languages) }}
-			{{ render_field(form.location) }}-->
+			{{ render_field(form.languages) }}-->
+			{{ render_field(form.location) }}
 			{{ render_field(form.facebook, placeholder=fb_placeholder) }}
 			<!--{{ render_field(form.twitter, placeholder=tw_placeholder) }}
 			{{ render_field(form.linkedin, placeholder=li_placeholder) }}
@@ -139,7 +132,7 @@ alert("I am an alert box!");
 			{{ render_errors(form.photo) }}
 			{{ form.photo }}
             <br><br>
-			<input type="checkbox" name="term_condition" value="True" class="Condition"> I agree to <a onclick='return myFunction()'>Term and Conditions</a> of BuddyUp <br>
+			<input type="checkbox" name="term_condition" value="True" class="Condition"> I agree to <a href="{{ url_for('term_conditions') }}">Term and Conditions</a> of BuddyUp <br>
 
 			<input class="btn btn-large btn-primary" style="margin-left:470px;margin-top:5px;" type="submit" value="Save">
 		</form>
