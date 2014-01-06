@@ -199,6 +199,7 @@ class Tutor(db.Model):
                             secondary = TutorLanguage,
                             backref = db.backref('tutors', lazy='dynamic'))
     available = db.relationship('AvailabilityTutor', lazy = "dynamic", backref = "tutors")
+    bio = db.Column(db.UnicodeText, default=u"")
 
     
 
