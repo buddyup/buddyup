@@ -24,7 +24,8 @@ def index():
 @login_required
 def home():
     # select events for all classes we are in
-    beta_users = print_users = []
+    beta_users = []
+    print_users = []
     i = 0
     k = 0
     users = User.query.all()
