@@ -19,7 +19,8 @@
 <h2> <i>Welcome to Buddyup!</i> </h2>
 <table class="people">
 {% set k = 0 %}
-<h2> {{range((len_users/4)|round)}} </h2>
+{% set testing = (len_users/4|round) %}
+<h2> {{ testing }} </h2>
 {% for i in range((len_users/4)|round) %}
 	{% set outer_loop = loop %}
 	<tr>
