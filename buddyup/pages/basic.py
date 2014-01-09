@@ -41,6 +41,8 @@ def home():
         else:
             print_users.append(beta_users)
             beta_users = []
+    for user in print_users:
+        print user.full_name
     return render_template('index.html', users = print_users)
 
 
