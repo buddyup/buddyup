@@ -18,16 +18,19 @@
 <div class="homepage">
 <h2> <i>Welcome to Buddyup!</i> </h2>
 <table class="people">
-{% set k = 0 %}
-{% for i in range(0,len_users,4) %}
-	<tr>
-		{% for user in users if k < 4 %}
-			{% set k = k + 1 %}
+{% set beta_users = [] %}
+{% set i = 0 %}
+{% for user in users %}
+<tr>
+	{% if i < 4 and users[user] < len(users) %}
+		{% do beta_users.append(user) %}
+		{% set i = i + 1%}
+	{% else %}
+		{% for beta_user in beta_users %}
 			<td><a href="{{ profile(user) }}"><img src="{{ photo_large(user) }}" width="220" height="220"></a></td>
 		{% endfor %}
-		{% set i = i + k %}
-		<h2> {{ i }} </h2>
-	</tr>
+	{% endif %}
+</tr>
 {% endfor %}
 </table>
 </div>
