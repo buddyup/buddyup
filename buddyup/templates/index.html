@@ -19,9 +19,11 @@
 <h2> <i>Welcome to Buddyup!</i> </h2>
 <table class="people">
 <tr>
-{% for user in users %}
-   <td><a href="{{ profile(user) }}"><img src="{{ photo_large(user) }}" width="220" height="220"></a></td>
-{% endfor %}
+	{% for i in range(4) %}
+		{% for user in users %}
+		   <td><a href="{{ profile(user) }}"><img src="{{ photo_large(user) }}" width="220" height="220"></a></td>
+		{% endfor %}
+	{% endfor %}
 </tr>
 </table>
 </div>
