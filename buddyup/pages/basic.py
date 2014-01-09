@@ -41,8 +41,8 @@ def home():
         else:
             print ("hehehe")
             print len(print_users)
-            print ("hohoho")
-            print len(beta_users)
+            '''print ("hohoho")
+            print len(beta_users)'''
             print_users.append(beta_users)
             beta_users = []
             beta_users.append(user)
