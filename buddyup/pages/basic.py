@@ -24,20 +24,20 @@ def index():
 @login_required
 def home():
     # select events for all classes we are in
+    beta_users = print_users = []
+    i = k = 0
     users = User.query.all()
     for user in users:
         if user.has_photos == True:
             continue
         else:
             users.remove(user)
-    beta_users = []
-    print_users = []
-    i = k = 0
     for user in users:
         if i < 4 and k <= len(users):
             beta_users.append(user)
             i += 1
             k += 1
+            print user.full_name
         else:
             print_users.append(beta_users)
             beta_users = []
