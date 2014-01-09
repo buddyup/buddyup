@@ -68,8 +68,8 @@ h2{
 			<font style="margin-left:10px;" color="2BA515"><b> {{ user.full_name }} </b> <br> </font>	
 			<font style="margin-left:10px;" color="E8A40D"> Add you as a friend  </font>
 	  	  <div class="btn-group">
-	    		<a class="btn btn-success" href="{{ url_for('invite_accept', inv_id=buddy_inv.id) }}" > Accept</a>
-	  			<a class="btn btn-danger" style="margin-right:200px;" href="{{ url_for('invite_deny', inv_id=buddy_inv.id) }}" > Deny </a>
+	    		<a class="btn btn-success" style="margin-right:10px;"href="{{ url_for('invite_accept', inv_id=buddy_inv.id) }}" > Accept</a>
+	  			<a class="btn btn-danger" style="margin-right:100px;" href="{{ url_for('invite_deny', inv_id=buddy_inv.id) }}" > Deny </a>
 	  		</div>
 			<hr>
 			{% endfor %}    
