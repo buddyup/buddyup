@@ -20,16 +20,11 @@
 <table class="people">
 {% set beta_users = [] %}
 {% set i = 0 %}
-{% for user in users %}
+{% for list_user in users %}
 <tr>
-	{% if i < 4 and users[user] < len(users) %}
-		{% beta_users.append(user) %}
-		{% set i = i + 1%}
-	{% else %}
-		{% for beta_user in beta_users %}
-			<td><a href="{{ profile(user) }}"><img src="{{ photo_large(user) }}" width="220" height="220"></a></td>
-		{% endfor %}
-	{% endif %}
+	{% for user in list_users %}
+		<td><a href="{{ profile(user) }}"><img src="{{ photo_large(user) }}" width="220" height="220"></a></td>
+	{% endfor %}
 </tr>
 {% endfor %}
 </table>
