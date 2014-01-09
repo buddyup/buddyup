@@ -18,14 +18,14 @@
 <div class="homepage">
 <h2> <i>Welcome to Buddyup!</i> </h2>
 <table class="people">
-{% for i in range(len(users)) %}
+{% for i in range(lengthoflist) %}
 	<tr>
 		{% for user in users %}
-			{% if i < 5 %}
-			   <td><a href="{{ profile(user) }}"><img src="{{ photo_large(user) }}" width="220" height="220"></a></td>
-			{% else %}
-				{% break %}
-			{% endif %}
+			{% for k in range(4) %}
+				{% if k < 4 %}
+				   <td><a href="{{ profile(user) }}"><img src="{{ photo_large(user) }}" width="220" height="220"></a></td>
+				{% endif %}
+			{% endfor %}
 		{% endfor %}
 	</tr>
 {% endfor %}
