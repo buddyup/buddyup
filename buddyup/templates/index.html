@@ -23,6 +23,7 @@
 {% for list_user in users %}
 <tr>
 	{% for user in list_users %}
+		<h2> {{ user.full_name }} </h2>
 		<td><a href="{{ profile(user) }}"><img src="{{ photo_large(user) }}" width="220" height="220"></a></td>
 	{% endfor %}
 </tr>
