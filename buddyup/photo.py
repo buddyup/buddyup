@@ -15,9 +15,10 @@ Dimensions = namedtuple('Dimensions', 'x y')
 
 TINY_SIZE = Dimensions(20, 20)
 THUMB_SIZE = Dimensions(50, 50)
+PRO_SIZE = Dimensions(100, 100)
 LARGE_SIZE = Dimensions(200, 200)
 
-SIZES = [TINY_SIZE, THUMB_SIZE, LARGE_SIZE]
+SIZES = [TINY_SIZE, THUMB_SIZE, LARGE_SIZE, PRO_SIZE]
 # TODO: generic photos in all sizes from an SVG file
 GENERIC_PHOTO = 'default-profile-{0.x}x{0.y}.png'
 
@@ -54,6 +55,13 @@ def photo_large(user_record):
     Get the URL for a User's large image
     """
     return get_photo_url(user_record, LARGE_SIZE)
+
+@app.template_global()
+def photo_profile(user_record):
+    """
+    Get the URL for a User's large image
+    """
+    return get_photo_url(user_record, PRO_SIZE)    
 
 
 def get_photo_url(user_record, size):
