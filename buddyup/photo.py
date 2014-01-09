@@ -55,14 +55,7 @@ def photo_large(user_record):
     Get the URL for a User's large image
     """
     return get_photo_url(user_record, LARGE_SIZE)
-
-@app.template_global()
-def photo_profile(user_record):
-    """
-    Get the URL for a User's large image
-    """
-    return get_photo_url(user_record, PRO_SIZE)    
-
+   
 
 def get_photo_url(user_record, size):
     """
