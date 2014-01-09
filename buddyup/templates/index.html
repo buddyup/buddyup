@@ -18,13 +18,17 @@
 <div class="homepage">
 <h2> <i>Welcome to Buddyup!</i> </h2>
 <table class="people">
-<tr>
-	{% for i in range(4) %}
+{% for i in range(len(users)) %}
+	<tr>
 		{% for user in users %}
-		   <td><a href="{{ profile(user) }}"><img src="{{ photo_large(user) }}" width="220" height="220"></a></td>
+			{% if i < 5 %}
+			   <td><a href="{{ profile(user) }}"><img src="{{ photo_large(user) }}" width="220" height="220"></a></td>
+			{% else %}
+				{% break %}
+			{% endif %}
 		{% endfor %}
-	{% endfor %}
-</tr>
+	</tr>
+{% endfor %}
 </table>
 </div>
 {% endblock %}
