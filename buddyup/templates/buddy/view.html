@@ -38,26 +38,26 @@
 			
 			{% if buddy_record.linkedin %}
 				<li><a href="{{ user_record.linkedin }}">
-					<img src="{{ img('linkedin.png') }}">
+					<img src="{{ img('linkedin-50x50.png') }}">
 				</li>
 			{% endif %}
 
 			{% if not buddy_record.linkedin %}
 				<li>
-					<img src="{{ img('linkedin.png') }}" height="50" width="50">
+					<img src="{{ img('linkedin-50x50.png') }}" height="50" width="50">
 			    </li>
 			{% endif %}  
 			    
 			{% if buddy_record.email %}       
 				<li><a href="mailto:{{ buddy_record|email }}">
-				<img src="{{ img('email.png') }}" width="50" height="50">
+				<img src="{{ img('email-50x50.png') }}" width="50" height="50">
 					</a>
 	         	</li>
 	        {% endif %}
 
 	        {% if not buddy_record.email %}
 	        	<li>
-					<img src="{{ img('email.png') }}" height="50" width="50">
+					<img src="{{ img('email-50x50.png') }}" height="50" width="50">
 			    </li>
 			{% endif %}
 	 		</ul>
