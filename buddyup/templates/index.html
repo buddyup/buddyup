@@ -20,7 +20,8 @@
 <table class="people">
 {% for i in range(len_users) %}
 	<tr>
-		{% for k in range(4) %}
+		{% for k in range(4) if k < 4 %}
+			<h2> {{ k }} </h2>
 			{% for user in users if k < 4 %}
 				{% set k = k + 1 %}
 				<td><a href="{{ profile(user) }}"><img src="{{ photo_large(user) }}" width="220" height="220"></a></td>
