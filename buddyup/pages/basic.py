@@ -40,8 +40,10 @@ def home():
             print user.full_name
         else:
             print_users.append(beta_users)
+            for user1 in beta_users:
+                print user1 
             beta_users = []
-    print len(print_users)
+            i = 0
     for list_user in print_users:
         for user_name in list_user:
             print user.full_name
