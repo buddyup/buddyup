@@ -25,7 +25,8 @@ def index():
 def home():
     # select events for all classes we are in
     beta_users = print_users = []
-    i = k = 0
+    i = 0
+    k = 0
     users = User.query.all()
     for user in users:
         if user.has_photos == True:
