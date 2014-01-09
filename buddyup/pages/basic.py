@@ -39,13 +39,15 @@ def home():
             i += 1
             k += 1
         else:
+            print ("hehehe")
             print len(print_users)
+            print ("hohoho")
+            print len(beta_users)
             print_users.append(beta_users)
             beta_users = []
             beta_users.append(user)
             i = 0
     print_users.append(beta_users)
-    print len(print_users)
     return render_template('index.html', users = print_users)
 
 
