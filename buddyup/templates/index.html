@@ -20,13 +20,13 @@
 <table class="people">
 {% set k = 0 %}
 {% for i in range(len_users) %}
-	<h2> {{ i }} </h2>
+	{% set outer_loop = loop %}
 	<tr>
 		{% for user in users if k < 4 %}
 			{% set k = k + 1 %}
-			{% set i = i + 1 %}
 			<td><a href="{{ profile(user) }}"><img src="{{ photo_large(user) }}" width="220" height="220"></a></td>
 		{% endfor %}
+		{% set i = i + k %}
 	</tr>
 {% endfor %}
 </table>
