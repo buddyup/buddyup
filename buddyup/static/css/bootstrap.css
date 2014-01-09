@@ -289,7 +289,7 @@ a:focus {
 .navbar-fixed-bottom .container {
   width: 940px;
 }
-<!--> Index pages </-->
+<!--> Index pages </!-->
 
 
 .homepage {
@@ -350,7 +350,7 @@ a:focus {
     margin-left:80px;
 }
 
-<!--> Buddies pages </-->
+<!--> Buddies pages </!-->
 .container2 {
  padding-top:50px;
  margin-top:50px;
@@ -380,7 +380,9 @@ a:focus {
  padding-top:10px;
 
 }
+.box: {
 
+}
 .buddy-search h3 {
    font-family:Georgia, 'Times New Roman', Times, serif;
    padding-right:50px;
@@ -579,7 +581,7 @@ ul.social li a img:hover {
 }
 
 .offset2 {
-  margin-left: 180px;
+  margin-left: 130px;
 }
 
 .offset1 {
