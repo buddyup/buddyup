@@ -34,11 +34,12 @@ def home():
         else:
             users.remove(user)
     for user in users:
-        if i < 4 and k <= len(users) + 1:
+        if i < 4 and k <= len(users):
             beta_users.append(user)
             i += 1
             k += 1
         else:
+            print len(print_users)
             print_users.append(beta_users)
             beta_users = []
             beta_users.append(user)
