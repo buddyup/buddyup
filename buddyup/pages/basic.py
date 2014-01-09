@@ -45,10 +45,7 @@ def home():
             beta_users.append(user)
             i = 0
     print_users.append(beta_users)
-    for list_users in print_users:
-        for username in list_users:
-            print username.full_name
-    return render_template('index.html', users = print_users)
+    return render_template('index.html', print_users = print_users)
 
 
 @app.route('/help')
