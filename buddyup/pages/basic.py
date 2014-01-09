@@ -30,7 +30,18 @@ def home():
             continue
         else:
             users.remove(user)
-    return render_template('index.html', users = users, len_users = len(users))
+    beta_users = []
+    print_users = []
+    i = k = 0
+    for user in users:
+        if i < 4 and k <= len(users):
+            beta_users.append(user)
+            i += 1
+            k += 1
+        else:
+            print_users.append(beta_users)
+            beta_users = []
+    return render_template('index.html', users = print_users)
 
 
 @app.route('/help')
