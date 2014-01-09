@@ -21,7 +21,7 @@
 {% set k = 0 %}
 {% set testing = (len_users/4|round) %}
 <h2> {{ testing }} </h2>
-{% for i in range((len_users/4)|round) %}
+{% for i in range(testing) %}
 	{% set outer_loop = loop %}
 	<tr>
 		{% for user in users if k < 4 %}
