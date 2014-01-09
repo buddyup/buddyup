@@ -45,7 +45,9 @@ def home():
             beta_users.append(user)
             i = 0
     print_users.append(beta_users)
-    print len(print_users)
+    for list_users in print_users:
+        for username in list_users:
+            print username.full_name
     return render_template('index.html', users = print_users)
 
 
