@@ -43,6 +43,7 @@ def home():
             beta_users.append(user)
             i = 0
     print_users.append(beta_users)
+    print len(print_users)
     return render_template('index.html', users = print_users)
 
 
