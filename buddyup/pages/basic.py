@@ -35,7 +35,7 @@ def home():
         else:
             users.remove(user)
     for user in users:
-        if i < 4 and k <= len(users):
+        if i < 5 and k <= len(users):
             beta_users.append(user)
             i += 1
             k += 1
