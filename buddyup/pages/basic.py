@@ -38,10 +38,7 @@ def home():
             i += 1
             k += 1
         else:
-            print len(beta_users)
             print_users.append(beta_users)
-            for user1 in beta_users:
-                print user1 
             beta_users = []
             beta_users.append(user)
             i = 0
