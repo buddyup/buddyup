@@ -18,12 +18,14 @@
 <div class="homepage">
 <h2> <i>Welcome to Buddyup!</i> </h2>
 <table class="people">
-{% set k = 0%}
+{% set k = 0 %}
+{% set i = 0 %}
 <h2> {{ len_users }} </h2>
 {% for i in range(len_users) %}
 	<tr>
 		{% for user in users if k < 4 %}
 			{% set k = k + 1 %}
+			{% set i = i + 1 %}
 			<td><a href="{{ profile(user) }}"><img src="{{ photo_large(user) }}" width="220" height="220"></a></td>
 		{% endfor %}
 	</tr>
