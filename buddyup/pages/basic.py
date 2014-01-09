@@ -43,7 +43,7 @@ def home():
             for user1 in beta_users:
                 print user1 
             beta_users = []
-            beta_user.append(user)
+            beta_users.append(user)
             i = 0
     print_users.append(beta_users)
     return render_template('index.html', users = print_users)
