@@ -23,7 +23,7 @@
 {% for user in users %}
 <tr>
 	{% if i < 4 and users[user] < len(users) %}
-		{% do beta_users.append(user) %}
+		{% beta_users.append(user) %}
 		{% set i = i + 1%}
 	{% else %}
 		{% for beta_user in beta_users %}
