@@ -30,7 +30,7 @@ def home():
             continue
         else:
             users.remove(user)
-    return render_template('index.html', users = users)
+    return render_template('index.html', users = users, len_users = len(users))
 
 
 @app.route('/help')
