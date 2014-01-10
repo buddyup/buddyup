@@ -33,9 +33,10 @@ def event_invitation_send_list(event_id):
                     user_ids.append(user.id)
         print g.user.id
         for user_id in user_ids:
+            print user_id
             if user_id == g.user.id:
                 user_ids.remove(user_id)
-
+            print user_id
             user=User.query.get_or_404(user_id)
             
             event_invitation_send(event_id, user.user_name)
