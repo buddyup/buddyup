@@ -43,16 +43,15 @@
 
 			{% elif in_event %}
 			<div style="text-align:center">
-				<a class="btn btn-medium btn-danger" href="{{ leave_url }}">Leave Study Group </a>
+				<a href="{{ leave_url }}" > <font size="2" style="margin-left:40px;"> Leave Study Group </a>
 			</div>
 			{% else %}
 			<div style="text-align:center">
-				<a class="btn btn-medium btn-primary" href="{{ join_url }}">Join Study Group </a>
+			    <a href="{{ join_url }}" > <font size="2" style="margin-left:40px;"> Join Study Group </a>  
 			</div>
 			{% endif %}
 
             <div style="float-left;">
-			<text style="margin-left:10px;" >
 			<font style="margin-left:10px;" color="black"> Created by 
 			 <a href="{{ profile(event_record.owner) }}">{{ event_record.owner.full_name }}</a></font> <br>
 			<font style="margin-left:10px;" color="black">
@@ -63,7 +62,6 @@
 			<font style="margin-left:10px;" color="black">Start: {{ event_record.start.strftime('%I:%M %p') }}</font><br>
 			<font style="margin-left:10px;" color="black">End: {{ event_record.end.strftime('%I:%M %p') }}</font><br>
 			<hr>
-			</text>
 			</div>
 
 		{% for event_comment in event_comments %}
