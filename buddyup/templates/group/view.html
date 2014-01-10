@@ -15,7 +15,8 @@
 {{ flash_all() }}
 
 <br><br>
-<div class="span1" style="padding-right:100px;"> </div>
+}
+<div class="span1"> </div>
 	<div class="well span2 box">
 		<h5> Attendants </h5>
 		{% for user in event_record.users.all() %}
@@ -32,10 +33,10 @@
 		{% endfor %}
 
 	</div>
- 	<div class="well span6 box">
+ 	<div class="well span6 box " style="width:350px;">
 		<div style="margin-top:10px;">
 			{% if is_owner %}
-			<div style="padding-left:370px; float:right;">
+			<div style="padding-left:270px; float:right;">
 				<a href="{{ edit_event_url }}" > <font size="2" style="margin-left:40px;"> Edit </font></a>
 			    <a href="{{ remove_url }}" > <font size="2" style="margin-left:1px;">    /Cancel </font></a>
 
