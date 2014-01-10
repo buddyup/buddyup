@@ -19,7 +19,6 @@ function toggle(source) {
 	<div class="span3"></div>
 	<div class="well span5">
 	<input type="checkbox" onclick="toggle(this)" style="margin-top:-5px;"/> Select/Unselect All <br>
-	<input type="checkbox" name="invite_classmates" value="True" style="margin-top:-5px"/> Invite Classmates <br>
 	{% for user in buddies %}
 		<label class="checkbox">
 			<input type="checkbox" name="users" value="{{user.id}}" style="margin-top:20px;">  
@@ -30,8 +29,8 @@ function toggle(source) {
 				<hr>
 			{% endif %}
 		</label>
-
 	{% endfor %}
+		<input type="checkbox" name="invite_classmates" value="True" style="margin-top:-5px"/> Invite Classmates <br>
 		<input class="btn btn-default btn-primary" style="float:right;" value="Invite" type="Submit">
 	</div>
 </div>
