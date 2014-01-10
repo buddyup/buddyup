@@ -320,7 +320,9 @@ a:focus {
    padding-bottom:5px; }
    
 }
-
+.create-group {
+  width: 600px;
+}
 .people img {
 
 
@@ -407,6 +409,7 @@ a:focus {
   box-shadow: 3px 3px 5px #888888;
   opacity: 0.8;
  } 
+
 
 .classmate img:hover {
   -webkit-box-shadow: 0 0 20px rgba(255,255,255,.6), inset 0 0 20px rgba(255,255,255,1);
