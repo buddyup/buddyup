@@ -22,7 +22,7 @@ def event_invitation_send_list(event_id):
     else:
         user_ids = map(int, request.form.getlist('users'))
         invite_classmates = request.form.getlist('invite_classmates')
-        if invite_classmates[0] == True:
+        if invite_classmates != []:
             event = Event.query.get_or_404(event_id)
             course_name = Course.query.get_or_404(event.course_id)
             curr_database = User.query.join(Course.users).filter(Course.name == course_name.name).all()
