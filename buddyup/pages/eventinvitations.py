@@ -44,6 +44,8 @@ def event_invitation_send_list(event_id):
 @app.route('/invite/event/<int:event_id>/<user_name>', methods=['GET', 'POST'])
 @login_required
 def event_invitation_send(event_id, user_name):
+    print "hohoho"
+    print event_id
     if (user_name == g.user.user_name):
         abort(403)
     
