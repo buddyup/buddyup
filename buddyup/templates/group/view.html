@@ -51,10 +51,11 @@
 			</div>
 			{% endif %}
 
-            <div style="float-left;">
+            <div >
 			<text style="margin-left:10px;" >
-			<font style="margin-left:10px;" color="black">
-			     Created by <a href="{{ profile(event_record.owner) }}">{{ event_record.owner.full_name }}</a></font><br>
+			<font style="margin-left:10px;" color="black"> Created by <a href="{{ profile(event_record.owner) }}">{{ event_record.owner.full_name }}</a>
+			</font>
+			<br>
 			<font style="margin-left:10px;" color="black">
 				Location: {{ event_record.location }}
 			</font><br>
