@@ -31,9 +31,11 @@ def event_invitation_send_list(event_id):
                     continue
                 else:
                     user_ids.append(user.id)
+        print g.user.id
         for user_id in user_ids:
             if user_id == g.user.id:
                 user_ids.remove(user_id)
+            print user_id
             user=User.query.get_or_404(user_id)
             print user.user_name
             event_invitation_send(event_id, user.user_name)
@@ -44,7 +46,6 @@ def event_invitation_send_list(event_id):
 @login_required
 def event_invitation_send(event_id, user_name):
     if (user_name == g.user.user_name):
-        print user_name
         abort(403)
     
     Event.query.get_or_404(event_id)
