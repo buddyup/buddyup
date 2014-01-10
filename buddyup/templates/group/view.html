@@ -15,7 +15,6 @@
 {{ flash_all() }}
 
 <br><br>
-}
 <div class="span1"> </div>
 	<div class="well span2 box">
 		<h5> Attendants </h5>
@@ -33,7 +32,7 @@
 		{% endfor %}
 
 	</div>
- 	<div class="well span6 box " style="width:350px;">
+ 	<div class="well span6 box " style="width:440px;">
 		<div style="margin-top:10px;">
 			{% if is_owner %}
 			<div style="padding-left:270px; float:right;">
@@ -51,7 +50,7 @@
 				<a class="btn btn-medium btn-primary" href="{{ join_url }}">Join Study Group </a>
 			</div>
 			{% endif %}
-
+            <div style="float-left;">
 			<text style="margin-left:10px;" >
 			<font color="black"> {{ event_record.name }} </font>	<br>
 			<font style="margin-left:10px;" color="black"> Created by <b> <a href="{{ profile(event_record.owner) }}" style="color:black">{{ event_record.owner.full_name }}</a> </b> </font> <br>
@@ -64,6 +63,7 @@
 			<font style="margin-left:10px;" color="black">End: {{ event_record.end.strftime('%I:%M %p') }}</font><br>
 			<hr>
 			</text>
+			</div>
 
 		{% for event_comment in event_comments %}
 	        <div class="row"><div class="span3"></div> 
@@ -83,7 +83,7 @@
 			<hNote </p>
 			<textarea class="span5" style="height: 150px;" name="content"></textarea>
 			<br>
-			<input type="submit" value="Submit" class="btn btn-success" style:"paddding-left:200px;">
+			<input type="submit" value="Submit" class="btn btn-success" style:"padding-left:200px;">
 			</form>
 	</div>
 
