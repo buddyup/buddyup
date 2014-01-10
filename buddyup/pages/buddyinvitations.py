@@ -24,6 +24,7 @@ def group():
 def invite_list():
     event_invitations = g.user.received_event_inv
     print "hehehe"
+    print type(event_invitations)
     for event_invitation in event_invitations:
         print event_invitation.event
     buddy_invitations = g.user.received_bud_inv
