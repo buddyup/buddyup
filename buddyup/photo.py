@@ -17,7 +17,7 @@ TINY_SIZE = Dimensions(20, 20)
 THUMB_SIZE = Dimensions(50, 50)
 LARGE_SIZE = Dimensions(200, 200)
 
-SIZES = [TINY_SIZE, THUMB_SIZE, LARGE_SIZE, PRO_SIZE]
+SIZES = [TINY_SIZE, THUMB_SIZE, LARGE_SIZE]
 # TODO: generic photos in all sizes from an SVG file
 GENERIC_PHOTO = 'default-profile-{0.x}x{0.y}.png'
 
