@@ -65,7 +65,7 @@ def buddy_search():
       for user in users:
         beta_classmates.append(user)
     for user in beta_classmates:
-      if i < 4 and k <= len(beta_classmates):
+      if i < 3 and k <= len(beta_classmates):
         alpha_classmates.append(user)
         i += 1
         k += 1
