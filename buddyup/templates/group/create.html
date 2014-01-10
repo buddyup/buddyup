@@ -20,14 +20,13 @@ $(function() {
 {% endblock extrahead %}
 
 {% block content %}
-
 <br>
 <h2> Create A New Study Group</h2>
 <br> <br>
 <div class="span3"></div>
 {{ flash_all() }}
-
-<div class="well span6">
+<div class="create-group">
+<div class="well span6 box">
 	<h4> Please fill in the information below: </h4>
 	<br>
 	<form action="{{ url_for('event_create') }}" method="POST">
@@ -89,6 +88,6 @@ $(function() {
 		</div>
 	</form>
 </div>
-
+</div>
 {% endblock content %}
 
