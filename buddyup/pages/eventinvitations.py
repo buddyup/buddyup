@@ -49,13 +49,6 @@ def event_invitation_send(event_id, user_name):
     
     Event.query.get_or_404(event_id)
     receiver = User.query.filter_by(user_name=user_name).first_or_404()
-
-    print "hehehe"
-    invitaion_records = EventInvitation.query.all()
-    for invitaion_record in invitaion_records:
-        print invitaion_record.sender_id
-        print invitaion_record.receiver_id
-        print invitaion_record.event_id
     
     if db.session.query(EventMembership).filter_by(event_id=event_id,
             user_id=receiver.id).count() == 0:
@@ -65,6 +58,10 @@ def event_invitation_send(event_id, user_name):
                     receiver_id=receiver.id, event_id=event_id)
             db.session.add(new_invitation_record)
             db.session.commit()
+            if event_id == None:
+                print new_invitation_record.sender_id
+                print new_invitation_record.receiver_id
+                print "Fuck u"
         else:
             flash("Your invitation is pending")
             # TODO: Redirect to sender is ridiculously insecure. Find
