@@ -15,37 +15,12 @@
 <div class="photos"> 
 <h3> Your classmates on Buddyup </h3><br>
 <table class="classmate">
-{% for user in users %}
+{% for list_classmates in classmates %}
 <tr>
-   <td><a href= "{{ profile(user) }}"<img src="{{ photo_large(user) }}" width="170" height="170"></a></td>
-   <!--<td><img src="{{ img('Remj.jpg') }}" alt="Smiley face" width="170" height="170"> </td>
-   <td><img src="{{ img('2.jpg')}}" alt="Smiley face"  width="170" height="170"> </td>
-      <td><img src="{{ img('cat.jpeg') }}" alt="Smiley face"  width="170" height="170"></td>
-</tr> 
-<tr>  
-    <td> <img src="{{ img('tom.jpg') }}"alt="Smiley face"  width="170" height="170"></td>
-    <td> <img src="{{ img('abc.jpg') }}"alt="Smiley face" width="170" height="170"></td>
-    <td><img src="{{ img('Herry.jpg') }}"alt="Smiley face"  width="170" height="170"> </td>
-     <td><img src="{{ img('Min.jpg') }}" alt="Smiley face"  width="170" height="170"></td>
+	{% for classmates in list_classmates %}
+		<td><a href="{{ profile(classmates) }}"><img src="{{ photo_large(classmates) }}" width="200" height="200" class="img-polaroid"></a></td>
+	{% endfor %}
 </tr>
-<tr>   
-    <td> <img src="{{ img('5.jpg') }}"alt="Smiley face"  width="170" height="170"> </td>
-    <td> <img src="{{ img('Remj.jpg') }}" alt="Smiley face" width="170" height="170">  </td>
-    <td> <img src="{{ img('thuom.jpg') }}"alt="Smiley face" width="170" height="170"> </td>
-       <td><img src="{{ img('David.jpg') }}" alt="Smiley face"  width="170" height="170"></td>
-</tr>
-<tr>   
-    <td> <img src="{{ img('Jenifer.jpg') }}" alt="Smiley face"  width="170" height="170"> </td>
-    <td><img src="{{ img('Rose.jpg') }}"alt="Smiley face" width="170" height="170"> </td>
-    <td> <img src="{{ img('minh vu.jpg') }}" alt="Smiley face"  width="170" height="170"> </td>
-       <td><img src="{{ img('e.jpeg') }}" alt="Smiley face"  width="170" height="170"></td>
-</tr>
-<tr>
-   <td><img src="{{ img('4.jpg') }}" alt="Smiley face"  width="170" height="170"></td>
-   <td><img src="{{ img('b.jpeg') }}" alt="Smiley face"  width="170" height="170"> </td>
-   <td><img src="{{ img('tom.jpg')}}" alt="Smiley face"  width="170" height="170"> </td>
-      <td><img src="{{ img('a.jpeg') }}" alt="Smiley face"  width="170" height="170"></td>-->
-</tr> 
 {% endfor %}
 </table>         
 </div>
