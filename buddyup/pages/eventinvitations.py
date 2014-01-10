@@ -49,14 +49,18 @@ def event_invitation_send(event_id, user_name):
     
     Event.query.get_or_404(event_id)
     receiver = User.query.filter_by(user_name=user_name).first_or_404()
+
+    print "hehehe"
+    invitaion_records = EventInvitation.query.all()
+    for invitaion_record in invitaion_records:
+        print invitaion_record.sender_id
+        print invitaion_record.receiver_id
+        print invitaion_record.event_id
     
     if db.session.query(EventMembership).filter_by(event_id=event_id,
             user_id=receiver.id).count() == 0:
         if not EventInvitation.query.filter_by(sender_id=g.user.id,
                 receiver_id=receiver.id).count():
-            print g.user.id
-            print receiver.id
-            print event_id
             new_invitation_record = EventInvitation(sender_id=g.user.id,
                     receiver_id=receiver.id, event_id=event_id)
             db.session.add(new_invitation_record)
