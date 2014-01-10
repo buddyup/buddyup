@@ -16,7 +16,7 @@
 
 <br><br>
 <div class="span1"> </div>
-	<div class="well span2 box">
+	<div class="well span2" style="box-shadow: 3px 3px 5px #888888;">
 		<h5> Attendants </h5>
 		{% for user in event_record.users.all() %}
 		<div id="container" style="white-space:nowrap;margin-bottom:2px;">
@@ -32,7 +32,7 @@
 		{% endfor %}
 
 	</div>
- 	<div class="well span6 box " style="width:470px;">
+ 	<div class="well span6" style="width:470px;box-shadow: 3px 3px 5px #888888;">
 		<div style="margin-top:10px;">
 			{% if is_owner %}
 			<div style="padding-left:270px; float:right;">
@@ -50,7 +50,7 @@
 				<a class="btn btn-medium btn-primary" href="{{ join_url }}">Join Study Group </a>
 			</div>
 			{% endif %}
-			
+
             <div style="float-left;">
 			<text style="margin-left:10px;" >
 			<font color="black"> {{ event_record.name }} </font>
@@ -81,10 +81,10 @@
 	        </div>
 
 			<form action="{{url_for('post_comment', event_id=event_record.id) }}" method="POST"> 
-			<hNote </p>
+			<h4>Note </h4>
 			<textarea class="span5" style="height: 150px;" name="content"></textarea>
 			<br>
-			<input type="submit" value="Submit" class="btn btn-success" style:"float:right;">
+			<input type="submit" value="Submit" class="btn btn-success" style:"margin-right:-200px;">
 			</form>
 	</div>
 
