@@ -32,6 +32,7 @@ def event_invitation_send_list(event_id):
                 else:
                     user_ids.append(user.id)
         for user_id in user_ids:
+            print "hehe"
             user=User.query.get_or_404(user_id)
             event_invitation_send(event_id, user.user_name)
         return redirect(url_for('event_view', event_id=event_id))
