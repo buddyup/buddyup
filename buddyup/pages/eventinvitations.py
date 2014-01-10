@@ -56,6 +56,7 @@ def event_invitation_send(event_id, user_name):
                 receiver_id=receiver.id).count():
             print g.user.id
             print receiver.id
+            print event_id
             new_invitation_record = EventInvitation(sender_id=g.user.id,
                     receiver_id=receiver.id, event_id=event_id)
             db.session.add(new_invitation_record)
