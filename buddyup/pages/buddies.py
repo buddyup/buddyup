@@ -51,15 +51,36 @@ def buddy_view(user_name):
 @app.route("/buddy/search")
 @login_required
 def buddy_search():
+    beta_classmates = []
+    alpha_classmates = []
+    classmates = []
+    i = 0
+    k = 0
     courses = g.user.courses.all()
     majors = Major.query.all()
     languages = sorted_languages()
     locations = Location.query.order_by(Location.name).all()
+    for course in courses:
+      users = User.query.join(Course.users).filter(Course.name == course.name).all()
+      for user in users:
+        beta_classmates.append(user)
+    for user in beta_classmates:
+      if i < 4 and k <= len(beta_classmates):
+        alpha_classmates.append(user)
+        i += 1
+        k += 1
+      else:
+        classmates.append(alpha_classmates)
+        alpha_classmates = []
+        alpha_classmates.append(user)
+        i = 1
+    classmates.append(alpha_classmates)
     return render_template('buddy/search.html',
                            courses=courses,
                            majors=majors,
                            languages=languages,
                            locations=locations,
+                           classmates=classmates,
                            )
 
 
