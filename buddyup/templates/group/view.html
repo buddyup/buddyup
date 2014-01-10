@@ -16,8 +16,9 @@
 {{ flash_all() }}
 {% if is_owner %}
 <div style="padding-left:500px">
-   <a href="{{ remove_url }}"style="padding-left:10px; padding-top:100px" ><img src = "{{ img ('cancel.jpg') }}" alt="Cancel Button" width="100px" height="25px"></a>
-    <a href="{{ edit_event_url }}" style="padding-left:15px; padding-top:100px" ><img src = "{{ img ('Edit.jpg') }}" alt="Edit Button" width="100px" height="25px"></a>
+	<a href="{{ edit_event_url }}" > <font size="2" style="margin-left:20px;margin-top:150px;"> Edit Group </font></a>
+    <a href="{{ remove_url }}"style="margin-left:20px;margin-top:150px;" > <font size="2" style="padding-left:15px;padding-top:150px;"> Edit Group </font></a>
+
 </div>
 
 {% elif in_event %}
