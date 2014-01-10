@@ -8,19 +8,25 @@ from buddyup.util import login_required, email, events_to_json
 from flask.ext.mail import Message
 
 
-@app.route("/invite/view")
+@app.route("/group")
 @login_required
-def invite_list():
-    event_invitations = g.user.received_event_inv
-    buddy_invitations = g.user.received_bud_inv
+def group():
     events = []
     for course in g.user.courses.all():
         events.extend(course.events)
     event_json = events_to_json(events)
     return render_template('my/view_invite.html',
-                           buddy_invitations=buddy_invitations,
-                           event_invitations=event_invitations,
                            events_json=event_json)
+
+
+@app.route("/invite/view")
+@login_required
+def invite_list():
+    event_invitations = g.user.received_event_inv
+    buddy_invitations = g.user.received_bud_inv
+    return render_template('my/invitation.html',
+                            buddy_invitations=buddy_invitations,
+                           event_invitations=event_invitations)
 
 
 @app.route("/invite/send/<user_name>")
