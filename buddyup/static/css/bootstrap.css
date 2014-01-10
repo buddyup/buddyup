@@ -466,7 +466,9 @@ ul.social li a img:hover {
    {text-align:center;
 }
 
-
+.gray {
+  opacity:0.4;
+}
 .edit-profile 
 {
   margin-top:20px;
@@ -520,7 +522,6 @@ ul.social li a img:hover {
 
 .span5 {
   width: 380px;
-  text-align: left;
 }
 
 .span4 {
