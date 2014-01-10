@@ -26,7 +26,9 @@ def invite_list():
     print "hehehe"
     print type(event_invitations)
     for event_invitation in event_invitations:
-        print event_invitation.event
+        print event_invitation.event_id
+        print event_invitation.sender_id
+        print event_invitation.receiver_id
     buddy_invitations = g.user.received_bud_inv
     return render_template('my/invitation.html',
                            buddy_invitations=buddy_invitations,
