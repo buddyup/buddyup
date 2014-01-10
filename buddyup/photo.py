@@ -15,7 +15,6 @@ Dimensions = namedtuple('Dimensions', 'x y')
 
 TINY_SIZE = Dimensions(20, 20)
 THUMB_SIZE = Dimensions(50, 50)
-PRO_SIZE = Dimensions(100, 100)
 LARGE_SIZE = Dimensions(200, 200)
 
 SIZES = [TINY_SIZE, THUMB_SIZE, LARGE_SIZE, PRO_SIZE]
