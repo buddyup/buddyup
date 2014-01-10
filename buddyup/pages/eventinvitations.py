@@ -31,7 +31,6 @@ def event_invitation_send_list(event_id):
                     continue
                 else:
                     user_ids.append(user.id)
-        print g.user.id
         for user_id in user_ids:
             if user_id == g.user.id:
                 user_ids.remove(user_id)
@@ -55,6 +54,8 @@ def event_invitation_send(event_id, user_name):
             user_id=receiver.id).count() == 0:
         if not EventInvitation.query.filter_by(sender_id=g.user.id,
                 receiver_id=receiver.id).count():
+            print g.user.id
+            print receiver.id
             new_invitation_record = EventInvitation(sender_id=g.user.id,
                     receiver_id=receiver.id, event_id=event_id)
             db.session.add(new_invitation_record)
