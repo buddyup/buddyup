@@ -376,13 +376,11 @@ a:focus {
 .buddy-search {
  float:right;
  width:250px;
- margin-top: 30px;
+ margin-top: 50px;
  padding-top:10px;
- margin-right:100px;
+ margin-right:70px;
 
 }
-.box: {
-
 }
 .buddy-search h3 {
    font-family:Georgia, 'Times New Roman', Times, serif;
