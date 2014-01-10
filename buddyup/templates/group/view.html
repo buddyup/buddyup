@@ -10,13 +10,12 @@
 {% endblock %} 
 
 {% block content %}
-<br>
+<br><br>
 <h2>{{ event_record.name }}</h2>
-<br>
 {{ flash_all() }}
 
 <br><br>
-<div class="span1"> </div>
+<div class="span1" style="padding-right:100px;"> </div>
 	<div class="well span2 box">
 		<h5> Attendants </h5>
 		{% for user in event_record.users.all() %}
@@ -33,12 +32,12 @@
 		{% endfor %}
 
 	</div>
- 	<div class="well span6">
+ 	<div class="well span6 box">
 		<div style="margin-top:10px;">
 			{% if is_owner %}
-			<div style="padding-left:370px">
+			<div style="padding-left:370px; float:right;">
 				<a href="{{ edit_event_url }}" > <font size="2" style="margin-left:40px;"> Edit </font></a>
-			    <a href="{{ remove_url }}" > <font size="2" style="margin-left:1px;"> Cancel </font></a>
+			    <a href="{{ remove_url }}" > <font size="2" style="margin-left:1px;">    /Cancel </font></a>
 
 			</div>
 
@@ -52,7 +51,7 @@
 			</div>
 			{% endif %}
 
-			<text style="margin-left:10px;" class="box">
+			<text style="margin-left:10px;" >
 			<font color="black"> {{ event_record.name }} </font>	<br>
 			<font style="margin-left:10px;" color="black"> Created by <b> <a href="{{ profile(event_record.owner) }}" style="color:black">{{ event_record.owner.full_name }}</a> </b> </font> <br>
 			<font style="margin-left:10px;" color="black">
@@ -80,11 +79,11 @@
 	        </div>
 
 			<form action="{{url_for('post_comment', event_id=event_record.id) }}" method="POST"> 
-			<p>Note </p>
+			<hNote </p>
 			<textarea class="span5" style="height: 150px;" name="content"></textarea>
 			<br>
-			<input type="submit" value="Submit" class="btn btn-success" style:"margin-left:200px;">
+			<input type="submit" value="Submit" class="btn btn-success" style:"paddding-left:200px;">
 			</form>
-		</div>
+	</div>
 
  {% endblock %}
