@@ -25,8 +25,7 @@ $(function() {
 <br> <br>
 <div class="span3"></div>
 {{ flash_all() }}
-<div class="create-group">
-<div class="well span6 box">
+<div class="well span6 box" style=" box-shadow: 3px 3px 5px #888888;width:500px;">
 	<h4> Please fill in the information below: </h4>
 	<br>
 	<form action="{{ url_for('event_create') }}" method="POST">
@@ -83,7 +82,7 @@ $(function() {
 		<label> Note </label>
 		<input type="text" class="span3" placeholder="..." name="note"
 			value="{{ note }}">
-		<div class="btn-group" style="margin-left:270px;margin-top: 20px;">
+		<div class="btn-group" style="margin-left:270px;margin-top: 10px;">
 			<input class="btn btn-large btn-danger" type="submit" value="Next">
 		</div>
 	</form>
