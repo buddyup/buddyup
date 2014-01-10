@@ -66,9 +66,9 @@ alert("This function is under construcion. If you want to be a tutor, please sub
 					<a class="dropdown-toggle" data-toggle="dropdown">Welcome, {{ user_name }} <b class="caret"></b></a>
 					<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
 						<li><a tabindex="-1"  href="{{ profile(user_record) }}"><i class="icon-user me_icon"></i>  My Profile </a></li>
+						<li><a tabindex="-1" href="{{ url_for('invite_list') }}"><i class="icon-envelope me_icon"></i> My Invitaions</a></li>
 						<li><a tabindex="-1"  href="{{ url_for('profile_edit') }}"><i class="icon-edit me_icon"></i> Edit My Profile </a></li>
-						<li><a tabindex="-1"  href="{{ url_for('buddy_group_list') }}"><i class="icon-user me_icon"></i>  My Buddies </a></li>
-						<li><a href="{{ url_for('invite_list') }}"><i class="icon-user me_icon"></i> My Invitaions</a></li>
+						<li><a tabindex="-1"  href="{{ url_for('buddy_group_list') }}"><i class="icon-home me_icon"></i>  My Buddies </a></li>
 						<li><a tabindex="-1"  href="{{ url_for('help') }}"><i class="icon-comment me_icon"></i> Help </a></li>
 						<li><a tabindex="-1"  href="{{ url_for('logout') }}"><i class="icon-off me_icon"></i>  Log out</a></li>
 					</ul>
