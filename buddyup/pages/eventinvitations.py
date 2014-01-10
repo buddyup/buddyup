@@ -27,13 +27,13 @@ def event_invitation_send_list(event_id):
             course_name = Course.query.get_or_404(event.course_id)
             curr_database = User.query.join(Course.users).filter(Course.name == course_name.name).all()
             for user in curr_database:
-                if user.id == g.user.id:
-                    curr_database.remove(user)
                 if user.id in user_ids:
                     continue
                 else:
                     user_ids.append(user.id)
         for user_id in user_ids:
+            if user_id == g.user.id:
+                user_ids.remove(user_id)
             user=User.query.get_or_404(user_id)
             print user.user_name
             event_invitation_send(event_id, user.user_name)
