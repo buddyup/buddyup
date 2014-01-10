@@ -467,7 +467,9 @@ ul.social li a img:hover {
 }
 
 .gray {
-  opacity:0.4;
+    opacity: .9;
+    background-color: black;
+    position: absolute;
 }
 .edit-profile 
 {
