@@ -23,10 +23,12 @@ def group():
 @login_required
 def invite_list():
     event_invitations = g.user.received_event_inv
-    print "hohohoho"
-    print type(event_invitations)
-    print len(event_invitations)
-    print "hehehehehe"
+    for event_invitation in event_invitations:
+    	print event_invitation.event.name
+    	print event_invitation.sender_id
+    	print event_invitation.receiver_id
+    	print event_invitation.
+
     buddy_invitations = g.user.received_bud_inv
     return render_template('my/invitation.html',
                            buddy_invitations=buddy_invitations,
