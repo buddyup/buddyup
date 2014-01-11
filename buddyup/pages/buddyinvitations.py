@@ -22,12 +22,11 @@ def group():
 @app.route("/invite/view")
 @login_required
 def invite_list():
-	for event_invitation in g.user.received_event_inv:
-		print event_invitation.senderer_id
-		print event_invitation.receiver_id
-		print event_invitation.event_id
-		
     event_invitations = g.user.received_event_inv
+    print "hohohoho"
+    print type(event_invitations)
+    print len(event_invitations)
+    print "hehehehehe"
     buddy_invitations = g.user.received_bud_inv
     return render_template('my/invitation.html',
                            buddy_invitations=buddy_invitations,
