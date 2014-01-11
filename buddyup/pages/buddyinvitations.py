@@ -27,7 +27,6 @@ def invite_list():
     	print event_invitation.event.name
     	print event_invitation.sender_id
     	print event_invitation.receiver_id
-    	print event_invitation.
 
     buddy_invitations = g.user.received_bud_inv
     return render_template('my/invitation.html',
