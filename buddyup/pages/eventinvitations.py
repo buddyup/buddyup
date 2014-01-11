@@ -51,6 +51,13 @@ def event_invitation_send(event_id, user_name):
     
     Event.query.get_or_404(event_id)
     receiver = User.query.filter_by(user_name=user_name).first_or_404()
+
+
+    invite_classmates = EventInvitation.query.all()
+    for invite_classmate in invite_classmates:
+        print invite_classmate.sender_id
+        print invite_classmate.receiver_id 
+        print invite_classmate.event_id
     
     if db.session.query(EventMembership).filter_by(event_id=event_id,
             user_id=receiver.id).count() == 0:
