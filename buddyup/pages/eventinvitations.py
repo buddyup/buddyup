@@ -15,49 +15,29 @@ def event_invitation_send_list(event_id):
     if not g.user.events.filter_by(id=event_id).count():
         abort(403)
 
+
     if request.method == 'GET':
         return render_template('group/invite.html',
                                event=event,
                                buddies=g.user.buddies)
     else:
         user_ids = map(int, request.form.getlist('users'))
-        invite_classmates = request.form.getlist('invite_classmates')
-        if invite_classmates != []:
-            event = Event.query.get_or_404(event_id)
-            course_name = Course.query.get_or_404(event.course_id)
-            curr_database = User.query.join(Course.users).filter(Course.name == course_name.name).all()
-            for user in curr_database:
-                if user.id in user_ids:
-                    continue
-                else:
-                    user_ids.append(user.id)
         for user_id in user_ids:
-            if user_id == g.user.id:
-                user_ids.remove(user_id)
-                continue
-            else:
-                user=User.query.get_or_404(user_id)
-                event_invitation_send(event_id, user.user_name)
+            user=User.query.get_or_404(user_id)
+            event_invitation_send(event_id, user.user_name)
         return redirect(url_for('event_view', event_id=event_id))
+
+
 
 
 @app.route('/invite/event/<int:event_id>/<user_name>', methods=['GET', 'POST'])
 @login_required
 def event_invitation_send(event_id, user_name):
-    print "hohoho"
-    print event_id
     if (user_name == g.user.user_name):
         abort(403)
     
     Event.query.get_or_404(event_id)
     receiver = User.query.filter_by(user_name=user_name).first_or_404()
-
-
-    invite_classmates = EventInvitation.query.all()
-    for invite_classmate in invite_classmates:
-        print invite_classmate.sender_id
-        print invite_classmate.receiver_id 
-        print invite_classmate.event_id
     
     if db.session.query(EventMembership).filter_by(event_id=event_id,
             user_id=receiver.id).count() == 0:
@@ -67,10 +47,6 @@ def event_invitation_send(event_id, user_name):
                     receiver_id=receiver.id, event_id=event_id)
             db.session.add(new_invitation_record)
             db.session.commit()
-            if event_id == None:
-                print new_invitation_record.sender_id
-                print new_invitation_record.receiver_id
-                print "Fuck u"
         else:
             flash("Your invitation is pending")
             # TODO: Redirect to sender is ridiculously insecure. Find
@@ -79,6 +55,7 @@ def event_invitation_send(event_id, user_name):
     else:
         flash("Already in!")
         return redirect(request.referrer)
+
 
 
 @app.route('/accept/event/<int:invitation_id>')
