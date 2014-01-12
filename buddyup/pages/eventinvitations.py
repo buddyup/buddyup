@@ -22,9 +22,22 @@ def event_invitation_send_list(event_id):
                                buddies=g.user.buddies)
     else:
         user_ids = map(int, request.form.getlist('users'))
+        invite_classmates = request.form.getlist('invite_classmates')
+        if invite_classmates != []:
+            event = Event.query.get_or_404(event_id)
+            course_name = Course.query.get_or_404(event.course_id)
+            curr_database = User.query.join(Course.users).filter(Course.name == course_name.name).all()
+            for user in curr_database:
+                if user.id in user_ids:
+                    continue
+                else:
+                    user_ids.append(user.id)
         for user_id in user_ids:
-            user=User.query.get_or_404(user_id)
-            event_invitation_send(event_id, user.user_name)
+            if user_id == g.user.id:
+                continue
+            else:
+                user=User.query.get_or_404(user_id)
+                event_invitation_send(event_id, user.user_name)
         return redirect(url_for('event_view', event_id=event_id))
 
 
