@@ -15,6 +15,8 @@ def group():
     buddies = g.user.buddies.all()
     print type(buddies)
     event_invitations = EventInvitation.query.all()
+    for buddy in buddies:
+    	print buddy.id
     for course in g.user.courses.all():
         events.extend(course.events)
     event_json = events_to_json(events)
