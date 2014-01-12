@@ -30,10 +30,10 @@ def home():
     k = 0
     users = User.query.all()
     for user in users:
-        if user.has_photos == True:
-            continue
-        else:
+        if user.id == g.user.id:
             users.remove(user)
+        else:
+            continue
     for user in users:
         if i < 5 and k <= len(users):
             beta_users.append(user)
