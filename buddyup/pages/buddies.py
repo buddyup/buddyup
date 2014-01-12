@@ -80,14 +80,13 @@ def buddy_search():
     for course in courses:
       users = User.query.join(Course.users).filter(Course.name == course.name).all()
       for user in users:
-        if user.id == g.user.id:
-          continue
-        elif:
-          for buddy in buddies:
-            if user.id == buddy.id:
-              continue
-        else:
-          beta_classmates.append(user)
+        for buddy in buddies:
+          if user.id == g.user.id:
+            continue
+          elif user.id == buddy.id:
+            continue
+          else:
+            beta_classmates.append(user)
     for user in beta_classmates:
       if i < 3 and k <= len(beta_classmates):
         alpha_classmates.append(user)
