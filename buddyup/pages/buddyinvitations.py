@@ -28,7 +28,7 @@ def group():
     event_json = events_to_json(events)
     return render_template('my/view_invite.html',
                            events_json=event_json,
-                           join_clubs=join_clubs,)
+                           join_clubs=join_clubs)
 
 
 @app.route("/invite/view")
