@@ -18,6 +18,8 @@ def group():
     for buddy in buddies:
     	for event_invitation_owner in event_invitations:
     	    if buddy.id == event_invitation_owner.sender_id:
+    	    	print buddy.id
+    	    	print event_invitation_owner.sender_id
     	    	join_club.append(event_invitation_owner)
     for course in g.user.courses.all():
         events.extend(course.events)
