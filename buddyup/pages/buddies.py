@@ -80,6 +80,8 @@ def buddy_search():
     for course in courses:
       users = User.query.join(Course.users).filter(Course.name == course.name).all()
       for user in users:
+        print "hehehe"
+        print user.id
         for buddy in buddies:
           if user.id == g.user.id:
             continue
