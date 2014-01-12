@@ -24,7 +24,7 @@ def group():
 def invite_list():
     event_invitations = g.user.received_event_inv
     for event_invitation in event_invitations:
-    	print event_invitation.event.name
+    	print event_invitation.event_id
     	print event_invitation.sender_id
     	print event_invitation.receiver_id
 
