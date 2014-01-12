@@ -77,20 +77,19 @@ def buddy_search():
     languages = sorted_languages()
     locations = Location.query.order_by(Location.name).all()
     buddies = g.user.buddies.all()
+    for buddy in buddies:
+      print buddy.id
     for course in courses:
       users = User.query.join(Course.users).filter(Course.name == course.name).all()
       for user in users:
-        print "hehehe"
-        print user.id
-        print user.full_name
-        for buddy in buddies:
-          if user.id == g.user.id:
-            continue
-          elif user.id == buddy.id:
-            continue
-          else:
-            print user.user_name
-            beta_classmates.append(user)
+        if user.id == g.user.id:
+          continue
+        else:
+          for buddy in buddies:
+            if user.id == buddy.id:
+              continue
+            else:
+              beta_classmates.append(user)
     for user in beta_classmates:
       if i < 3 and k <= len(beta_classmates):
         alpha_classmates.append(user)
