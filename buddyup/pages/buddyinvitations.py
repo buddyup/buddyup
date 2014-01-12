@@ -12,10 +12,10 @@ from flask.ext.mail import Message
 @login_required
 def group():
 	events = []
-    for course in g.user.courses.all():
-        events.extend(course.events)
-    event_json = events_to_json(events)
-    return render_template('my/view_invite.html',
+	for course in g.user.courses.all():
+		events.extend(course.events)
+	event_json = events_to_json(events)
+	return render_template('my/view_invite.html',
                            events_json=event_json)
 
 
