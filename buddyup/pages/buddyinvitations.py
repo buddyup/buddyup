@@ -11,6 +11,9 @@ from flask.ext.mail import Message
 @app.route("/group")
 @login_required
 def group():
+	buddies = g.user.buddies.all()
+	print type(buddies)
+	event_invitations = EventInvitaion.query.all()
     events = []
     for course in g.user.courses.all():
         events.extend(course.events)
@@ -23,11 +26,6 @@ def group():
 @login_required
 def invite_list():
     event_invitations = g.user.received_event_inv
-    for event_invitation in event_invitations:
-    	print event_invitation.event_id
-    	print event_invitation.sender_id
-    	print event_invitation.receiver_id
-
     buddy_invitations = g.user.received_bud_inv
     return render_template('my/invitation.html',
                            buddy_invitations=buddy_invitations,
