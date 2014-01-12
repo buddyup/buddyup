@@ -83,14 +83,14 @@ def buddy_search():
         if user.id == g.user.id:
           continue
         else:
-          print "hohoho"
-          for buddy in buddies:
-            print "hehehe"
-            print buddy.id
-            if user.id == buddy.id:
-              continue
-            else:
-              beta_classmates.append(user)
+          if buddies == []:
+            beta_classmates.append(user)
+          else:
+            for buddy in buddies:
+              if user.id == buddy.id:
+                continue
+              else:
+                beta_classmates.append(user)
     for user in beta_classmates:
       if i < 3 and k <= len(beta_classmates):
         alpha_classmates.append(user)
