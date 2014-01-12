@@ -16,16 +16,37 @@ def extract_names(records):
 @app.route("/buddy/view/<user_name>")
 @login_required
 def buddy_view(user_name):
+    beta_buddies = []
+    print_buddies = []
+    i = 0
+    k = 0
     if (user_name == g.user.user_name):
         majors = extract_names(g.user.majors)
         courses = extract_names(g.user.courses)
         languages = extract_names(g.user.languages)
+        buddies = g.user.buddies.all()
+        for buddy in buddies:
+          if buddy.has_photos == True:
+            continue
+          else:
+            buddies.remove(buddy)
+        for buddy in buddies:
+          if i < 3 and k <= len(buddies):
+            beta_buddies.append(buddy)
+            i += 1
+            k += 1
+          else:
+            print_buddies.append(beta_buddies)
+            beta_buddies = []
+            i = 1
+        print_buddies.append(beta_buddies)
         return render_template('my/profile.html',
                                buddy_record=g.user,
                                majors=majors,
                                courses=courses,
                                languages=languages,
                                is_buddy=False,
+                               print_buddies=print_buddies,
                                )
     else:
         buddy_record = User.query.filter_by(user_name=user_name).first_or_404()
