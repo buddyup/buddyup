@@ -26,11 +26,6 @@ def buddy_view(user_name):
         languages = extract_names(g.user.languages)
         buddies = g.user.buddies.all()
         for buddy in buddies:
-          if buddy.has_photos == True:
-            continue
-          else:
-            buddies.remove(buddy)
-        for buddy in buddies:
           if i < 3 and k <= len(buddies):
             beta_buddies.append(buddy)
             i += 1
