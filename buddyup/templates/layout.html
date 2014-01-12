@@ -20,7 +20,16 @@
 
 function myFunction()
 {
-alert('This function is under construcion. If you want to be a tutor, please submit <a href="{{ url_for('profile_tutor_create') }}"> this form </a> and it will be sent to the admin');
+	var x;
+	var r=confirm("Press a button!");
+	if (r==true)
+	{
+	  x="/setup/tutor.html";
+	}
+	else
+	{
+	}
+	document.getElementById("demo").innerHTML=x;
 }
 </script>
 
@@ -54,7 +63,7 @@ This function is under construcion. If you want to be a tutor, please submit thi
 						<img id = "buddies_img" src = "{{ img('buddyup1.png')}}"></a>
 					<h6><font color ="white", size = "1"> Buddies </font></h6>
 				</li>
-				<li> <a onclick='return myFunction()' style="padding-top:12px;"> 
+				<li> <a id = "demo" onclick='return myFunction()' style="padding-top:12px;"> 
 				     <img id = "buddies_img" src = "{{ img('cap2.png')}}">
 				    </a>
 					<h6><font color ="white", size = "1"> Tutors </font></h6>
