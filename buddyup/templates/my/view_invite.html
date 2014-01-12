@@ -67,7 +67,7 @@ h2{
 			<p style="float: left;"><img src="{{ profile(user) }}" height="50px" width="50px" border="1px"></p>
 			<font style="margin-left:10px;" color="2BA515"><b> {{ event.name }} </b> <br> </font>
 	  	  <div class="btn-group" style="margin-left:50px;">
-	    		<a class="btn btn-success" style="margin-right:10px;" <a href="{{ join_url, event_id = event.id }}" > <font size="2" style="margin-left:10px;"> Join Study Group </a>  
+	    		<a class="btn btn-success" style="margin-right:10px;" <a href="{{ url_for('attend_event', event_id = event.id) }}" > <font size="2" style="margin-left:10px;"> Join Study Group </a>  
 	  		</div>
 			<hr>
 			{% endfor %}    
