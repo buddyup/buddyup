@@ -2,7 +2,7 @@ from flask import g, flash, redirect, url_for, abort, request
 import mandrill
 
 from buddyup.app import app, mandrill_client
-from buddyup.database import db, BuddyInvitation, User
+from buddyup.database import db, BuddyInvitation, User, EventInvitation
 from buddyup.templating import render_template
 from buddyup.util import login_required, email, events_to_json
 from flask.ext.mail import Message
@@ -13,7 +13,7 @@ from flask.ext.mail import Message
 def group():
 	buddies = g.user.buddies.all()
 	print type(buddies)
-	event_invitations = EventInvitaion.query.all()
+	event_invitations = EventInvitation.query.all()
     events = []
     for course in g.user.courses.all():
         events.extend(course.events)
