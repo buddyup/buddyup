@@ -11,10 +11,10 @@ from flask.ext.mail import Message
 @app.route("/group")
 @login_required
 def group():
+	events = []
 	buddies = g.user.buddies.all()
 	print type(buddies)
 	event_invitations = EventInvitation.query.all()
-    events = []
     for course in g.user.courses.all():
         events.extend(course.events)
     event_json = events_to_json(events)
