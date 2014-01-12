@@ -12,7 +12,7 @@ from flask.ext.mail import Message
 @login_required
 def group():
     events = []
-    join_club = []
+    join_clubs = []
     buddies = g.user.buddies.all()
     event_invitations = EventInvitation.query.all()
     for buddy in buddies:
@@ -20,7 +20,9 @@ def group():
     	    if buddy.id == event_invitation_owner.sender_id:
     	    	print buddy.id
     	    	print event_invitation_owner.sender_id
-    	    	join_club.append(event_invitation_owner)
+    	    	join_clubs.append(event_invitation_owner)
+    for join_club in join_clubs:
+   		print join_club.event.name
     for course in g.user.courses.all():
         events.extend(course.events)
     event_json = events_to_json(events)
