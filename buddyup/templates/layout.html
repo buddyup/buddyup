@@ -20,13 +20,13 @@
 
 function myFunction()
 {
-alert("This function is under construcion. If you want to be a tutor, please submit this form and it will be sent to the admin.");
+alert('This function is under construcion. If you want to be a tutor, please submit <a href="{{ url_for(profile_tutor_create) }}"> this form </a> and it will be sent to the admin');
 }
 </script>
 
 </head>
 
-
+This function is under construcion. If you want to be a tutor, please submit this form and it will be sent to the admin.
 <body class="suggestion">
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="navbar-inner">
@@ -59,8 +59,7 @@ alert("This function is under construcion. If you want to be a tutor, please sub
 				    </a>
 					<h6><font color ="white", size = "1"> Tutors </font></h6>
 				</li>
-			</ul>
-\				
+			</ul>			
 			<ul class="nav pull-right" style="margin-top:10px;">
 				<li class="dropdown">
 					<a class="dropdown-toggle" data-toggle="dropdown">Welcome, {{ user_name }} <b class="caret"></b></a>
