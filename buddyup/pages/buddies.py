@@ -82,6 +82,7 @@ def buddy_search():
       for user in users:
         print "hehehe"
         print user.id
+        print user.full_name
         for buddy in buddies:
           if user.id == g.user.id:
             continue
