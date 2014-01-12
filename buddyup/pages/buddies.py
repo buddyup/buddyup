@@ -86,6 +86,7 @@ def buddy_search():
           elif user.id == buddy.id:
             continue
           else:
+            print user.full_name
             beta_classmates.append(user)
     for user in beta_classmates:
       if i < 3 and k <= len(beta_classmates):
