@@ -106,45 +106,13 @@
     <div class="friend">
     <h3> {{ user_record.full_name }}'s Buddy </h3>
     <br><br><br>
-	 <table class="people" style="margin-left:180px;border-top:3px solid #CCC;;">
-	 
-	 <tr>
-  	<td> <img src="{{ img('n.jpeg') }}"alt="Smiley face"  width="160" height="160"></td>
-   <td><img src="{{ img('Remj.jpg') }}" alt="Smiley face" width="160" height="160"> </td>
-   <td><img src="{{ img('2.jpg')}}" alt="Smiley face" width="160" height="160"></td>
-    <td><img src="{{ img('cat.jpeg') }}" alt="Smiley face"width="160" height="160"></td>
-    <td> <img src="{{ img('b.jpeg') }}"alt="Smiley face" width="160" height="160"></td>
-</tr> 
-<tr>  
-    <td> <img src="{{ img('tom.jpg') }}"alt="Smiley face"  width="160" height="160"></td>
-    <td> <img src="{{ img('abc.jpg') }}"alt="Smiley face" width="160" height="160"></td>
-    <td><img src="{{ img('Herry.jpg') }}"alt="Smiley face" width="160" height="160"> </td>
-     <td><img src="{{ img('Min.jpg') }}" alt="Smiley face"  width="160" height="160"></td>
-     <td> <img src="{{ img('n.jpeg') }}"alt="Smiley face"  width="160" height="160"></td>
-</tr>
-<tr>   
-    <td> <img src="{{ img('5.jpg') }}"alt="Smiley face"  width="160" height="160"> </td>
-    <td> <img src="{{ img('Remj.jpg') }}" alt="Smiley face" width="160" height="160">  </td>
-    <td> <img src="{{ img('thuom.jpg') }}"alt="Smiley face" width="160" height="160"> </td>
-    <td><img src="{{ img('David.jpg') }}" alt="Smiley face"  width="160" height="160"></td>
-    <td> <img src="{{ img('d.jpeg') }}"alt="Smiley face" width="160" height="160"></td>
-</tr>
-<tr>   
-    <td> <img src="{{ img('Jenifer.jpg') }}" alt="Smiley face" width="160" height="160"> </td>
-    <td><img src="{{ img('Rose.jpg') }}"alt="Smiley face" width="160" height="160"> </td>
-    <td> <img src="{{ img('minh vu.jpg') }}" alt="Smiley face"  width="160" height="160"> </td>
-     <td><img src="{{ img('e.jpeg') }}" alt="Smiley face"  width="160" height="160"></td>
-     <td> <img src="{{ img('f.jpeg') }}"alt="Smiley face"  width="160" height="160"></td>
-</tr>
-<tr>
-   <td><img src="{{ img('4.jpg') }}" alt="Smiley face"  width="160" height="160"></td>
-   <td><img src="{{ img('b.jpeg') }}" alt="Smiley face"  width="160" height="160"> </td>
-   <td><img src="{{ img('tom.jpg')}}" alt="Smiley face"  width="160" height="160"> </td>
-    <td><img src="{{ img('a.jpeg') }}" alt="Smiley face" width="160" height="160"></td>
-    <td> <img src="{{ img('g.jpeg') }}"alt="Smiley face" width="160" height="160"></td>
-		</tr>
-		</table>
-       </div>
-
+	<table class="people" style="margin-left:180px;border-top:3px solid #CCC;;">
+	{% for list_buddies in print_buddies %}
+	<tr>
+		{% for buddy in list_buddies %}
+			<td><a href="{{ profile(buddy) }}"><img src="{{ photo_large(buddy) }}" width="200" height="200" class="img-polaroid"></a></td>
+		{% endfor %}
+	</tr>
+	{% endfor %}
 </div>
 {% endblock %}
