@@ -57,7 +57,7 @@ class ProfileForm(Form):
     facebook = TextField(u"Facebook (optional)")
     twitter = TextField(u"Twitter")
     linkedin = TextField(u"LinkedIn")
-    email = TextField(u"Email Address (required)", validators=[required(), Email()])
+    email = TextField(u"Email Address (optional)", validators=[Optional(), Email()])
     bio = TextAreaField(u'A Few Words About You')
 
 
