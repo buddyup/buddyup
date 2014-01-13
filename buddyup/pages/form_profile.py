@@ -81,6 +81,12 @@ class PhotoForm(Form):
                       FileAllowed(PHOTO_EXTS, u"Images only!")])
 
 
+class PhotoDeleteForm(Form):
+    """
+    Empty form to get crsf token support
+    """
+
+
 class ProfileTutor(Form):
     """
     Base class for the create and edit profile forms
