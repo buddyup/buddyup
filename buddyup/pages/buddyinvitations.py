@@ -39,7 +39,13 @@ def group():
 @app.route("/invite/view")
 @login_required
 def invite_list():
-    event_invitations = g.user.received_event_inv
+    event_invitations = []
+    beta_event_invitations = g.user.received_event_inv
+    for event_invitation in beta_event_invitations:
+        if event_invitation.event_id == None:
+            continue
+        else:
+            event_invitations.append(event_invitation)
     buddy_invitations = g.user.received_bud_inv
     return render_template('my/invitation.html',
                            buddy_invitations=buddy_invitations,
