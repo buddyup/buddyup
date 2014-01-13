@@ -14,11 +14,18 @@ def group():
     events = []
     join_clubs = []
     buddies = g.user.buddies.all()
+    checking_invitation = False
+    checking_event_invitation = False
     event_invitations = EventInvitation.query.all()
     for buddy in buddies:
-    	for event_invitation_owner in event_invitations:
-    	    if buddy.id == event_invitation_owner.sender_id:
-    	    	join_clubs.append(event_invitation_owner)
+    	for i, event_invitation_owner in enumerate(event_invitations):
+            if i == 0 and buddy.id == event_invitation_owner.sender_id:
+                join_clubs.append(event_invitation_owner)
+            elif i != 0 and buddy.id == event_invitation_owner.sender_id:
+                if event_invitations[i].event_id != event_invitations[i-1].event_id:
+                    join_clubs.append(event_invitation_owner)
+            else:
+                continue
     for course in g.user.courses.all():
         events.extend(course.events)
     event_json = events_to_json(events)
