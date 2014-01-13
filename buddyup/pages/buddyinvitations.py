@@ -19,6 +19,8 @@ def group():
     event_invitations = EventInvitation.query.all()
     for buddy in buddies:
     	for i, event_invitation_owner in enumerate(event_invitations):
+            if event_invitation_owner.event_id == None:
+                continue
             if i == 0 and buddy.id == event_invitation_owner.sender_id:
                 join_clubs.append(event_invitation_owner)
             elif i != 0 and buddy.id == event_invitation_owner.sender_id:
