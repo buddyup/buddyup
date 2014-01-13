@@ -51,11 +51,7 @@ def home():
 @app.route('/help')
 @login_required
 def help():
-    help_url = app.config.get('HELP_URL')
-    if help_url is None:
-        return render_template('help.html')
-    else:
-        return redirect(help_url)
+    return redirect('http://www.getbuddyup.com/faq.html')
 
 
 @app.route('/suggestions')
