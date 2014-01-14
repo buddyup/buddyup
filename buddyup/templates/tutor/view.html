@@ -1,0 +1,81 @@
+{% extends "layout.html" %}
+
+{% block title %} {{ buddy_record.full_name }} {% endblock %}
+{% block content %}
+
+<br>
+<div class="row">
+	<div class="span4 offset1">
+		<img src="{{ photo_large(user_record) }}" class="img-rounded">
+		<a href="{{ url_for('profile_photo') }}" class="btn btn-primary">
+			Change Profile Photo
+		</a>
+	</div>
+
+	<div class="span6">
+		<h2>{{ user_record.full_name }}</h2>
+			{% if buddy_record.location %}
+				Location: {{ buddy_record.location.name }}
+			{% else %}
+				Location: Not Given
+			{% endif %}
+		<br>
+		{% if majors|length > 0 %}
+			Major: {{ majors| join(', ') }}
+		{% else %}
+			Major: Unspecified
+		{% endif %}
+		<br>
+		{% if languages|length == 1 %}
+			Language: {{ languages[0] }}
+		{% elif languages|length > 0 %}
+			Languages: {{ languages|join(', ') }}
+		{% else %}
+			Languages: Unspecified
+		{% endif %}
+		<br>
+
+		{% if subject_tutoring|length == 1 %}
+			Course: {{ subject_tutoring[0] }}
+		{% elif subject_tutoring|length > 0 %}
+			Courses: {{ subject_tutoring | join(', ') }}
+		{% else %}
+			Courses: Not enrolled
+		{% endif %}
+		<div id="profile-social">
+			{% if user_record.facebook %}
+				<a href="{{ user_record.facebook }}">
+					<img src="{{ img('facebook.png') }}" height="50" width="50">
+				</a>
+			{% endif %}
+
+			{% if user_record.twitter %}
+				<a href="{{ user_record.twitter }}">
+					<img src="{{ img('twitter.png') }}" height="50" width="50">
+				</a>
+			{% endif %}
+			
+			{% if user_record.linkedin %}
+				<a href="{{ user_record.linkedin }}">
+					<img src="{{ img('linkedin-50x50.png') }}">
+				</a>
+			{% endif %}
+			
+			<a href="mailto:{{ buddy_record|email }}">
+				<img src="{{ img('email-50x50.png') }}" width="50" height="50">
+			</a>
+	</div>
+</div>
+
+
+<div class="row">
+	<div class="span10 offset1">
+		<br>
+		<h4>About Me</h4>
+		{% for p in user_record.bio|paragraphs %}
+			<p>{{ p }}</p>
+		{% endfor %}
+	</div>
+</div>
+
+{% endblock %}

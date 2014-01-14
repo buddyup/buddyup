@@ -1,0 +1,94 @@
+{% extends "layout.html" %}
+{% from "lib.html" import flash_all %}
+{% block title %}Edit Group{% endblock %}
+{% block extrahead %}
+
+<link href="{{ css('jquery-ui') }}" rel="stylesheet">
+<script src="{{ js('jquery-ui') }}"></script>
+
+<script>
+$(function() {
+  $( "#datepicker" ).datepicker({
+    changeMonth: true,
+    changeYear: true
+  });
+});
+</script>
+<style type="text/css">
+	.span6 {width: 480px;}
+</style>
+{% endblock extrahead %}
+
+{% block content %}
+
+<br>
+<h2> Edit Group</h2>
+
+<br>
+<div class="span3"></div>
+{{ flash_all() }}
+
+<div class="well span6">
+	<h4> Please fill in the information below: </h4>
+	<form action= "{{url_for ('event_edit', event_id = event_id )}}" method='POST'>
+		<label> Group Name </label>  
+		<input type="text" class="span3" placeholder="..." name="name"
+				value="{{ name }}">  
+
+		<label> Location </label>
+		<input type="text" class="span3" placeholder="..." name="location"
+				value="{{ location }}">
+
+		<label> Date </label>
+		<input type="text" class="span3" id="datepicker" placeholder="mm/dd/yyyy" name="date" value="{{ date }}">
+
+		<label> Time </label>
+		<input type="text" class="span1" placeholder="From" value="{{ start }}" 
+			name="start">
+		<select style="width:80px" name="start_ampm">
+			{% if start_ampm == 'am' %}
+				<option value="am">AM</option>
+				<option value="pm">PM</option>
+			{% else %}
+				<option value="am">AM</option>
+				<option value="pm" selected>PM</option>
+			{% endif %}
+		</select>
+
+		<input type="text" class="span1" placeholder="To" name="end"
+			value="{{ end }}">
+		<select style="width:80px" name="end_ampm">
+			{% if end_ampm == 'am' %}
+				<option value="am">AM</option>
+				<option value="pm">PM</option>
+			{% else %}
+				<option value="am">AM</option>
+				<option value="pm" selected>PM</option>
+			{% endif %}
+		</select>
+
+		<label> Course </label>
+		<select style="width: 80px" name="course">
+			{% for course_record in courses %}
+				{% if selected(course_record) %}
+					<option value="{{ course_record.id }}" selected>
+						{{ course_record.name }}
+					</option>
+				{% else %}
+					<option value="{{ course_record.id }}">
+						{{ course_record.name }}
+					</option>
+				{% endif %}
+			{% endfor %}
+		</select>
+		<label> Note </label>
+		<input type="text" class="span3" placeholder="..." name="note"
+			value="{{ note }}">
+		<div class="btn-group" style="margin-left:350px;margin-top: 20px;">
+			<input class="btn btn-large btn-danger" type="submit" value="Next">
+		</div>
+	</form>
+</div>
+
+{% endblock content %}
+

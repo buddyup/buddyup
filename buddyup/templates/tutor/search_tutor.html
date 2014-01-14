@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% from "lib.html" import flash_all %}
+{% block title %} Search Buddies {% endblock %}
+{% block extrahead %}
+<style>
+.span2	{width: 300px;}
+.span6	{width: 400px;}
+
+</style>
+{% endblock %}
+{% block content %}
+{{ flash_all() }}
+<br><br>
+<h2> List of Tutor </h2>
+<br>
+

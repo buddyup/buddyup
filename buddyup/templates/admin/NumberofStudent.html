@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% from "lib.html" import flash_all %}
+{% block title %} Number of Student {% endblock %}
+
+{% block content %}
+{{ flash_all() }}
+
+<div class="container">
+	{% for key, value in student_class.iteritems() %}
+		<font style = "margin-left: 10px;" color = "2BA515"><b> {{ key }} </b></font>
+		<br>
+		<font style = "margin-left: 10px;" color = "2BA515"><b> {{ value }} </b></font>
+	{% endfor %}
+</div>
+
+{% endblock content %}
