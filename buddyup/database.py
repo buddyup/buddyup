@@ -17,10 +17,10 @@ EventMembership = db.Table('eventmembership',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
     )
 
-TutorSubject = db.Table('tutorsubject',
-    db.Column('major_id', db.Integer, db.ForeignKey('major.id')),
-    db.Column('tutor_id', db.Integer, db.ForeignKey('tutor.id')),
-    )
+#TutorSubject = db.Table('tutorsubject',
+#    db.Column('major_id', db.Integer, db.ForeignKey('major.id')),
+#    db.Column('tutor_id', db.Integer, db.ForeignKey('tutor.id')),
+#    )
 
 MajorMembership = db.Table('majormembership',
     db.Column('major_id', db.Integer, db.ForeignKey('major.id')),
@@ -38,9 +38,9 @@ LanguageMembership = db.Table('languagemembership',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
     )
 
-TutorLanguage = db.Table('tutorlanguage',
-    db.Column('language_id', db.Integer, db.ForeignKey('language.id')),
-    db.Column('tutor_id', db.Integer, db.ForeignKey('tutor.id')))
+#TutorLanguage = db.Table('tutorlanguage',
+#    db.Column('language_id', db.Integer, db.ForeignKey('language.id')),
+#    db.Column('tutor_id', db.Integer, db.ForeignKey('tutor.id')))
 
 
 # Main tables
@@ -138,7 +138,7 @@ class User(db.Model):
     location_id = db.Column(db.Integer, db.ForeignKey('location.id'))
     email = db.Column(db.UnicodeText)
     has_photos = db.Column(db.Boolean, default=False)
-    tutor = db.Column(db.Boolean, default = False)
+    #tutor = db.Column(db.Boolean, default = False)
 
     # Initialized flag
     initialized = db.Column(db.Boolean, default=False)
@@ -186,20 +186,20 @@ class User(db.Model):
 #                                secondaryjoin=EventInvitation.c.user_id == id)
 
 
-class Tutor(db.Model):    
-    id = db.Column(db.Integer, primary_key=True)
-    user_name = db.Column(db.String(8), index=True, unique=True)   
+#class Tutor(db.Model):    
+#	id = db.Column(db.Integer, primary_key=True)
+#    user_name = db.Column(db.String(8), index=True, unique=True)   
     # Photos
    
     # Relationships
-    subject_tutoring = db.relationship('Major', secondary = TutorSubject,
-                                backref=db.backref('tutors', lazy="dynamic"),
-                                lazy='dynamic')
-    languages = db.relationship('Language', lazy = 'dynamic',
-                            secondary = TutorLanguage,
-                            backref = db.backref('tutors', lazy='dynamic'))
-    available = db.relationship('AvailabilityTutor', lazy = "dynamic", backref = "tutors")
-    bio = db.Column(db.UnicodeText, default=u"")
+#    subject_tutoring = db.relationship('Major', secondary = TutorSubject,
+#                                backref=db.backref('tutors', lazy="dynamic"),
+#                                lazy='dynamic')
+#    languages = db.relationship('Language', lazy = 'dynamic',
+#                            secondary = TutorLanguage,
+#                            backref = db.backref('tutors', lazy='dynamic'))
+#    available = db.relationship('AvailabilityTutor', lazy = "dynamic", backref = "tutors")
+#    bio = db.Column(db.UnicodeText, default=u"")
 
     
 
@@ -298,10 +298,10 @@ class Availability(db.Model):
     time = db.Column(db.Enum('am', 'pm', name="ampm"), primary_key=True)
 
 
-class AvailabilityTutor(db.Model):
-    tutor_id = db.Column(db.Integer, db.ForeignKey('tutor.id'), primary_key = True)
-    day = db.Column(db.Integer, primary_key = True)
-    time = db.Column(db.Enum('am', 'pm', name="ampm"), primary_key = True)
+#class AvailabilityTutor(db.Model):
+#    tutor_id = db.Column(db.Integer, db.ForeignKey('tutor.id'), primary_key = True)
+#    day = db.Column(db.Integer, primary_key = True)
+#    time = db.Column(db.Enum('am', 'pm', name="ampm"), primary_key = True)
 
 
 class Visit(db.Model):
