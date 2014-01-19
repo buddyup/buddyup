@@ -12,7 +12,7 @@ from wtforms.ext.sqlalchemy.fields import (QuerySelectMultipleField,
                                            QuerySelectField)
 
 from buddyup.app import app
-from buddyup.database import User, Course, Major, Location, Availability, db, Tutor, AvailabilityTutor
+from buddyup.database import User, Course, Major, Location, Availability, db
 from buddyup.util import sorted_languages, login_required
 from buddyup.templating import render_template
 from buddyup.photo import change_profile_photo, clear_images, ImageError
