@@ -12,5 +12,5 @@ from . import login
 from . import profile
 from . import qa
 from . import form_profile
-from . import tutor
+#from . import tutor
 #from . import questions
