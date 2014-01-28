@@ -33,7 +33,7 @@ class Dev_rob(Base):
     ADMIN_USER = 'mockuser'
     BUDDYUP_REQUIRE_PHOTO = False
     DOMAIN_NAME = 'buddyup-dev-rob.herokuapp.com'
-    DEFAULT_EMAIL_FORMAT = 'rbednark+{user}@gmail.com'
+    DEFAULT_EMAIL_FORMAT = 'buddyupdev+{user}@gmail.com'
 
 class Testing(Base):
     BUDDYUP_ENABLE_AUTHENTICATION = False
