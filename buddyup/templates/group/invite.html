@@ -11,7 +11,9 @@ function toggle(source) {
 
 {% block content %}
 {{ flash_all() }}
+<br>
 <h2> Invite to Group</h2>
+<br>
 <form action="{{ url_for('event_invitation_send_list', event_id=event.id) }}" method="POST">
 <div class="container">
 	<div class="span3"></div>
@@ -27,7 +29,8 @@ function toggle(source) {
 				<hr>
 			{% endif %}
 		</label>
-		{% endfor %}
+	{% endfor %}
+		<input type="checkbox" name="invite_classmates" value="True" style="margin-top:-5px"> Invite Classmates <br>
 		<input class="btn btn-default btn-primary" style="float:right;" value="Invite" type="Submit">
 	</div>
 </div>

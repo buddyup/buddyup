@@ -24,21 +24,34 @@ def index():
 @login_required
 def home():
     # select events for all classes we are in
-    events = []
-    for course in g.user.courses.all():
-        events.extend(course.events)
-    event_json = events_to_json(events)
-    return render_template('index.html', events_json=event_json)
+    beta_users = []
+    print_users = []
+    i = 0
+    k = 0
+    users = User.query.all()
+    for user in users:
+        if user.id == g.user.id:
+            users.remove(user)
+        else:
+            continue
+    for user in users:
+        if i < 5 and k <= len(users):
+            beta_users.append(user)
+            i += 1
+            k += 1
+        else:
+            print_users.append(beta_users)
+            beta_users = []
+            beta_users.append(user)
+            i = 1
+    print_users.append(beta_users)
+    return render_template('index.html', print_users = print_users)
 
 
 @app.route('/help')
 @login_required
 def help():
-    help_url = app.config.get('HELP_URL')
-    if help_url is None:
-        return render_template('help.html')
-    else:
-        return redirect(help_url)
+    return redirect('http://www.getbuddyup.com/faq.html')
 
 
 @app.route('/suggestions')
@@ -51,3 +64,7 @@ def suggestions():
 @login_required
 def welcome():
     return render_template('setup/welcome.html')
+
+@app.route('/term_and_conditions')
+def term_conditions():
+    return render_template('setup/term_conditions.html')

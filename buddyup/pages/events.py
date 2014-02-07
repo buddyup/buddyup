@@ -74,6 +74,7 @@ def event_view(event_id):
     remove_url = url_for('event_remove', event_id=event_record.id)
     leave_url = url_for('leave_event', event_id=event_record.id)
     join_url = url_for('attend_event', event_id=event_record.id)
+    edit_event_url = url_for('event_edit', event_id = event_record.id)
     return render_template('group/view.html',
                             event_record=event_record,
                             event_comments=event_comments,
@@ -81,6 +82,7 @@ def event_view(event_id):
                             remove_url=remove_url,
                             leave_url=leave_url,
                             join_url=join_url,
+                            edit_event_url=edit_event_url,
                             owner=event_record.owner,
                             in_event=in_event,
                             )
@@ -231,6 +233,70 @@ def event_create():
         g.user.events.append(new_event_record)
         db.session.commit()
         return redirect(url_for('event_invitation_send_list', event_id=new_event_record.id))
+
+
+@app.route('/event/edit/<int:event_id>', methods=['GET','POST'])
+@login_required
+def event_edit(event_id):
+    user = g.user
+    event = Event.query.get_or_404(event_id)
+    if event.owner_id != g.user.id:
+        abort(403)
+    if request.method == 'GET':
+        # TODO: pass out the user's course to set it as default
+        return render_template('group/edit_event.html',
+                               courses=user.courses.all(),
+                               has_errors=False,
+                               event_id= event.id,
+                                name = event.name,
+                                location = event.location,
+                               selected=lambda record: False)
+    if request.method == 'POST':
+        print request.method
+        user = g.user
+        name = form_get('name')
+        check_empty(name, "Event Name")
+        course_id = form_get('course', convert=int)
+        location = form_get('location')
+        check_empty(location, "Location")
+        note = form_get('note')
+        # Date
+        date = parse_date(form_get('date'), "Date")
+
+        # Start Time
+        start = parse_time(form_get('start'), form_get('start_ampm'),
+                           date, "Start")
+        end = parse_time(form_get('end'), form_get('end_ampm'),
+                         date, "End")
+        
+
+        if get_flashed_messages():
+            def selected(record):
+                assert isinstance(record, Course)
+                return record.id == course_id
+            return render_template('group/edit_event.html',
+                                   courses=g.user.courses.all(),
+                                   has_errors=True,
+                                   selected=selected,
+                                   event_id = event.id,
+                                   name=name,
+                                   location=location,
+                                   note=note,
+                                   date=form_get('date'),
+                                   start=form_get('start'),
+                                   start_ampm=form_get('start_ampm'),
+                                   end=form_get('end'),
+                                   end_ampm=form_get('end_ampm'))
+
+        #Edit event
+        event.name = name
+        event.course_id = course_id
+        event.location = location
+        event.start = start
+        event.end = end
+        event.note = note
+        db.session.commit()
+        return redirect(url_for('event_invitation_send_list', event_id=event_id))
 
 
 @app.route('/event/cancel/<int:event_id>')

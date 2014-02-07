@@ -1,13 +1,15 @@
 {% extends "admin/adminlayout.html" %}
 {% from "lib.html" import flash_all %}
 
+
 {% block extrahead %}
 <style type="text/css">
 .tab-pane select {
-	width: 300px;
+        width: 300px;
 }
 </style>
 {% endblock extrahead %}
+
 
 {% block title %} Dashboard {% endblock %}
 {% block content %}
@@ -15,120 +17,131 @@
 <h1>Admin Dashboard</h1>
 <br><br>
 <div class="tabbable"> 
-	<ul class="nav nav-tabs">
-		<li class="active"><a href="#tab1" data-toggle="tab">Manage Course</a></li>
-		<li><a href="#tab2" data-toggle="tab">Manage Location</a></li>
-		<li><a href="#tab3" data-toggle="tab">Manage Major</a></li>
-		<li><a href="#tab4" data-toggle="tab">Manage Language</a></li>
-		<li><a href="#tab5" data-toggle="tab">Rosters</a></li>
-	</ul>
-	<div class="tab-content">
-		<div class="tab-pane active" id="tab1">
-			<div class="well span4">
-				<h3>Current list of courses</h3>
-				<form action="{{ url_for('admin_delete_course') }}" method="POST">
-					<select size=15 name="courses" multiple>
-						{% for course in courses %}
-						<option value="{{ course.id }}">{{ course.name }} by {{ course.instructor }}</option>
-						{% endfor %}
-					</select>
-					<br><input class="btn-danger" type="submit" value="Remove course"> 
-				</form>
-			</div>
-			<div class="well span3">
-				<h3>Enter a new course</h3>
-				<form action="{{ url_for('admin_add_course') }}" method="POST">
-					Course name: <input type="text" name="name"><br>
-					By Professor: <input type="text" name="instructor"><br>
-					<input class="btn-primary" type="submit" value="Add this new course"></input>
-				</form>
-			</div>
-		</div>
-		<div class="tab-pane" id="tab2">
-			<div class="well span4">
-				<h3>Current list of locations</h3>
-				<form action="{{ url_for('admin_delete_location') }}" method="POST">
-					<select size=15 name="courses" multiple>
-						{% for location in locations %}
-						<option value="{{ location.id }}">{{ location.name }}</option>
-						{% endfor %}
-					</select>
-					<br><input class="btn-danger" type="submit" value="Remove location(s)"> 
-				</form>
-			</div>
-			<div class="well span3">
-				<h3>Enter a new location</h3>
-				<form action="{{ url_for('admin_add_location') }}" method="POST">
-					New location: <input type="text" name="locations"><br>
-					<input class="btn-primary" type="submit" value="Add this new location"></input>
-				</form>
-			</div>
-		</div>
-		<div class="tab-pane" id="tab3">
-			<div class="well span4">
-				<h3>Current list of majors</h3>
-				<form action="{{ url_for('admin_delete_major') }}" method="POST">
-					<select size=15 name="majors" multiple>
-						{% for major in majors %}
-						<option value="{{ major.id }}">{{ major.name }}</option>
-						{% endfor %}
-					</select>
-					<br><input class="btn-danger" type="submit" value="Remove Majors"> 
-				</form>
-			</div>
-			<div class="well span3">
-				<h3>Enter a new major</h3>
-				<form action="{{ url_for('admin_add_major') }}" method="POST">
-					New major: <input type="text" name="major"><br>
-					<input class="btn-primary" type="submit" value="Add this new major">
-				</form>
-			</div>
-		</div>
-		<div class="tab-pane" id="tab4">
-			<div class="well span4">
-				<h3>Current list of languages</h3>
-				<form action="{{ url_for('admin_delete_language') }}" method="POST">
-					<select size=15 name="languages" multiple>
-						{% for lang in languages %}
-						<option value="{{ lang.id }}">{{ lang.name }}</option>
-						{% endfor %}
-					</select>
-					<br><input class="btn-danger" type="submit" value="Remove Languages">
-				</form>
-			</div>
-			<div class="well span3">
-				<h3>Enter a new language</h3>
-				<form action="{{ url_for('admin_add_language') }}" method="POST">
-					New language: <input type="text" name="language"><br>
-					<input class="btn-primary" type="submit" value="Add language">
-				</form>
-			</div>
-		</div>
-		<div class="tab-pane" id="tab5">
-			<div class="well span7">
-				<h3>Download Roster</h3>
-				<form action="{{ url_for('admin_roster') }}">
-					<select width="100%" name="course">
-					{% for course in courses %}
-						<option value="{{ course.id }}">
-							{{ course.name }} by {{ course.instructor }}
-						</option>
-					{% endfor %}
-					</select>
-					<br>
-					<input type="submit" value="Download" class="btn-primary">
-				</form>
-			</div>
-		</div>
-		<div class="well span1" style="width: 200px;float:right;">
-			<h3>Website Statistic</h3>
-			<p>Total visits: {{ total_visits }}</p>
-			<p>Unique visitors: {{ unique_visits }}</p>
-			<p>Groups: {{ group_count }}</p>
-			<p>Invites sent: {{ total_invites }}</p>
-			<p>Registered users: {{ total_users }}</p>
-		</div>	
-	</div>
+        <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab1" data-toggle="tab">Manage Course</a></li>
+                <li><a href="#tab2" data-toggle="tab">Manage Location</a></li>
+                <li><a href="#tab3" data-toggle="tab">Manage Major</a></li>
+                <li><a href="#tab4" data-toggle="tab">Manage Language</a></li>
+                <li><a href="#tab5" data-toggle="tab">Rosters</a></li>
+        </ul>
+        <div class="tab-content">
+                <div class="tab-pane active" id="tab1">
+                        <div class="well span4">
+                                <h3>Current list of courses</h3>
+                                <br>
+                                <form action="{{ url_for('admin_delete_course') }}" method="POST">
+                                        <select size=15 name="courses" multiple>
+                                                {% for course in courses %}
+                                                <option value="{{ course.id }}">{{ course.name }} by {{ course.instructor }}</option>
+                                                {% endfor %}
+                                        </select>
+                                        <br><input class="btn-danger" type="submit" value="Remove course"> 
+                                </form>
+                        </div>
+                        <div class="well span3">
+                                <h3>Enter a new course</h3>
+                                <br><br><br>
+                                <form action="{{ url_for('admin_add_course') }}" method="POST">
+                                        Course name: <input type="text" name="name"><br>
+                                        By Professor: <input type="text" name="instructor"><br>
+                                        <input class="btn-primary" type="submit" value="Add this new course"></input>
+                                </form>
+                        </div>
+                </div>
+                <div class="tab-pane" id="tab2">
+                        <div class="well span4">
+                                <h3>Current list of locations</h3>
+                                <br>
+                                <form action="{{ url_for('admin_delete_location') }}" method="POST">
+                                        <select size=15 name="courses" multiple>
+                                                {% for location in locations %}
+                                                <option value="{{ location.id }}">{{ location.name }}</option>
+                                                {% endfor %}
+                                        </select>
+                                        <br><input class="btn-danger" type="submit" value="Remove location(s)"> 
+                                </form>
+                        </div>
+                        <div class="well span3">
+                                <h3>Enter a new location</h3>
+                                <br><br><br>
+                                <form action="{{ url_for('admin_add_location') }}" method="POST">
+                                        New location: <input type="text" name="locations"><br>
+                                        <input class="btn-primary" type="submit" value="Add this new location"></input>
+                                </form>
+                        </div>
+                </div>
+                <div class="tab-pane" id="tab3">
+                        <div class="well span4">
+                                <h3>Current list of majors</h3>
+                                <br>
+                                <form action="{{ url_for('admin_delete_major') }}" method="POST">
+                                        <select size=15 name="majors" multiple>
+                                                {% for major in majors %}
+                                                <option value="{{ major.id }}">{{ major.name }}</option>
+                                                {% endfor %}
+                                        </select>
+                                        <br><input class="btn-danger" type="submit" value="Remove Majors"> 
+                                </form>
+                        </div>
+                        <div class="well span3">
+                                <h3>Enter a new major</h3>
+                                <br>
+                                <form action="{{ url_for('admin_add_major') }}" method="POST">
+                                        New major: <input type="text" name="major"><br>
+                                        <input class="btn-primary" type="submit" value="Add this new major">
+                                </form>
+                        </div>
+                </div>
+                <div class="tab-pane" id="tab4">
+                        <div class="well span4">
+                                <h3>Current list of languages</h3>
+                                <br>
+                                <form action="{{ url_for('admin_delete_language') }}" method="POST">
+                                        <select size=15 name="languages" multiple>
+                                                {% for lang in languages %}
+                                                <option value="{{ lang.id }}">{{ lang.name }}</option>
+                                                {% endfor %}
+                                        </select>
+                                        <br><input class="btn-danger" type="submit" value="Remove Languages">
+                                </form>
+                        </div>
+                        <div class="well span3">
+                                <h3>Enter a new language</h3>
+                                <br><br><br>
+                                <form action="{{ url_for('admin_add_language') }}" method="POST">
+                                        New language: <input type="text" name="language"><br>
+                                        <input class="btn-primary" type="submit" value="Add language">
+                                </form>
+                        </div>
+                </div>
+                <div class="tab-pane" id="tab5">
+                        <div class="well span7">
+                                <h3>Download Roster</h3>
+                                <br>
+                                <form action="{{ url_for('admin_roster') }}">
+                                        <select width="100%" name="course">
+                                        {% for course in courses %}
+                                                <option value="{{ course.id }}">
+                                                        {{ course.name }} by {{ course.instructor }}
+                                                </option>
+                                        {% endfor %}
+                                        </select>
+                                        <br>
+                                        <input type="submit" value="Download" class="btn-primary">
+                                </form>
+                        </div>
+                </div>
+                <div class="well span1" style="width: 200px;float:right;">
+                        <h3>Website Statistic</h3>
+                        <br>
+                        <p>Total visits: {{ total_visits }}</p>
+                        <p>Unique visitors: {{ unique_visits }}</p>
+                        <p>Groups: {{ group_count }}</p>
+                        <p>Invites sent: {{ total_invites }}</p>
+                        <p>Registered users: {{ total_users }}</p>
+                </div>        
+        </div>
 </div>
 {{ flash_all() }}
 {% endblock %}
+

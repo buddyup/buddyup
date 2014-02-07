@@ -25,7 +25,7 @@ Create a virtualenv
 
 In the repository, run::
 
-    $ ./script/create-venv
+    $ ./scripts/create-venv
     $ . venv/bin/activate
 
 Create the database
@@ -33,15 +33,15 @@ Create the database
 
 Running BuddyUp locally requires a SQLite database::
 
-    $ ./script/create-database.py
+    $ ./scripts/create-database.py
     # Optionally, populate with default values
-    $ ./script/populate.py all
+    $ ./scripts/populate.py all
 
 This gives you a database at /tmp/buddyup.db. To change the location, set
 the environmental variable ``DATABASE_URL``::
 
     $ export DATABASE_URL=sqlite:///tmp/foo.db
-    $ ./script/create-database.py
+    $ ./scripts/create-database.py
 
 Commands
 ========

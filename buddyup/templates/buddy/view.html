@@ -1,90 +1,114 @@
 {% extends "layout.html" %}
-{% from "lib.html" import flash_all %}
+
 {% block title %} {{ buddy_record.full_name }} {% endblock %}
 {% block content %}
-{{ flash_all() }}
 <br>
 <div class="row">
-	<div class="span4 offset1">
-		<img src="{{ photo_large(buddy_record) }}" class="img-rounded">
-	</div>
-
-	<div class="span6">
-		<h2 style="text-align:left">{{ buddy_record.full_name }}</h2>
-		{% if buddy_record.location %}
-			Location: {{ buddy_record.location.name }}
-		{% else %}
-			Location: Not Given
-		{% endif %}
-		<br>
-		{% if majors|length > 0 %}
-			Major: {{ majors| join(', ') }}
-		{% else %}
-			Major: Unspecified
-		{% endif %}
-		<br>
-		{% if languages|length == 1 %}
-			Language: {{ languages[0] }}
-		{% elif languages|length > 0 %}
-			Languages: {{ languages|join(', ') }}
-		{% else %}
-			Languages: Unspecified
-		{% endif %}
-		<br>
-		
-
-		{% if courses|length == 1 %}
-			Course: {{ courses[0] }}
-		{% elif courses|length > 0 %}
-			Courses: {{ courses | join(', ') }}
-		{% else %}
-			Courses: Not enrolled
-		{% endif %}
-		<div id="profile-external">
+	<div class="span4 offset1 pictures" >
+        <div class="profile-photo">
+		<img src="{{ photo_large(buddy_record) }}" alt="Profile picture" class="img-rounded"></img>
+        </div>
+        <br><br>
+		<div class="profile-social" style="margin-left:-20px;">
+		<ul class=" profile-social social">
 			{% if buddy_record.facebook %}
-				<a href="{{ buddy_record.facebook }}">
-					<img src="{{ img('facebook.png') }}">
-				</a>
+				<li><a href="{{ user_record.facebook }}">
+					<img src="{{ img('facebook.png') }}" height="50" width="50">
+					</a>
+			    </li>
+			{% endif %}
+			   
+			{% if not buddy_record.facebook %}
+				<li>
+					<img src="{{ img('facebook.png') }}" height="50" width="50">
+			    </li>
 			{% endif %}
 
 			{% if buddy_record.twitter %}
-				<a href="{{ buddy_record.twitter }}">
-					<img src="{{ img('twitter.png') }}">
-				</a>
+				<li><a href="{{ user_record.twitter }}">
+					<img src="{{ img('twitter.png') }}" height="50" width="50">
+					</a>
+				</li>
 			{% endif %}
 
-			{% if buddy_record.linkedin %}
-				<a href="{{ buddy_record.linkedin }}">
-					<img src="{{ img('linkedin-50x50.png') }}">
-				</a>
+			{% if not buddy_record.twitter %}
+				<li>
+					<img src="{{ img('twitter.png') }}" height="50" width="50">
+			    </li>
 			{% endif %}
 			
-			<a href="mailto:{{ buddy_record|email }}">
-				<img src="{{ img('email-50x50.png') }}" width="50" height="50">
-			</a>
+			{% if buddy_record.linkedin %}
+				<li><a href="{{ user_record.linkedin }}">
+					<img src="{{ img('linkedin-50x50.png') }}">
+				</li>
+			{% endif %}
 
-			{% if not is_buddy %}
+			{% if not buddy_record.linkedin %}
+				<li>
+					<img src="{{ img('linkedin-50x50.png') }}" height="50" width="50">
+			    </li>
+			{% endif %}  
+			    
+			{% if buddy_record.email %}       
+				<li><a href="mailto:{{ buddy_record|email }}">
+				<img src="{{ img('email-50x50.png') }}" width="50" height="50">
+					</a>
+	         	</li>
+	        {% endif %}
+
+	        {% if not buddy_record.email %}
+	        	<li>
+					<img src="{{ img('email-50x50.png') }}" height="50" width="50">
+			    </li>
+			{% endif %}
+	 		</ul>
+		</div>
+    </div>
+	<div class="span6 name" >
+		<h3 style="text-align:left; margin-top:10px;">{{ buddy_record.full_name }}</h3>
+			<div class="about-me"><i>
+			{% for p in buddy_record.bio|paragraphs %}
+    <p>{{ p }}</p>
+	 	{% endfor %}
+	 	</i></div>
+			{% if buddy_record.location %}
+				<b>Location:</b> {{ buddy_record.location.name }}
+			{% else %}
+				<b>Location:</b> Not Given
+			{% endif %}
+		<br>
+		{% if majors|length > 0 %}
+			<b>Major:</b> {{ majors| join(', ') }}
+		{% else %}
+			<b>Major:</b> Unspecified
+		{% endif %}
+		<br>
+		{% if languages|length == 1 %}
+			<b>Language:</b> {{ languages[0] }}
+		{% elif languages|length > 0 %}
+			<b>Languages:</b> {{ languages|join(', ') }}
+		{% else %}
+			<b>Languages:</b> Unspecified
+		{% endif %}
+		<br>
+
+		{% if courses|length == 1 %}
+			<b>Course:</b> {{ courses[0] }}
+		{% elif courses|length > 0 %}
+			<b>Courses:</b> {{ courses | join(', ') }}
+		{% else %}
+			<b>Courses:</b> Not enrolled
+		{% endif %}
+
+		{% if not is_buddy %}
 			<a href="{{ url_for('invite_send', user_name=buddy_record.user_name) }}"
 				 class="btn btn-large btn-primary">Invite</a>
-			{% elif is_invited %}
+		{% elif is_invited %}
 			<a href="{{ url_for('invite_accept', user_name=buddy_record.user_name)}}"
 				 class="btn btn-large btn-primary">Accept Invitation</a>
 			<a href="{{ url_for('invite_deny', user_name=buddy_record.user_name) }}"
 				 class="btn btn-large btn-danger">Reject Invitation</a>
-			{% endif %}
-		</div>
+		{% endif %}
 	</div>
 </div>
-
-
-<div class="row">
-	<div class="span10 offset1">
-		<br>
-		<h4>About Me</h4>
-		{% for p in buddy_record.bio|paragraphs %}
-			<p>{{ p }}</p>
-		{% endfor %}
-	</div>
-</div>
-
 {% endblock %}

@@ -4,65 +4,27 @@
 {% block title %}Home{% endblock %}
 
 {% block extrahead %}
-<style type="text/css">
-	#wrapper {
-		margin-left:auto;
-		margin-right:auto;
-		width:900px;
-	}
-</style>
 
 <script src="{{ js('jquery-ui') }}" type="text/javascript"></script>
 <script src="{{ js('fullcalendar') }}"></script>
-
-<script>
-	$(document).ready(function() {
-		$('#calendar').fullCalendar({
-			header: {
-				left: 'prev,next today',
-				center: 'title',
-				right: 'month,basicWeek,basicDay'
-			},
-			editable: false,
-			events: {{ events_json|tojson|safe }}
-		});
-	});
 </script>
+
 {% endblock %}
 
 
 {% block content %}
 {{ flash_all() }}
-<br>
-<h2> My Dashboard </h2>
-<br>
-<div id="wrapper">
-<div style="float: left; width: 600px;" id='calendar'>
-	<a href="{{ url_for('calendar') }}"> <font size="2"> View Larger Version. </font></a>
+<br><br>
+<div class="homepage">
+<h2 style="color:black;"> <i>Welcome to Buddyup!</i> </h2>
+<table class="people">
+{% for list_users in print_users %}
+<tr>
+	{% for user in list_users %}
+		<td><a href="{{ profile(user) }}"><img src="{{ photo_large(user) }}" width="200" height="200" class="img-polaroid"></a></td>
+	{% endfor %}
+</tr>
+{% endfor %}
+</table>
 </div>
-
-<div style="float: left;margin-top:20px;margin-left:90px;width:100px;">
-	<ul class="thumbnails">
-		<li class="span4" style="margin-top:20px;">
-			<a href="{{ url_for('event_search') }}">
-			<p style="float: left;"><img src="{{ img('search.jpg') }}" height="80px" width="80px" border="1px" alt="GroupSearch"/></p>
-			<p style="margin-top:25px;font-size:25px"> GroupSearch </p>	
-			</a>
-		</li>
-		<li class="span4" style="margin-top:20px;">
-			<a href="{{ url_for('buddy_search') }}">
-			<p style="float: left;"><img src="{{ img('user_search.png') }}" height="80px" width="80px" border="1px" alt="BuddySearch" /></p>
-		    <p style="margin-top:25px;font-size:25px;"> BuddySearch </p>	
-		    </a>
-		</li>
-		<li class="span4" style="margin-top:20px;">
-			<a href="{{ view_url(user_record) }}">
-		    <p style="float: left;"><img src="{{ img('profile.jpg') }}" height="80px" width="80px" border="1px" alt="My Profile" /></p>
-		    <p style="margin-top:25px;font-size:25px;"> My Profile </p>	
-		    </a>
-		</li>
-</ul>
-</div>
-</div>
-
 {% endblock %}
