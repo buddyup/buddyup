@@ -164,3 +164,9 @@ def profile_photo_delete():
         clear_images(g.user)
         db.session.commit()
         return redirect(url_for('home'))
+
+
+@app.route("/my/profile/delete")
+def profile_delete():
+    delete_user(g.user)
+    return redirect(url_for("logout"))
