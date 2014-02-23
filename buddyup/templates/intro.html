@@ -107,23 +107,23 @@
 			<!-- Jumbotron -->
 			<div class="jumbotron">
 				<h1>Buddy Up!</h1>
-				<p class="lead">Development / Testing mode.  Inputting any existing username here will automatically log you in as that user.  Inputting any non-existent username will automatically log you in as a first-time new user.</p>
-                <form name="form" method="get" action="login">
-                    Username:
-                    <input type="text" value="username" name="username" id="username">
-                    <input type="hidden" name="service" value="{{ cas_service }}">
-                    <input type=submit name="Login" value="Login">
-                </form>
-                <p>
-                All usernames={{ all_usernames }}
-                </p>
-                <ol>
-                    {% for username in all_usernames %}
-                        <li> [{{ username }}]
-                    {% endfor %}
-                </ol>
-                CAS / mockcas sign-in:
-				<a class="btn btn-large btn-success" href="{{ login_url }}">Sign In</a>
+				{% if not ENABLE_AUTHENTICATION %}
+					<p class="lead">Development / Testing mode.  Inputting any existing username here will automatically log you in as that user.  Inputting any non-existent username will automatically log you in as a first-time new user.</p>
+					<form name="form" method="get" action="login">
+						Username:
+						<input type="text" placeholder="username" name="username" id="username">
+						<input type="hidden" name="service" value="{{ cas_service }}">
+						<input type=submit name="Login" value="Login">
+					</form>
+					<p>{{ all_usernames }}</p>
+					<ol>
+						{% for username in all_usernames %}
+							<li> [{{ username }}]
+						{% endfor %}
+					</ol>
+				{% else %}
+					<a class="bt btn-large btn-success" href="{{ login_url }}">Sign In</a>
+				{% endif %}
 			</div>
 
 			<hr>
