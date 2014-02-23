@@ -1,3 +1,5 @@
+import random
+
 from flask import url_for, redirect, g
 
 from buddyup.app import app
