@@ -5,8 +5,12 @@ from buddyup.database import User
 from buddyup.templating import render_template
 from buddyup.util import login_required, events_to_json
 
-# Expect behavior: '/' redirects to 
 
+HOME_ROW_WIDTH = 5
+HOME_LIMIT = 15
+
+
+# Expect behavior: '/' redirects to 
 
 @app.route('/')
 def index():
@@ -27,29 +31,24 @@ def index():
 @app.route('/home')
 @login_required
 def home():
-    # select events for all classes we are in
-    beta_users = []
-    print_users = []
-    i = 0
-    k = 0
-    users = User.query.all()
-    for user in users:
-        if user.id == g.user.id:
-            users.remove(user)
-        else:
-            continue
-    for user in users:
-        if i < 5 and k <= len(users):
-            beta_users.append(user)
-            i += 1
-            k += 1
-        else:
-            print_users.append(beta_users)
-            beta_users = []
-            beta_users.append(user)
-            i = 1
-    print_users.append(beta_users)
-    return render_template('index.html', print_users = print_users)
+    # Calculate fellow students without duplicates
+    users = {}
+    for course in g.user.courses.all():
+        for other in course.users.filter(User.has_photos == True,
+                                         User.id != g.user.id).all():
+            users[other.id] = other
+
+    # Python 3: Change to list(users.values())
+    filtered_users = users.values()
+    random.shuffle(filtered_users)
+
+    # Limit to HOME_LIMIT users
+    del filtered_users[HOME_LIMIT:]
+
+    rows = []
+    for i in range(0, len(filtered_users), HOME_ROW_WIDTH):
+        rows.append(filtered_users[i:i + HOME_ROW_WIDTH])
+    return render_template('index.html', print_users=rows)
 
 
 @app.route('/help')
