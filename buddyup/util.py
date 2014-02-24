@@ -1,5 +1,6 @@
 from functools import wraps
 import re
+import random
 
 from flask import flash, request, abort, g, redirect, url_for
 
@@ -171,3 +172,9 @@ def rowize(items, width):
     assert width > 0, "Zero width row size"
 
     return [items[i:i + width] for i in range(0, len(items), width)]
+
+
+def shuffled(iterable):
+    l = list(iterable)
+    random.shuffle(l)
+    return l
