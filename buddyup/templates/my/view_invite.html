@@ -64,7 +64,7 @@ h2{
 		<div style="margin-top:20px;">
 			{% for event_inv in join_clubs %}
 			{% set event = event_inv.event %}
-			<p style="float: left;"><img src="{{ profile(event) }}" height="50px" width="50px" border="1px"></p>
+			<p style="float: left;"><img src="{{ photo_thumbnail(event) }}" height="50px" width="50px" border="1px"></p>
 			<font style="margin-left:10px;" color="2BA515"><b> {{ event.name }} </b> <br> </font>
 	  	  <div class="btn-group" style="margin-left:50px;">
 	    		<a class="btn btn-success" style="margin-right:10px;" href="{{ url_for('attend_event', event_id = event.id) }}"> <font size="2" style="margin-left:10px;"> Join Study Group </a>  
