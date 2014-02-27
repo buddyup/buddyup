@@ -161,6 +161,22 @@ def default_email(user=None):
     if user is None:
         user = g.user
     return app.config['DEFAULT_EMAIL_FORMAT'].format(user=user.user_name)
+
+
+def update_relationship(rel, records):
+    current = {record.id: record for record in rel.all()}
+    new = {record.id: record for record in records}
+
+    # Python 3: viewkeys() -> keys()
+    insert_ids = new.viewkeys() - current.viewkeys()
+    for id in insert_ids:
+        rel.append(new[id])
+    
+    remove_ids = current.viewkeys() - new.viewkeys()
+    for id in remove_ids:
+        rel.remove(current[id])
+
+
 @app.template_globals()
 def rowize(items, width):
     """
