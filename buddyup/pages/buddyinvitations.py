@@ -81,9 +81,9 @@ def invite_send(user_name):
         flash("Sent invitation to " + user_name)
         try:
             domain_name = app.config.get('DOMAIN_NAME', 'buddyup.herokuapp.com')
-            message = {'from_email': 'noreply@buddyup.com',
+            message = {'from_email': 'noreply@getbuddyup.com',
                        'from_name': 'Buddyup noreply',
-                       'headers': {'Reply-To': 'noreply@buddyup.com'},
+                       'headers': {'Reply-To': 'noreply@getbuddyup.com'},
                        'html': """<p>
                                 You have received a buddy request on BuddyUp.  
                                 Click this link to accept the invitation: %s
