@@ -177,19 +177,6 @@ def update_relationship(rel, records):
         rel.remove(current[id])
 
 
-@app.template_globals()
-def rowize(items, width):
-    """
-    Slice a list into a list of uniform sized lists::
-    
-        >>> rowize([1, 2, 3, 4], 3)
-        [[1, 2, 3], [4]]
-    """
-    assert width > 0, "Zero width row size"
-
-    return [items[i:i + width] for i in range(0, len(items), width)]
-
-
 def shuffled(iterable):
     l = list(iterable)
     random.shuffle(l)
