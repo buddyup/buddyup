@@ -15,9 +15,9 @@
 <div class="photos"> 
 <h3> Your classmates on Buddyup </h3><br><br>
 <table class="classmate">
-{% for list_classmates in classmates %}
+{% for row in classmates|slice(3) %}
 <tr>
-	{% for classmates in list_classmates %}
+	{% for classmate in list_classmates %}
 		<td><a href="{{ profile(classmates) }}"><img src="{{ photo_large(classmates) }}" width="200" height="200" class="img-polaroid"></a></td>
 	{% endfor %}
 </tr>

@@ -12,36 +12,20 @@ from buddyup.util import login_required, args_get, sorted_languages
 def extract_names(records):
     return sorted(record.name for record in records)
 
-
 @app.route("/buddy/view/<user_name>")
 @login_required
 def buddy_view(user_name):
-    beta_buddies = []
-    print_buddies = []
-    i = 0
-    k = 0
-    if (user_name == g.user.user_name):
+    if user_name == g.user.user_name:
         majors = extract_names(g.user.majors)
         courses = extract_names(g.user.courses)
         languages = extract_names(g.user.languages)
-        buddies = g.user.buddies.all()
-        for buddy in buddies:
-          if i < 3 and k <= len(buddies):
-            beta_buddies.append(buddy)
-            i += 1
-            k += 1
-          else:
-            print_buddies.append(beta_buddies)
-            beta_buddies = []
-            i = 1
-        print_buddies.append(beta_buddies)
         return render_template('my/profile.html',
                                buddy_record=g.user,
                                majors=majors,
                                courses=courses,
                                languages=languages,
                                is_buddy=False,
-                               print_buddies=print_buddies,
+                               buddies=g.user.buddies.all(),
                                )
     else:
         buddy_record = User.query.filter_by(user_name=user_name).first_or_404()
@@ -50,10 +34,6 @@ def buddy_view(user_name):
         courses = extract_names(buddy_record.courses)
         is_buddy = buddy_record in g.user.buddies
         is_invited = buddy_record in g.user.sent_bud_inv
-        #is_buddy = g.user.buddies.filter_by(id=buddy_record.id).count() == 1
-        #is_invited = (BuddyInvitation.query.filter_by(receiver_id=g.user.id,
-        #                                             sender_id=buddy_record.id)
-        #                             .count() == 1)
         return render_template('buddy/view.html',
                                buddy_record=buddy_record,
                                majors=majors,
@@ -67,41 +47,18 @@ def buddy_view(user_name):
 @app.route("/buddy/search")
 @login_required
 def buddy_search():
-    beta_classmates = []
-    alpha_classmates = []
-    classmates = []
-    i = 0
-    k = 0
     courses = g.user.courses.all()
     majors = Major.query.all()
     languages = sorted_languages()
     locations = Location.query.order_by(Location.name).all()
-    buddies = g.user.buddies.all()
+    buddies = set(g.user.buddies)
+    general = set()
     for course in courses:
-      users = User.query.join(Course.users).filter(Course.name == course.name).all()
-      for user in users:
-        if user.id == g.user.id:
-          continue
-        else:
-          if buddies == []:
-            beta_classmates.append(user)
-          else:
-            for buddy in buddies:
-              if user.id == buddy.id:
-                continue
-              else:
-                beta_classmates.append(user)
-    for user in beta_classmates:
-      if i < 3 and k <= len(beta_classmates):
-        alpha_classmates.append(user)
-        i += 1
-        k += 1
-      else:
-        classmates.append(alpha_classmates)
-        alpha_classmates = []
-        alpha_classmates.append(user)
-        i = 1
-    classmates.append(alpha_classmates)
+        for user in course.users.filter(User.id != g.user.id):
+            if user not in buddies:
+                classmates.add(user)
+    classmates = shuffled(general) + shuffled(buddies)
+ 
     return render_template('buddy/search.html',
                            courses=courses,
                            majors=majors,

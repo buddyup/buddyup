@@ -5,10 +5,9 @@ from flask import url_for, redirect, g
 from buddyup.app import app
 from buddyup.database import User
 from buddyup.templating import render_template
-from buddyup.util import login_required, events_to_json
+from buddyup.util import login_required, events_to_json, shuffled
 
 
-HOME_ROW_WIDTH = 5
 HOME_LIMIT = 15
 
 
@@ -34,23 +33,18 @@ def index():
 @login_required
 def home():
     # Calculate fellow students without duplicates
-    users = {}
+    # SQLAlchemy ORM objects are unique to the session, not to an
+    # individual query, so we can use a set.
+    unordered_classmates = set()
     for course in g.user.courses.all():
         for other in course.users.filter(User.has_photos == True,
                                          User.id != g.user.id).all():
-            users[other.id] = other
+            unordered_classmates.add(other)
 
-    # Python 3: Change to list(users.values())
-    filtered_users = users.values()
-    random.shuffle(filtered_users)
+    classmates = shuffled(unordered_classmates)
+    del classmates[HOME_LIMIT:]
 
-    # Limit to HOME_LIMIT users
-    del filtered_users[HOME_LIMIT:]
-
-    rows = []
-    for i in range(0, len(filtered_users), HOME_ROW_WIDTH):
-        rows.append(filtered_users[i:i + HOME_ROW_WIDTH])
-    return render_template('index.html', print_users=rows)
+    return render_template('index.html', classmates=classmates) 
 
 
 @app.route('/help')
