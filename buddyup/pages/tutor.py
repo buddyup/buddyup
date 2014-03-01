@@ -16,7 +16,8 @@ from buddyup.database import User, Course, Major, Location, Availability, db
 from buddyup.util import sorted_languages, login_required
 from buddyup.templating import render_template
 from buddyup.photo import change_profile_photo, clear_images, ImageError
-from buddyup.pages.form_profile import *
+from buddyup.pages.form_profile import (TutorProfileUpdateForm,
+                                        TutorProfileCreateForm)
 
 PHOTO_EXTS = ['jpg', 'jpe', 'jpeg', 'png', 'gif', 'bmp', 'tif', 'tiff']
 # Python 3: infinite loop because map() is lazy, use list(map(...))

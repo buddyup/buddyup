@@ -13,22 +13,18 @@ from wtforms.ext.sqlalchemy.fields import (QuerySelectMultipleField,
 
 from buddyup.app import app
 from buddyup.database import Course, Major, Location, Availability, db
-from buddyup.util import sorted_languages, login_required
+from buddyup.util import sorted_languages, login_required, update_relationship
 from buddyup.templating import render_template
 from buddyup.photo import change_profile_photo, clear_images, ImageError
-from buddyup.pages.form_profile import *
+from buddyup.pages.form_profile import (ProfileCreateForm, ProfileUpdateForm,
+                                        PhotoCreateForm, PhotoDeleteForm)
+                                        
 
 
 PHOTO_EXTS = ['jpg', 'jpe', 'jpeg', 'png', 'gif', 'bmp', 'tif', 'tiff']
 # Python 3: infinite loop because map() is lazy, use list(map(...))
 # The next version of Flask-WTF will have a fix to be case-insensitive.
 PHOTO_EXTS.extend(map(str.upper, PHOTO_EXTS))
-
-
-def ordered_factory(record_type, field="name"):
-    def factory():
-        return record_type.query.order_by(field)
-    return factory
 
 
 @app.route('/setup/profile', methods=['GET', 'POST'])
@@ -51,10 +47,6 @@ def profile_create():
                                 form=form,
                                 day_names=day_names,
                                 )
-
-
-class ProfileEditForm(ProfileForm):
-    pass
 
 
 @app.route('/user/profile', methods=['GET', 'POST'])

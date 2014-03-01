@@ -21,6 +21,7 @@ def ordered_factory(record_type, field="name"):
         return record_type.query.order_by(field)
     return factory
 
+
 class ProfileForm(Form):
     """
     Base class for the create and edit forms
@@ -62,21 +63,22 @@ class ProfileForm(Form):
 
 
 class ProfileCreateForm(ProfileForm):
-    pass
+    validators = [FileAllowed(PHOTO_EXTS, u"Images only!")]
+    if app.config.get("BUDDYUP_REQUIRE_PHOTO", True):
+        validators.append(required())
 
-class ProfileEditForm(ProfileForm):
-    pass
+    photo = FileField(u"Profile Photo (required)", validators=validators)
+ 
 
 class ProfileUpdateForm(ProfileForm):
     """
     Base class for the create and edit profile forms
     """
     photo = FileField(u"Profile Photo (optional)", validators=[
-                      Optional(),
                       FileAllowed(PHOTO_EXTS, u"Images only!")])
 
 
-class PhotoForm(Form):
+class PhotoCreateForm(Form):
     photo = FileField(u"Profile Photo", validators=[
                       FileAllowed(PHOTO_EXTS, u"Images only!")])
 
@@ -87,21 +89,24 @@ class PhotoDeleteForm(Form):
     """
 
 
-class ProfileTutor(Form):
+# Tutor forms are currently unused
+
+
+class TutorProfileForm(Form):
     """
     Base class for the create and edit profile forms
     """
-    full_name = TextField(u'Full Name (required)', validators=[required()])
+    #full_name = TextField(u'Full Name (required)', validators=[required()])
     subjects = QuerySelectMultipleField(u"Subject(s) Tutoring",
                                       get_label=u"name",
                                       query_factory=ordered_factory(Major))
     languages = QuerySelectMultipleField(u"Other Language(s)",
                                          get_label=u"name",
                                          query_factory=sorted_languages)
-    location = QuerySelectField(u"Location",
-                                get_label=u"name",
-                                allow_blank=True,
-                                query_factory=ordered_factory(Location))
+    #location = QuerySelectField(u"Location",
+                                #get_label=u"name",
+                                #allow_blank=True,
+                                #query_factory=ordered_factory(Location))
     availability = FieldList(RadioField(choices=[('none', None),
                                                  ('am', 'AM'),
                                                  ('pm', 'PM'),
@@ -111,35 +116,26 @@ class ProfileTutor(Form):
     # Append a field for each day
 #    for i in range(7):
 #        availability.append_entry()
-    photo = FileField(u"Profile Photo (required)", validators=[
-                      required(),
-                      FileAllowed(PHOTO_EXTS, u"Images only!")])
-    facebook = TextField(u"Facebook")
-    twitter = TextField(u"Twitter")
-    linkedin = TextField(u"LinkedIn")
+    #photo = FileField(u"Profile Photo (required)", validators=[
+                      #required(),
+                      #FileAllowed(PHOTO_EXTS, u"Images only!")])
+    #facebook = TextField(u"Facebook")
+    #twitter = TextField(u"Twitter")
+    #linkedin = TextField(u"LinkedIn")
     email = TextField(u"Email Address", validators=[Optional(), Email()])
     bio = TextAreaField(u'A Few Words About You (required)', validators=[required()])
 
-class CreateProfileTutor(ProfileTutor):
-  pass
 
-class ProfileTutorUpdateForm(ProfileTutor):
+class TutorProfileCreateForm(TutorProfileForm):
+    pass
+
+
+class TutorProfileUpdateForm(TutorProfileForm):
     """
     Base class for the create and edit profile forms
     """
-    photo = FileField(u"Profile Photo (optional)", validators=[
-                      Optional(),
-                      FileAllowed(PHOTO_EXTS, u"Images only!")])
-    
+    #photo = FileField(u"Profile Photo (optional)", validators=[
+                      #Optional(),
+                      #FileAllowed(PHOTO_EXTS, u"Images only!")])
 
-def update_relationship(rel, records):
-    current = {record.id: record for record in rel.all()}
-    new = {record.id: record for record in records}
 
-    insert_ids = new.viewkeys() - current.viewkeys()
-    for id in insert_ids:
-        rel.append(new[id])
-    
-    remove_ids = current.viewkeys() - new.viewkeys()
-    for id in remove_ids:
-        rel.remove(current[id])
