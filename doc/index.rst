@@ -12,6 +12,7 @@ Contents:
    :maxdepth: 2
 
    deploying.rst
+   updating.rst
    run-locally.rst
    notes.rst
    templates.rst
