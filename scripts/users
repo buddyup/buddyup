@@ -6,8 +6,9 @@ import argparse
 import sys
 import os
 import logging
+from collections import OrderedDict
 
-logger = logging.getLogger('photo')
+logger = logging.getLogger('users')
 
 sys.path.insert(0, os.getcwd())
 
@@ -53,6 +54,13 @@ parser_email = subparsers.add_parser("email", help="email formatted names")
 add_user_filters(parser_email)
 parser_email.add_argument("--single", action="store_true",
                           help="everything on one line")
+
+parser_delete = subparsers.add_parser("delete", help="delete a user")
+parser_delete.add_argument("users", nargs="+", help="one or more user names")
+parser_delete.add_argument("--dry-run", "-d", action="store_true",
+                           help="Show what would be deleted")
+parser_delete.add_argument("--force", "-f", action="store_true",
+                           help="Do not confirm")
 
 
 def add_cmd(subparser):
@@ -109,6 +117,39 @@ def cmd_email(args):
     else:
         seperator = "\n"
     print(seperator.join(addresses))
+
+
+@add_cmd(parser_delete)
+def cmd_delete(args):
+    # Use an ordered dict to avoid double 
+    records = OrderedDict()
+    not_found = False
+    for user_name in args.users:
+        record = User.query.filter_by(user_name=user_name).first()
+        if record is None:
+            logger.error("user %s does not exist", user_name)
+            not_found = True
+        records[user_name] = record
+    if not_found:
+        return
+    
+    if not args.force and not args.dry_run:
+        logger.info("Would delete %s", user_names = ', '.join(records))
+        response = input("Delete %d users (y/N)?" % len(records))
+        if response.lower() != 'y':
+            return
+
+    try:
+        for user_name, user_record in records.items():
+            full_name = user_record.full_name
+            delete_user(user_record)
+            logger.info("Deleted user %s with full name %s",
+                        user_name, full_name)
+    except:
+        db.session.rollback()
+        raise
+    else:
+        db.session.commit()
 
 
 def main():
