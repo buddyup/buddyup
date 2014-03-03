@@ -126,6 +126,7 @@ def copy_form(form):
     db.session.commit()
 
 @app.route("/my/photo", methods=["GET", "POST"])
+@login_required
 def profile_photo():
     form = PhotoCreateForm()
     delete_form = PhotoDeleteForm()
@@ -148,6 +149,7 @@ def profile_photo():
 
 
 @app.route("/my/photo/delete", methods=["POST"])
+@login_required
 def profile_photo_delete():
     form = PhotoDeleteForm()
     if not form.validate():
@@ -158,7 +160,8 @@ def profile_photo_delete():
         return redirect(url_for('home'))
 
 
-@app.route("/my/profile/delete")
-def profile_delete():
-    delete_user(g.user)
-    return redirect(url_for("logout"))
+#@app.route("/my/profile/delete")
+#@login_required
+#def profile_delete():
+    #delete_user(g.user)
+    #return redirect(url_for("logout"))
