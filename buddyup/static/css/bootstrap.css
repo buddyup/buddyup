@@ -300,7 +300,6 @@ a:focus {
 
 }
 .homepage h2{
-  color:blue;
   text-align: center;
   font-family:'Palatino Linotype', 'Book Antiqua', Palatino, serif;
   padding-top:50px;
@@ -363,11 +362,9 @@ a:focus {
 }
 .photos h3{
   font-family:Georgia, 'Times New Roman', Times, serif;
-  color: blue;
   margin-left:90px;
 }
 .friend h3{
-  color:blue;
   margin-top:300px;
   font-family:Georgia, 'Times New Roman', Times, serif;
   margin-bottom:-100px;
