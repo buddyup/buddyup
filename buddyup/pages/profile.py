@@ -127,7 +127,7 @@ def copy_form(form):
 
 @app.route("/my/photo", methods=["GET", "POST"])
 def profile_photo():
-    form = PhotoForm()
+    form = PhotoCreateForm()
     delete_form = PhotoDeleteForm()
     if form.validate_on_submit():
         storage = request.files[u"photo"]
