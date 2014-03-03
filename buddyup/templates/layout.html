@@ -20,7 +20,7 @@
 
 function myFunction()
 {
-	alert("This function is under construcion. Sorry about this inconvenience.");
+	alert("This function is under construction. Sorry about this inconvenience.");
 }
 </script>
 
@@ -38,37 +38,37 @@ function myFunction()
 			<ul class="nav" style="margin-top:-10px;">
 				<!--li>
 					<a href="{{ url_for('home') }}">
-						<img id = "calendar_img" src = "{{ img ('calendar image.jpg') }}">
+						<img id="calendar_img" src="{{ img ('calendar image.jpg') }}">
 					</a>
-					<h6><font color ="red", size = "1"> Calendar </font></h6>
+					<h6><font color="red" size="1"> Calendar </font></h6>
 				</li-->
-				
+
 				<li><a  href="{{ url_for('group') }}" style="padding-top:20px;">
-						<img id ="invitation_img" src = "{{ img('calendar.png') }}"> 
+						<img id="invitation_img" src="{{ img('calendar.png') }}"> 
 					</a>
-					<h6><font color ="white", size = "1"> Groups </font></h6>
+					<h6><font color="white" size="1"> Groups </font></h6>
 
 				</li>
 				<li><a href="{{ url_for('buddy_search') }}" style="padding-top:22px;">
-						<img id = "buddies_img" src = "{{ img('buddyup1.png')}}"></a>
-					<h6><font color ="white", size = "1"> Buddies </font></h6>
+						<img id="buddies_img" src="{{ img('buddyup1.png')}}"></a>
+					<h6><font color="white" size="1"> Buddies </font></h6>
 				</li>
-				<li> <a href = "#" onclick='return myFunction()' style="padding-top:12px;"> 
-				     <img id = "buddies_img" src = "{{ img('cap2.png')}}">
+				<li> <a href="#" onclick='return myFunction()' style="padding-top:12px;"> 
+				     <img id="buddies_img" src="{{ img('cap2.png')}}">
 				    </a>
-					<h6><font color ="white", size = "1"> Tutors </font></h6>
+					<h6><font color="white" size="1"> Tutors </font></h6>
 				</li>
-			</ul>			
+			</ul>
 			<ul class="nav pull-right" style="margin-top:10px;">
 				<li class="dropdown">
 					<a class="dropdown-toggle" data-toggle="dropdown">Welcome, {{ user_name }} <b class="caret"></b></a>
 					<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-						<li><a tabindex="-1"  href="{{ profile(user_record) }}"><i class="icon-user me_icon"></i>  My Profile </a></li>
+						<li><a tabindex="-1" href="{{ profile(user_record) }}"><i class="icon-user me_icon"></i>  My Profile </a></li>
 						<li><a tabindex="-1" href="{{ url_for('invite_list') }}"><i class="icon-envelope me_icon"></i> My Invitaions</a></li>
-						<li><a tabindex="-1"  href="{{ url_for('profile_edit') }}"><i class="icon-edit me_icon"></i> Edit My Profile </a></li>
-						<li><a tabindex="-1"  href="{{ url_for('buddy_group_list') }}"><i class="icon-home me_icon"></i>  My Buddies </a></li>
-						<li><a tabindex="-1"  href="{{ url_for('help') }}"><i class="icon-comment me_icon"></i> Help </a></li>
-						<li><a tabindex="-1"  href="{{ url_for('logout') }}"><i class="icon-off me_icon"></i>  Log out</a></li>
+						<li><a tabindex="-1" href="{{ url_for('profile_edit') }}"><i class="icon-edit me_icon"></i> Edit My Profile </a></li>
+						<li><a tabindex="-1" href="{{ url_for('buddy_group_list') }}"><i class="icon-home me_icon"></i>  My Buddies </a></li>
+						<li><a tabindex="-1" href="{{ url_for('help') }}"><i class="icon-comment me_icon"></i> Help </a></li>
+						<li><a tabindex="-1" href="{{ url_for('logout') }}"><i class="icon-off me_icon"></i>  Log out</a></li>
 					</ul>
 				</li>
 			</ul>
