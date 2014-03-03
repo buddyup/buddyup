@@ -165,7 +165,8 @@ class User(db.Model):
     sent_eve_inv = db.relationship('EventInvitation', backref='sender',
                                 primaryjoin=EventInvitation.sender_id==id)
     received_event_inv = db.relationship('EventInvitation', backref='receiver',
-                                primaryjoin=EventInvitation.receiver_id==id)
+                                primaryjoin=EventInvitation.receiver_id==id,
+                                lazy="dynamic")
     majors = db.relationship('Major', lazy="dynamic",
                              secondary=MajorMembership,
                              backref='users')

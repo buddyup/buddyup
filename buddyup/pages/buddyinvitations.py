@@ -1,3 +1,5 @@
+from operator import attrgetter
+
 from flask import g, flash, redirect, url_for, abort, request
 import mandrill
 
@@ -13,39 +15,25 @@ from flask.ext.mail import Message
 def group():
     events = []
     join_clubs = []
-    buddies = g.user.buddies.all()
-    checking_invitation = False
-    checking_event_invitation = False
-    event_invitations = EventInvitation.query.all()
-    for buddy in buddies:
-    	for i, event_invitation_owner in enumerate(event_invitations):
-            if event_invitation_owner.event_id == None:
-                continue
-            if i == 0 and buddy.id == event_invitation_owner.sender_id:
-                join_clubs.append(event_invitation_owner)
-            elif i != 0 and buddy.id == event_invitation_owner.sender_id:
-                if event_invitations[i].event_id != event_invitations[i-1].event_id:
-                    join_clubs.append(event_invitation_owner)
-            else:
-                continue
+    event_invitations = (g.user.received_event_inv
+                        .filter(EventInvitation.event_id != None)
+                        .all())
+    invited_unsorted = {inv.event for inv in event_invitations}
+    invited = sorted(invited_unsorted, key=attrgetter('start'), reverse=True)
     for course in g.user.courses.all():
         events.extend(course.events)
     event_json = events_to_json(events)
     return render_template('my/view_invite.html',
                            events_json=event_json,
-                           join_clubs=join_clubs)
+                           invited=invited)
 
 
 @app.route("/invite/view")
 @login_required
 def invite_list():
-    event_invitations = []
-    beta_event_invitations = g.user.received_event_inv
-    for event_invitation in beta_event_invitations:
-        if event_invitation.event_id == None:
-            continue
-        else:
-            event_invitations.append(event_invitation)
+    event_invitations = (g.user.received_event_inv
+                         .filter(EventInvitation.event_id != None)
+                         .all())
     buddy_invitations = g.user.received_bud_inv
     return render_template('my/invitation.html',
                            buddy_invitations=buddy_invitations,
