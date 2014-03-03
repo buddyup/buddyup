@@ -42,7 +42,6 @@ if not app.debug:
 
 from . import database
 from . import photo
-from .util import login_required
 
 
 @app.before_request
