@@ -10,9 +10,10 @@ from sqlalchemy.sql import functions
 
 from buddyup.app import app
 from buddyup.database import (Course, Visit, User, BuddyInvitation,
-                              Location, Major, Event, Language, db)
+                              Location, Major, Event, Language, CourseMembership,
+                              db)
 from buddyup.templating import render_template
-from buddyup.util import form_get, args_get, check_empty
+from buddyup.util import form_get, args_get, check_empty, email
 from functools import wraps
 
 
@@ -88,6 +89,17 @@ def admin_roster():
         full_name = student.full_name.encode('utf8')
         writer.writerow([user_name, full_name])
     return Response(fake_file.getvalue(), content_type="text/csv")
+
+
+@app.route("/admin/email/list")
+@admin_required
+def admin_email_list():
+    # Only users that are in a class this term?
+    users = (User.query.filter(CourseMembership.c.user_id == User.id)
+                       .distinct().all())
+    emails = ("{} <{}>".format(user.full_name, email(user))
+              for user in users)
+    return Response(", ".join(emails), content_type="text/plain")
 
 
 @app.route("/admin/location/add", methods=['POST'])
