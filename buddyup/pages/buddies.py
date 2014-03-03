@@ -2,11 +2,11 @@ from flask import g, request, abort, redirect
 
 from buddyup.app import app
 from buddyup.database import (User, BuddyInvitation, Major, MajorMembership,
-                              Language, LanguageMembership,
+                              LanguageMembership,
                               Course, CourseMembership, db,
                               Location)
 from buddyup.templating import render_template
-from buddyup.util import login_required, args_get, sorted_languages
+from buddyup.util import login_required, args_get, sorted_languages, shuffled
 
 
 def extract_names(records):
@@ -56,7 +56,7 @@ def buddy_search():
     for course in courses:
         for user in course.users.filter(User.id != g.user.id):
             if user not in buddies:
-                classmates.add(user)
+                general.add(user)
     classmates = shuffled(general) + shuffled(buddies)
  
     return render_template('buddy/search.html',
