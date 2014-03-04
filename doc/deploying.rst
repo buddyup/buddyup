@@ -99,7 +99,9 @@ BuddyUp must be configured through some environmental variables::
 
     $ heroku config:set BUDDYUP_TYPE=production
 
-``BUDDYUP_TYPE`` is used to choose the particular class from ``config.py``.  e.g., if BUDDYUP_TYPE="production", then config.Production settings will be used.
+``BUDDYUP_TYPE`` is used to choose the particular class from ``config.py``.  
+e.g., if BUDDYUP_TYPE="production", then config.Production settings will be 
+used.
 
 The current implementation only allows one admin. Set the admin user name to
 a PSU user name, where ``psuuser`` is replaced by the user name::
@@ -122,18 +124,24 @@ from Amazon's Security Credentials page. Configure Heroku using::
 
     $ heroku config:set AWS_ACCESS_KEY_ID=xxx AWS_SECRET_ACCESS_KEY=xxx
 
-In development, the following variables can be useful:
+In development, the following variables can be useful::
+
     BUDDYUP_ENABLE_AUTHENTICATION = False
     BUDDYUP_ENABLE_ADMIN_ALL_USERS = True
 
 Config file
-=========
+===========
 
-In addition to environment variables, various configuration settings are set in a config file:
+In addition to environment variables, various configuration settings are set 
+in a config file::
+
     buddyup/config.py
-This file is read by app.py, and the environment variable ``BUDDYUP_TYPE`` determines which settings in this file are used.
 
-config.py contains settings such as:
+This file is read by app.py, and the environment variable ``BUDDYUP_TYPE`` 
+determines which settings in this file are used.
+
+config.py contains settings such as::
+
     BUDDYUP_ENABLE_AUTHENTICATION = True
     BUDDYUP_ENABLE_ADMIN_ALL_USERS = False
     CAS_SERVER = 'https://sso.pdx.edu/cas'
@@ -159,7 +167,7 @@ a current BuddyUp instance, use ``scripts/dump.py``. For usage, see::
 Mail
 ====
 
-Mail alerts are not implemented yet.
+TODO
 
 Initial Log In
 ==============
