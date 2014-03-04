@@ -18,7 +18,7 @@
 <div class="homepage">
 <h2 style="color:black;"> <i>Welcome to BuddyUp!</i> </h2>
 <table class="people">
-{% for row in classmates|slice(5) %}
+{% for row in classmates|batch(5) %}
 <tr>
 	{% for user in row %}
 		<td><a href="{{ profile(user) }}"><img src="{{ photo_large(user) }}" width="200" height="200" class="img-polaroid"></a></td>
