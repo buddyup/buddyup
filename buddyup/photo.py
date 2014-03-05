@@ -55,13 +55,15 @@ def photo_large(user_record):
     return get_photo_url(user_record, LARGE_SIZE)
 
 
-def get_photo_url(user_record, size):
+def get_photo_url(user_record, size, bucket=None):
     """
     Get a photo size's URL based on the given Dimensions
     """
     if user_record.has_photos:
+        if bucket is None:
+            bucket = app.config['AWS_S3_BUCKET']
         return "http://{bucket}.s3.amazonaws.com/{key}".format(
-            bucket=app.config['AWS_S3_BUCKET'],
+            bucket=bucket,
             key=to_image_name(user_record, size.x, size.y))
     else:
         return img(GENERIC_PHOTO.format(size))

@@ -9,6 +9,9 @@ from shutil import copyfileobj
 import urllib2
 import logging
 
+import boto
+from boto.s3.key import Key
+
 logger = logging.getLogger('photo')
 
 sys.path.insert(0, os.getcwd())
@@ -47,6 +50,9 @@ parser_has_photos = subparsers.add_parser("has-photos",
                                           help="Test for user having a photo")
 parser_has_photos.add_argument("user", help="user name")
 
+parser_transfer = subparsers.add_parser("transfer",
+                                        help="transfer from another s3 bucket")
+parser_transfer.add_argument("bucket", help="Source bucket name on S3")
 
 def add_cmd(subparser):
     def add(func):
@@ -118,12 +124,32 @@ def cmd_has_photos(args):
     print(user.has_photos)
 
 
+@add_cmd(parser_transfer)
+def cmd_transfer(args):
+    conn = boto.connect_s3()
+    try:
+        bucket = conn.create_bucket(app.config['AWS_S3_BUCKET'])
+        for user in User.query.filter_by(has_photos=True):
+            for size in photo.SIZES:
+                image_name = photo.to_image_name(user, size.x, size.y)
+                logger.info("Transferring %s for user %s",
+                            image_name, user.user_name)
+                url = photo.get_photo_url(user, size, bucket=args.bucket)
+                image_bytes = urllib2.urlopen(url).read()
+                k = Key(bucket, image_name)
+                k.set_contents_from_string(image_bytes)
+                k.set_acl("public-read")
+    finally:
+        conn.close()
+
+
 def get_user(name):
     user = User.query.filter_by(user_name=name).first()
     if user is None:
         logger.error("user %s does not exist", name)
         exit(1)
     return user
+
 
 def main():
     args = parser.parse_args()
