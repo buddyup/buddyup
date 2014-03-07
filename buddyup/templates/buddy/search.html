@@ -17,8 +17,8 @@
 <table class="classmate">
 {% for row in classmates|batch(3) %}
 <tr>
-	{% for classmate in list_classmates %}
-		<td><a href="{{ profile(classmates) }}"><img src="{{ photo_large(classmates) }}" width="200" height="200" class="img-polaroid"></a></td>
+	{% for classmate in row %}
+		<td><a href="{{ profile(classmate) }}"><img src="{{ photo_large(classmate) }}" width="200" height="200" class="img-polaroid"></a></td>
 	{% endfor %}
 </tr>
 {% endfor %}
