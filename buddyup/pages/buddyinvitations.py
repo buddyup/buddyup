@@ -18,8 +18,12 @@ def group():
     event_invitations = (g.user.received_event_inv
                         .filter(EventInvitation.event_id != None)
                         .all())
-    invited_unsorted = {inv.event for inv in event_invitations}
-    invited = sorted(invited_unsorted, key=attrgetter('start'), reverse=True)
+    invited_unsorted = {}
+    for inv in event_invitations:
+        invited_unsorted.setdefault(inv.event, inv.sender)
+    # list of (event, buddy) pairs
+    invited = sorted(invited_unsorted.items(), reverse=True,
+                     key=lambda v: v[0].start)
     for course in g.user.courses.all():
         events.extend(course.events)
     event_json = events_to_json(events)

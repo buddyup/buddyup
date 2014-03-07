@@ -62,8 +62,8 @@ h2{
     <div style=" width:300px;box-shadow: 3px 3px 5px #888888;" class="well span5 box">
 		<strong><font style="margin-left:100px;" color="2896FF"> From Buddies </font></strong>
 		<div style="margin-top:20px;">
-			{% for event in invited %}
-			<p style="float: left;"><img src="{{ photo_thumbnail(event) }}" height="50px" width="50px" border="1px"></p>
+			{% for event, buddy in invited %}
+			<p style="float: left;"><img src="{{ photo_thumbnail(buddy) }}" height="50px" width="50px" border="1px"></p>
 			<font style="margin-left:10px;" color="2BA515"><b> {{ event.name }} </b> <br> </font>
 	  	  <div class="btn-group" style="margin-left:50px;">
 	    		<a class="btn btn-success" style="margin-right:10px;" href="{{ url_for('attend_event', event_id=event.id) }}"> <font size="2" style="margin-left:10px;"> Join Study Group </a>  
