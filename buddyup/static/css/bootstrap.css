@@ -320,8 +320,6 @@ a:focus {
    
 }
 .people img {
-
-
   border:3px solid #CCC;
   -webkit-transition: 1s;
   -moz-transition: 1s;
@@ -330,10 +328,12 @@ a:focus {
   -webkit-border-radius: 7px;
   -moz-border-radius: 7px;
   border-radius: 7px;
- } 
+} 
+
 .box {
     box-shadow: 3px 3px 5px #888888;
 }
+
 .people img:hover {
   -webkit-box-shadow: 0 0 5px rgba(255,255,255,.6), inset 0 0 20px rgba(255,255,255,1);
   -moz-box-shadow: 0 0 5px rgba(255,255,255,.6), inset 0 0 20px rgba(255,255,255,1);
@@ -386,36 +386,17 @@ a:focus {
 }
 
 .classmate td { padding-left:1px;
-      padding-right:1px; 
+    padding-right:1px; 
     padding-top:1px;
     padding-bottom:1px; }
 
 .classmate img {
-  border:3px solid #CCC;
-  -webkit-transition: 1s;
-  -moz-transition: 1s;
-  transition: 1s;
-
-  -webkit-border-radius: 7px;
-  -moz-border-radius: 7px;
-  border-radius: 7px;
-  
   box-shadow: 3px 3px 5px #888888;
-  opacity: 0.8;
  } 
-
-
 .classmate img:hover {
-  -webkit-box-shadow: 0 0 20px rgba(255,255,255,.6), inset 0 0 20px rgba(255,255,255,1);
-  -moz-box-shadow: 0 0 20px rgba(255,255,255,.6), inset 0 0 20px rgba(255,255,255,1);
-  box-shadow: 0 0 20px rgba(255,255,255,.6), inset 0 0 20px rgba(255,255,255,1);
-
-  -webkit-border-radius: 70em;
-  -moz-border-radius: 70em;
-  border-radius:70em;
-  
-  opacity: 1.2;
+  opacity:0.7;
 }
+
 .pictures { 
 
   margin-top:20px;
