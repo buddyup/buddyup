@@ -2,7 +2,7 @@ from flask import g, request, flash, redirect, url_for, abort
 
 from buddyup.app import app
 from buddyup.database import User, EventInvitation, EventMembership, db, Event, Course
-from buddyup.util import login_required
+from buddyup.util import login_required, send_mandrill_email_message, get_domain_name
 from buddyup.templating import render_template
 
 
@@ -37,6 +37,16 @@ def event_invitation_send_list(event_id):
                 continue
             else:
                 user=User.query.get_or_404(user_id)
+                sbj = "You've been invited to a group on Buddyup"
+                domain_name = get_domain_name()
+                msg = """<p>
+                            You've been invited to a buddyup group.
+                            Click this link to accept the invitation: %s
+                            or this link to decline: %s
+                        </p>""" %\
+                      (domain_name + url_for('event_invitation_accept', event_id=event_id),
+                       domain_name + url_for('event_invitation_decline', event_id=event_id)),
+                send_mandrill_email_message(user_recipient=user, subject=sbj, html=msg)
                 event_invitation_send(event_id, user.user_name)
         return redirect(url_for('event_view', event_id=event_id))
 

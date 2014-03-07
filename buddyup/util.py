@@ -5,7 +5,8 @@ import random
 from flask import flash, request, abort, g, redirect, url_for
 
 from buddyup.database import Course, Language
-from buddyup.app import app
+from buddyup.app import app, mandrill_client
+import mandrill
 
 _DEFAULT = object()
 
@@ -181,3 +182,28 @@ def shuffled(iterable):
     l = list(iterable)
     random.shuffle(l)
     return l
+
+
+def send_mandrill_email_message(user_recipient, subject, html):
+    IP_POOL = 'Main Pool'
+    FROM_EMAIL = 'noreply@getbuddyup.com'
+    FROM_NAME = 'Buddyup noreply'
+    try:
+        message = {'from_email': FROM_EMAIL,
+                   'from_name': FROM_NAME,
+                   'headers': {'Reply-To': FROM_EMAIL},
+                   'html': html,
+                   'subject': subject,
+                   'to': [{'email': email(user_recipient),
+                           'name': user_recipient.full_name,
+                           'type': 'to'}],}
+        result = mandrill_client.messages.send(message=message, async=False,
+                                               ip_pool=IP_POOL)
+    except mandrill.Error, e:
+        # Mandrill errors are thrown as exceptions
+        print 'A mandrill error occurred: %s - %s' % (e.__class__, e)
+        raise
+
+
+def get_domain_name():
+    return app.config.get('DOMAIN_NAME', 'buddyup.herokuapp.com')
