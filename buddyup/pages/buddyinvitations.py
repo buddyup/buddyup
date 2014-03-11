@@ -79,7 +79,7 @@ def invite_send(user_name):
                 or this link to decline: %s
                 </p>""" %\
               (domain_name + url_for('invite_accept', inv_id=invite_record.id),
-               domain_name + url_for('invite_deny', inv_id=invite_record.id)),
+               domain_name + url_for('invite_deny', inv_id=invite_record.id))
         send_mandrill_email_message(user_recipient=other_user_record,
                                     subject=sbj, html=msg)
     # TODO: Don't redirect to referrer (potential security risk?)

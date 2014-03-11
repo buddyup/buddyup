@@ -92,7 +92,7 @@ def _send_invitation(event, user):
                 or this link to decline: %s
             </p>""" %\
             (domain_name + url_for('event_invitation_accept', invitation_id=invitation_id),
-            domain_name + url_for('event_invitation_decline', invitation_id=invitation_id)),
+            domain_name + url_for('event_invitation_decline', invitation_id=invitation_id))
     send_mandrill_email_message(user_recipient=user, subject=sbj, html=msg)
     app.logger.info("Sent invitation for event #%d to %s",
                     event.id, user.user_name)
