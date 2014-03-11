@@ -139,7 +139,7 @@ def events_to_json(events):
 @app.template_global()
 @app.template_filter()
 def email(user):
-    return user.email or (user.user_name + u"@pdx.edu")
+    return user.email or default_email(user)
 
 
 def sorted_languages():
