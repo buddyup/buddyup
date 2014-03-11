@@ -24,6 +24,8 @@ from buddyup.database import db, Location, Major, Language, Course, User
 
 parser = argparse.ArgumentParser()
 
+EMAIL_FORMAT = app.config['DEFAULT_EMAIL_FORMAT']
+
 
 def change_user_email_addrs():
     for user in User.query.all():
