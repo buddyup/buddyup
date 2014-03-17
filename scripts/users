@@ -17,7 +17,7 @@ from sqlalchemy import or_, and_
 from buddyup.database import User, db
 from buddyup import photo
 from buddyup.app import app
-from buddyup.util import email
+from buddyup.util import email, delete_user
 
 USER_FILTERS = ["linkedin", "twitter", "facebook", "bio", "email"]
 
