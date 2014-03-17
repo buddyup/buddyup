@@ -8,7 +8,7 @@ from buddyup.templating import render_template
 from buddyup.util import login_required, events_to_json, shuffled
 
 
-HOME_PHOTO_LIMIT = 30
+HOME_LIMIT = 30
 
 # Expect behavior: '/' redirects to 
 
