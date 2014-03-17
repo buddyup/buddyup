@@ -4,8 +4,10 @@ import random
 
 from flask import flash, request, abort, g, redirect, url_for
 
-from buddyup.database import Course, Language
+from buddyup.database import (Course, Language, Event, EventComment,
+                              Availability, Visit, db)
 from buddyup.app import app, mandrill_client
+from buddyup.photo import clear_images
 import mandrill
 
 _DEFAULT = object()
@@ -207,3 +209,20 @@ def send_mandrill_email_message(user_recipient, subject, html):
 
 def get_domain_name():
     return app.config.get('DOMAIN_NAME', 'buddyup.herokuapp.com')
+
+
+def delete_user(user):
+    def delete_records(records):
+        for record in records:
+            db.delete(record)
+    delete_records(user.sent_bud_inv)
+    delete_records(user.received_bud_inv)
+    delete_records(user.sent_eve_inv)
+    delete_records(user.received_event_inv)
+    Event.query.filter_by(owner_id=user.id).delete()
+    EventComment.query.filter_by(user_id=user.id).delete()
+    Availability.query.filter_by(user_id=user.id).delete()
+    Visit.query.filter_by(user_id=user.id).delete()
+    db.session.delete(user)
+    db.session.commit()
+    clear_images(user)
