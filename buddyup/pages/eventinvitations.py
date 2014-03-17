@@ -84,10 +84,10 @@ def _send_invitation(event, user):
     db.session.flush()
     db.session.refresh(new_invitation_record)
     invitation_id = new_invitation_record.id
-    sbj = "You've been invited to a group on Buddyup"
+    sbj = "You've been invited to a group on BuddyUp"
     domain_name = get_domain_name()
     msg = """<p>
-                You've been invited to a buddyup group.
+                You've been invited to a study session on BuddyUp.
                 Click this link to accept the invitation: %s
                 or this link to decline: %s
             </p>""" %\

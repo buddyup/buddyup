@@ -8,8 +8,7 @@ from buddyup.templating import render_template
 from buddyup.util import login_required, events_to_json, shuffled
 
 
-HOME_LIMIT = 15
-
+HOME_PHOTO_LIMIT = 30
 
 # Expect behavior: '/' redirects to 
 
@@ -32,7 +31,7 @@ def index():
 @app.route('/home')
 @login_required
 def home():
-    # Calculate fellow students without duplicates
+    # Calculate fellow students without duplicates.
     # SQLAlchemy ORM objects are unique to the session, not to an
     # individual query, so we can use a set.
     unordered_classmates = set()
@@ -42,9 +41,12 @@ def home():
             unordered_classmates.add(other)
 
     classmates = shuffled(unordered_classmates)
+    count = len(classmates)
     del classmates[HOME_LIMIT:]
 
-    return render_template('index.html', classmates=classmates) 
+    return render_template('index.html',
+                           classmates=classmates,
+                           count=count) 
 
 
 @app.route('/help')
