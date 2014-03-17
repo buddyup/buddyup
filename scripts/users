@@ -57,7 +57,7 @@ parser_email.add_argument("--single", action="store_true",
 
 parser_delete = subparsers.add_parser("delete", help="delete a user")
 parser_delete.add_argument("users", nargs="+", help="one or more user names")
-parser_delete.add_argument("--dry-run", "-d", action="store_true",
+parser_delete.add_argument("--dry-run", "-n", action="store_true",
                            help="Show what would be deleted")
 parser_delete.add_argument("--force", "-f", action="store_true",
                            help="Do not confirm")
@@ -132,13 +132,26 @@ def cmd_delete(args):
         records[user_name] = record
     if not_found:
         return
-    
-    if not args.force and not args.dry_run:
+
+    if args.dry_run:
+        delete_dry_run(args, records)
+    else:
+        delete_real(args, records)
+
+
+def delete_dry_run(args, records):
+    for user_name, user_record in records.items():
+        full_name = user_record.full_name
+        print("Would delete user '%s' with full name '%s'" %
+              (user_name, full_name))
+
+
+def delete_real(args, records):
+    if not args.force:
         logger.info("Would delete %s", user_names = ', '.join(records))
-        response = input("Delete %d users (y/N)?" % len(records))
+        response = raw_input("Delete %d users (y/N)? " % len(records))
         if response.lower() != 'y':
             return
-
     try:
         for user_name, user_record in records.items():
             full_name = user_record.full_name
