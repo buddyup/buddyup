@@ -148,7 +148,7 @@ def delete_dry_run(args, records):
 
 def delete_real(args, records):
     if not args.force:
-        logger.info("Would delete %s", user_names = ', '.join(records))
+        logger.info("Would delete %s", ', '.join(records.keys()))
         response = raw_input("Delete %d users (y/N)? " % len(records))
         if response.lower() != 'y':
             return
