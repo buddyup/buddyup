@@ -16,6 +16,7 @@ Contents:
    run-locally.rst
    notes.rst
    templates.rst
+   scripts.rst
 
 
 Indices and tables

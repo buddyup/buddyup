@@ -15,7 +15,8 @@ parser.add_argument('--verbose', '-v', action="store_true",
                     help="Print while you insert!")
 parser.add_argument('--list-targets', '-l', action="store_true",
                     help="List populate targets")
-parser.add_argument('targets', nargs='*')
+parser.add_argument('targets', nargs='*',
+                    help="Targets to load. 'all' loads all available targets")
 
 
 populators = {}

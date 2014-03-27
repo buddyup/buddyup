@@ -2,4 +2,6 @@
 rm -rf venv
 virtualenv -p /usr/bin/python2.7 --distribute venv
 . venv/bin/activate
+# --allow-all-external: argparse (dependency of Flask) is hosted outside
+# of PyPi, which pip doesn't like. --allow-all-external overrides that.
 pip install --allow-all-external -r requirements.txt
