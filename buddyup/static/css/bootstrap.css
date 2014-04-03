@@ -343,7 +343,7 @@ a:focus {
 
 }
 .suggestion  {
-    background-image: url("../img/wavegrid.jpg");
+    background-image: url("../img/wavegrid_lite.jpg");
     background-size:cover;
     margin-left:80px;
 }
