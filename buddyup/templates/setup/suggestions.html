@@ -1,29 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title> Welcome message</title>
-	<link href="{{ css('bootstrap') }}" rel="stylesheet">
+<title>Welcome to BuddyUp!</title>
+	<link href="{{ css('bootstrap.min') }}" rel="stylesheet">
 	<link href="{{ css('style') }}" rel="stylesheet">
 	<script src="{{ js('jquery') }}"></script>
 	<script src="{{ js('bootstrap') }}"></script>
 
 <style>
-.welcome{
-	padding-top: 30px;
-}
 body {
-  background-image: url("../img/background.jpg");
+  background-image: url("/static/img/wavegrid.png");
 }
-.photos h4 { }
+
+h2 {
+	.margin-top: 0px; /* resetting */
+}
+
+p {
+	width: 66%;
+    margin: 0 auto;
+	font-size: 18px;
+	font-weight: 500;
+}
+
 </style>
 </head>
-<body class="suggestion">
-	<div class="container welcome" style="width: 850px; height:300px">
- 	<h2 style="color:black;">Welcome to BuddyUp!</h2>
- 	<br><br>
-         <h4> Here at BuddyUp we believe your most valuable resource is each other. We're students, like you, so we're learning as we go, but planning to take BuddyUp worldwide. Your feedback, ideas and loyalty are very important to us. Now go make some buddies!</h4>
-       
-		<a class="btn btn-large btn-primary" href="{{ url_for('home') }}" style="margin-left:700px;margin-top: 46px;"> Get Started</a>
+<body>
+<div class="container text-center">
+	<h2>Welcome to BuddyUp!</h2>
+	<br/>
+	<br/>
+	<p>Here at BuddyUp we believe your most valuable resource is each other. We're students, like you, so we're learning as we go, but planning to take BuddyUp worldwide. Your feedback, ideas and loyalty are very important to us. Now go make some buddies!</p>
+	<br/>
+	<br/>
+	<a class="btn btn-large btn-primary" href="{{ url_for('home') }}"> Get Started</a>
 </div>
 </body>
 </html>
