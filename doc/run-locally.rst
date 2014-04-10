@@ -23,6 +23,14 @@ that are relevant:
 Create a virtualenv
 ===================
 
+NOTE: If on Mac OS X 10.9 (Mavericks) or higher, or if running clang,
+set these environment variables before continuing to prevent an issue
+building the Pillow library:
+
+	export CFLAGS=-Qunused-arguments
+	export CPPFLAGS=-Qunused-arguments
+
+
 In the repository, run::
 
     $ ./scripts/create-venv
