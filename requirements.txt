@@ -1,4 +1,5 @@
 Flask==0.10.1
+Flask-Admin==1.0.7
 Flask-Mail==0.9.0
 git+git://github.com/miguelgrinberg/Flask-Runner.git@ddb3c48059493ca2017743744b39cd036847e602
 Flask-SQLAlchemy==0.16
