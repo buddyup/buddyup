@@ -66,11 +66,10 @@ class Course(db.Model):
     name = db.Column(db.UnicodeText)
     instructor = db.Column(db.UnicodeText)
     events = db.relationship('Event', backref='course')
-    questions = db.relationship('Question', backref='course',
-                                lazy='dynamic')
+    questions = db.relationship('Question', backref='course', lazy='dynamic')
 
     def __repr__(self):
-        return '<Course %d>' % self.id
+        return self.name
 
 
 class Answer(db.Model):
@@ -143,6 +142,9 @@ class User(db.Model):
     # Initialized flag
     initialized = db.Column(db.Boolean, default=False)
     
+    def __repr__(self):
+        return '%s' % self.full_name
+
     # Photos
    
     # Relationships
@@ -323,7 +325,13 @@ class Major(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.UnicodeText, unique=True)
 
+    def __repr__(self):
+        return self.name
+
 
 class Language(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.UnicodeText, unique=True)
+
+    def __repr__(self):
+        return '%s' % self.name
