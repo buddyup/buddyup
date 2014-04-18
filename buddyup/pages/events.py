@@ -37,18 +37,18 @@ def parse_date(date, label):
 
 def parse_time(time_string, ampm, base, label):
     match = checked_regexp(TIME_REGEXP, time_string, label)
+
     if match:
         hour = int(match.group('hour'))
         minute = int(match.group('minute') or 0)
         # Convert 12-hour time to 24-hour time
-        if ampm == 'am':
-            if hour == 12:
-                hour = 0
-        elif ampm == 'pm':
-            hour += 12
-        else:
-            # Must be AM or PM!
-            abort(400)
+
+        # 12 AM is really 00:00
+        if ampm == 'am' and hour == 12: hour = 0
+
+        # After Noon you need to add 12 hours.
+        if ampm == 'pm' and hour < 12: hour += 12
+
         return base + timedelta(hours=hour, minutes=minute)
     else:
         return None
