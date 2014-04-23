@@ -31,6 +31,7 @@ def index():
 @app.route('/home')
 @login_required
 def home():
+    # TODO: Possible scaling issue. Loads, shuffles, and listifies all classmates in memory? Can the DB handle this for us?
     # Calculate fellow students without duplicates.
     # SQLAlchemy ORM objects are unique to the session, not to an
     # individual query, so we can use a set.
