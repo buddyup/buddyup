@@ -6,13 +6,16 @@ from flask import Flask
 from flask.ext.admin import Admin
 from flask.ext.admin.contrib.sqla import ModelView
 
+class AuthenticatedView(ModelView):
+    def is_accessible(self):
+        return False
 
 admin = Admin(app, url="/ops", name="BuddyUp Operations")
 
-admin.add_view(ModelView(User, db.session))
-admin.add_view(ModelView(BuddyInvitation, db.session, "Invitation"))
-admin.add_view(ModelView(Event, db.session))
-admin.add_view(ModelView(Course, db.session))
-admin.add_view(ModelView(Major, db.session))
-admin.add_view(ModelView(Location, db.session))
-admin.add_view(ModelView(Language, db.session))
+admin.add_view(AuthenticatedView(User, db.session))
+admin.add_view(AuthenticatedView(BuddyInvitation, db.session, "Invitation"))
+admin.add_view(AuthenticatedView(Event, db.session))
+admin.add_view(AuthenticatedView(Course, db.session))
+admin.add_view(AuthenticatedView(Major, db.session))
+admin.add_view(AuthenticatedView(Location, db.session))
+admin.add_view(AuthenticatedView(Language, db.session))
