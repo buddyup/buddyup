@@ -5,7 +5,7 @@ logger = logging.getLogger('populate')
 
 sys.path.insert(0, os.getcwd())
 
-from buddyup.database import db, Location, Major, Language, Course
+from buddyup.database import db, Location, Major, Language, Course, Operator
 
 
 parser = argparse.ArgumentParser()
@@ -25,6 +25,18 @@ populators = {}
 def populator(f):
     populators[f.__name__] = f
     return f
+
+
+@populator
+def operator(args):
+    import hashlib
+
+    if args.clear:
+        Operator.query.delete()
+    if Operator.query.filter_by(login='leeroy').count() < 1:
+        logger.info("Adding bootstrap operator account.")
+        db.session.add(Operator(login='leeroy', password=hashlib.sha256('whiskeytangojenkins').hexdigest()))
+    db.session.commit()
 
 
 @populator

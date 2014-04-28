@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% from "lib.html" import flash_all %}
+
+{% block title %}Home{% endblock %}
+
+{% block extrahead %}
+
+<script src="{{ js('jquery-ui') }}" type="text/javascript"></script>
+<script src="{{ js('fullcalendar') }}"></script>
+</script>
+
+{% endblock %}
+
+
+{% block content %}
+{{ flash_all() }}
+<br><br>
+<div class="homepage">
+	<form action="/ops/login" method="POST">
+		<input type="text" name="login"><br/>
+		<input type="password" name="password"><br/>
+		<input type="submit" name="Go" value="Login">
+	</form>
+</div>
+{% endblock %}
