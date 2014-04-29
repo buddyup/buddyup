@@ -4,12 +4,15 @@ from buddyup.database import (Course, Visit, User, BuddyInvitation,
                               Operator,
                               db)
 from flask import Flask, redirect, request, render_template, flash
+
+from flask.ext import admin
 from flask.ext.admin import Admin
 from flask.ext.admin.contrib.sqla import ModelView
+from flask.ext.admin import helpers, expose
 
 from wtforms import form, fields, validators
 
-
+from flask.ext import login
 from flask.ext.login import LoginManager, login_required, login_user, logout_user
  
 login_manager = LoginManager()
@@ -34,22 +37,20 @@ class OperatorLoginForm(form.Form):
         return user
 
     def get_user(self):
-        print "Operator: %s" % db.session.query(Operator).first()
-        print "Login given: %s" % self.login.data
         return db.session.query(Operator).filter_by(login=self.login.data).first()
 
     def __repr__(self):
         return '%s' % self.login
 
 
-
 @login_manager.user_loader
 def load_operator(id):
-    return Operator.get(id)
+    return Operator.query.get(id)
     
 class AuthenticatedView(ModelView):
+
     def is_accessible(self):
-        return False
+        return login.current_user.is_authenticated()
 
 admin = Admin(app, url="/ops", name="BuddyUp Operations")
 
@@ -68,7 +69,7 @@ def ops_login():
         return render_template("ops/login.html")
         
     form = OperatorLoginForm(request.form)
-    print "form: %s" % form
+
     operator = form.validate_login()
     if operator:
         # login and validate the user...
