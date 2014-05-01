@@ -346,3 +346,8 @@ class Operator(db.Model, UserMixin):
 
     def __repr__(self):
         return u'%s' % self.login
+
+    authenticated = False
+
+    def is_authenticated(self):
+        return self.authenticated
