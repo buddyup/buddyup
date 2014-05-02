@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from __future__ import print_function
-
+from __future__ import unicode_literals
 import argparse
 import sys
 import os
@@ -109,7 +109,7 @@ def cmd_email(args):
     query = user_filter(args)
     addresses = []
     for user in query.all():
-        addresses.append("{name} <{address}>".format(
+        addresses.append(u"{name} <{address}>".format(
             name=user.full_name or user.user_name,
             address=email(user)))
     if args.single:
