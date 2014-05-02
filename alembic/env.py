@@ -25,6 +25,10 @@ target_metadata = db.metadata
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
+def buddyup_database_url():
+    import os
+    return os.environ['DATABASE_URL'] or ''
+
 def run_migrations_offline():
     """Run migrations in 'offline' mode.
 
@@ -37,8 +41,7 @@ def run_migrations_offline():
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
-    context.configure(url=url)
+    context.configure(url=buddyup_database_url())
 
     with context.begin_transaction():
         context.run_migrations()
@@ -53,6 +56,7 @@ def run_migrations_online():
     engine = engine_from_config(
                 config.get_section(config.config_ini_section),
                 prefix='sqlalchemy.',
+                url=buddyup_database_url(),
                 poolclass=pool.NullPool)
 
     connection = engine.connect()
