@@ -337,9 +337,7 @@ class Language(db.Model):
         return '%s' % self.name
 
 
-from flask.ext.login import UserMixin
-
-class Operator(db.Model, UserMixin):
+class Operator(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     login = db.Column(db.String(32), index=True, unique=True)
     password = db.Column(db.String(32))
