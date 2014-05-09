@@ -15,15 +15,21 @@ HOME_LIMIT = 30
 @app.route('/')
 def index():
     if g.user is None:
-        # Note that this landing/intro "/" page is only used for testing/development.  
-        # For the production site, the landing/intro "/" page is hosted on weebly.
-        ENABLE_AUTHENTICATION = app.config['BUDDYUP_ENABLE_AUTHENTICATION']
-        all_users = User.query.order_by(User.user_name).all()
-        all_usernames = [user.user_name for user in all_users]
-        return render_template('intro.html',
-                               ENABLE_AUTHENTICATION=ENABLE_AUTHENTICATION,
-                               all_usernames=all_usernames,
-                               cas_service=app.cas_service)
+        try:
+            # Note that this landing/intro "/" page is only used for testing/development.
+            # For the production site, the landing/intro "/" page is hosted on weebly.
+            ENABLE_AUTHENTICATION = app.config['BUDDYUP_ENABLE_AUTHENTICATION']
+            all_users = User.query.order_by(User.user_name).all()
+            all_usernames = [user.user_name for user in all_users]
+            raise "WHATEVER"
+            return render_template('intro.html',
+                                   ENABLE_AUTHENTICATION=ENABLE_AUTHENTICATION,
+                                   all_usernames=all_usernames,
+                                   cas_service=app.cas_service)
+        except:
+            # An error that catastrophic should only happen with a brand new instance.
+            return render_template('new_instance.html')
+
     else:
         return redirect(url_for('home'))
 
