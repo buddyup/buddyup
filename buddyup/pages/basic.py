@@ -21,7 +21,6 @@ def index():
             ENABLE_AUTHENTICATION = app.config['BUDDYUP_ENABLE_AUTHENTICATION']
             all_users = User.query.order_by(User.user_name).all()
             all_usernames = [user.user_name for user in all_users]
-            raise "WHATEVER"
             return render_template('intro.html',
                                    ENABLE_AUTHENTICATION=ENABLE_AUTHENTICATION,
                                    all_usernames=all_usernames,
