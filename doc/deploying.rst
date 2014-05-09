@@ -68,6 +68,8 @@ Then run something like::
 Replacing "BLUE" with the correct color. Next create the database tables::
 
     $ heroku run init
+
+(This will run the 'init' task in the Procfile, which is currently just "python ./scripts/create-database.py")
     
 To drop and recreate the tables, run::
 
