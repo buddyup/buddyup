@@ -43,6 +43,8 @@ def record_visit(user):
     db.session.add(Visit(user_id=user.id))
     db.session.commit()
 
+def establish_session(user):
+    session['user_id'] = user.id
 
 LOGIN_OK = 0
 
@@ -61,19 +63,19 @@ def login():
         # Authentication is disabled, so just log the user in.
         _, user_name = LOGIN_OK, args_get('username')
 
-    current_user = User.query.filter(User.user_name == user_name).first()
+    destination = 'home'
 
-    if current_user:
-        url = url_for('home')
-    else:
-        current_user = create_new_user(user_name)
-        url = url_for('welcome')
+    existing_user = User.query.filter(User.user_name == user_name).first()
 
-    session['user_id'] = current_user.id
+    if not existing_user:
+        existing_user = create_new_user(user_name)
+        destination = 'welcome'
 
-    record_visit(current_user)
+    establish_session(existing_user)
 
-    return redirect(url)
+    record_visit(existing_user)
+
+    return redirect(url_for(destination))
 
 
 @app.route('/logout')
