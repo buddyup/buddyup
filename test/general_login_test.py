@@ -40,6 +40,9 @@ class GeneralLoginTests(unittest.TestCase):
 
 
     def test_existing_login_with_CAS(self):
+
+        initial_visits = Visit.query.count()
+
         existing_user = User(user_name="mockuser")
         existing_user.initialized = True
         db.session.add(existing_user)
@@ -51,6 +54,8 @@ class GeneralLoginTests(unittest.TestCase):
         self.assertEqual(home.status, '200 OK')
 
         self.assertTrue(is_home_screen(home))
+
+        self.assertEqual(initial_visits + 1, Visit.query.count())
 
     
     def test_login_without_CAS(self):

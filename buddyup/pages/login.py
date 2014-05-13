@@ -30,42 +30,50 @@ def setup_cas():
         root=url_for('index', _external=True))
 
 
+def use_cas():
+    return app.config.get('BUDDYUP_ENABLE_AUTHENTICATION', True)
+
+def create_new_user(user_name):
+    new_user = User(user_name=user_name)
+    db.session.add(new_user)
+    db.session.commit()
+    return new_user
+
+def record_visit(user):
+    db.session.add(Visit(user_id=user.id))
+    db.session.commit()
+
+
+LOGIN_OK = 0
+
 @app.route('/login')
 def login():
-    authentication_enabled = app.config.get('BUDDYUP_ENABLE_AUTHENTICATION', True)
-    if ('ticket' in request.args) or (not authentication_enabled):
-        if authentication_enabled:
-            status, message = validate(ticket=args_get('ticket'))
-        else:
-            # Authentication is disabled, so just log the user in.
-            status = 0
-            username = args_get('username')
-            message = username
-        if status == 0:
-            user_name = message
-            user_record = User.query.filter(User.user_name == user_name).first()
-            # No user with that user name
-            if user_record is None:
-                new_user_record = User(user_name=user_name)
-                db.session.add(new_user_record)
-                db.session.commit()
-                user_id = new_user_record.id
-                url = url_for('welcome')
-            else:
-                url = url_for('home')
-                user_id = user_record.id
-            session['user_id'] = user_id
-
-            visit_record = Visit(user_id=user_id)
-            db.session.add(visit_record)
-            db.session.commit()
-
-            return redirect(url)
-        else:
-            app.logger.error(message)
-            abort(status)
-    else:
+    if ('ticket' not in request.args) and use_cas():
         return redirect(app.cas_login)
+
+    if use_cas():
+        status, payload = validate(ticket=args_get('ticket'))
+        if status != LOGIN_OK:
+            app.logger.error(payload)
+            abort(status)
+        user_name = payload
+    else:
+        # Authentication is disabled, so just log the user in.
+        _, user_name = LOGIN_OK, args_get('username')
+
+    current_user = User.query.filter(User.user_name == user_name).first()
+
+    if current_user:
+        url = url_for('home')
+    else:
+        current_user = create_new_user(user_name)
+        url = url_for('welcome')
+
+    session['user_id'] = current_user.id
+
+    record_visit(current_user)
+
+    return redirect(url)
 
 
 @app.route('/logout')
