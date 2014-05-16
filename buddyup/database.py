@@ -128,7 +128,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     # PSU user names are always <= 8 ASCII characters due to Solaris
     # restrictions
-    user_name = db.Column(db.String(8), index=True, unique=True)
+    user_name = db.Column(db.String(32), index=True, unique=True)
     full_name = db.Column(db.UnicodeText, default=u"")
     bio = db.Column(db.UnicodeText, default=u"")
     facebook = db.Column(db.UnicodeText, default=u"")
