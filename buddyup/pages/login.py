@@ -6,7 +6,7 @@ from flask import url_for, request, redirect, flash, abort, session
 
 from buddyup.app import app
 from buddyup.database import User, Visit, db
-from buddyup.util import args_get
+from buddyup.util import args_get, login_required
 
 VALIDATE_URL = "{server}/serviceValidate?{args}"
 CAS_NS = 'http://www.yale.edu/tp/cas'
@@ -17,8 +17,10 @@ TAG_USER = './/{%s}user' % CAS_NS
 
 @app.before_first_request
 def setup_cas():
+    if not use_cas(): return
     # Cache various URL's
     app.cas_server = app.config['CAS_SERVER']
+    print "APP.cas:", app.cas_server
     app.cas_service = url_for('login', _external=True)
     app.logger.info("Setting CAS service to %s", app.cas_service)
     app.cas_login = "{server}/login?service={service}".format(
@@ -32,6 +34,10 @@ def setup_cas():
 
 def use_cas():
     return app.config.get('BUDDYUP_ENABLE_AUTHENTICATION', True)
+
+def use_google():
+    return (app.config.get('AUTHENTICATION_SCHEME', "").lower() == "google")
+
 
 def create_new_user(user_name):
     new_user = User(user_name=user_name)
@@ -59,9 +65,11 @@ def login():
             app.logger.error(payload)
             abort(status)
         user_name = payload
+    elif use_google() and 'gplus_id' in session:
+        user_name = session['gplus_id']
     else:
         # Authentication is disabled, so just log the user in.
-        _, user_name = LOGIN_OK, args_get('username')
+        user_name = args_get('username')
 
     destination = 'home'
 
@@ -79,13 +87,22 @@ def login():
 
 
 @app.route('/logout')
+@login_required
 def logout():
-    # TODO: Some indication of success?
-    session.clear()
+    destination = url_for('index')
+
     if app.config.get('BUDDYUP_ENABLE_AUTHENTICATION', True):
-        return redirect(app.cas_logout)
+        print "LOGOUT OF CAS"
+        destination = app.cas_logout
+    elif use_google():
+        print "LOGOUT OF GOOGLE"
+        disconnect()
     else:
-        return redirect(url_for('index'))
+        print "LOGOUT FALL-THROUGH"
+
+    session.clear()
+    return redirect(destination)
+    
 
 
 def validate(ticket):
@@ -108,7 +125,7 @@ def validate(ticket):
     }
     url = VALIDATE_URL.format(server=cas_server,
                               args=urlencode(args))
-    app.logger.info("Validating at URL " + url)
+    # app.logger.info("Validating at URL " + url)
     try:
         req = urlopen(url)
         tree = etree.parse(req)
@@ -128,3 +145,37 @@ def validate(ticket):
     else:
         app.logger.error('bad response: %s', etree.tostring(tree.getroot()))
         return 500, "Bad response from CAS server: no success/failure"
+
+import httplib2
+import json
+
+def disconnect():
+    """Revoke current user's token and reset their session."""
+    # Only disconnect a connected user.
+    credentials = session.get('credentials')
+
+    print "cred? g+?"
+    print session.get('credentials')
+    print session.get('gplus_id')
+    
+    print "DISCONNECT (cred?) %s" % credentials
+    
+    if credentials is None: return
+
+    print "DISCONNECT (has cred)"
+
+    credentials = json.loads(credentials)
+
+    # Execute HTTP GET request to revoke current token.
+    access_token = credentials['access_token']
+    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % access_token
+    h = httplib2.Http()
+    result = h.request(url, 'GET')[0]
+    print "REQUEST MADE, Y'ALL"
+    if result['status'] == '200':
+        # Reset the user's session.
+        del session['credentials']
+        print 'Successfully disconnected.'
+    else:
+        print 'Failed to revoke token for given user.'
+

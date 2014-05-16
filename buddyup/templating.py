@@ -188,7 +188,8 @@ def render_template(template, **variables):
     # g.user is constructed in app.py's setup()
     variables['user_record'] = g.user
     variables['logged_in'] = g.user is not None
-    variables['login_url'] = app.cas_login
+    if app.config['BUDDYUP_ENABLE_AUTHENTICATION']: # use cas
+        variables['login_url'] = app.cas_login
     if g.user:
         variables['user_name'] = g.user.full_name
     else:
