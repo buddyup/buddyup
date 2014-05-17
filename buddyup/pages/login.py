@@ -20,7 +20,6 @@ def setup_cas():
     if not use_cas(): return
     # Cache various URL's
     app.cas_server = app.config['CAS_SERVER']
-    print "APP.cas:", app.cas_server
     app.cas_service = url_for('login', _external=True)
     app.logger.info("Setting CAS service to %s", app.cas_service)
     app.cas_login = "{server}/login?service={service}".format(
@@ -92,13 +91,9 @@ def logout():
     destination = url_for('index')
 
     if app.config.get('BUDDYUP_ENABLE_AUTHENTICATION', True):
-        print "LOGOUT OF CAS"
         destination = app.cas_logout
     elif use_google():
-        print "LOGOUT OF GOOGLE"
         disconnect()
-    else:
-        print "LOGOUT FALL-THROUGH"
 
     session.clear()
     return redirect(destination)
@@ -150,32 +145,15 @@ import httplib2
 import json
 
 def disconnect():
-    """Revoke current user's token and reset their session."""
-    # Only disconnect a connected user.
-    credentials = session.get('credentials')
+    # Google-specific, for logout.
+    if not session.get('credentials'): return
 
-    print "cred? g+?"
-    print session.get('credentials')
-    print session.get('gplus_id')
-    
-    print "DISCONNECT (cred?) %s" % credentials
-    
-    if credentials is None: return
+    credentials = json.loads(session.get('credentials'))
 
-    print "DISCONNECT (has cred)"
+    # Ask Google to revoke the current token.
+    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % credentials['access_token']
+    result = httplib2.Http().request(url, 'GET')[0]
 
-    credentials = json.loads(credentials)
-
-    # Execute HTTP GET request to revoke current token.
-    access_token = credentials['access_token']
-    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % access_token
-    h = httplib2.Http()
-    result = h.request(url, 'GET')[0]
-    print "REQUEST MADE, Y'ALL"
     if result['status'] == '200':
-        # Reset the user's session.
         del session['credentials']
-        print 'Successfully disconnected.'
-    else:
-        print 'Failed to revoke token for given user.'
 
