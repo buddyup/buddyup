@@ -94,37 +94,7 @@ $(function() {
 			<!--{{ render_field(form.twitter, placeholder=tw_placeholder) }}
 			{{ render_field(form.linkedin, placeholder=li_placeholder) }}
 			{{ render_field(form.email, placeholder=email_placeholder) }}
-			{{ render_field(form.bio) }}
-
-			<h3>Time for Study Group</h3>
-			<br>
-			{{ render_errors(form.availability) }}
-			<table class="times">
-				<thead>
-					<tr>
-						<th></th>
-						<th>Unavailable</th>
-						<th>AM</th>
-						<th>PM</th>
-						<th>All Day</th>
-					</tr>
-				</thead>
-				<tbody>
-				{% for day, field in zip(day_names, form.availability) %}
-					<tr>
-						<td>{{ day }}</td>
-						{% for subfield in field %}
-							<td>
-								<div class="radiowrap">
-									{{ subfield(class="center") | safe }}
-								</div>
-							</td>
-						{% endfor %}
-					</tr>
-				{% endfor %}
-				</tbody>
-			</table>-->
-			</table>
+			{{ render_field(form.bio) }}-->
 
 			<h3>{{ form.photo.label.text }}</h3>
 			<br>
