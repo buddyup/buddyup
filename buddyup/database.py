@@ -17,11 +17,6 @@ EventMembership = db.Table('eventmembership',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
     )
 
-#TutorSubject = db.Table('tutorsubject',
-#    db.Column('major_id', db.Integer, db.ForeignKey('major.id')),
-#    db.Column('tutor_id', db.Integer, db.ForeignKey('tutor.id')),
-#    )
-
 MajorMembership = db.Table('majormembership',
     db.Column('major_id', db.Integer, db.ForeignKey('major.id')),
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
@@ -38,9 +33,6 @@ LanguageMembership = db.Table('languagemembership',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
     )
 
-#TutorLanguage = db.Table('tutorlanguage',
-#    db.Column('language_id', db.Integer, db.ForeignKey('language.id')),
-#    db.Column('tutor_id', db.Integer, db.ForeignKey('tutor.id')))
 
 
 # Main tables
@@ -181,28 +173,6 @@ class User(db.Model):
                               primaryjoin=Answer.user_id == id)
     available = db.relationship('Availability', lazy="dynamic",
                                 backref="user")
-#    buddy_inv = db.relationship('User', secondary=BuddyInvitation,
-#                                primaryjoin=BuddyInvitation.c.receiver_id == id,
-#                                secondaryjoin=BuddyInvitation.c.sender_id == id)
-#    group_inv = db.relationship('User', secondary=EventInvitation,
-#                                primaryjoin=EventInvitation.c.event_id == id,
-#                                secondaryjoin=EventInvitation.c.user_id == id)
-
-
-#class Tutor(db.Model):    
-#	id = db.Column(db.Integer, primary_key=True)
-#    user_name = db.Column(db.String(8), index=True, unique=True)   
-    # Photos
-   
-    # Relationships
-#    subject_tutoring = db.relationship('Major', secondary = TutorSubject,
-#                                backref=db.backref('tutors', lazy="dynamic"),
-#                                lazy='dynamic')
-#    languages = db.relationship('Language', lazy = 'dynamic',
-#                            secondary = TutorLanguage,
-#                            backref = db.backref('tutors', lazy='dynamic'))
-#    available = db.relationship('AvailabilityTutor', lazy = "dynamic", backref = "tutors")
-#    bio = db.Column(db.UnicodeText, default=u"")
 
     
 
@@ -228,13 +198,6 @@ class Event(db.Model):
     end = db.Column(db.DateTime)
     note = db.Column(db.UnicodeText)
     invitation = db.relationship('EventInvitation', backref='event')
-    # TODO: this users relationship may be wrong
-    #users = db.relationship('User', secondary=EventMembership,
-    #                        lazy='dynamic')
-        #backref=db.backref('events'), lazy='dynamic')
-    # TODO
-#    comments = db.relationship('EventComment', backref='event',
-#                               lazy='dynamic')
 
     def __repr__(self):
         return '<Event %r>' % self.id
@@ -270,28 +233,9 @@ class Notes(db.Model):
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
     title = db.Column(db.UnicodeText)
     text = db.Column(db.UnicodeText)
-    # I don't think Notes need time - Will
-    # time = db.Column(db.DateTime)
 
     def __repr__(self):
         return '<Notes %r>' % self.id
-
-'''class NotesComment(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    notes_id = db.Column(db.Integer, db.ForeignKey('notes.id'))
-    text = db.Column(db.UnicodeText)
-    time = db.Column(db.DateTime)
-
-    def __init__(self, notes_id, text, time):
-        self.notes_id = notes_id
-        self.text = text
-        self.time = time
-
-    def __repr__(self):
-        return '<NotesComment %r>' % self.id
-'''
-
-   
 
 
 class Availability(db.Model):
@@ -299,12 +243,6 @@ class Availability(db.Model):
             primary_key=True)
     day = db.Column(db.Integer, primary_key=True)
     time = db.Column(db.Enum('am', 'pm', name="ampm"), primary_key=True)
-
-
-#class AvailabilityTutor(db.Model):
-#    tutor_id = db.Column(db.Integer, db.ForeignKey('tutor.id'), primary_key = True)
-#    day = db.Column(db.Integer, primary_key = True)
-#    time = db.Column(db.Enum('am', 'pm', name="ampm"), primary_key = True)
 
 
 class Visit(db.Model):
