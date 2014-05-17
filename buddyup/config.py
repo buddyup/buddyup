@@ -1,3 +1,5 @@
+import os
+
 '''
 Descriptions:
     BUDDYUP_ENABLE_AUTHENTICATION - if True, then use CAS or mockcas for authentication else automatically login any user without a password.  Warning: only disable this for testing / development!
@@ -6,7 +8,7 @@ Descriptions:
 '''
 
 class Base:
-    BUDDYUP_ENABLE_AUTHENTICATION = True
+    BUDDYUP_ENABLE_AUTHENTICATION = True  # TODO: Default to CAS? Is that right?
     BUDDYUP_ENABLE_ADMIN_ALL_USERS = False
     CAS_SERVER = 'https://sso.pdx.edu/cas'
     SECRET_KEY = 'foo'
@@ -25,15 +27,9 @@ class Dev(Base):
     DEFAULT_EMAIL_FORMAT = "buddyupdev+{user}@gmail.com"
     DOMAIN_NAME = 'buddyup-dev.herokuapp.com'
 
-class Testing(Base):
-    BUDDYUP_ENABLE_AUTHENTICATION = False
-    BUDDYUP_ENABLE_ADMIN_ALL_USERS = True
-    CAS_SERVER = 'http://ec2-54-201-89-140.us-west-2.compute.amazonaws.com:80'
-    ADMIN_USER = 'mockuser'
-    BUDDYUP_REQUIRE_PHOTO = False
-    DEFAULT_EMAIL_FORMAT = "buddyupdev+{user}@gmail.com"
-    DOMAIN_NAME = 'buddyup-dev.herokuapp.com'
-
 class Production(Base):
-    DEFAULT_EMAIL_FORMAT = "{user}@pdx.edu"
-    DOMAIN_NAME = 'buddyup.herokuapp.com'
+    DEFAULT_EMAIL_FORMAT = (os.environ['EMAIL_FORMAT'] or "{user}@pdx.edu")
+    DOMAIN_NAME = (os.environ['DOMAIN_NAME'] or 'buddyup.herokuapp.com')
+    # In production we're either going to use CAS or Google.
+    AUTHENTICATION_SCHEME = (os.environ['AUTHENTICATION_SCHEME'] or 'cas').lower()
+    BUDDYUP_ENABLE_AUTHENTICATION = (AUTHENTICATION_SCHEME == "cas")
