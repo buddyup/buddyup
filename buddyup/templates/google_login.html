@@ -58,7 +58,7 @@
         data-cookiepolicy="single_host_origin">
     </button>
   </div>
-				
+				  <div id="gLogging" style="display: none">Logging in...</div>
 				
 			</center>
 		</div>
@@ -83,34 +83,19 @@ var helper = (function() {
      */
     onSignInCallback: function(authResult) {
       if (authResult['access_token']) {
-        // The user is signed in
-        this.authResult = authResult;
-        helper.connectServer();
+		  $('#gConnect').hide();
+		  $('#gLogging').show();
+		  // The user is signed in
+		  this.authResult = authResult;
+		  helper.connectServer();
       } else if (authResult['error']) {
         // There was an error, which means the user is not signed in.
         // As an example, you can troubleshoot by writing to the console:
         console.log('There was an error: ' + authResult['error']);
+		$('#gLogging').hide();
         $('#gConnect').show();
       }
       console.log('authResult', authResult);
-    },
-    /**
-     * Calls the server endpoint to disconnect the app for the user.
-     */
-    disconnectServer: function() {
-      // Revoke the server tokens
-      $.ajax({
-        type: 'POST',
-        url: window.location.href + '/disconnect',
-        async: false,
-        success: function(result) {
-          console.log('revoke response: ' + result);
-          $('#gConnect').show();
-        },
-        error: function(e) {
-          console.log(e);
-        }
-      });
     },
     /**
      * Calls the server endpoint to connect the app for the user. The client
@@ -139,20 +124,6 @@ var helper = (function() {
   };
 })();
 
-/**
- * Perform jQuery initialization and check to ensure that you updated your
- * client ID.
- */
-$(document).ready(function() {
-  $('#disconnect').click(helper.disconnectServer);
-});
-
-/**
- * Calls the helper method that handles the authentication flow.
- *
- * @param {Object} authResult An Object which contains the access token and
- *   other authentication information.
- */
 function onSignInCallback(authResult) {
   helper.onSignInCallback(authResult);
 }
