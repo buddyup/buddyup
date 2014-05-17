@@ -28,8 +28,8 @@ class Dev(Base):
     DOMAIN_NAME = 'buddyup-dev.herokuapp.com'
 
 class Production(Base):
-    DEFAULT_EMAIL_FORMAT = (os.environ['EMAIL_FORMAT'] or "{user}@pdx.edu")
-    DOMAIN_NAME = (os.environ['DOMAIN_NAME'] or 'buddyup.herokuapp.com')
+    DEFAULT_EMAIL_FORMAT = os.environ.get('EMAIL_FORMAT', '{user}@pdx.edu')
+    DOMAIN_NAME = os.environ.get('DOMAIN_NAME', 'buddyup.herokuapp.com')
     # In production we're either going to use CAS or Google.
-    AUTHENTICATION_SCHEME = (os.environ['AUTHENTICATION_SCHEME'] or 'cas').lower()
+    AUTHENTICATION_SCHEME = os.environ.get('AUTHENTICATION_SCHEME', 'cas').lower()
     BUDDYUP_ENABLE_AUTHENTICATION = (AUTHENTICATION_SCHEME == "cas")
