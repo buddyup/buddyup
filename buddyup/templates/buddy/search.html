@@ -12,71 +12,74 @@
 {{ flash_all() }}
 <br><br>
 <div class="container">
-<div class="photos"> 
-<h3> Your classmates on BuddyUp </h3><br><br>
-<table class="classmate">
-{% for row in classmates|batch(3) %}
-<tr>
-	{% for classmate in row %}
-		<td><a href="{{ profile(classmate) }}"><img src="{{ photo_large(classmate) }}" width="200" height="200" class="img-polaroid"></a></td>
+
+	<div class="buddy-search" style="box-shadow: 3px 3px 5px #888888;">
+	<h3> Buddy Search </h3>
+	<br>
+			<form action="{{ url_for('buddy_search_results') }}">
+				<label> Course </label>
+				<select style="width: 240px" name="course">
+					<option value="-1">
+						All Enrolled Courses
+					</option>
+				{% for course_record in courses %}
+					<option value="{{ course_record.id }}">
+						{{ course_record.name }} by {{ course_record.instructor }}
+					</option>
+				{% endfor %}
+				</select>
+			
+				<label> Major </label>
+				<select style="width: 240px" name="major">
+					<option value="-1">Any Major</option>
+					{% for major_record in majors %}
+						<option value="{{ major_record.id }}">
+							{{ major_record.name }}
+						</option>
+					{% endfor %}
+				</select>
+			
+				<label> Language </label>
+				<select style="width: 240px" name="language">
+					<option value="-1">Any Language</option>
+					{% for language_record in languages %}
+						<option value="{{ language_record.id }}">
+							{{ language_record.name }}
+						</option>
+					{% endfor %}
+				</select>
+
+				<label> Location </label>
+				<select style="width:240px" name="location">
+					<option value="-1">Any Location</option>
+					{% for location_record in locations %}
+						<option value="{{ location_record.id }}">
+							{{ location_record.name }}
+						</option>
+					{% endfor %}
+				</select>
+
+				<label> Name </label>  
+				<input type="text" placeholder="Full Name" name="name" style="width:225px;" >
+				<div class="btn-group">
+					<input class="btn btn-large btn-danger" style="" value="Search" type="submit" >
+				</div>
+		  </form>
+	  </div>
+
+
+	<div class="photos"> 
+	<h3> Your classmates on BuddyUp </h3><br><br>
+	<table class="classmate">
+	{% for row in classmates|batch(3) %}
+	<tr>
+		{% for classmate in row %}
+			<td><a href="{{ profile(classmate) }}"><img src="{{ photo_large(classmate) }}" width="200" height="200" class="img-polaroid"></a></td>
+		{% endfor %}
+	</tr>
 	{% endfor %}
-</tr>
-{% endfor %}
-</table>         
-</div>
+	</table>         
+	</div>
 
-<div class="buddy-search" style="box-shadow: 3px 3px 5px #888888;">
-<h3> Buddy Search </h3>
-<br>
-		<form action="{{ url_for('buddy_search_results') }}">
-			<label> Course </label>
-			<select style="width: 240px" name="course">
-				<option value="-1">
-					All Enrolled Courses
-				</option>
-			{% for course_record in courses %}
-				<option value="{{ course_record.id }}">
-					{{ course_record.name }} by {{ course_record.instructor }}
-				</option>
-			{% endfor %}
-			</select>
-			
-			<label> Major </label>
-			<select style="width: 240px" name="major">
-				<option value="-1">Any Major</option>
-				{% for major_record in majors %}
-					<option value="{{ major_record.id }}">
-						{{ major_record.name }}
-					</option>
-				{% endfor %}
-			</select>
-			
-			<label> Language </label>
-			<select style="width: 240px" name="language">
-				<option value="-1">Any Language</option>
-				{% for language_record in languages %}
-					<option value="{{ language_record.id }}">
-						{{ language_record.name }}
-					</option>
-				{% endfor %}
-			</select>
-
-			<label> Location </label>
-			<select style="width:240px" name="location">
-				<option value="-1">Any Location</option>
-				{% for location_record in locations %}
-					<option value="{{ location_record.id }}">
-						{{ location_record.name }}
-					</option>
-				{% endfor %}
-			</select>
-
-			<label> Name </label>  
-			<input type="text" placeholder="Full Name" name="name" style="width:225px;" >
-			<div class="btn-group">
-				<input class="btn btn-large btn-danger" style="" value="Search" type="submit" >
-			</div>
-	  </form>
-  </div>
 </div>
 {% endblock %}
