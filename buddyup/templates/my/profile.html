@@ -94,17 +94,20 @@
 			<b>Courses:</b> Not enrolled
 		{% endif %}
 	</div>
-   <br>
-    <div class="friend">
-    <h3> {{ user_record.full_name }}'s Buddies </h3>
-    <br><br><br>
-	<table class="people" style="margin-left:180px;border-top:3px solid #CCC;;">
-	{% for list_buddies in print_buddies %}
-	<tr>
-		{% for buddy in list_buddies %}
-			<td><a href="{{ profile(buddy) }}"><img src="{{ photo_large(buddy) }}" width="200" height="200" class="img-polaroid"></a></td>
+	{% if print_buddies|length > 0 %}
+	   <br>
+	    <div class="friend">
+	    <h3> {{ user_record.full_name }}'s Buddies </h3>
+	    <br><br><br>
+		<table class="people" style="margin-left:180px;border-top:3px solid #CCC;;">
+		{% for list_buddies in print_buddies %}
+		<tr>
+			{% for buddy in list_buddies %}
+				<td><a href="{{ profile(buddy) }}"><img src="{{ photo_large(buddy) }}" width="200" height="200" class="img-polaroid"></a></td>
+			{% endfor %}
+		</tr>
 		{% endfor %}
-	</tr>
-	{% endfor %}
+		</table>
+	{% endif %}
 </div>
 {% endblock %}
