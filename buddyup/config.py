@@ -33,3 +33,12 @@ class Production(Base):
     # In production we're either going to use CAS or Google.
     AUTHENTICATION_SCHEME = os.environ.get('AUTHENTICATION_SCHEME', 'cas').lower()
     BUDDYUP_ENABLE_AUTHENTICATION = (AUTHENTICATION_SCHEME == "cas")
+
+class Testing(Base):
+    BUDDYUP_ENABLE_AUTHENTICATION = False
+    BUDDYUP_ENABLE_ADMIN_ALL_USERS = True
+    CAS_SERVER = 'http://ec2-54-201-89-140.us-west-2.compute.amazonaws.com:80'
+    ADMIN_USER = 'mockuser'
+    BUDDYUP_REQUIRE_PHOTO = False
+    DEFAULT_EMAIL_FORMAT = "buddyupdev+{user}@gmail.com"
+    DOMAIN_NAME = 'buddyup-dev.herokuapp.com'
