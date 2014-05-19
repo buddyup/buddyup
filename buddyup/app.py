@@ -26,9 +26,12 @@ from_env('ADMIN_USER',
          'SECRET_KEY',
          'HELP_URL',
          'AWS_S3_BUCKET',
+         'DEMO_MODE'
          )
+
 if 'DATABASE_URL' in os.environ:
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+
 Heroku(app)
 
 runner = Runner(app)

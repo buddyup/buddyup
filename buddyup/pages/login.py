@@ -93,7 +93,12 @@ def logout():
     if app.config.get('BUDDYUP_ENABLE_AUTHENTICATION', True):
         destination = app.cas_logout
     elif use_google():
+        # Toss our Google key
         disconnect()
+        # And if we're demoing, log them out of Google altogether
+        # so that the next person can login fresh.
+        if app.config.get('DEMO_MODE', False):
+            destination = "https://accounts.google.com/Logout?&continue=%s" % url_for('index')
 
     session.clear()
     return redirect(destination)
