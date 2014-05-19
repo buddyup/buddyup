@@ -6,7 +6,7 @@ from flask import url_for, request, redirect, flash, abort, session
 
 from buddyup.app import app
 from buddyup.database import User, Visit, db
-from buddyup.util import args_get, login_required
+from buddyup.util import args_get, login_required, get_domain_name
 
 VALIDATE_URL = "{server}/serviceValidate?{args}"
 CAS_NS = 'http://www.yale.edu/tp/cas'
