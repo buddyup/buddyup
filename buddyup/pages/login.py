@@ -98,7 +98,7 @@ def logout():
         # And if we're demoing, log them out of Google altogether
         # so that the next person can login fresh.
         if app.config.get('DEMO_MODE', "").lower() == "true":
-            destination = "https://accounts.google.com/Logout?&continue=%s%s" % (get_domain_name(), url_for('index'))
+            destination = "https://accounts.google.com/Logout"
 
     session.clear()
     return redirect(destination)
