@@ -278,7 +278,7 @@ class Language(db.Model):
 class Operator(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     login = db.Column(db.String(32), index=True, unique=True)
-    password = db.Column(db.String(32))
+    password = db.Column(db.String(64))
 
     def __repr__(self):
         return u'%s' % self.login
