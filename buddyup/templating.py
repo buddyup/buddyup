@@ -190,10 +190,6 @@ def render_template(template, **variables):
     variables['logged_in'] = g.user is not None
     if app.config['BUDDYUP_ENABLE_AUTHENTICATION']: # use cas
         variables['login_url'] = app.cas_login
-        # TODO: Create a generalized solution to this crappy hack for PSU:
-        if "pdx.buddyup.org" in request.url_root:
-            variables['login_url'] = app.cas_login.replace("buddyup.herokuapp.com", "pdx.buddyup.org")
-
     if g.user:
         variables['user_name'] = g.user.full_name
     else:
