@@ -4,7 +4,7 @@
 from ConfigParser import ConfigParser
 
 from flask import render_template as _render_template
-from flask import g, url_for
+from flask import g, url_for, request
 
 from buddyup.app import app
 from buddyup.database import User, Event
@@ -190,6 +190,10 @@ def render_template(template, **variables):
     variables['logged_in'] = g.user is not None
     if app.config['BUDDYUP_ENABLE_AUTHENTICATION']: # use cas
         variables['login_url'] = app.cas_login
+        # TODO: Create a generalized solution to this crappy hack for PSU:
+        if "pdx.buddyup.org" in request.url_root:
+            variables['login_url'] = app.cas_login.replace("buddyup.herokuapp.com", "pdx.buddyup.org")
+
     if g.user:
         variables['user_name'] = g.user.full_name
     else:
