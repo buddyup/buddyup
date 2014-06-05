@@ -16,10 +16,8 @@
 					<img src="{{ img('facebook.png') }}" height="50" width="50">
 					</a>
 			    </li>
-			{% endif %}
-			   
-			{% if not buddy_record.facebook %}
-				<li>
+			{% else %}
+				<li class="unsocial">
 					<img src="{{ img('facebook.png') }}" height="50" width="50">
 			    </li>
 			{% endif %}
@@ -29,10 +27,8 @@
 					<img src="{{ img('twitter.png') }}" height="50" width="50">
 					</a>
 				</li>
-			{% endif %}
-
-			{% if not buddy_record.twitter %}
-				<li>
+			{% else %}
+				<li class="unsocial">
 					<img src="{{ img('twitter.png') }}" height="50" width="50">
 			    </li>
 			{% endif %}
@@ -41,10 +37,8 @@
 				<li><a href="{{ user_record.linkedin }}">
 					<img src="{{ img('linkedin-50x50.png') }}">
 				</li>
-			{% endif %}
-
-			{% if not buddy_record.linkedin %}
-				<li>
+			{% else %}
+				<li class="unsocial">
 					<img src="{{ img('linkedin-50x50.png') }}" height="50" width="50">
 			    </li>
 			{% endif %}  
