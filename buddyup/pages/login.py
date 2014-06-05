@@ -91,7 +91,8 @@ def logout():
     destination = url_for('index')
 
     if app.config.get('BUDDYUP_ENABLE_AUTHENTICATION', True):
-        destination = app.cas_logout
+        # Accommodate PDX dual-domains for now. TODO: Pull this once we're only using pdx.buddyup.org
+        destination = app.cas_logout if "pdx.buddyup.org" not in request.url_root else app.cas_logout.replace("buddyup.herokuapp.com", "pdx.buddyup.org")
     elif use_google():
         # Toss our Google key
         disconnect()
