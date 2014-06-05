@@ -118,7 +118,7 @@ def validate(ticket):
     """
 
     cas_server = app.cas_server
-    service = app.cas_service
+    service = app.cas_service if "pdx.buddyup.org" not in request.url_root else app.cas_service.replace("buddyup.herokuapp.com", "pdx.buddyup.org")
     args = {
         'service': service,
         'ticket': ticket
