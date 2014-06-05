@@ -189,7 +189,7 @@ def render_template(template, **variables):
     variables['user_record'] = g.user
     variables['logged_in'] = g.user is not None
     if app.config['BUDDYUP_ENABLE_AUTHENTICATION']: # use cas
-        variables['login_url'] = app.cas_login if "pdx.buddyup.org" not in request.url_root else app.cas_login.replace("buddyup.herokuapp.com", "pdx.buddyup.org")
+        variables['login_url'] = app.cas_login ## TODO: ## if "pdx.buddyup.org" not in request.url_root else app.cas_login.replace("buddyup.herokuapp.com", "pdx.buddyup.org")
     if g.user:
         variables['user_name'] = g.user.full_name
     else:
