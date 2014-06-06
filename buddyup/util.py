@@ -143,6 +143,10 @@ def events_to_json(events):
 def email(user):
     return user.email or default_email(user)
 
+@app.template_global()
+@app.template_filter()
+def fix_url(url):
+    return url if url and ( url.lower().startswith("http://") or url.lower().startswith("https://") ) else "http://%s" % url
 
 def sorted_languages():
     """
