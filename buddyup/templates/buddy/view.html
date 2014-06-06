@@ -12,7 +12,7 @@
 		<div class="profile-social" style="margin-left:-20px;">
 		<ul class=" profile-social social">
 			{% if buddy_record.facebook %}
-				<li><a href="{{ buddy_record.facebook }}">
+				<li><a href="{{ buddy_record|facebook }}">
 					<img src="{{ img('facebook.png') }}" height="50" width="50">
 					</a>
 			    </li>
@@ -23,7 +23,7 @@
 			{% endif %}
 
 			{% if buddy_record.twitter %}
-				<li><a href="{{ buddy_record.twitter }}">
+				<li><a href="{{ buddy_record|twitter }}">
 					<img src="{{ img('twitter.png') }}" height="50" width="50">
 					</a>
 				</li>
@@ -34,7 +34,7 @@
 			{% endif %}
 
 			{% if buddy_record.linkedin %}
-				<li><a href="{{ buddy_record.linkedin }}">
+				<li><a href="{{ buddy_record|linkedin }}">
 					<img src="{{ img('linkedin-50x50.png') }}">
 				</li>
 			{% else %}
