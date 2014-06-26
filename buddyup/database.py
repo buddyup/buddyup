@@ -287,3 +287,10 @@ class Operator(db.Model):
 
     def is_authenticated(self):
         return self.authenticated
+
+
+class Action(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    path = db.Column(db.String(255))
+    verb = db.Column(db.String(8))

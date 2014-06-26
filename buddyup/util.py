@@ -2,15 +2,33 @@ from functools import wraps
 import re
 import random
 
-from flask import flash, request, abort, g, redirect, url_for
+from flask import flash, request, abort, g, redirect, url_for, request
 
 from buddyup.database import (Course, Language, Event, EventComment,
-                              Availability, Visit, db)
+                              Availability, Visit, db, Action)
 from buddyup.app import app, mandrill_client
 from buddyup.photo import clear_images
 import mandrill
 
 _DEFAULT = object()
+
+
+def track_activity(func):
+    """
+    Record the user's activity.
+    """
+    @wraps(func)
+    def f(*args, **kwargs):
+        if g.user is None: return
+        entry = Action()
+        entry.user_id = g.user.id
+        entry.path = request.path
+        entry.verb = request.method
+        db.session.add(entry)
+        db.session.commit()
+
+        return func(*args, **kwargs)
+    return f
 
 
 def login_required(func):

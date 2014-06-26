@@ -4,9 +4,9 @@ from buddyup.app import app
 from buddyup.database import (User, BuddyInvitation, Major, MajorMembership,
                               LanguageMembership,
                               Course, CourseMembership, db,
-                              Location)
+                              Location, Action)
 from buddyup.templating import render_template
-from buddyup.util import login_required, args_get, sorted_languages, shuffled
+from buddyup.util import login_required, args_get, sorted_languages, shuffled, track_activity
 
 
 def extract_names(records):
@@ -14,8 +14,10 @@ def extract_names(records):
 
 @app.route("/buddy/view/<user_name>")
 @login_required
+@track_activity
 def buddy_view(user_name):
-    if user_name == g.user.user_name:
+    # TODO: Clean up this mess of redunancy and noise.
+    if user_name == g.user.user_name:  # Viewing their own profile?
         majors = extract_names(g.user.majors)
         courses = extract_names(g.user.courses)
         languages = extract_names(g.user.languages)
