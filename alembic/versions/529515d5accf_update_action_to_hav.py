@@ -15,7 +15,7 @@ import sqlalchemy as sa
 
 
 def upgrade():
-    op.add_column('action', sa.Column('when', sa.TIMESTAMP, default=sa.func.now()))
+    op.add_column('action', sa.Column('when_happened', sa.TIMESTAMP, default=sa.func.now()))
 
 def downgrade():
-    op.drop_column('action', 'when')
+    op.drop_column('action', 'when_happened')
