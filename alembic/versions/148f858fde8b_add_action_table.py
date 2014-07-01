@@ -21,7 +21,7 @@ def upgrade():
         db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
         db.Column('path', db.String(255)),
         db.Column('verb', db.String(8)),
-        db.Column('when_happened', db.TIMESTAMP, default=db.func.now())
+        db.Column('when_happened', db.TIMESTAMP, server_default=db.func.now())
     )
 
 def downgrade():
