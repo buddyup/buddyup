@@ -44,9 +44,22 @@ def invite_list():
                            event_invitations=event_invitations)
 
 
+def compose_invitation_message(invite):
+    sender = User.query.get(invite.sender_id)
+    accept_link = get_domain_name() + url_for('invite_accept', inv_id=invite.id)
+    decline_link = get_domain_name() + url_for('invite_deny', inv_id=invite.id)
+    return """<p>
+                You have received a buddy request from %s on BuddyUp.
+                Click this link to accept the invitation: %s
+                or this link to decline: %s
+                </p>""" %\
+                (sender.full_name, accept_link, decline_link)
+
+
 @app.route("/invite/send/<user_name>")
 @login_required
 def invite_send(user_name):
+    # TODO: Security analysis of this code. Too many WTFs.
     if (user_name == g.user.user_name):
         abort(403)
     other_user_record = User.query.filter_by(user_name=user_name).first_or_404()
@@ -71,15 +84,10 @@ def invite_send(user_name):
         db.session.add(invite_record)
         db.session.commit()
         flash("Sent invitation to " + user_name)
-        domain_name = get_domain_name()
+
         sbj = '%s wants to be your buddy on Buddyup' % email(g.user)
-        msg = """<p>
-                You have received a buddy request on BuddyUp.
-                Click this link to accept the invitation: %s
-                or this link to decline: %s
-                </p>""" %\
-              (domain_name + url_for('invite_accept', inv_id=invite_record.id),
-               domain_name + url_for('invite_deny', inv_id=invite_record.id))
+        msg = compose_invitation_message(invite_record)
+
         send_mandrill_email_message(user_recipient=other_user_record,
                                     subject=sbj, html=msg)
     # TODO: Don't redirect to referrer (potential security risk?)

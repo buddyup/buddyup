@@ -1,6 +1,7 @@
 from functools import wraps
 import re
 import random
+import json
 
 from flask import flash, request, abort, g, redirect, url_for, request
 
@@ -226,8 +227,8 @@ def send_mandrill_email_message(user_recipient, subject, html):
             mandrill_client.messages.send(message=message, async=False,
                                                ip_pool=IP_POOL)
         else:
-            print "MANDRILL MESSAGE:"
-            print message
+            with open("last_sent.msg", "w") as msgfile:
+                msgfile.write(json.dumps(message))
 
     except mandrill.Error, e:
         # Mandrill errors are thrown as exceptions
