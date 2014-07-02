@@ -6,7 +6,7 @@ from flask import flash, request, abort, g, redirect, url_for, request
 
 from buddyup.database import (Course, Language, Event, EventComment,
                               Availability, Visit, db, Action)
-from buddyup.app import app, mandrill_client
+from buddyup.app import app, mandrill_client, in_production
 from buddyup.photo import clear_images
 import mandrill
 
@@ -221,8 +221,14 @@ def send_mandrill_email_message(user_recipient, subject, html):
                    'to': [{'email': email(user_recipient),
                            'name': user_recipient.full_name,
                            'type': 'to'}],}
-        result = mandrill_client.messages.send(message=message, async=False,
+
+        if in_production():
+            mandrill_client.messages.send(message=message, async=False,
                                                ip_pool=IP_POOL)
+        else:
+            print "MANDRILL MESSAGE:"
+            print message
+
     except mandrill.Error, e:
         # Mandrill errors are thrown as exceptions
         print 'A mandrill error occurred: %s - %s' % (e.__class__, e)

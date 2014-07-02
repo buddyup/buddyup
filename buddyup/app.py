@@ -47,6 +47,9 @@ from . import database
 from . import photo
 
 
+def in_production():
+    return config_type == "production"
+
 @app.before_request
 def setup():
     if 'user_id' in session:
