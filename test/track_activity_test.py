@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime
 from buddyup import app
-from buddyup.database import db, Action
+from buddyup.database import db, Action, User
 
 class TrackActivityTests(unittest.TestCase):
 
