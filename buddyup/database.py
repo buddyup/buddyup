@@ -294,4 +294,3 @@ class Action(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     path = db.Column(db.String(255))
     verb = db.Column(db.String(8))
-    when_happened = db.Column(db.TIMESTAMP)
