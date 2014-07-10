@@ -10,5 +10,4 @@ from . import errorhandlers
 from . import lists
 from . import login
 from . import profile
-from . import qa
 from . import form_profile
