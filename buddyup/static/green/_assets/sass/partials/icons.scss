@@ -1,0 +1,155 @@
+
+.icon
+{
+	position: relative;
+}
+
+.icon:before, .icon:after
+{
+	font-family: $font-symbol;
+}
+
+/*/ /*/
+
+.icon.icon-course:before
+{ content: '\1F4D5'; }
+
+.icon.icon-person:before
+{ content: '\1F464'; }
+
+.icon.icon-people:before
+{ content: '\1F465'; }
+
+.icon.icon-tutor:before
+{ content: '\1F393'; }
+
+.icon.icon-event:before
+{ content: '\1F554'; }
+
+.icon.icon-note:before
+{ content: '\1F4C4'; }
+
+.icon.icon-comment:before
+{ content: '\E718'; }
+
+.icon.icon-location:before
+{ content: '\E724'; }
+
+.icon.icon-calendar:before
+{ content: '\1F4C5'; }
+
+.icon.icon-eye:before
+{ content: '\E70A'; }
+
+.icon.icon-down:before
+{ content: '\E764'; }
+
+.icon.icon-checkmark:before
+{ content: '\2713'; }
+
+.icon.icon-error:before
+{ content: '\26A0'; }
+
+.icon.icon-add:before
+{ content: '\2295'; }
+
+.icon.icon-remove:before
+{ content: '\2716'; }
+
+.icon.icon-prev:before
+{ content: '\E761'; }
+
+.icon.icon-next:before
+{ content: '\E762'; }
+
+.icon.icon-person-add
+{
+	position: relative;
+	display: inline-block;
+	padding-right: 0.25em;
+}
+
+.icon.icon-person-add:before
+{ content: '\1F464'; }
+
+.icon.icon-person-add:after
+{ 
+	content: '\2795';
+	position: absolute;
+	left: .45em;
+	top: 0.1em;
+}
+
+.icon.icon-course-add
+{
+	position: relative;
+	display: inline-block;
+	padding-right: 0.25em;
+}
+
+.icon.icon-course-add:before
+{ content: '\1F4D5'; }
+
+.icon.icon-course-add:after
+{ 
+	content: '\2795';
+	position: absolute;
+	left: .45em;
+	top: 0.1em;
+}
+
+.icon.icon-event-add
+{
+	position: relative;
+	display: inline-block;
+	padding-right: 0.25em;
+}
+
+.icon.icon-event-add:before
+{ content: '\1F554'; }
+
+.icon.icon-event-add:after
+{ 
+	content: '\2795';
+	position: absolute;
+	left: .75em;
+	top: 0.05em;
+	font-size: 0.75em;
+}
+
+.icon.icon-followed
+{ 
+	display: inline-block;
+	padding-right: 0.1em;
+}
+
+.icon.icon-followed:before
+{ content: '\2713'; font-size: 1.1em; }
+
+.icon.icon-interest
+{
+	position: relative;
+	display: inline-block;
+	padding-right: 0.25em;
+}
+
+.icon.icon-interest:before
+{ 
+	position: absolute;
+	content: '\25CF'; 
+	font-size: 2.2em;
+	top:  -0.25em;
+	left: -0.25em;
+}
+
+.icon.icon-interest:after
+{ 
+	content: '#';
+	position: absolute;
+	left: -0.43em;
+	top: 0.6em;
+
+	font-size: 0.55em;
+
+	color: white;
+}

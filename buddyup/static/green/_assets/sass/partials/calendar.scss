@@ -1,0 +1,124 @@
+/*/  Custom Stuff /*/ 
+
+#calendar-wrapper
+{
+	h4
+	{
+		color: $color-gray-dark;
+		margin-bottom: 10px;
+	}
+}
+
+.calender-heading
+{
+	overflow: auto;
+	padding-top: 10px;
+	padding-bottom: 30px;
+
+	a, h4
+	{
+		float: left;
+		display: inline-block;
+	}
+
+	a.button
+	{}
+
+	h4
+	{
+		font-size: 32px;
+		color: $color-gray-dark;
+		margin-bottom: 10px;
+	}
+
+	a[data-calendar-nav="prev"], a[data-calendar-nav="next"]
+	{
+		font-size: 42px;
+		line-height: 0.65em;
+		text-decoration: none;
+
+		.icon
+		{
+			@include text-link;
+			color: $color-gray-medium;
+
+			padding-left: 5px;
+			padding-right: 5px;
+
+			&:before
+			{
+				// left: 1em;
+			}
+		}
+	}
+
+	a[data-calendar-nav="prev"]
+	{
+		margin-right: 10px;
+	}
+
+	a[data-calendar-nav="next"]
+	{
+		margin-left: 10px;
+	}
+
+	a.action
+	{
+		@include button( $color-primary, white, true );
+	}
+}
+
+
+/*/  Calendar Overrides /*/ 
+
+/*/  Month Boxes /*/ 
+
+.cal-row-head
+{
+	.cal-cell1
+	{
+		margin-bottom: 5px;
+
+		// border-top: 1px solid $color-border-lighter !important;
+		background: white;
+		font-size: 12px;
+		font-weight: 100;
+		color: $color-blue-dull-light;
+	}
+}
+
+.cal-row-fluid, .cal-cell, .cal-month-box
+{
+	border-color: $color-border-lighter !important; 
+}
+
+.cal-month-box
+{
+
+}
+
+.cal-month-day, .cal-day-outmonth, .cal-day-weekend
+{
+	font-size: 12px;
+	font-weight: 100;	
+}
+
+.cal-month-day, .cal-day-weekend
+{
+	span
+	{ color: $color-blue-dull-dark !important; }
+}
+
+.cal-day-outmonth
+{
+	span
+	{ color: $color-gray-dark !important; }
+} 
+
+/*/  Events /*/ 
+
+.event
+{
+	border: none !important;
+	@include box-shadow( none !important );
+}

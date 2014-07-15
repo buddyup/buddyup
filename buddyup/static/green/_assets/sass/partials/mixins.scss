@@ -1,0 +1,141 @@
+//
+
+@mixin square( $size, $rounded-corner-radius: 0px )
+{
+	width: $size;
+	height: $size;
+	border-radius: $rounded-corner-radius;
+}
+
+@mixin circle( $radius )
+{
+	width: $radius;
+	height: $radius;
+	border-radius: $radius;
+}
+
+//
+
+@mixin block-background
+{
+	background-repeat: no-repeat;
+	background-size: 100% auto;
+	background-position: center center;
+}
+
+
+//
+// Source http://stackoverflow.com/questions/17181849/placeholder-mixin-scss-css
+@mixin placeholder
+{
+  ::-webkit-input-placeholder {@content}
+  :-moz-placeholder           {@content}
+  ::-moz-placeholder          {@content}
+  :-ms-input-placeholder      {@content}  
+}
+
+
+// Buttons
+
+@mixin button( $background-color: $color-secondary, $text-color: white, $inverse: false )
+{
+	display: inline-block;
+	padding: 0.75em 1.15em 0.75em 1.15em;
+
+	border-radius: 5px;
+	font-weight: 400;
+	font-size: 16px;
+	text-decoration: none;
+
+	font-size: 18px;
+
+	@if $inverse == true
+	{
+		color: $background-color; 
+		background-color: $text-color;
+		border: 1px solid $background-color;
+	}
+	@else
+	{
+		color: $text-color; 
+		background-color: $background-color;
+		border: 1px solid $background-color;
+	}
+
+	.icon
+	{
+		font-size: 30px;
+		// position: absolute;
+	}
+
+	&:hover
+	{
+		@if $inverse == true
+		{
+			background-color: $background-color;
+			border: 1px solid $background-color;
+			color: $text-color;
+		}
+		@else
+		{
+			background-color: transparent;
+			color: $background-color;	
+		}
+	}
+
+	&.inactive
+	{
+		color: $background-color !important;
+		background-color: transparentize( $background-color, 0.8 ) !important;
+		border: 1px solid transparentize( $background-color, 0.8 ) !important;
+	}
+}
+
+@mixin button-small( $background-color: $color-secondary, $text-color: white, $inverse: false )
+{
+	@include button( $background-color, $text-color, $inverse );
+	font-size: 14px !important;
+	line-height: 1em;
+	padding: 0.5em 1em 0.75em 1em !important;
+}
+
+.button.primary
+{ 
+	@include button( $color-secondary );
+}
+
+.button.small
+{ @include button-small; }
+
+@mixin button-highlighted
+{
+	color: $color-primary;
+	background-color: transparentize( $color-primary, 0.9 );
+
+	&:hover
+	{
+		color: white;
+		background-color: $color-primary;
+		text-decoration: none;
+	}
+}
+
+@mixin text-link
+{
+	color: $color-primary;
+
+	&:hover
+	{ 
+		color: white;
+		background-color: $color-primary;
+		border-radius: 0px;
+		text-decoration: none;
+	}
+}
+
+@mixin button-block
+{
+	color: $color-primary;
+	background-color: $color-background-blue;
+	border: 1px solid $color-border-darker;
+}

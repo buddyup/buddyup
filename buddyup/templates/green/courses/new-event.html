@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Buddy Up</title>
+        <link href="../_assets/css/bootstrap/bootstrap.min.css" rel="stylesheet">
+        <link href="../_assets/css/new-event.css" rel="stylesheet">
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,900' rel='stylesheet' type='text/css'>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="../_assets/js/bootstrap.min.js"></script>
+
+        <script src="../_assets/plugins/datepicker/bootstrap-datepicker.js"></script>
+        <link href="../_assets/plugins/datepicker/datepicker.css" rel="stylesheet">
+    </head>
+    <body>
+        <header>
+            <nav class="container">
+                <div class="main">
+                    <ul>
+                        <li class="logo"><a href="../index.html"><img src="../_assets/images/nav/logo@2x.png" height="45" /></a></li>
+                        <li><a href="../buddies/index.html">Buddies</a></li>
+                        <li><a href="../courses/index.html">Courses</a></li>
+                        <li><a href="../tutors/index.html">Tutors</a></li>
+                    </ul>
+                </div>
+                <div class="notifications">
+                    <a href="" class="button">&nbsp;<span class="badging">4</span></a>
+                    <!--
+                    <ul>
+                        <li><a href="">&nbsp;</a></li>
+                    </ul>
+                    -->
+                </div>
+                <div class="overflow">
+                    <a href="../site-map.html" class="button">
+                        <span class="img" style="background-image: url('../_assets/images/people/bforrest-200-200.png');">&nbsp;</span>
+                        <span class="name">Brian Forrester</span>
+                    </a>
+                    <!--
+                    <ul>
+                        <li><a href="">&nbsp;</a></li>
+                    </ul>
+                    -->
+                </div>
+            </nav>
+        </header>
+        
+        <div id="main">
+            <article id="top" class="detail">
+                <div class="wrapper container">
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3">
+                            <a href="./detail.html"><div class="thumbnail" style="background-image:url('../_assets/images/courses/stats101.jpg')">&nbsp;</div></a>
+                            <h1>New Event</h1>
+                            <div class="subtitle"><span>Stanford University</span>&bull;<span><a href="./detail.html">Statistics 101</a></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article id="main-content" class="container">
+
+                <form role="form">
+                    
+                    <section id="" class="row">
+                        <div class="col-md-6 col-md-offset-3">
+                            <div class="group-heading"><h3>Step 1: Basic Info</h3></div>
+                            
+                            <div class="form-group">
+                                <label for="event-title" class="control-label">Event Title</label>
+                                <input type="text" name="event-title" class="form-control" placeholder="">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="" class="control-label">Location</label>
+                                <select class="form-control">
+                                    <option></option>
+                                    <option>PSU Library at Neubeurger Hall</option>
+                                </select>
+                                <select class="form-control">
+                                    <option></option>
+                                    <option>Reserved Room</option>
+                                </select>
+                                <span class="message warning">* This room needs to be reserved with your school. <a href="#">Reserve now</a></span>
+                            </div>
+
+                            <div class="form-group">
+                                <div>
+                                    <label for="date" class="control-label">Date</label>
+                                    <input type="text" data-date-format="mm/dd/yy" id="date" name="date" class="datepicker">
+                                    <span class="icon icon-calendar">&nbsp;</span>
+                                </div>
+                                <script>$( document ).ready( function() { $('#date').datepicker(); });</script>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="" class="control-label">Time</label>
+                                <div class="range">
+                                    <div class="from">
+                                        <span>Starts</span>
+                                        <select class="form-control">
+                                            <option>8:00AM</option>
+                                        </select>
+                                    </div>
+                                    <div class="to">
+                                        <span>End</span>
+                                        <select class="form-control">
+                                            <option>12:00PM</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="avail" class="control-label">Availability</label>
+                                <div class="radio horizontal">
+                                    <label>
+                                    <input type="radio" name="avail" id="availPublic" value="option1" checked>
+                                        Open to the class
+                                    </label>
+                                </div>
+                                <div class="radio horizontal">
+                                    <label>
+                                    <input type="radio" name="avail" id="availPrivate" value="option2">
+                                        Private event
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+
+                    <section id="" class="row">
+                        <div class="col-md-6 col-md-offset-3">
+                            <div class="group-heading"><h3>Step 2: Invite People</h3></div>
+                                
+                                <div class="form-group people-list">
+                                    <label for="" class="control-label">Invite people from your class</label>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="invite" id="" value="option1">
+                                            Invite everyone
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="invite" id="" checked value="option2">
+                                            Invite only these people
+                                        </label>
+                                    </div>
+                                    <ul class="tablelist-group">
+                                        <li class="tablelist-group-row">
+                                            <ul class="tablelist">
+                                                <li class="icon"><a href="./profile.html"><div class="block circle" style="background-image:url('../_assets/images/people/15.jpg')">&nbsp;</div></a></li>
+                                                <li class="main">
+                                                    <span class="title">Aaron Cook</span>
+                                                    <span class="subtitle">Downtown</span>
+                                                </li>
+                                                <li class="action"><a href="#">Remove</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="tablelist-group-row">
+                                            <ul class="tablelist">
+                                                <li class="icon"><a href="./profile.html"><div class="block circle" style="background-image:url('../_assets/images/people/15.jpg')">&nbsp;</div></a></li>
+                                                <li class="main">
+                                                    <span class="title">Aaron Cook</span>
+                                                    <span class="subtitle">Downtown</span>
+                                                </li>
+                                                <li class="action"><a href="#">Remove</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                    <a href="#" class="button add"><span class="icon icon-people">&nbsp;</span>Add People</a>
+                                </div>
+
+                        </div>
+                    </section>
+
+                    <section id="" class="row">
+                        <div class="col-md-6 col-md-offset-3">
+                            <div class="group-heading"><h3>Step 3: Add Comments</h3></div>
+                            <div class="form-group">
+                                <textarea rows="4">Here's some additional details...</textarea>
+                                <a href="#" class="button small submit">Add Comment</a>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="submit" class="row">
+                        <div class="col-md-6 col-md-offset-3">
+                            <a href="#" class="button submit submit-form">Create Event</a>
+                        </div>
+                    </section>
+
+                </form>
+
+            </article>
+        </div>
+
+        <footer>
+            <div class="container">
+                <p class="row">
+                    <a href="">Privacy Policy</a>
+                    &nbsp;&nbsp;&nbsp;&bull;&nbsp;&nbsp;&nbsp;
+                    <a href="">Terms</a>
+                    &nbsp;&nbsp;&nbsp;&bull;&nbsp;&nbsp;&nbsp;
+                    &copy;BuddyUp, inc. 2014  &mdash; All rights reserved.
+                    &nbsp;&nbsp;&nbsp;&bull;&nbsp;&nbsp;&nbsp;
+                    Icons by <a href="http://www.entypo.com">Entypo</a>
+                </p>
+            </div>
+        </footer>
+    </body>
+</html>

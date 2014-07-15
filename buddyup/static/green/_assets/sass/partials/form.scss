@@ -1,0 +1,345 @@
+
+/*/ Bootstrap Overrides /*/
+
+select, input
+{
+	width: auto !important;
+}
+
+.form-group
+{
+	padding-top: 20px !important;
+	padding-bottom: 20px !important;
+
+	label
+	{
+		display: block;
+		width: 100%;
+	}
+}
+
+.form-group
+{
+
+	&:last-child
+	{ padding-bottom: 0px; }
+
+	label
+	{
+		padding-bottom: 10px;
+		margin-bottom: 20px;
+
+		color: $color-gray-dark;
+		font-size: 16px;
+		font-weight: normal;
+		text-transform: uppercase;
+		border-bottom: 1px dotted $color-border-lighter;
+	}
+
+	&, .checkbox label, .radio label
+	{
+		padding-bottom: 0px;
+
+		color: $color-text;
+		font-size: 14px;
+		font-weight: normal;
+		text-transform: none;
+		border-bottom: none;
+	}
+
+	.radio
+	{
+		line-height: 1.5em;
+		input
+		{}
+	}
+
+	.checkbox
+	{
+		input
+		{}
+	}
+
+	select + select
+	{
+		margin-top: 10px;
+	}
+}
+
+/*/ General form input styling /*/
+
+.radio.horizontal, .checkbox.horizontal
+{
+	display: inline-block;
+	margin-right: 1.5em;
+}
+
+.message
+{
+	display: block;
+	width: 100%;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+
+	font-size: 14px;
+
+	&.success
+	{
+		color: green;
+	}
+
+	&.warning
+	{
+		color: orange;
+	}
+
+	&.error
+	{
+		color: red;
+	}
+
+	.icon
+	{
+		font-size: 1.75em;
+	}
+
+	a
+	{
+		@include text-link;
+	}
+}
+
+input,
+.form-group input, 
+textarea,
+.form-group textarea
+{
+
+	border-radius: 8px !important;
+	background-color: $color-background-blue !important;
+	border: 1px solid $color-border-darker !important;
+}
+
+input,
+.form-group input
+{
+	padding: 0.5em;
+	font-size: 16px !important;
+	height: auto !important;
+	color: $color-text !important;
+}
+
+.form-group textarea, textarea
+{
+	padding: 1em;
+	width: 100%;
+}
+
+textarea + a.submit, 
+textarea + .message + a.submit,
+.form-group textarea + a.submit, 
+.form-group textarea + .message + a.submit
+
+{
+	margin-top: 10px;
+	@include button( $color-primary, white, true );
+}
+
+section#submit > div
+{
+	padding-top: 40px;
+	border-top: 1px solid $color-border-darker;
+}
+
+a.submit.submit-form
+{
+	@include button( $color-orange );
+
+	padding: 0.75em;
+	padding-left: 2em;
+	padding-right: 2em;
+
+	// font-size: 20px;
+	// width: 100%;
+}
+
+/*/ Custom Controls /*/
+
+.range
+{
+	overflow: auto;
+
+	.from, .to
+	{
+		float: left;
+		overflow: auto;
+
+			span
+			{
+				float: left;
+				padding-right: 1em;
+				margin-top: 0.5em;
+			}
+
+			select
+			{
+				float: left;
+			}
+	}
+
+	.from
+	{
+		margin-right: 30px;
+
+		span
+		{}
+
+		select
+		{}
+	}
+
+	.to
+	{
+		span
+		{}
+
+		select
+		{}
+	}
+}
+
+.datepicker
+{
+	& + .icon
+	{
+
+		position: relative;
+		left: -2.5em;
+		top: .22em;
+
+		padding-top: 10px;
+
+		&:before
+		{
+			font-size: 2.75em !important;
+		}
+	}
+}
+
+.multipicker
+{
+	.multipicker-row
+	{
+		select, a.remove
+		{
+			display: inline-block;
+		}
+
+		select
+		{
+			width: 75% !important;
+		}
+
+		a.remove
+		{
+			margin-left: 10px;
+
+			color: $color-text;
+			font-size: 36px;
+			text-decoration: none;
+
+			&:hover
+			{ color: red; }
+		}
+	}
+
+	a.button.add
+	{
+		margin-top: 20px;
+		@include button-small( $color-primary, white, true );
+	}
+}
+
+.input-list
+{
+	.input-list-row
+	{
+		input, a.remove
+		{
+			display: inline-block;
+		}
+
+		input
+		{
+			width: 75% !important;
+		}
+
+		a.remove
+		{
+			margin-left: 10px;
+
+			color: $color-text;
+			font-size: 36px;
+			text-decoration: none;
+
+			&:hover
+			{ color: red; }
+		}
+	}
+
+	a.button.add
+	{
+		margin-top: 20px;
+		@include button-small( $color-primary, white, true );
+	}
+}
+
+.people-list
+{
+	a.button.add
+	{
+		margin-top: 20px;
+		@include button-small( $color-primary, white, true );
+	}
+}
+
+.photo-chooser
+{
+	.photo-preview
+	{
+		@include block-background;
+
+		width: 100px;
+		height: 100px;
+
+		background-color: $color-gray-light;
+	}
+
+	a.button
+	{
+		margin-top: 20px;
+		@include button-small( $color-primary, white, true );
+	}
+}
+
+.input-then-select
+{
+	input
+	{
+		float: left;
+	}
+
+	select
+	{
+		float: left;
+		margin-left: 10px;
+	}
+}
+
+
+/*/ Buttons /*/
+
+.button.submit
+{
+	@include button( $color-primary, white );
+}

@@ -1,0 +1,60 @@
+
+.modal
+{
+	.modal-dialog
+	{}
+
+	.modal-content
+	{}
+
+	.modal-header
+	{
+		h4
+		{
+			font-weight: 300;
+			color: $color-gray-dark;
+			font-size: 28px;
+		}
+	}
+
+	.modal-body
+	{
+		background-color: $color-background-blue;
+
+		.tablelist-group
+		{
+			background-color: white;
+		}
+
+		.form-group
+		{
+			padding:0;
+			margin:0;
+		}
+
+		#select-options
+		{
+			position: relative;
+			right: 0;
+			text-align: right;
+
+			a
+			{
+				@include text-link;
+				font-size: 13px;
+			}
+		}
+	}
+
+	.modal-footer
+	{
+		a,
+		button
+		{
+			margin-right: 20px;
+
+			&:last-child
+			{ margin-right: 0; }
+		}
+	}
+}

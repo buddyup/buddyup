@@ -157,3 +157,7 @@ def connect():
     return response
 
 
+@app.route('/green/buddies')
+@login_required
+def green_buddies():
+    return render_template('green/buddies/index.html')

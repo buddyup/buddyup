@@ -1,0 +1,10 @@
+@import "../partials/_base";
+@import "../partials/top";
+@import "../partials/list";
+
+
+ul.bulleted li
+{
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+}

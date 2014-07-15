@@ -1,0 +1,306 @@
+
+/*/ Generic List /*/
+
+.list
+{
+	display: block;
+
+	li
+	{
+		display: block;
+		width: 100%;
+	}
+}
+
+
+/*/ Tablelists /*/
+
+.group-heading + ul.tablelist-group
+{
+	border-top: none;
+	margin-top: -20px;
+}
+
+ul.tablelist-group
+{
+	border-top: 1px solid $color-border-lighter;
+
+	li.tablelist-group-row
+	{
+		display: block;
+
+		ul.tablelist
+		{
+			display: table;
+			width: 100%;			
+
+			&:hover
+			{
+				background: $color-background-blue;
+			}
+
+			li
+			{
+				display: table-cell;
+				text-align: center;
+				vertical-align: middle;
+
+				padding-top: 20px;
+				padding-bottom: 20px;
+
+				border-bottom: 1px solid $color-border-lighter;
+				font-size: 12px;
+
+				&:first-child
+				{ 
+					text-align: left; 
+					padding-left: 10px;
+				}
+
+				&:last-child
+				{ 
+					text-align: right; 
+					padding-right: 10px;
+				}
+
+				&.icon
+				{
+					$icon-size: 45px;
+					width: $icon-size;
+
+					text-align: center !important;
+					padding-right: 20px;
+					line-height: 0;
+
+					a
+					{ text-decoration: none; }
+
+					.icon-file
+					{
+						position: relative;
+
+						&:before
+						{
+							content: ' ';
+							display: inline-block;
+							width: 40px;
+							height: 40px;
+							border-radius: 3px;
+
+							background: $color-border-lighter;
+							border: 1px solid $color-border-darker;
+						}
+
+						&:after
+						{
+							content: '\1F4C4';
+
+							position: absolute;
+							top: -0.15em;
+							left: 0.275em;
+							line-height: 0;
+
+							font-family: $font-symbol;
+							font-size: 40px;
+						}
+					}
+
+					.block
+					{
+						@include block-background;
+
+						display: inline-block;
+						width: $icon-size;
+						height: $icon-size;
+
+						&.circle
+						{ border-radius: $icon-size; }
+					}
+
+
+				}
+
+				&.date
+				{
+					width: 7em;
+
+					.date
+					{
+						display: block;
+
+						font-weight: 400;
+						text-transform: uppercase;
+						color: $color-gray-dark;
+						margin-bottom: 5px;
+					}
+
+					.time
+					{}
+				}
+
+				&.main
+				{
+					text-align: left;
+
+					a
+					{
+						@include text-link;
+					}
+
+					.title
+					{
+						display: block;
+
+						color: $color-gray-dark;
+						font-size: 16px;
+						font-weight: 600;
+					}
+
+					.subtitle
+					{
+						display: block;
+						margin-top: 3px;
+
+						font-size: 12px;
+
+						span
+						{
+							margin-left: 1em;
+							margin-right: 1em;
+
+							&:first-child { margin-left: 0; }
+							&:last-child  { margin-right: 0; }
+
+							&.icon:before
+							{ 
+								font-size: 1.5em;
+								color: lighten( $color-text, 20% );
+							}
+						}
+					}
+				}
+
+				&.action
+				{
+					font-size: 14px;
+
+					a
+					{
+						@include text-link;
+					}
+				}
+			}
+		}
+	}
+}
+
+
+$message-icon-size: 70px;
+
+ul.tablelist.message
+{
+
+	li.icon
+	{
+		.block
+		{
+			width: $message-icon-size !important;
+			height: $message-icon-size !important;
+
+			&.circle
+			{ border-radius: $message-icon-size !important; }
+		}
+	}
+
+	li.main
+	{
+		.message
+		{
+			font-family: $font-body;
+			font-size: 16px;
+			line-height: 1.5em;
+			color: $color-gray-dark;
+		}
+
+		.subtitle
+		{
+			padding-top: 5px;
+		}
+	}
+}
+
+.message-add
+{
+	padding-top: 20px;
+	padding-bottom: 20px;
+
+	padding-left: $message-icon-size + 20px;
+
+	h4
+	{
+		margin-bottom: 10px;
+	}
+
+	textarea
+	{
+		width: 100%;
+		margin-bottom: 10px;
+	}
+
+	a.submit
+	{}
+}
+
+/*/ Block Lists /*/
+
+ul.block-list
+{
+	overflow: auto;
+
+	li
+	{
+		display: inline-block;
+		float: left;
+
+		width: $col;
+		height: $col;
+		margin-right: 5px;
+		margin-bottom: 5px;
+
+		a
+		{
+			text-decoration: none;
+
+			.block
+			{
+				@include block-background;
+				width: 100%;
+				height: 100%;
+
+				border: 1px solid $color-border-darker;
+
+				&.overflow
+				{
+					@include button-block;
+
+					text-align: center;
+					font-size: 30px;
+
+					span
+					{
+						display: block;
+						position: relative;
+						top: 50%;
+						@include transform( translateY( -50% ) );
+					}
+
+					sup
+					{
+						font-size: .5em;
+					}
+				}
+			}
+		}
+
+	}
+}

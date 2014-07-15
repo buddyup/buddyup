@@ -1,0 +1,20 @@
+footer
+{
+	background: $color-background-blue;
+	border-top: 1px solid $color-border-lighter;
+
+	font-size: 11px;
+	color: $color-blue-dull-light;
+
+	p
+	{
+		text-align: center;
+		padding-top: 30px;
+		padding-bottom: 30px;
+	}
+
+	a
+	{
+		color: $color-blue-dull-light;
+	}
+}

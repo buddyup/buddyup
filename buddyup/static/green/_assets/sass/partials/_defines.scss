@@ -1,0 +1,67 @@
+// Numbers
+
+$container-width: 960px;
+$col-amount: 12;
+$col: $container-width / $col-amount;
+
+$space: 10px;
+
+/// Media Queries
+
+// Roughly the sizes of breakpoints in Bootstrap
+$mq-xs : "max-width:767px";
+$mq-sm : "min-width:768px";
+$mq-md : "min-width:992px";
+$mq-lg : "min-width:1200px";
+
+
+@mixin respond-to-size-xs{ @media only screen and ( $mq-xs ) { @content; } }
+@mixin respond-to-size-sm{ @media only screen and ( $mq-sm ) { @content; } }
+@mixin respond-to-size-md{ @media only screen and ( $mq-md ) { @content; } }
+@mixin respond-to-size-lg{ @media only screen and ( $mq-lg ) { @content; } }
+
+
+@mixin respond-to-size-above( $size ) {
+    @media only screen and ( min-width:($size+1) ) { @content; }
+}
+
+@mixin respond-to-size-below( $size ) {
+    @media only screen and ( max-width:($size) ) { @content; }
+}
+
+@mixin respond-to-size-between( $min-size, $max-size ) {
+    @media only screen and (min-width:$min-size) and ( max-width: $max-size ) { @content; }
+}
+
+
+// Fonts
+
+@font-face {
+  font-family: 'Entypo';
+  src: url('../fonts/entypo.woff') format('woff'), /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+       url('../fonts/entypo.ttf') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+}
+
+$font-body : "Open Sans", "HelveticaNeue", "Helvetica", "Arial", sans-serif;
+$font-title : "Lato", "HelveticaNeue", "Helvetica", "Arial", sans-serif;
+$font-symbol: "Entypo";
+
+
+// Colors
+
+$color-blue: #0098cb;
+$color-orange: #ffaa00;
+$color-blue-dull-dark: #568da3;
+$color-blue-dull-light: #88a7b2;
+
+$color-gray-light: #dddddd;
+$color-gray-medium: #999999;
+$color-gray-dark: #191919;
+
+$color-primary: $color-blue;
+$color-secondary: $color-orange;
+$color-text: $color-gray-medium;
+
+$color-border-darker: #e7edef;
+$color-border-lighter: #f3f6f7;
+$color-background-blue: #f9fafb;

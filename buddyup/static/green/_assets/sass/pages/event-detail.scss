@@ -1,0 +1,95 @@
+@import "../partials/_base";
+@import "../partials/block-grid";
+@import "../partials/top";
+@import "../partials/list";
+@import "../partials/form";
+
+#top h1
+{
+	font-size: 40px;
+}
+
+section#info
+{
+	padding-bottom: 80px !important;
+
+	& > div > div
+	{
+		display: block;
+		padding-top: 0.5em;
+		padding-bottom: 0.5em;
+
+		text-align: center;
+		font-size: 14px;
+
+		span.icon
+		{
+			font-size: 1.5em;
+		}
+
+	}
+
+	div.icon
+	{
+		font-size: 80px;
+		line-height: 0;
+	}
+
+	.location
+	{
+		padding-bottom: 5px;
+
+		font: $font-title;
+		font-size: 26px;
+		font-weight: 400;
+		color: $color-gray-dark;
+
+		border-bottom: none;
+	}
+
+	.sublocation
+	{
+		// padding-top: 10px;
+
+		font: $font-title;
+		font-size: 16px;
+		font-weight: 100;
+		color: $color-text;
+	}
+
+	.date
+	{
+		padding-top: 1.5em;
+		padding-bottom: 1.5em;
+
+		.day
+		{
+			margin-right: 0.5em;
+		}
+
+		.time
+		{
+			margin-left: 0.5em;
+		}
+	}
+
+	.author
+	{
+		a
+		{
+			@include text-link;
+		}
+	}
+
+	.availability
+	{}
+}
+
+#attendants
+{
+	ul.block-list + a
+	{
+		margin-top: 10px;
+		@include button-small( $color-primary, white, true );
+	}
+}
