@@ -122,11 +122,11 @@ def unfriend(user_name):
 @app.route('/green/buddies')
 @login_required
 def green_buddies():
-    buddies = set(g.user.buddies)
+    buddies = set(buddy for buddy in g.user.buddies if buddy.has_photos)
     general = set()
     courses = g.user.courses.all()
     for course in courses:
-        for user in course.users.filter(User.id != g.user.id):
+        for user in course.users.filter(User.id != g.user.id).filter(User.has_photos == True):
             if user not in buddies:
                 general.add(user)
     classmates = shuffled(general) + shuffled(buddies)
