@@ -148,7 +148,7 @@
 									<span class="title">{{ classmate.full_name }}</span>
 									<span class="subtitle">
 										<span class="icon icon-course">&nbsp;</span>
-										{% if classmate.courses|length > 1 %}
+										{% if classmate.courses %}
 											{{ classmate.courses[0] }}
 										{% else %}
 											Not enrolled
