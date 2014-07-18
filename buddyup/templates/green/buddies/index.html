@@ -143,7 +143,7 @@
                     <div class="col-md-12 col-md-offset-0">
                         <ul class="block-grid">
 							{% for classmate in classmates %}
-							<li class="block" style="background-image:url('{{ photo_thumbnail(classmate) }}')">
+							<li class="block" style="background-image:url('{{ photo_large(classmate) }}')">
 								<a href="{{ profile(classmate) }}"><img src="/static/_assets/images/clear.png" /><div class="info hide"><div class="wrapper"><span class="title">{{ classmate.full_name }}</span><span class="subtitle"><span class="icon icon-course">&nbsp;</span>Stats 101</span><span class="button small"><span class="icon icon-person-add">&nbsp;</span>Follow</span></span></div></div></a>
 							</li>
 							{% endfor %}
