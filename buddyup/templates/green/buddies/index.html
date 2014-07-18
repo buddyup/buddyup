@@ -142,6 +142,12 @@
                 <section class="row">
                     <div class="col-md-12 col-md-offset-0">
                         <ul class="block-grid">
+							{% for classmate in classmates %}
+							<li class="block" style="background-image:url('{{ photo_thumbnail(user) }}')">
+								<a href="{{ profile(user) }}"><img src="/static/_assets/images/clear.png" /><div class="info hide"><div class="wrapper"><span class="title">{{ user.full_name }}</span><span class="subtitle"><span class="icon icon-course">&nbsp;</span>Stats 101</span><span class="button small"><span class="icon icon-person-add">&nbsp;</span>Follow</span></span></div></div></a>
+							</li>
+							{% endfor %}
+
                             <li class="block" style="background-image:url('/static/_assets/images/people/1.jpg')">
                                 <a href="./profile.html"><img src="/static/_assets/images/clear.png" /><div class="info hide"><div class="wrapper"><span class="title">Audrey Books</span><span class="subtitle"><span class="icon icon-course">&nbsp;</span>Stats 101</span><span class="button small"><span class="icon icon-person-add">&nbsp;</span>Follow</span></span></div></div></a>
                             </li>
@@ -225,6 +231,7 @@
                             </li>
                             <li class="block" style="background-image:url('/static/_assets/images/people/4.jpg')">
                                 <a href="./profile.html"><img src="/static/_assets/images/clear.png" /><div class="info hide"><div class="wrapper"><span class="title">Audrey Books</span><span class="subtitle"><span class="icon icon-course">&nbsp;</span>Stats 101</span><span class="button small"><span class="icon icon-person-add">&nbsp;</span>Follow</span></span></div></div></a>
+                            </li>
                         </ul>
                     </div>
                 </section>

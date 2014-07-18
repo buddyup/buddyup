@@ -155,9 +155,3 @@ def connect():
     response.headers['Content-Type'] = 'application/json'
     
     return response
-
-
-@app.route('/green/buddies')
-@login_required
-def green_buddies():
-    return render_template('green/buddies/index.html')

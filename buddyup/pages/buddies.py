@@ -117,3 +117,16 @@ def unfriend(user_name):
         other_user.buddies.remove(user)
         db.session.commit()
         return redirect(request.referrer)
+
+
+@app.route('/green/buddies')
+@login_required
+def green_buddies():
+    buddies = set(g.user.buddies)
+    general = set()
+    for course in g.user.courses.all():
+        for user in course.users.filter(User.id != g.user.id):
+            if user not in buddies:
+                general.add(user)
+    classmates = shuffled(general) + shuffled(buddies)
+    return render_template('green/buddies/index.html', classmates=classmates)
