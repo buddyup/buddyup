@@ -124,7 +124,8 @@ def unfriend(user_name):
 def green_buddies():
     buddies = set(g.user.buddies)
     general = set()
-    for course in g.user.courses.all():
+    courses = g.user.courses.all()
+    for course in courses:
         for user in course.users.filter(User.id != g.user.id):
             if user not in buddies:
                 general.add(user)
