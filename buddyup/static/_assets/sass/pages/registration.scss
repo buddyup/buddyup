@@ -1,0 +1,55 @@
+@import "../partials/_base";
+@import "../partials/block-grid";
+@import "../partials/top";
+@import "../partials/form";
+
+body
+{
+	background-color: $color-background-blue;
+}
+
+header,
+nav.navbar
+{
+	background-color: $color-background-blue !important;
+	border-color: transparent !important;
+	border-bottom: none !important;
+}
+
+header
+{
+	margin-bottom: 20px;
+}
+
+#top
+{
+
+	border-top: none;
+	border-bottom: none;
+
+	border-radius: 5px 5px 0px 0px;
+	background-color: lighten( $color-background-blue, 1% ) !important;
+
+	border-bottom: 1px solid $color-border-lighter;
+	border-top: 1px solid $color-border-lighter;
+
+	.row
+	{
+		padding-top: 40px !important;
+		padding-bottom: 20px !important;
+	}
+}
+
+.container
+{
+	background-color: white !important;
+
+	border-left: 1px solid $color-border-lighter;
+	border-right: 1px solid $color-border-lighter;
+}
+
+footer
+{
+	border-top: none;
+	border-bottom: none;
+}

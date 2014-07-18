@@ -253,6 +253,11 @@ ul.tablelist.message
 
 /*/ Block Lists /*/
 
+ul.block-list + a.add
+{
+	margin-top: 20px !important;
+}
+
 ul.block-list
 {
 	overflow: auto;

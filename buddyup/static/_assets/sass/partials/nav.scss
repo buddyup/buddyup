@@ -1,0 +1,415 @@
+/*/ Bootstrap Overrides /*/
+
+.navbar
+{
+	margin-bottom: 0;
+	background: white;
+	border: none;
+	border-radius: 0;
+}
+
+.button,
+button,
+.navbar-toggle
+{
+	border: none;
+	border-radius: 0;
+	margin: 0 !important;
+}
+
+.dropdown
+{}
+
+.dropdown-menu
+{
+	margin-top: -2px; // scoot it closer to the button
+	padding: 0;
+	border-radius: 0;
+
+	border: 1px solid $color-border-lighter;
+	@include box-shadow( 0px 2px 3px 0px transparentize( $color-blue-dull-dark, 0.9 ) );
+
+	.tablelist
+	{
+		li:first-child
+		{ padding-left: 5px; }
+
+		li:last-child
+		{ padding-right: 5px; }
+	}
+}
+
+
+/*/ Generic styling /*/
+
+header
+{
+	background: white;
+	border-bottom: 1px solid $color-border-darker;
+}
+
+.navbar-nav >.open > a
+{
+	// overwrites the button background color of dropdown buttons when dropdown is openend
+
+	&,
+	&:active,
+	&:focus
+	{
+		background-color: $color-background-blue !important;
+	}
+}
+
+.logo-wrapper
+{
+	text-align: center;
+
+	.logo
+	{
+		display: inline-block;
+
+		text-indent: -500px; //hides the text
+
+		@include background-image( url('#{$path-images}/nav/logo@2x.png') );
+		background-position: center center;
+		background-repeat: no-repeat;
+		background-size: 100% auto;
+	}
+}
+
+a.notifications
+{
+	color: $color-blue-dull-dark !important;
+	text-decoration: none;
+
+	&  > .icon-notification
+	{
+		position: relative;
+
+		font-size: 56px;
+		line-height: 0;
+
+		& + .icon-badge
+		{
+			position: absolute;
+			top: 20px;
+			right: 8px;
+		}
+	}
+}
+
+.main-link
+{
+	a
+	{
+		font-family: $font-title;
+		font-weight: 900;
+		font-size: 16px;
+		text-transform: uppercase;
+		color: $color-blue-dull-dark !important;
+
+		&:hover
+		{
+			color: $color-secondary !important;
+		}
+	}
+}
+
+.overflow-list,
+.navbar-collapse.collapse.in,
+.navbar-collapse.collapsing
+{
+	// Styling for mobile dropdown and profile-overflow menu
+
+	li
+	{
+		border-bottom: 1px solid $color-border-lighter;
+
+		&:hover
+		{
+			background-color: $color-background-blue;
+		}
+
+
+		&.main-link a
+		{
+			font-weight: bold !important;
+			// text-transform: none !important;
+		}
+
+		a
+		{
+			display: inline-block;
+
+			padding-top: 20px;
+			padding-bottom: 20px;
+			padding-left: 20px;
+			padding-right: 20px;
+
+			color: $color-blue-dull-dark;
+			font-weight: 400;
+			font-size: 16px;
+			text-decoration: none;
+
+			&:hover
+			{
+				color: $color-secondary;
+			}
+		}
+	}
+}
+
+/*/ Sizing and Vertical Centering /*/
+
+@include respond-to-size-sm
+{
+	#nav-main 
+	{
+		.nav
+		{
+			& > li
+			{
+				& > a
+				{
+					display: inline-block;
+					height: 75px !important;
+				}
+			}
+		}
+
+		.logo-wrapper
+		{ 
+			width: $col !important;
+
+			.logo
+			{
+				@include square( 45px );
+			}
+		}
+
+		.main-link
+		{
+			width: 12%;
+			text-align: center;
+
+			a
+			{
+				padding-top: 26px !important;
+			}
+		}
+
+		#profile-overflow
+		{
+			& > a
+			{
+				padding-top: 14px;
+			}
+		}
+
+		#notifications
+		{
+			& > a
+			{
+				padding-top: 30px;
+			}
+
+			.dropdown-menu
+			{
+				width: 320px;
+			}
+		}
+
+	}
+}
+
+@include respond-to-size-xs
+{
+	#nav-mobile
+	{
+		.navbar-toggle
+		{
+			height: 75px;
+		}
+
+		#menu-button
+		{
+			padding-top: 10px;
+			padding-right: 20px;
+		}
+
+		#notifications-button
+		{
+			padding-top: 30px;
+			padding-left: 20px;
+		}
+
+		.logo-wrapper
+		{ 
+			.logo
+			{
+				@include square( 45px );
+			}
+		}
+	}	
+}
+
+
+/*/ Mobile nav /*/
+
+#nav-mobile
+{
+	#menu-button
+	{
+		padding-left: 20px;
+		padding-right: 30px;
+
+		float: left !important;
+		border-right: 1px solid $color-border-lighter;
+	}
+
+	#notifications-button
+	{
+		padding-left: 30px;
+		padding-right: 20px;
+
+		float: right !important;
+		border-left: 1px solid $color-border-lighter;
+	}
+}
+
+/*/ Regular nav /*/
+
+#nav-main
+{
+	.nav
+	{ 
+		width: 100%;
+
+		color: $color-blue-dull-dark;
+	}
+}
+
+// Notificatiosn menu
+
+#notifications
+{
+	border-left: 1px solid $color-border-lighter;
+	border-right: 1px solid $color-border-lighter;
+
+	& > a
+	{
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+
+	.dropdown-menu
+	{
+		.see-all
+		{
+			padding-top: 20px;
+			padding-bottom: 20px;
+			padding-left: 20px;
+			padding-right: 20px;
+
+			a
+			{ 
+				@include text-link; 
+				font-size: 16px;
+
+				.icon
+				{
+					font-size: 2em;
+					line-height: 0;
+					top: 3px;
+				}
+			}
+		}
+	}
+}
+
+// Overflow menu / profile
+
+#profile-overflow
+{
+	&,
+	.overflow-list
+	{ width: 220px; }
+
+	border-right: 1px solid $color-border-lighter;
+
+	& > a
+	{
+		position: relative;
+		width: 100%;
+
+		padding-left: 20px;
+		padding-right: 20px;
+
+		.img
+		{
+			// position: absolute;
+			// top: 5px;
+
+			display: inline-block;
+			width: 45px;
+			height: 45px;
+
+			border-radius: 45px;
+			background-repeat: no-repeat;
+			background-position: center center;
+			background-size: 100% auto;
+		}
+
+		.name
+		{
+			position: relative;
+			top: 1em;
+			left: 5px;
+
+			display: inline-block;
+			width: 110px;
+
+			text-overflow: ellipsis;
+			overflow: hidden;
+
+			font-size: 12px;
+			text-align: left;
+		}
+
+		&:before
+		{
+			content:'\25BE';
+
+			position: absolute;
+			right: 20px;
+			// top: 13px;
+			padding-top: 15px;
+
+			font-family: $font-symbol;
+			font-size: 36px;
+			color: $color-blue-dull-light;
+		}
+
+		&:hover:before
+		{ color: $color-secondary; }
+	}
+
+	.overflow-list
+	{
+		// width: 200px;
+	}
+}
+
+// Registration
+nav.registration
+{
+
+	.wrapper
+	{
+		padding-top: 30px;
+		padding-bottom: 10px;
+
+		text-align: center;
+	}
+
+}

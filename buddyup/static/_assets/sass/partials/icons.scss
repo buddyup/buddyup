@@ -1,3 +1,19 @@
+/*/ Badging /*/
+
+.icon.icon-badge
+{
+	padding-left: 0.25em;
+	padding-right: 0.25em;
+
+	border-radius: 30px;
+	background-color: $color-secondary;
+
+	color: white;
+	font-size: 16px;
+	// font-weight: bold;
+}
+
+/*/ /*/
 
 .icon
 {
@@ -25,6 +41,9 @@
 
 .icon.icon-event:before
 { content: '\1F554'; }
+
+.icon.icon-notification:before
+{ content: '\2709'; }
 
 .icon.icon-note:before
 { content: '\1F4C4'; }

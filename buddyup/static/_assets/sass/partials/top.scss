@@ -1,6 +1,10 @@
+
+
+/*/  /*/
+
 #top
 {
-	overflow: auto;
+	// overflow: auto;
 	padding-top: 40px;
 
 	background-color: $color-background-blue;
@@ -11,7 +15,7 @@
 
 	.wrapper
 	{
-		overflow: auto;
+		// overflow: auto;
 		position: relative;
 	}
 
@@ -56,15 +60,26 @@
 	.thumbnail
 	{
 		@include block-background;
-		width: $col;
-		height: $col;
+		
 		border-radius: 0;
 
-		float:left;
-
-		margin-right: 40px;
-
 		border: 1px solid $color-text;
+
+		@include respond-to-size-xs
+		{
+			width: 44px;
+			height: 44px;
+			float:left;
+			margin-right: 20px;
+		}
+
+		@include respond-to-size-sm
+		{
+			width: $col;
+			height: $col;
+			float:left;
+			margin-right: 40px;
+		}
 
 		& + h1
 		{
@@ -109,19 +124,132 @@
 
 	h1
 	{
-		margin-top: 5px;
 		font-size: 46px;
 	}
 
-	.action
+	@include respond-to-size-xs
 	{
-		margin-top: 5px;
-		float: right;
+		h1
+		{
+			margin-top: 0px;
+		}
+
+		.action
+		{
+			display: inline-block;
+
+			margin-top: 20px !important;
+			width: 100%;
+			text-align: center;
+		}
+	}
+
+	@include respond-to-size-sm
+	{
+		h1
+		{
+			margin-top: 5px;
+		}
+
+		.action
+		{
+			margin-top: 5px;
+			float: right;
+		}		
 	}
 }
 
 #top.filter
 {
+	// Mobile styling
+
+	@include respond-to-size-xs
+	{
+		.col-md-12.col-md-offset-0
+		{
+			&:last-child
+			{
+				// in the case of mobile, this is the row that wraps the dropdown that replaces the filter
+				padding-top: 20px;
+				padding-bottom: 20px;
+
+				border-top: 1px solid $color-border-darker;
+				background-color: white;
+			}
+		}
+
+		a.action
+		{
+			float: none !important;
+			display: block;
+			width: 100%;
+
+			margin-top: 20px !important;
+			// margin-bottom: 20px !important;
+
+			text-align: center;
+		}
+
+		a.button.dropdown
+		{
+			@include button( $color-gray-medium, white, true );
+
+			position: relative;
+
+			width: 100%;
+
+			&:before
+			{
+				content: '\25BE';
+
+				position: absolute;
+				right: 10px;
+
+				$font-family: $font-symbol;
+
+			}
+		}
+
+		a.button.dropdown + .dropdown-menu
+		{
+			width: 100%;
+			border: 1px solid $color-gray-medium;
+
+			li
+			{
+				border-bottom: 1px solid $color-border-lighter;
+
+				a.selected
+				{
+					background-color: $color-primary;
+					color: white;
+				}
+
+				a
+				{
+					padding-top: 10px;
+					padding-bottom: 10px;
+
+					color: $color-gray-medium;
+				}
+			}
+		}
+	}
+
+	// Non-mobile styling
+
+	@include respond-to-size-sm
+	{
+		a.action
+		{
+			position: absolute;
+			right: 35px;
+			top: 20px;
+		}
+	}
+
+	// Normal stying
+
 	.col-md-12.col-md-offset-0
 	{
 		padding-left: $col / 2;
@@ -147,10 +275,7 @@
 	}
 
 	a.action
-	{
-		margin-top: 20px;
-		float: right;
-	}
+	{}
 
 	ul.filter
 	{
@@ -203,6 +328,7 @@
 			}
 		}
 	}
+
 }
 
 #top.profile

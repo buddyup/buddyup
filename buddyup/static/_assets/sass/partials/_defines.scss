@@ -1,14 +1,21 @@
 // Numbers
 
+// Columns based on Bootstrap's 12-col static grid within a 960px wide container 
 $container-width: 960px;
 $col-amount: 12;
 $col: $container-width / $col-amount;
 
 $space: 10px;
 
+// File Paths
+
+$path-images : "../images";
+$path-fonts : "../fonts";
+
 /// Media Queries
 
 // Roughly the sizes of breakpoints in Bootstrap
+
 $mq-xs : "max-width:767px";
 $mq-sm : "min-width:768px";
 $mq-md : "min-width:992px";
@@ -38,8 +45,8 @@ $mq-lg : "min-width:1200px";
 
 @font-face {
   font-family: 'Entypo';
-  src: url('../fonts/entypo.woff') format('woff'), /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-       url('../fonts/entypo.ttf') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+  src: url('#{$path-fonts}/entypo.woff') format('woff'), /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+       url('#{$path-fonts}/entypo.ttf') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
 }
 
 $font-body : "Open Sans", "HelveticaNeue", "Helvetica", "Arial", sans-serif;

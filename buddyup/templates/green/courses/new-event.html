@@ -17,34 +17,94 @@
     </head>
     <body>
         <header>
-            <nav class="container">
-                <div class="main">
-                    <ul>
-                        <li class="logo"><a href="../index.html"><img src="../_assets/images/nav/logo@2x.png" height="45" /></a></li>
-                        <li><a href="../buddies/index.html">Buddies</a></li>
-                        <li><a href="../courses/index.html">Courses</a></li>
-                        <li><a href="../tutors/index.html">Tutors</a></li>
-                    </ul>
-                </div>
-                <div class="notifications">
-                    <a href="" class="button">&nbsp;<span class="badging">4</span></a>
-                    <!--
-                    <ul>
-                        <li><a href="">&nbsp;</a></li>
-                    </ul>
-                    -->
-                </div>
-                <div class="overflow">
-                    <a href="../site-map.html" class="button">
-                        <span class="img" style="background-image: url('../_assets/images/people/bforrest-200-200.png');">&nbsp;</span>
-                        <span class="name">Brian Forrester</span>
-                    </a>
-                    <!--
-                    <ul>
-                        <li><a href="">&nbsp;</a></li>
-                    </ul>
-                    -->
-                </div>
+            <nav class="navbar navbar-default container" role="navigation">
+                <div class="wrapper">
+                    <!-- Mobile menu -->
+                    <div class="navbar-header" id="nav-mobile">
+                        <button id="menu-button" class="navbar-toggle logo-wrapper" data-toggle="collapse" data-target="#nav-main">
+                            <span class="logo">Logo</span>
+                        </button>
+                        <a href="../secondary/all-notifications.html" id="notifications-button" class="navbar-toggle notifications" data-toggle="collapse" data-target="#nav-notifications">
+                            <span class="icon icon-notification"></span><span class="icon icon-badge">4</span>
+                        </a>
+                    </div>
+
+                    <!-- Regular menu -->
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="nav-main">
+                        <ul class="nav navbar-nav">
+                            <li class="hidden-xs main-link logo-wrapper"><a href="../index.html" class="logo">&nbsp;</a></li>
+                            <li class="visible-xs-block main-link"><a href="../index.html">Home</a></li>
+                            <li class="main-link"><a href="../buddies/index.html">Buddies</a></li>
+                            <li class="main-link"><a href="../courses/index.html">Courses</a></li>
+                            <li class="main-link"><a href="../tutors/index.html">Tutors</a></li>
+                            <li class="hidden-xs pull-right" id="profile-overflow">
+                                <!-- Profile & Overflow dropdown -->
+                                <a href="" data-toggle="dropdown" class="button">
+                                    <span class="img" style="background-image: url('../_assets/images/people/bforrest-200-200.png');">&nbsp;</span>
+                                    <span class="name">Brian Forrester</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dLabel">
+                                    <li role="presentation">
+                                        <ul class="list overflow-list">
+                                            <li class=""><a href="../secondary/my-profile">My Profile</a></li>
+                                            <li class=""><a href="../secondary/my-events.html">My Events</a></li>
+                                            <li class=""><a href="../secondary/help.html">Help</a></li>
+                                            <li class=""><a href="../registration/logout.html">Log out</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                <!-- / Profile & Overflow dropdown -->
+                            </li>
+                            <li class="hidden-xs pull-right" id="notifications">
+                                <!-- Notifications dropdown. Appears after Profile because float:right -->
+                                <a href="" data-toggle="dropdown" class="button notifications"><span class="icon icon-notification"></span><span class="icon icon-badge">4</span></a>
+                                <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dLabel">
+                                    <li role="presentation">
+
+                                        
+                                        <ul class="tablelist-group">
+                                            <li class="tablelist-group-row">
+                                                <a href="../buddies/profile.html">
+                                                    <ul class="tablelist">
+                                                        <li class="icon"><div class="block circle" style="background-image:url('../_assets/images/people/15.jpg')">&nbsp;</div></li>
+                                                        <li class="main">
+                                                            <div class="title">John Doe is now following you!</div>
+                                                            <div class="subtitle">5:32PM</div>
+                                                        </li>
+                                                    </ul>
+                                                </a>
+                                            </li>
+                                            <li class="tablelist-group-row">
+                                                <a href="../courses/event-detail.html">
+                                                    <ul class="tablelist">
+                                                        <li class="icon"><div class="block square" style="background-image:url('../_assets/images/courses/stats101.jpg')">&nbsp;</div></li>
+                                                        <li class="main">
+                                                            <div class="title">You've been invited to an event!</div>
+                                                            <div class="subtitle">5:32PM</div>
+                                                        </li>
+                                                    </ul>
+                                                </a>
+                                            </li>
+                                            <li class="see-all">
+                                                <a href="../secondary/all-notifications.html">
+                                                    <span class="icon icon-notification">&nbsp;</span>See all notifications
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                <!-- / Notifications dropdown -->
+                            </li>
+                            <!-- Reiterate overflow menu ONLY for mobile menu -->
+                            <li class="visible-xs-block"><a href="../secondary/my-profile">My Profile</a></li>
+                            <li class="visible-xs-block"><a href="../secondary/my-events.html">My Events</a></li>
+                            <li class="visible-xs-block"><a href="../secondary/help.html">Help</a></li>
+                            <li class="visible-xs-block"><a href="../registration/logout.html">Log out</a></li>
+                            <!-- /Reiterate overflow menu for mobile menu -->
+                        </ul>
+                    </div> <!-- ./navbar-collapse -->
+                </div><!-- /wrapper -->
             </nav>
         </header>
         
@@ -203,13 +263,13 @@
         <footer>
             <div class="container">
                 <p class="row">
-                    <a href="">Privacy Policy</a>
-                    &nbsp;&nbsp;&nbsp;&bull;&nbsp;&nbsp;&nbsp;
-                    <a href="">Terms</a>
-                    &nbsp;&nbsp;&nbsp;&bull;&nbsp;&nbsp;&nbsp;
-                    &copy;BuddyUp, inc. 2014  &mdash; All rights reserved.
-                    &nbsp;&nbsp;&nbsp;&bull;&nbsp;&nbsp;&nbsp;
-                    Icons by <a href="http://www.entypo.com">Entypo</a>
+                    <span><a href="../secondary/privacy.html">Privacy Policy</a></spam>
+                    &bull;
+                    <span><a href="../secondary/terms.html">Terms</a></span>
+                    &bull;
+                    <span>&copy;BuddyUp, inc. 2014  &mdash; All rights reserved.</span>
+                    &bull;
+                    <span>Icons by <a href="http://www.entypo.com" target="_blank">Entypo</a></span>
                 </p>
             </div>
         </footer>

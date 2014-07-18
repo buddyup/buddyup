@@ -11,28 +11,23 @@
 
 section#info
 {
-	padding-bottom: 80px !important;
+	// padding-bottom: 80px !important;
 
-	& > div > div
+	& > div > div:not( .group-heading )
 	{
 		display: block;
 		padding-top: 0.5em;
 		padding-bottom: 0.5em;
 
-		text-align: center;
+		text-align: left;
 		font-size: 14px;
 
 		span.icon
 		{
 			font-size: 1.5em;
+			margin-right: 20px;
 		}
 
-	}
-
-	div.icon
-	{
-		font-size: 80px;
-		line-height: 0;
 	}
 
 	.location
@@ -40,27 +35,35 @@ section#info
 		padding-bottom: 5px;
 
 		font: $font-title;
-		font-size: 26px;
+		font-size: 22px !important;
 		font-weight: 400;
 		color: $color-gray-dark;
 
 		border-bottom: none;
-	}
 
-	.sublocation
-	{
-		// padding-top: 10px;
+			.sublocation
+			{
+				display: block;
+				margin-left: 40px;
+				margin-top: 5px;
 
-		font: $font-title;
-		font-size: 16px;
-		font-weight: 100;
-		color: $color-text;
+				font: $font-title;
+				font-size: 16px;
+				font-weight: 100;
+				color: $color-text;
+			}
+
+			.icon
+			{
+				color: $color-text;
+				font-size: 1.35em;
+			}
 	}
 
 	.date
 	{
-		padding-top: 1.5em;
-		padding-bottom: 1.5em;
+		// padding-top: 1.5em;
+		// padding-bottom: 1.5em;
 
 		.day
 		{

@@ -4,14 +4,30 @@
 
 	.block
 	{
-		$block-size: 214px;
 
 		display: inline-block;
-		width: $block-size;
-		height: $block-size;
 
-		margin-right: 10px;
-		margin-bottom: 10px;
+		@include respond-to-size-xs
+		{
+			width: 100%;
+
+			img
+			{ 
+				width: 100%;
+				height: 100%;
+			}
+		}
+
+		@include respond-to-size-sm
+		{
+			$block-size: 214px;
+
+			width: $block-size;
+			height: $block-size;
+
+			margin-right: 10px;
+			margin-bottom: 10px;
+		}
 
 		@include block-background;
 		border: 1px solid $color-border-darker;

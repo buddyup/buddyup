@@ -141,7 +141,7 @@ textarea + .message + a.submit,
 .form-group textarea + .message + a.submit
 
 {
-	margin-top: 10px;
+	margin-top: 20px !important;
 	@include button( $color-primary, white, true );
 }
 
@@ -255,7 +255,7 @@ a.submit.submit-form
 
 	a.button.add
 	{
-		margin-top: 20px;
+		margin-top: 20px !important;
 		@include button-small( $color-primary, white, true );
 	}
 }
@@ -289,7 +289,7 @@ a.submit.submit-form
 
 	a.button.add
 	{
-		margin-top: 20px;
+		margin-top: 20px !important;
 		@include button-small( $color-primary, white, true );
 	}
 }
@@ -298,7 +298,7 @@ a.submit.submit-form
 {
 	a.button.add
 	{
-		margin-top: 20px;
+		margin-top: 20px !important;
 		@include button-small( $color-primary, white, true );
 	}
 }

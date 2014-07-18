@@ -122,3 +122,34 @@
 	border: none !important;
 	@include box-shadow( none !important );
 }
+
+/*/  Slideout /*/ 
+
+#cal-slide-box
+{
+	background-color: $color-background-blue;
+
+	#cal-slide-content
+	{
+		@include box-shadow( none !important );	
+
+		ul
+		{
+			li
+			{
+				a
+				{
+					margin-left: 10px;;
+					@include text-link;
+				}
+			}
+		}
+
+	}
+}
+
+
+
+
+
+
