@@ -129,4 +129,4 @@ def green_buddies():
             if user not in buddies:
                 general.add(user)
     classmates = shuffled(general) + shuffled(buddies)
-    return render_template('green/buddies/index.html', classmates=classmates)
+    return render_template('green/buddies/index.html', classmates=classmates, courses=courses)
