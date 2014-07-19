@@ -37,8 +37,8 @@
 
                             <li class="main-link"><a href="/buddy/search">Buddies</a></li>
                             <li class="main-link"><a href="/group">Groups</a></li>
-                            <li class="main-link"><a href="/courses/">Courses</a></li>
-                            <li class="main-link">Tutors</li>
+                            <li class="main-link"><a href="#">Courses</a></li>
+                            <li class="main-link"><a href="#">Tutors</a></li>
                             <li class="hidden-xs pull-right" id="profile-overflow">
                                 <!-- Profile & Overflow dropdown -->
                                 <a href="" data-toggle="dropdown" class="button">
@@ -48,33 +48,22 @@
                                 <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dLabel">
                                     <li role="presentation">
                                         <ul class="list overflow-list">
-											<li class=""><a href="{{ profile(user_record) }}">My Profile</a></li>
-											<li class=""><a href="{{ url_for('invite_list') }}">My Invitations</a></li>
-											<li class=""><a href="{{ url_for('profile_edit') }}">Edit My Profile</a></li>
-											<li class=""><a href="{{ url_for('buddy_group_list') }}">My Buddies</a></li>
-											<li class=""><a href="{{ url_for('help') }}">Help</a></li>
-											<li class=""><a href="{{ url_for('logout') }}">Log out</a></li>
+                                            <li class=""><a href="/secondary/my-profile">My Profile</a></li>
+                                            <li class=""><a href="/secondary/my-events.html">My Events</a></li>
+                                            <li class=""><a href="/secondary/help.html">Help</a></li>
+                                            <li class=""><a href="/registration/logout.html">Log out</a></li>
                                         </ul>
                                     </li>
                                 </ul>
                                 <!-- / Profile & Overflow dropdown -->
                             </li>
                             <!-- Reiterate overflow menu ONLY for mobile menu -->
-                            <li class="visible-xs-block"><a href="{{ profile(user_record) }}">My Profile</a></li>
-                            <li class="visible-xs-block"><a href="{{ url_for('invite_list') }}">My Invitations</a></li>
-                            <li class="visible-xs-block"><a href="{{ url_for('profile_edit') }}">Edit My Profile</a></li>
-                            <li class="visible-xs-block"><a href="{{ url_for('buddy_group_list') }}">My Buddies</a></li>
-                            <li class="visible-xs-block"><a href="{{ url_for('help') }}">Help</a></li>
-                            <li class="visible-xs-block"><a href="{{ url_for('logout') }}">Log out</a></li>
+                            <li class="visible-xs-block"><a href="/secondary/my-profile">My Profile</a></li>
+                            <li class="visible-xs-block"><a href="/secondary/my-events.html">My Events</a></li>
+                            <li class="visible-xs-block"><a href="/secondary/help.html">Help</a></li>
+                            <li class="visible-xs-block"><a href="/registration/login.html">Log out</a></li>
                             <!-- /Reiterate overflow menu for mobile menu -->
 
-
-						<li><a href="{{ profile(user_record) }}">My Profile </a></li>
-						<li><a href="{{ url_for('invite_list') }}">My Invitations</a></li>
-						<li><a href="{{ url_for('profile_edit') }}">Edit My Profile </a></li>
-						<li><a href="{{ url_for('buddy_group_list') }}">My Buddies </a></li>
-						<li><a href="{{ url_for('help') }}">Help </a></li>
-						<li><a href="{{ url_for('logout') }}">Log out</a></li>
 
 
 
