@@ -26,13 +26,15 @@
                         </a>
                     </div>
 
-					{% if logged_in %}
                     <!-- Regular menu -->
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="nav-main">
                         <ul class="nav navbar-nav">
                             <li class="hidden-xs main-link logo-wrapper"><a href="./index.html" class="logo">&nbsp;</a></li>
                             <li class="visible-xs-block main-link"><a href="./index.html">Home</a></li>
+
+							{% if logged_in %}
+
                             <li class="main-link"><a href="./buddies/index.html">Buddies</a></li>
                             <li class="main-link"><a href="./courses/index.html">Courses</a></li>
                             <li class="main-link"><a href="./tutors/index.html">Tutors</a></li>
@@ -60,9 +62,10 @@
                             <li class="visible-xs-block"><a href="./secondary/help.html">Help</a></li>
                             <li class="visible-xs-block"><a href="./registration/login.html">Log out</a></li>
                             <!-- /Reiterate overflow menu for mobile menu -->
+
+							{% endif %}
                         </ul>
                     </div> <!-- ./navbar-collapse -->
-					{% endif %}
 					
                 </div><!-- /wrapper -->
             </nav>
