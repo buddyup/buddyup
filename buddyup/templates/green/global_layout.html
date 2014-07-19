@@ -26,6 +26,7 @@
                         </a>
                     </div>
 
+					{% if logged_in %}
                     <!-- Regular menu -->
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="nav-main">
@@ -61,6 +62,8 @@
                             <!-- /Reiterate overflow menu for mobile menu -->
                         </ul>
                     </div> <!-- ./navbar-collapse -->
+					{% endif %}
+					
                 </div><!-- /wrapper -->
             </nav>
         </header>
