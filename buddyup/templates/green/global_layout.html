@@ -51,7 +51,7 @@
                                             <li class=""><a href="{{ profile(user_record) }}">My Profile</a></li>
 											<li class=""><a href="{{ url_for('invite_list') }}">My Invitations</a></li>
 											<li class=""><a href="{{ url_for('profile_edit') }}">Edit My Profile</a></li>
-                                            <li class=""><a href="/secondary/my-events.html">My Events</a></li>
+                                            <li class=""><a href="{{ url_for('buddy_group_list') }}">My Buddies</a></li>
                                             <li class=""><a href="{{ url_for('help') }}">Help</a></li>
                                             <li class=""><a href="{{ url_for('logout') }}">Log out</a></li>
                                         </ul>
@@ -63,7 +63,7 @@
                             <li class="visible-xs-block"><a href="{{ profile(user_record) }}">My Profile</a></li>
                             <li class="visible-xs-block"><a href="{{ url_for('invite_list') }}">My Invitations</a></li>
 							<li class="visible-xs-block"><a href="{{ url_for('profile_edit') }}">Edit My Profile</a></li>
-                            <li class="visible-xs-block"><a href="/secondary/my-events.html">My Events</a></li>
+                            <li class="visible-xs-block"><a href="{{ url_for('buddy_group_list') }}">My Buddies</a></li>
                             <li class="visible-xs-block"><a href="{{ url_for('help') }}">Help</a></li>
                             <li class="visible-xs-block"><a href="{{ url_for('logout') }}">Log out</a></li>
                             <!-- /Reiterate overflow menu for mobile menu -->
