@@ -1,101 +1,88 @@
-{% extends "layout.html" %}
-
+{% extends "green/global_layout.html" %}
 {% block title %} {{ buddy_record.full_name }} {% endblock %}
+{% block pagestyle %}
+<link href="/static/_assets/css/profile.css" rel="stylesheet">
+{% endblock %}
 {% block content %}
-<br>
-<div class="row">
-	<div class="span4 offset1 pictures" >
-        <div class="profile-photo">
-		<img src="{{ photo_large(buddy_record) }}" alt="Profile picture" class="img-rounded"></img>
-        </div>
-        <br><br>
-		<div class="profile-social" style="margin-left:-20px;">
-		<ul class=" profile-social social">
-			{% if buddy_record.facebook %}
-				<li><a href="{{ buddy_record.facebook|fix_url }}">
-					<img src="{{ img('facebook.png') }}" height="50" width="50">
-					</a>
-			    </li>
-			{% else %}
-				<li class="unsocial">
-					<img src="{{ img('facebook.png') }}" height="50" width="50">
-			    </li>
-			{% endif %}
 
-			{% if buddy_record.twitter %}
-				<li><a href="{{ buddy_record.twitter|fix_url }}">
-					<img src="{{ img('twitter.png') }}" height="50" width="50">
-					</a>
-				</li>
-			{% else %}
-				<li class="unsocial">
-					<img src="{{ img('twitter.png') }}" height="50" width="50">
-			    </li>
-			{% endif %}
-
-			{% if buddy_record.linkedin %}
-				<li><a href="{{ buddy_record.linkedin|fix_url }}">
-					<img src="{{ img('linkedin-50x50.png') }}">
-				</li>
-			{% else %}
-				<li class="unsocial">
-					<img src="{{ img('linkedin-50x50.png') }}" height="50" width="50">
-			    </li>
-			{% endif %}  
-			<li>
-				<a href="mailto:{{ buddy_record|email }}">
-					<img src="{{ img('yellow_mail_50x38.png') }}" width="50"
-							height="50">
-				</a>
-			</li>
-		</ul>
-	</div>
-</div>
-	<div class="span6 name" >
-		<h3 style="text-align:left; margin-top:10px;">{{ buddy_record.full_name }}</h3>
-			<div class="about-me"><i>
-			{% for p in buddy_record.bio|paragraphs %}
-    <p>{{ p }}</p>
-	 	{% endfor %}
-	 	</i></div>
+<article id="top" class="profile">
+    <div class="wrapper container">
+        <div class="row">
+            <div class="profile-image" style="background-image:url('{{ photo_large(buddy_record) }}')">&nbsp;</div>
+            <h1 class="col-sm-12">{{ buddy_record.full_name }}</h1>
+			<span class="col-sm-12 subtitle">Portland State University
 			{% if buddy_record.location %}
-				<b>Location:</b> {{ buddy_record.location.name }}
-			{% else %}
-				<b>Location:</b> Not Given
+				&nbsp;&bull;&nbsp;{{ buddy_record.location.name }}
 			{% endif %}
-		<br>
-		{% if majors|length > 0 %}
-			<b>Major:</b> {{ majors| join(', ') }}
-		{% else %}
-			<b>Major:</b> Unspecified
-		{% endif %}
-		<br>
-		{% if languages|length == 1 %}
-			<b>Language:</b> {{ languages[0] }}
-		{% elif languages|length > 0 %}
-			<b>Languages:</b> {{ languages|join(', ') }}
-		{% else %}
-			<b>Languages:</b> Unspecified
-		{% endif %}
-		<br>
+			</span>
 
-		{% if courses|length == 1 %}
-			<b>Course:</b> {{ courses[0] }}
-		{% elif courses|length > 0 %}
-			<b>Courses:</b> {{ courses | join(', ') }}
-		{% else %}
-			<b>Courses:</b> Not enrolled
-		{% endif %}
-		<br/>
-		{% if not is_buddy %}
-			<a href="{{ url_for('invite_send', user_name=buddy_record.user_name) }}"
-				 class="btn btn-large btn-primary">Invite</a>
-		{% elif is_invited %}
-			<a href="{{ url_for('invite_accept', user_name=buddy_record.user_name)}}"
-				 class="btn btn-large btn-primary">Accept Invitation</a>
-			<a href="{{ url_for('invite_deny', user_name=buddy_record.user_name) }}"
-				 class="btn btn-large btn-danger">Reject Invitation</a>
-		{% endif %}
-	</div>
-</div>
+            <div class="col-sm-12">
+				{% if not is_buddy %}
+					<a href="{{ url_for('invite_send', user_name=buddy_record.user_name) }}"
+						 class="action button primary"><span class="icon icon-person-add">&nbsp;</span>Invite</a>
+				{% elif is_invited %}
+					<a href="{{ url_for('invite_accept', user_name=buddy_record.user_name)}}"
+						 class="action button primary"><span class="icon icon-person-add">&nbsp;</span>Accept Invitation</a>
+					<a href="{{ url_for('invite_deny', user_name=buddy_record.user_name) }}"
+						 class="action button primary"><span class="icon">&nbsp;</span>Reject Invitation</a>
+				{% endif %}
+            </div>
+        </div>
+    </div>
+</article>
+
+<article id="main-content" class="container">
+
+	{% if buddy_record.bio %}
+    <section id="about" class="row">
+        <div class="col-md-6 col-md-offset-3">
+		{% for p in buddy_record.bio|paragraphs %}
+			<p>{{ p }}</p>
+		{% endfor %}
+        </div>
+    </section>
+	{%endif%}
+
+    <section id="interests" class="row">
+		{% if courses %}
+        <div class="col-md-6 col-md-offset-3">
+            <h3>Courses</h3>
+            <ul>
+				{% for course in courses %}
+                <li><a href="">{{course}}</a></li>
+				{% endfor %}
+
+            </ul>
+        </div>
+		{%endif%}
+
+		{% if majors %}
+        <div class="col-md-6 col-md-offset-3">
+            <h3>Major</h3>
+            <ul>
+				{% for major in majors %}
+                <li><a href="">{{major}}</a></li>
+				{% endfor %}
+            </ul>
+        </div>
+		{%endif%}
+
+		{% if languages %}
+        <div class="col-md-6 col-md-offset-3">
+            <h3>Languages</h3>
+            <ul>
+				{% for language in languages %}
+                <li><a href="">{{language}}</a></li>
+				{% endfor %}
+            </ul>
+        </div>
+		{%endif%}
+
+        <div class="col-sm-12">
+            <a href="mailto:{{ buddy_record|email }}" class="action button primary">Send {{ buddy_record.full_name }} an email</a>
+        </div>
+    </section>
+
+</article>
+
 {% endblock %}
