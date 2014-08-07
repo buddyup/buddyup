@@ -119,7 +119,7 @@ def unfriend(user_name):
         return redirect(request.referrer)
 
 
-@app.route('/green/buddies')
+@app.route('/buddies')
 @login_required
 def green_buddies():
     buddies = set(buddy for buddy in g.user.buddies if buddy.has_photos)
@@ -130,4 +130,4 @@ def green_buddies():
             if user not in buddies:
                 general.add(user)
     classmates = shuffled(general) + shuffled(buddies)
-    return render_template('green/buddies/index.html', user=g.user, classmates=classmates)
+    return render_template('buddy/index.html', user=g.user, classmates=classmates)
