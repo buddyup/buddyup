@@ -121,7 +121,7 @@ def unfriend(user_name):
 
 @app.route('/buddies')
 @login_required
-def green_buddies():
+def list_buddies():
     buddies = set(buddy for buddy in g.user.buddies if buddy.has_photos)
     general = set()
     courses = g.user.courses.all()

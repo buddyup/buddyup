@@ -47,7 +47,7 @@ $(function(){
 			{# Don't show links if not logged in (like with 404 errors) #}
 			{% if logged_in %}
 			<ul class="nav" style="margin-top:-10px;">
-				<li><a href="{{ url_for('buddy_search') }}" style="padding-top:22px;">
+				<li><a href="{{ url_for('list_buddies') }}" style="padding-top:22px;">
 						<img id="buddies_img" src="{{ img('buddyup1.png')}}"></a>
 					<h6><font color="white" size="1"> Buddies </font></h6>
 				</li>
