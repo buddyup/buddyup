@@ -1,5 +1,5 @@
 {% extends "green/global_layout.html" %}
-{% block title %} Buddies {% endblock %}
+{% block title %} Classmates {% endblock %}
 {% block pagestyle %}
 <link href="/static/_assets/css/buddies.css" rel="stylesheet">
 {% endblock %}
@@ -9,27 +9,27 @@
                 <div class="wrapper container">
                     <div class="row">
                         <div class="col-md-12 col-md-offset-0">
-                            <h1>Buddies</h1>
+                            <h1>Classmates</h1>
                             <a href="" class="action button small primary">Invite a Friend</a>
                         </div>
                         <div class="col-md-12 col-md-offset-0">
                             <ul class="hidden-xs filter">
-                                <li><a href="./index.html">Following</a></li>
-                                <li><a href="./index.html" class="selected">Everyone</a></li>
-                                <li><a href="./filtered.html">Major</a></li>
-                                <li><a href="./filtered.html">Language</a></li>
-                                <li><a href="./filtered.html">Location</a></li>
-                                <li><a href="./advanced.html">Advanced Search</a></li>
+                                <li><a href="{{url_for('list_buddies')}}" class="{{buddies}}">Buddies</a></li>
+                                <li><a href="{{url_for('list_classmates')}}" class="{{everyone}}">Everyone</a></li>
+                                <li><a href="{{url_for('list_classmates_by_major')}}" class="{{major}}">Major</a></li>
+                                <li><a href="{{url_for('list_classmates_by_language')}}" class="{{language}}">Language</a></li>
+                                <li><a href="{{url_for('list_classmates_by_location')}}" class="{{location}}">Location</a></li>
+                                <li><a href="{{url_for('buddy_search')}}">Advanced Search</a></li>
                             </ul>
                             <div class="visible-xs-block dropdown">
                                 <a data-toggle="dropdown" class="button dropdown" href="#">Everyone</a>
                                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                                    <li><a href="./index.html">Following</a></li>
-                                    <li><a href="./index.html" class="selected">Everyone</a></li>
-                                    <li><a href="./filtered.html">Major</a></li>
-                                    <li><a href="./filtered.html">Language</a></li>
-                                    <li><a href="./filtered.html">Location</a></li>
-                                    <li><a href="./advanced.html">Advanced Search</a></li>
+	                                <li><a href="{{url_for('list_buddies')}}" {% if tab == "buddies" %}class="selected"{% endif %}>Buddies</a></li>
+	                                <li><a href="{{url_for('list_classmates')}}" {% if tab == "everyone" %}class="selected"{% endif %}>Everyone</a></li>
+	                                <li><a href="{{url_for('list_classmates_by_major')}}">Major</a></li>
+	                                <li><a href="{{url_for('list_classmates_by_language')}}">Language</a></li>
+	                                <li><a href="{{url_for('list_classmates_by_location')}}">Location</a></li>
+	                                <li><a href="{{url_for('buddy_search')}}">Advanced Search</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -55,7 +55,7 @@
 									</span>
 									<span class="button small">
 										<span class="icon icon-person-add">&nbsp;</span>
-										Follow
+										Invite
 									</span>
 								</div></div></a>
 							</li>

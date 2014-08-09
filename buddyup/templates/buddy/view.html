@@ -17,14 +17,10 @@
 			</span>
 
             <div class="col-sm-12">
-				{% if not is_buddy %}
-					<a href="{{ url_for('invite_send', user_name=buddy_record.user_name) }}"
-						 class="action button primary"><span class="icon icon-person-add">&nbsp;</span>Invite</a>
-				{% elif is_invited %}
-					<a href="{{ url_for('invite_accept', user_name=buddy_record.user_name)}}"
-						 class="action button primary"><span class="icon icon-person-add">&nbsp;</span>Accept Invitation</a>
-					<a href="{{ url_for('invite_deny', user_name=buddy_record.user_name) }}"
-						 class="action button primary"><span class="icon">&nbsp;</span>Reject Invitation</a>
+				{% if is_buddy %}
+					<a href="#" class="action button primary"><span class="icon icon-person-add">&nbsp;</span>Remove Buddy</a>
+				{% else %}
+					<a href="#" class="action button primary"><span class="icon icon-person-add">&nbsp;</span>Invite</a>
 				{% endif %}
             </div>
         </div>

@@ -12,7 +12,7 @@ from buddyup.util import login_required, args_get, sorted_languages, shuffled, t
 def extract_names(records):
     return sorted(record.name for record in records)
 
-@app.route("/buddy/view/<user_name>")
+@app.route("/classmates/<user_name>")
 @login_required
 @track_activity
 def buddy_view(user_name):
@@ -46,7 +46,7 @@ def buddy_view(user_name):
                                )
 
 
-@app.route("/buddy/search")
+@app.route("/classmates/search")
 @login_required
 def buddy_search():
     courses = g.user.courses.all()
@@ -70,7 +70,7 @@ def buddy_search():
                            )
 
 
-@app.route("/buddy/search_result")
+@app.route("/classmates/search_result")
 @login_required
 def buddy_search_results():
     name = args_get('name')
@@ -119,9 +119,9 @@ def unfriend(user_name):
         return redirect(request.referrer)
 
 
-@app.route('/buddies')
+@app.route('/classmates')
 @login_required
-def list_buddies():
+def list_classmates():
     buddies = set(buddy for buddy in g.user.buddies if buddy.has_photos)
     general = set()
     courses = g.user.courses.all()
@@ -130,4 +130,66 @@ def list_buddies():
             if user not in buddies:
                 general.add(user)
     classmates = shuffled(general) + shuffled(buddies)
-    return render_template('buddy/index.html', user=g.user, classmates=classmates)
+    return render_template('buddy/index.html', user=g.user, classmates=classmates, everyone="selected")
+
+
+@app.route('/classmates/buddies')
+@login_required
+def list_buddies():
+    return render_template('buddy/index.html', user=g.user, classmates=g.user.buddies.all(), buddies="selected")
+
+@app.route('/classmates/majors/')
+@login_required
+def list_classmates_by_major():
+    buddies = set(buddy for buddy in g.user.buddies if buddy.has_photos)
+    general = set()
+    courses = g.user.courses.all()
+    for course in courses:
+        for user in course.users.filter(User.id != g.user.id).filter(User.has_photos == True):
+            if user not in buddies:
+                general.add(user)
+    classmates = shuffled(general) + shuffled(buddies)
+    return render_template('buddy/index.html', user=g.user, classmates=classmates, major="selected")
+
+@app.route('/classmates/languages/')
+@login_required
+def list_classmates_by_language():
+    buddies = set(buddy for buddy in g.user.buddies if buddy.has_photos)
+    general = set()
+    courses = g.user.courses.all()
+    for course in courses:
+        for user in course.users.filter(User.id != g.user.id).filter(User.has_photos == True):
+            if user not in buddies:
+                general.add(user)
+    classmates = shuffled(general) + shuffled(buddies)
+    return render_template('buddy/index.html', user=g.user, classmates=classmates, language="selected")
+
+@app.route('/classmates/locations/')
+@login_required
+def list_classmates_by_location():
+    buddies = set(buddy for buddy in g.user.buddies if buddy.has_photos)
+    general = set()
+    courses = g.user.courses.all()
+    for course in courses:
+        for user in course.users.filter(User.id != g.user.id).filter(User.has_photos == True):
+            if user not in buddies:
+                general.add(user)
+    classmates = shuffled(general) + shuffled(buddies)
+    return render_template('buddy/index.html', user=g.user, classmates=classmates, location="selected")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
