@@ -8,6 +8,7 @@ from buddyup.database import (User, BuddyInvitation, Major, MajorMembership,
 from buddyup.templating import render_template
 from buddyup.util import login_required, args_get, sorted_languages, shuffled, track_activity
 
+from collections import defaultdict
 
 def extract_names(records):
     return sorted(record.name for record in records)
@@ -119,18 +120,21 @@ def unfriend(user_name):
         return redirect(request.referrer)
 
 
+def my_classmates():
+    """
+    Return all of 'my' classmates. (People I share a class with.)
+    This returns a query object which you can refine further.
+    """
+    #TODO: Tune this. It's supposed to generate two queries but seems to generate many more.
+    course_IDs = [c.id for c in User.query.get(g.user.id).courses]
+
+    return User.query.filter(User.courses.any(Course.id.in_( course_IDs ))).filter(User.has_photos == True)
+
+
 @app.route('/classmates')
 @login_required
 def list_classmates():
-    buddies = set(buddy for buddy in g.user.buddies if buddy.has_photos)
-    general = set()
-    courses = g.user.courses.all()
-    for course in courses:
-        for user in course.users.filter(User.id != g.user.id).filter(User.has_photos == True):
-            if user not in buddies:
-                general.add(user)
-    classmates = shuffled(general) + shuffled(buddies)
-    return render_template('buddy/index.html', user=g.user, classmates=classmates, everyone="selected")
+    return render_template('buddy/index.html', user=g.user, classmates=shuffled(my_classmates()), everyone="selected")
 
 
 @app.route('/classmates/buddies')
@@ -141,44 +145,23 @@ def list_buddies():
 @app.route('/classmates/majors/')
 @login_required
 def list_classmates_by_major():
-    buddies = set(buddy for buddy in g.user.buddies if buddy.has_photos)
-    general = set()
-    courses = g.user.courses.all()
-    for course in courses:
-        for user in course.users.filter(User.id != g.user.id).filter(User.has_photos == True):
-            if user not in buddies:
-                general.add(user)
-    classmates = shuffled(general) + shuffled(buddies)
-    return render_template('buddy/index.html', user=g.user, classmates=classmates, major="selected")
+    return render_template('buddy/index.html', user=g.user, classmates=my_classmates(), major="selected")
 
 @app.route('/classmates/languages/')
 @login_required
 def list_classmates_by_language():
-    buddies = set(buddy for buddy in g.user.buddies if buddy.has_photos)
-    general = set()
-    courses = g.user.courses.all()
-    for course in courses:
-        for user in course.users.filter(User.id != g.user.id).filter(User.has_photos == True):
-            if user not in buddies:
-                general.add(user)
-    classmates = shuffled(general) + shuffled(buddies)
-    return render_template('buddy/index.html', user=g.user, classmates=classmates, language="selected")
+    return render_template('buddy/index.html', user=g.user, classmates=my_classmates(), language="selected")
 
 @app.route('/classmates/locations/')
 @login_required
 def list_classmates_by_location():
-    buddies = set(buddy for buddy in g.user.buddies if buddy.has_photos)
-    general = set()
-    courses = g.user.courses.all()
-    for course in courses:
-        for user in course.users.filter(User.id != g.user.id).filter(User.has_photos == True):
-            if user not in buddies:
-                general.add(user)
-    classmates = shuffled(general) + shuffled(buddies)
-    return render_template('buddy/index.html', user=g.user, classmates=classmates, location="selected")
+    locations = [L.name for L in Location.query.all()]
+    classmates = defaultdict(list)
 
+    for classmate in my_classmates():
+        classmates[classmate.location.name if classmate.location else "Unknown"].append(classmate)
 
-
+    return render_template('buddy/by_location.html', user=g.user, classmates=classmates, locations=locations, location="selected")
 
 
 
