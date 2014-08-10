@@ -157,7 +157,7 @@ def list_classmates_by_major():
         else:
             classmates["Undecided"].append(classmate)
 
-    return render_template('buddy/by_location.html', user=g.user, classmates=classmates, groupings=majors, language="selected")
+    return render_template('buddy/by_grouping.html', user=g.user, classmates=classmates, groupings=majors, language="selected")
 
 @app.route('/classmates/languages/')
 @login_required
@@ -171,20 +171,20 @@ def list_classmates_by_language():
                 classmates[language.name].append(classmate)
         # If you don't indicate a language, we leave you out of this particular view.
 
-    return render_template('buddy/by_location.html', user=g.user, classmates=classmates, groupings=languages, language="selected")
+    return render_template('buddy/by_grouping.html', user=g.user, classmates=classmates, groupings=languages, language="selected")
 
 
 
 @app.route('/classmates/locations/')
 @login_required
-def list_classmates_by_location():
+def list_classmates_by_grouping():
     locations = [L.name for L in Location.query.all()]
     classmates = defaultdict(list)
 
     for classmate in my_classmates():
         classmates[classmate.location.name if classmate.location else "Unknown"].append(classmate)
 
-    return render_template('buddy/by_location.html', user=g.user, classmates=classmates, groupings=locations, location="selected")
+    return render_template('buddy/by_grouping.html', user=g.user, classmates=classmates, groupings=locations, location="selected")
 
 
 
