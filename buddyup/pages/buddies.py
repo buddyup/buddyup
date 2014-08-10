@@ -142,7 +142,7 @@ def list_classmates():
 @app.route('/classmates/buddies')
 @login_required
 def list_buddies():
-    return render_template('buddy/index.html', user=g.user, classmates=g.user.buddies.all(), buddies="selected")
+    return render_template('buddy/index.html', user=g.user, classmates=g.user.buddies.order_by(User.full_name).all(), buddies="selected")
 
 @app.route('/classmates/majors/')
 @login_required
