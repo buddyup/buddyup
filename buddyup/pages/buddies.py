@@ -177,7 +177,7 @@ def list_classmates_by_language():
 
 @app.route('/classmates/locations/')
 @login_required
-def list_classmates_by_grouping():
+def list_classmates_by_location():
     locations = [L.name for L in Location.query.all()]
     classmates = defaultdict(list)
 
