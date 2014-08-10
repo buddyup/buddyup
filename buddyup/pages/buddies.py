@@ -147,7 +147,6 @@ def list_buddies():
 @app.route('/classmates/majors/')
 @login_required
 def list_classmates_by_major():
-    majors = [m.name for m in Major.query.order_by(Major.name).all()]
     classmates = defaultdict(list)
 
     for classmate in my_classmates():
@@ -157,12 +156,14 @@ def list_classmates_by_major():
         else:
             classmates["Undecided"].append(classmate)
 
+    majors = sorted(classmates.keys())
+
     return render_template('buddy/by_grouping.html', user=g.user, classmates=classmates, groupings=majors, major="selected")
+
 
 @app.route('/classmates/languages/')
 @login_required
 def list_classmates_by_language():
-    languages = [L.name for L in Language.query.order_by(Language.name).all()]
     classmates = defaultdict(list)
 
     for classmate in my_classmates():
@@ -171,31 +172,19 @@ def list_classmates_by_language():
                 classmates[language.name].append(classmate)
         # If you don't indicate a language, we leave you out of this particular view.
 
-    return render_template('buddy/by_grouping.html', user=g.user, classmates=classmates, groupings=languages, language="selected")
+    languages = sorted(classmates.keys())
 
+    return render_template('buddy/by_grouping.html', user=g.user, classmates=classmates, groupings=languages, language="selected")
 
 
 @app.route('/classmates/locations/')
 @login_required
 def list_classmates_by_location():
-    locations = [L.name for L in Location.query.all()]
     classmates = defaultdict(list)
 
     for classmate in my_classmates():
         classmates[classmate.location.name if classmate.location else "Unknown"].append(classmate)
 
+    locations = sorted(classmates.keys())
+
     return render_template('buddy/by_grouping.html', user=g.user, classmates=classmates, groupings=locations, location="selected")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
