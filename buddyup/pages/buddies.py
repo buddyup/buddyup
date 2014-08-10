@@ -157,7 +157,7 @@ def list_classmates_by_major():
         else:
             classmates["Undecided"].append(classmate)
 
-    return render_template('buddy/by_grouping.html', user=g.user, classmates=classmates, groupings=majors, language="selected")
+    return render_template('buddy/by_grouping.html', user=g.user, classmates=classmates, groupings=majors, major="selected")
 
 @app.route('/classmates/languages/')
 @login_required
