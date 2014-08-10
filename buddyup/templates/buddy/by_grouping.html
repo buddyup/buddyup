@@ -31,14 +31,14 @@
                 <section class="row">
                     <div class="col-md-12 col-md-offset-0">
 
-					{% for location in locations %}
+					{% for grouping in groupings %}
 						
                         <div class="group-heading">
-                            <h3>{{location}}</h3>
+                            <h3>{{grouping}}</h3>
                         </div>
 						
                         <ul class="block-grid">
-							{% for classmate in classmates[location] %}
+							{% for classmate in classmates[grouping] %}
 							<li class="block" style="background-image:url('{{ photo_large(classmate) }}')">
 								<a href="{{ profile(classmate) }}"><img src="/static/_assets/images/clear.png" /><div class="info hide"><div class="wrapper">
 									<span class="title">{{ classmate.full_name }}</span>

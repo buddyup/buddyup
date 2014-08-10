@@ -2,7 +2,7 @@ from flask import g, request, abort, redirect
 
 from buddyup.app import app
 from buddyup.database import (User, BuddyInvitation, Major, MajorMembership,
-                              LanguageMembership,
+                              Language, LanguageMembership,
                               Course, CourseMembership, db,
                               Location, Action)
 from buddyup.templating import render_template
@@ -128,7 +128,9 @@ def my_classmates():
     #TODO: Tune this. It's supposed to generate two queries but seems to generate many more.
     course_IDs = [c.id for c in User.query.get(g.user.id).courses]
 
-    return User.query.filter(User.courses.any(Course.id.in_( course_IDs ))).filter(User.has_photos == True)
+    return User.query.filter(User.courses.any(Course.id.in_( course_IDs )))\
+            .filter(User.has_photos == True)\
+            .filter(User.id != g.user.id)
 
 
 @app.route('/classmates')
@@ -145,12 +147,33 @@ def list_buddies():
 @app.route('/classmates/majors/')
 @login_required
 def list_classmates_by_major():
-    return render_template('buddy/index.html', user=g.user, classmates=my_classmates(), major="selected")
+    majors = [m.name for m in Major.query.order_by(Major.name).all()]
+    classmates = defaultdict(list)
+
+    for classmate in my_classmates():
+        if classmate.majors:
+            for major in classmate.majors:
+                classmates[major.name].append(classmate)
+        else:
+            classmates["Undecided"].append(classmate)
+
+    return render_template('buddy/by_location.html', user=g.user, classmates=classmates, groupings=majors, language="selected")
 
 @app.route('/classmates/languages/')
 @login_required
 def list_classmates_by_language():
-    return render_template('buddy/index.html', user=g.user, classmates=my_classmates(), language="selected")
+    languages = [L.name for L in Language.query.order_by(Language.name).all()]
+    classmates = defaultdict(list)
+
+    for classmate in my_classmates():
+        if classmate.languages:
+            for language in classmate.languages:
+                classmates[language.name].append(classmate)
+        # If you don't indicate a language, we leave you out of this particular view.
+
+    return render_template('buddy/by_location.html', user=g.user, classmates=classmates, groupings=languages, language="selected")
+
+
 
 @app.route('/classmates/locations/')
 @login_required
@@ -161,7 +184,7 @@ def list_classmates_by_location():
     for classmate in my_classmates():
         classmates[classmate.location.name if classmate.location else "Unknown"].append(classmate)
 
-    return render_template('buddy/by_location.html', user=g.user, classmates=classmates, locations=locations, location="selected")
+    return render_template('buddy/by_location.html', user=g.user, classmates=classmates, groupings=locations, location="selected")
 
 
 
