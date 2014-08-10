@@ -72,3 +72,9 @@ def teardown(*args):
 from . import pages
 
 # Insert others here...
+
+# TURN ON BELOW TO SEE QUERIES IN THE CONSOLE OR LOGS
+# import logging
+#
+# logging.basicConfig()
+# logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
