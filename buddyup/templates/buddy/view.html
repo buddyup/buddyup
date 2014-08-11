@@ -21,10 +21,11 @@
 					<a href="#" class="action button primary"><span class="icon icon-person-add">&nbsp;</span>Remove Buddy</a>
 				{% elif not myself %}
 					<a href="#" class="action button primary"><span class="icon icon-person-add">&nbsp;</span>Invite</a>
+				{% else %}
+					<a href="{{ url_for('profile_edit') }}" class="action button primary">Edit</a>
 				{% endif %}
             </div>
         </div>
-		<a href="{{ url_for('profile_edit') }}" class="action button primary">Edit</a>
     </div>
 </article>
 
