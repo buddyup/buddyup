@@ -1,5 +1,5 @@
 {% extends "green/global_layout.html" %}
-{% block title %} {{ buddy_record.full_name }} {% endblock %}
+{% block title %} {{ classmate.full_name }} {% endblock %}
 {% block pagestyle %}
 <link href="/static/_assets/css/profile.css" rel="stylesheet">
 {% endblock %}
@@ -8,11 +8,11 @@
 <article id="top" class="profile">
     <div class="wrapper container">
         <div class="row">
-            <div class="profile-image" style="background-image:url('{{ photo_large(buddy_record) }}')">&nbsp;</div>
-            <h1 class="col-sm-12">{{ buddy_record.full_name }}</h1>
+            <div class="profile-image" style="background-image:url('{{ photo_large(classmate) }}')">&nbsp;</div>
+            <h1 class="col-sm-12">{{ classmate.full_name }}</h1>
 			<span class="col-sm-12 subtitle">Portland State University
-			{% if buddy_record.location %}
-				&nbsp;&bull;&nbsp;{{ buddy_record.location.name }}
+			{% if classmate.location %}
+				&nbsp;&bull;&nbsp;{{ classmate.location.name }}
 			{% endif %}
 			</span>
 
@@ -29,10 +29,10 @@
 
 <article id="main-content" class="container">
 
-	{% if buddy_record.bio %}
+	{% if classmate.bio %}
     <section id="about" class="row">
         <div class="col-md-6 col-md-offset-3">
-		{% for p in buddy_record.bio|paragraphs %}
+		{% for p in classmate.bio|paragraphs %}
 			<p>{{ p }}</p>
 		{% endfor %}
         </div>
@@ -45,7 +45,7 @@
             <h3>Courses</h3>
             <ul>
 				{% for course in courses %}
-                <li><a href="">{{course}}</a></li>
+                <li><a href="{{url_for('course_view', id=course.id)}}">{{course}}</a></li>
 				{% endfor %}
 
             </ul>
@@ -75,7 +75,7 @@
 		{%endif%}
 
         <div class="col-sm-12">
-            <a href="mailto:{{ buddy_record|email }}" class="action button primary">Send {{ buddy_record.full_name }} an email</a>
+            <a href="mailto:{{ classmate|email }}" class="action button primary">Send {{ classmate.full_name }} an email</a>
         </div>
     </section>
 

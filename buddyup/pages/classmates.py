@@ -31,17 +31,16 @@ def buddy_view(user_name):
                                buddies=g.user.buddies.all(),
                                )
     else:
-        buddy_record = User.query.filter_by(user_name=user_name).first_or_404()
-        majors = extract_names(buddy_record.majors)
-        languages = extract_names(buddy_record.languages)
-        courses = extract_names(buddy_record.courses)
-        is_buddy = buddy_record in g.user.buddies
-        is_invited = buddy_record in g.user.sent_bud_inv
+        classmate = User.query.filter_by(user_name=user_name).first_or_404()
+        majors = extract_names(classmate.majors)
+        languages = extract_names(classmate.languages)
+        is_buddy = classmate in g.user.buddies
+        is_invited = classmate in g.user.sent_bud_inv
         return render_template('buddy/view.html',
-                               buddy_record=buddy_record,
+                               classmate=classmate,
                                majors=majors,
                                languages=languages,
-                               courses=courses,
+                               courses=classmate.courses,
                                is_buddy=is_buddy,
                                is_invited=is_invited,
                                )
