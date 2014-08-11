@@ -1,0 +1,20 @@
+<section id="followers" class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <div class="group-heading">
+            <h3><a href="{{url_for('course_followers', id=course.id)}}"><span class="icon icon-people">&nbsp;</span>Followers</a></h3>
+            <a href="{{url_for('course_followers', id=course.id)}}" class="right">See all {{followers.count()}} followers</a>
+        </div>
+        <ul class="block-list">
+			{% for follower in followers[:8]%}
+            <li class="">
+                <a href="{{profile(follower)}}"><div class="block" style="background-image:url('{{ photo_large(follower) }}')">&nbsp;</div></a>
+            </li>
+			{% endfor %}
+			{% if followers.count() > 8 %}
+            <li class="">
+                <a href="{{url_for('course_followers', id=course.id)}}"><div class="block overflow"><span><sup>+</sup>{{followers.count() - 8}}</span></div></a>
+            </li>
+			{% endif %}
+        </ul>
+    </div>
+</section>

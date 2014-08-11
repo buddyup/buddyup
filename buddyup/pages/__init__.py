@@ -2,6 +2,7 @@ from . import admin
 from . import ops
 from . import basic
 from . import classmates
+from . import courses
 from . import buddyinvitations
 from . import eventcomments
 from . import eventinvitations

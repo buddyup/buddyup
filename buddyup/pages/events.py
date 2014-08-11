@@ -349,3 +349,37 @@ def calendar():
         events.extend(course.events)
     event_json = events_to_json(events)
     return render_template('group/calendar.html', events_json=event_json)
+
+
+#--------------------- NEW STUFF BELOW ---------------------------
+
+@app.route('/courses/<id>/events.json')
+@login_required
+def course_events_json(id):
+    # TODO: Make this real
+    return render_template('../static/_assets/plugins/calendar/events.json')
+
+@app.route('/courses/<id>/events')
+@login_required
+def course_events(id):
+    # TODO: Make this real
+    return render_template('courses/events.html', course=Course.query.get_or_404(id))
+
+@app.route('/courses/<course_id>/event')
+@login_required
+def new_event(course_id):
+    return render_template('courses/new-event.html', course=Course.query.get_or_404(course_id))
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,54 @@
+<section id="events" class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <div class="group-heading">
+            <h3><a href="{{url_for('course_events', id=course.id)}}"><span class="icon icon-event">&nbsp;</span>Events</a></h3>
+            <a href="{{url_for('course_events', id=course.id)}}" class="right">See all 13 events</a>
+        </div>
+        <div class="" id="calendar-wrapper">
+            <div class="row">
+                <div class="col-md-12 calender-heading">
+                    <a class="button" data-calendar-nav="prev"><span class="icon icon-prev"></span></a>
+                    <h4></h4>
+                    <a class="button" data-calendar-nav="next"><span class="icon icon-next"></span></a>
+                    <a href="{{url_for('new_event', course_id=course.id)}}" class="action button small primary"><span class="icon icon-event-add">&nbsp;</span>New Event</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-9">
+                    <div id="calendar"></div>
+                    <script type="text/javascript" src="/static/_assets/plugins/underscore/underscore-min.js"></script>
+                    <script type="text/javascript" src="/static/_assets/plugins/calendar/calendar.min.js"></script>
+                    <script type="text/javascript" src="/static/_assets/plugins/calendar/init-course.js"></script>
+                </div>
+                <div class="col-md-3">
+                    <h4>Upcoming</h4>
+                    <ul class="tablelist-group">
+                        <li class="tablelist-group-row">
+                            <ul class="tablelist">
+                                <li class="main">
+                                    <div class="title"><a href="./event-detail.html">Midterms Study Sesh</a></div>
+                                    <div class="subtitle"><span class="icon icon-course"> Stat 101</span>&bull;<span class="icon icon-location"> Pioneer Square</span></div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="tablelist-group-row">
+                            <ul class="tablelist">
+                                <li class="main">
+                                    <div class="title"><a href="./event-detail.html">Midterms Study Sesh</a></div>
+                                    <div class="subtitle"><span class="icon icon-course"> Stat 101</span>&bull;<span class="icon icon-location"> Pioneer Square</span></div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="tablelist-group-row">
+                            <ul class="tablelist">
+                                <li class="main">
+                                    <div class="title"><a href="./events.html">See all events</a></div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,7 +1,7 @@
 var options = {
-    events_source: '../_assets/plugins/calendar/events.json',
+    events_source: '/static/_assets/plugins/calendar/events.json',
     view: 'month',
-    tmpl_path: '../_assets/plugins/calendar/tmpls/',
+    tmpl_path: '/static/_assets/plugins/calendar/tmpls/',
     tmpl_cache: false,
     // remove 'day' key to default to current day
     day: '2013-03-16',
