@@ -19,7 +19,7 @@
             <div class="col-sm-12">
 				{% if is_buddy %}
 					<a href="#" class="action button primary"><span class="icon icon-person-add">&nbsp;</span>Remove Buddy</a>
-				{% else %}
+				{% elif not myself %}
 					<a href="#" class="action button primary"><span class="icon icon-person-add">&nbsp;</span>Invite</a>
 				{% endif %}
             </div>
@@ -40,11 +40,11 @@
 	{%endif%}
 
     <section id="interests" class="row">
-		{% if courses %}
+		{% if classmate.courses.count() > 0 %}
         <div class="col-md-6 col-md-offset-3">
             <h3>Courses</h3>
             <ul>
-				{% for course in courses %}
+				{% for course in classmate.courses %}
                 <li><a href="{{url_for('course_view', id=course.id)}}">{{course}}</a></li>
 				{% endfor %}
 
@@ -52,23 +52,23 @@
         </div>
 		{%endif%}
 
-		{% if majors %}
+		{% if classmate.majors.count() > 0 %}
         <div class="col-md-6 col-md-offset-3">
             <h3>Major</h3>
             <ul>
-				{% for major in majors %}
-                <li><a href="">{{major}}</a></li>
+				{% for major in classmate.majors %}
+                <li><a href="">{{major.name}}</a></li>
 				{% endfor %}
             </ul>
         </div>
 		{%endif%}
 
-		{% if languages %}
+		{% if classmate.languages.count() > 0 %}
         <div class="col-md-6 col-md-offset-3">
             <h3>Languages</h3>
             <ul>
-				{% for language in languages %}
-                <li><a href="">{{language}}</a></li>
+				{% for language in classmate.languages %}
+                <li><a href="">{{language.name}}</a></li>
 				{% endfor %}
             </ul>
         </div>

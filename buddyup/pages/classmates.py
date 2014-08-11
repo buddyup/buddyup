@@ -17,33 +17,13 @@ def extract_names(records):
 @login_required
 @track_activity
 def buddy_view(user_name):
-    # TODO: Clean up this mess of redunancy and noise.
-    if user_name == g.user.user_name:  # Viewing their own profile?
-        majors = extract_names(g.user.majors)
-        courses = extract_names(g.user.courses)
-        languages = extract_names(g.user.languages)
-        return render_template('my/profile.html',
-                               classmate=g.user,
-                               majors=majors,
-                               courses=courses,
-                               languages=languages,
-                               is_buddy=False,
-                               buddies=g.user.buddies.all(),
-                               )
-    else:
-        classmate = User.query.filter_by(user_name=user_name).first_or_404()
-        majors = extract_names(classmate.majors)
-        languages = extract_names(classmate.languages)
-        is_buddy = classmate in g.user.buddies
-        is_invited = classmate in g.user.sent_bud_inv
-        return render_template('buddy/view.html',
-                               classmate=classmate,
-                               majors=majors,
-                               languages=languages,
-                               courses=classmate.courses,
-                               is_buddy=is_buddy,
-                               is_invited=is_invited,
-                               )
+    classmate = g.user if user_name == g.user.user_name else User.query.filter_by(user_name=user_name).first_or_404()
+
+    # Not our buddy if we're viewing ourselves or they aren't in our buddies list.
+    myself = (user_name == g.user.user_name)
+    is_buddy = (not myself) and (classmate in g.user.buddies)
+
+    return render_template('buddy/view.html', classmate=classmate, is_buddy=is_buddy, myself=myself)
 
 
 @app.route("/classmates/search")
