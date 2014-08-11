@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{% block title %} {{ buddy_record.full_name }} {% endblock %}
+{% block title %} {{ classmate.full_name }} {% endblock %}
 {% block content %}
 <br>
 <div class="row">
@@ -51,7 +51,7 @@
 					<img src="{{ img('linkedin.jpg') }}" height="50" width="50" class="gray">
 			    </li>
 			{% endif %}  
-			<li><a href="mailto:{{ buddy_record|email }}">
+			<li><a href="mailto:{{ classmate|email }}">
 				<img src="{{ img('yellow_mail_50x38.png') }}" width="50" height="50">
 					</a>
 			</li>
@@ -65,8 +65,8 @@
     <p>{{ p }}</p>
 	 	{% endfor %}
 	 	</i></div>
-			{% if buddy_record.location %}
-				<b>Location:</b> {{ buddy_record.location.name }}
+			{% if classmate.location %}
+				<b>Location:</b> {{ classmate.location.name }}
 			{% else %}
 				<b>Location:</b> Not Given
 			{% endif %}

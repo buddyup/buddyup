@@ -23,7 +23,7 @@ def buddy_view(user_name):
         courses = extract_names(g.user.courses)
         languages = extract_names(g.user.languages)
         return render_template('my/profile.html',
-                               buddy_record=g.user,
+                               classmate=g.user,
                                majors=majors,
                                courses=courses,
                                languages=languages,

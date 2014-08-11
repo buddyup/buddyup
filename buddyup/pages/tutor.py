@@ -80,18 +80,18 @@ def copy_form_tutor(form):
 @app.route("/tutor/view/<user_name>")
 @login_required
 def profile_tutor(user_name):
-    buddy_record = User.query.filter_by(user_name=user_name).first_or_404()
-    if buddy_record.tutor == False:
+    classmate = User.query.filter_by(user_name=user_name).first_or_404()
+    if classmate.tutor == False:
         flash("You are not applying for tutor")
         return redirect(url_for('profile_tutor_create'))
     else:
         tutor = Tutor.query.filter_by(user_name = user_name).first_or_404()
-        majors = extract_names(buddy_record.majors)
-        languages = extract_names(buddy_record.languages)
+        majors = extract_names(classmate.majors)
+        languages = extract_names(classmate.languages)
         subjects_tutoring = extract_names(tutor.subject_tutoring)
         bio = extract_names(tutor.bio)
         return render_template('tutor/view.html',
-                                buddy_record = buddy_record,
+                                classmate = classmate,
                                 majors = majors,
                                 languages = languages,
                                 subject_tutoring = subjects_tutoring)
@@ -100,7 +100,7 @@ def profile_tutor(user_name):
 '''@app.route("/tutor/delete/<user_name")
 @login_required
 def profile_delete(user_name):
-    buddy_record = User.query.filter_by(user_name = user_name).first_or_404()
-    buddy_record.tutor = False
+    classmate = User.query.filter_by(user_name = user_name).first_or_404()
+    classmate.tutor = False
     tutor = Tutor.query.filter_by(user_name=user_name).first_or_404()
     db.session'''

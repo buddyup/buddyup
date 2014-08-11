@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{% block title %} {{ buddy_record.full_name }} {% endblock %}
+{% block title %} {{ classmate.full_name }} {% endblock %}
 {% block content %}
 
 <br>
@@ -14,8 +14,8 @@
 
 	<div class="span6">
 		<h2>{{ user_record.full_name }}</h2>
-			{% if buddy_record.location %}
-				Location: {{ buddy_record.location.name }}
+			{% if classmate.location %}
+				Location: {{ classmate.location.name }}
 			{% else %}
 				Location: Not Given
 			{% endif %}
@@ -61,7 +61,7 @@
 				</a>
 			{% endif %}
 			
-			<a href="mailto:{{ buddy_record|email }}">
+			<a href="mailto:{{ classmate|email }}">
 				<img src="{{ img('yellow_mail_50x38.png') }}" width="50" height="50">
 			</a>
 	</div>
