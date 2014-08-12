@@ -32,7 +32,7 @@
                     <div class="col-md-12 col-md-offset-0">
                         <ul class="block-grid">
 							{% for course in courses %}
-							<li class="block" style="background-image:url('/static/_assets/images/courses/math_chalkboard2.jpg')">
+							<li class="block {% if course in user.courses %}followed{%endif%}" style="background-image:url('/static/_assets/images/courses/math_chalkboard2.jpg')">
 								<a href="{{url_for('course_view', id=course.id )}}"><img src="/static/_assets/images/clear.png" /><div class="info hide"><div class="wrapper">
 									<span class="title">{{ course.name }}</span>
 									<span class="subtitle">
@@ -40,10 +40,13 @@
 										{{course.instructor}}
 										{# TODO: Any additional decoration here. #}
 									</span>
-									<span class="button small">
+									{% if not course in user.courses %}
+									<form style="display: none;" id="follow_{{course.id}}" method="POST" action="{{url_for('follow_course', id=course.id)}}"></form>
+									<span class="button small" onclick="follow_{{course.id}}.submit();return false;">
 										<span class="icon icon-person-add">&nbsp;</span>
 										Follow
 									</span>
+									{% endif %}
 								</div></div></a>
 							</li>
 							{% endfor %}
