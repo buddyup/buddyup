@@ -112,23 +112,35 @@ def my_classmates():
             .filter(User.id != g.user.id)
 
 
+def annotate_buddies(classmates):
+    classmates = list(classmates)
+    buddy_ids = {buddy.id for buddy in g.user.buddies}
+    for classmate in classmates:
+        classmate.__dict__["is_buddy"] = (classmate.id in buddy_ids)
+    return classmates
+
+
 @app.route('/classmates')
 @login_required
 def list_classmates():
-    return render_template('buddy/index.html', user=g.user, classmates=shuffled(my_classmates()), everyone="selected")
+    classmates = annotate_buddies(my_classmates())
+    return render_template('buddy/index.html', user=g.user, classmates=shuffled(classmates), everyone="selected")
 
 
 @app.route('/classmates/buddies')
 @login_required
 def list_buddies():
-    return render_template('buddy/index.html', user=g.user, classmates=g.user.buddies.order_by(User.full_name).all(), buddies="selected")
+    buddies = list(g.user.buddies.order_by(User.full_name).all())
+    for buddy in buddies:
+        buddy.__dict__["is_buddy"] = True # We're in 'Buddies' after all!
+    return render_template('buddy/index.html', user=g.user, classmates=buddies, buddies="selected")
 
 @app.route('/classmates/majors/')
 @login_required
 def list_classmates_by_major():
     classmates = defaultdict(list)
 
-    for classmate in my_classmates():
+    for classmate in annotate_buddies(my_classmates()):
         if classmate.majors:
             for major in classmate.majors:
                 classmates[major.name].append(classmate)
@@ -145,7 +157,7 @@ def list_classmates_by_major():
 def list_classmates_by_language():
     classmates = defaultdict(list)
 
-    for classmate in my_classmates():
+    for classmate in annotate_buddies(my_classmates()):
         if classmate.languages:
             for language in classmate.languages:
                 classmates[language.name].append(classmate)
@@ -161,7 +173,7 @@ def list_classmates_by_language():
 def list_classmates_by_location():
     classmates = defaultdict(list)
 
-    for classmate in my_classmates():
+    for classmate in annotate_buddies(my_classmates()):
         classmates[classmate.location.name if classmate.location else "Unknown"].append(classmate)
 
     locations = sorted(classmates.keys())

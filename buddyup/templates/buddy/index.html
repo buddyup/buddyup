@@ -32,7 +32,7 @@
                     <div class="col-md-12 col-md-offset-0">
                         <ul class="block-grid">
 							{% for classmate in classmates %}
-							<li class="block" style="background-image:url('{{ photo_large(classmate) }}')">
+							<li class="block {% if classmate.is_buddy %}followed{%endif%}" style="background-image:url('{{ photo_large(classmate) }}')">
 								<a href="{{ profile(classmate) }}"><img src="/static/_assets/images/clear.png" /><div class="info hide"><div class="wrapper">
 									<span class="title">{{ classmate.full_name }}</span>
 									<span class="subtitle">
@@ -43,10 +43,12 @@
 											Not enrolled
 										{% endif %}
 									</span>
+									{% if not classmate.is_buddy %}
 									<span class="button small">
 										<span class="icon icon-person-add">&nbsp;</span>
 										Invite
 									</span>
+									{%endif%}
 								</div></div></a>
 							</li>
 							{% endfor %}
