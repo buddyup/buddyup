@@ -167,3 +167,9 @@ def list_classmates_by_location():
     locations = sorted(classmates.keys())
 
     return render_template('buddy/by_grouping.html', user=g.user, classmates=classmates, groupings=locations, location="selected")
+
+
+@app.route('/classmate/invite')
+@login_required
+def invite_friend():
+    return render_template('buddy/invite_friend.html')

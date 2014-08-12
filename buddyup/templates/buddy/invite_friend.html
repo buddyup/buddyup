@@ -1,0 +1,262 @@
+{% extends "green/global_layout.html" %}
+{% block title %} Invite a Friend {% endblock %}
+{% block pagestyle %}
+{# TODO: Page style for this? #}
+{% endblock %}
+{% block content %}
+
+
+<article id="top" class="simple">
+    <div class="wrapper container">
+        <div class="row">
+            <h1 class="col-md-6 col-md-offset-3">Invite a Friend</h1>
+            <p class="col-md-6 col-md-offset-3">
+                Don't see your favorite friends and classmates on BuddyUp yet? Invite them!
+            </p>
+        </div>
+    </div>
+</article>
+
+<article id="main-content" class="container">
+
+    <form role="form">
+
+        <section id="" class="row">
+            <div class="col-md-6 col-md-offset-3">
+
+                <div class="group-heading"><h3>Basic Controls</h3></div>
+                
+                <div class="form-group">
+                    <label for="" class="control-label">Input</label>
+                    <input type="text" class="form-control" placeholder="Text input">
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="control-label">Check Boxes</label>
+                    <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="">
+                        Invite everyone
+                    </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="control-label">Radio Buttons</label>
+                    <div class="radio">
+                        <label>
+                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                            Open to the class
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                            Private event
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="control-label">Range</label>
+                    <div class="range">
+                        <div class="from">
+                            <span>Starts</span>
+                            <select class="form-control">
+                                <option>8:00AM</option>
+                            </select>
+                        </div>
+                        <div class="to">
+                            <span>End</span>
+                            <select class="form-control">
+                                <option>12:00PM</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="control-label">Text Area</label>
+                    <textarea class="form-control" rows="3"></textarea>
+                    <a href="#" class="button small submit">Add Comment</a>
+                </div>
+
+
+            </div>
+        </section>
+
+
+
+        <section id="" class="row">
+            <div class="col-md-6 col-md-offset-3">
+
+
+                <div class="group-heading"><h3>Dropdowns</h3></div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="control-label">Current Status</label>
+                    <select class="form-control">
+                        <option></option>
+                        <option>Looking for new clients</option>
+                        <option>Taking a break</option>
+                        <option>No longer active</option>
+                    </select>
+                    <span class="message">* This room needs to be reserved with your school. <a href="#">Reserve now</a></span>
+                </div>
+                <div class="form-group input-then-select">
+                    <label for="inputEmail3" class="control-label">Price</label>
+                    <input type="text" class="form-control" placeholder="Text input">
+                    <select class="form-control">
+                        <option></option>
+                        <option>per hour</option>
+                        <option>per session</option>
+                        <option>per month</option>
+                    </select>
+                </div>
+
+
+            </div>
+        </section>
+
+
+
+        <section id="" class="row">
+            <div class="col-md-6 col-md-offset-3">
+
+
+                <div class="group-heading"><h3>Multipicker</h3></div>
+                <div class="multipicker form-group">
+                    <div class="multipicker-row">
+                        <select class="form-control">
+                            <option>Biochemistry 101</option>
+                            <option>Chemistry 101</option>
+                            <option>Politics 302</option>
+                            <option>Statistics 101</option>
+                            <option>Zoology 201</option>
+                        </select>
+                        <a href="#" class="remove"><span class="icon icon-remove">&nbsp;</span></a>
+                    </div>
+                    <div class="multipicker-row">
+                        <select class="form-control">
+                            <option>Biochemistry 101</option>
+                            <option>Chemistry 101</option>
+                            <option>Politics 302</option>
+                            <option>Statistics 101</option>
+                            <option>Zoology 201</option>
+                        </select>
+                        <a href="#" class="remove"><span class="icon icon-remove">&nbsp;</span></a>
+                    </div>
+                    <a href="#" class="button add"><span class="icon icon-add">&nbsp;</span>Add another</a>
+                </div>
+
+
+            </div>
+        </section>
+
+
+
+
+        <section id="" class="row">
+            <div class="col-md-6 col-md-offset-3">
+
+
+                <div class="group-heading"><h3>Input List</h3></div>
+                <div class="input-list form-group">
+                    <div class="input-list-row">
+                        <input type="text" class="form-control" placeholder="Text input">
+                        <a href="#" class="remove"><span class="icon icon-remove">&nbsp;</span></a>
+                    </div>
+                    <div class="input-list-row">
+                        <input type="text" class="form-control" placeholder="Text input">
+                        <a href="#" class="remove"><span class="icon icon-remove">&nbsp;</span></a>
+                    </div>
+                    <a href="#" class="button add"><span class="icon icon-add">&nbsp;</span>Add another</a>
+                </div>
+
+
+            </div>
+        </section>
+
+
+
+        <section id="" class="row">
+            <div class="col-md-6 col-md-offset-3">
+
+
+                <div class="group-heading"><h3>People List</h3></div>
+                <div class="form-group people-list">
+                    <label for="" class="control-label">Invite only there people:</label>
+                    <ul class="tablelist-group">
+                        <li class="tablelist-group-row">
+                            <ul class="tablelist">
+                                <li class="icon"><a href="./profile.html"><div class="block circle" style="background-image:url('../_assets/images/people/15.jpg')">&nbsp;</div></a></li>
+                                <li class="main">
+                                    <span class="title">Aaron Cook</span>
+                                    <span class="subtitle">Downtown</span>
+                                </li>
+                                <li class="action"><a href="#">Remove</a></li>
+                            </ul>
+                        </li>
+                        <li class="tablelist-group-row">
+                            <ul class="tablelist">
+                                <li class="icon"><a href="./profile.html"><div class="block circle" style="background-image:url('../_assets/images/people/15.jpg')">&nbsp;</div></a></li>
+                                <li class="main">
+                                    <span class="title">Aaron Cook</span>
+                                    <span class="subtitle">Downtown</span>
+                                </li>
+                                <li class="action"><a href="#">Remove</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <a href="#" class="button add"><span class="icon icon-people">&nbsp;</span>Add People</a>
+                </div>
+            </div>
+        </section>
+
+
+
+
+        <section id="" class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="group-heading"><h3>Date Picker</h3></div>
+                <div class="form-group">
+                    <div>
+                        <input type="text" value="02/16/12" data-date-format="mm/dd/yy" id="dp3" class="datepicker">
+                        <span class="icon icon-calendar">&nbsp;</span>
+                    </div>
+                    <span class="message">Uses <a href="http://www.eyecon.ro/bootstrap-datepicker/?utm_source=twitterfeed&utm_medium=twitter">bootstrap-datepicker.js</a></span>
+                </div>
+                <script>
+                        $( document ).ready( function()
+                        {
+                            $('#dp3').datepicker();
+                        }
+                        );
+                    </script>
+            </div>
+        </section>
+
+        <section id="" class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="group-heading"><h3>Photo Chooser</h3></div>
+                <div class="photo-chooser">
+                    <div class="photo-preview">&nbsp;</div>
+                    <a href="#" class="button small">Choose Photo</a>
+                </div>
+            </div>
+        </section>
+
+
+
+        <section id="submit" class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <a href="#" class="button submit submit-form">Submit</a>
+            </div>
+        </section>
+
+
+
+    </form>
+
+</article>
+
+{% endblock %}
