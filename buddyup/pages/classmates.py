@@ -174,7 +174,7 @@ def list_classmates_by_major(page=1):
                             .order_by(Major.name)\
                             .paginate(page, per_page=PAGE_SIZE).items
 
-    return list_by_group(classmates_by_major, major="selected")
+    return list_by_group(classmates_by_major, major="selected", group_list=Major.query.all())
 
 
 @app.route('/classmates/majors/<int:major_id>/')
@@ -203,7 +203,7 @@ def list_classmates_by_language(page=1):
                             .order_by(Language.name)\
                             .paginate(page, per_page=PAGE_SIZE).items
 
-    return list_by_group(classmates_by_language, language="selected")
+    return list_by_group(classmates_by_language, language="selected", group_list=Language.query.all())
 
 
 @app.route('/classmates/languages/<int:language_id>/')
@@ -233,7 +233,7 @@ def list_classmates_by_location(page=1):
                             .paginate(page, per_page=PAGE_SIZE).items
 
 
-    return list_by_group(classmates_by_location, location="selected")
+    return list_by_group(classmates_by_location, location="selected", group_list=Location.query.all())
 
 
 

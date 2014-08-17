@@ -28,6 +28,27 @@
             </article>
 
             <article id="main-content" class="container">
+				{% if group_list %}
+				<script>
+				$(function(){
+					$('#group_list').change(function(){
+						if($('#group_list').val() > 0){
+							window.location.href+=$('#group_list').val();
+						}
+					});
+				});
+				</script>
+
+				Filter by &nbsp;&nbsp;
+				<select id="group_list">
+					<option value=0>---</option>
+					{% for group in group_list %}
+					<option value="{{group.id}}">{{group.name}}</option>
+					{% endfor %}
+				</select>
+				<br/>
+				{% endif %}
+
                 <section class="row">
                     <div class="col-md-12 col-md-offset-0">
 
