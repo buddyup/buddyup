@@ -154,23 +154,12 @@ def list_classmates_by_major(page=1):
                             .order_by(Major.name)\
                             .paginate(page, per_page=PAGE_SIZE).items
 
-    CLASSMATE = 0
-    MAJOR = 1
-
     classmates = defaultdict(list)
 
-    count = 0
-
-    for classmate_by_major in classmates_by_major:
-        if classmate_by_major[MAJOR].name == "Accounting":
-            count+=1
-        classmates[classmate_by_major[MAJOR].name].append(classmate_by_major[CLASSMATE])
+    for classmate, major in classmates_by_major:
+        classmates[major.name].append(classmate)
 
     majors = sorted(classmates.keys())
-
-    print majors
-
-    print "Accounting majors on this pull? %s" % count
 
     return render_template('buddy/by_grouping.html', user=g.user, classmates=classmates, groupings=majors, major="selected")
 
