@@ -101,18 +101,21 @@ def unfriend(user_name):
         return redirect(request.referrer)
 
 
-def my_classmates(page=1):
+def classmates_query():
     """
     Return all of 'my' classmates. (People I share a class with.)
     This returns a query object which you can refine further.
     """
     #TODO: Tune this. It's supposed to generate two queries but seems to generate many more.
     course_IDs = [c.id for c in User.query.get(g.user.id).courses]
-
     return User.query.filter(User.courses.any(Course.id.in_( course_IDs )))\
             .filter(User.has_photos == True)\
-            .filter(User.id != g.user.id)\
-            .paginate(page, per_page=PAGE_SIZE).items
+            .filter(User.id != g.user.id)
+
+def paginated_classmates(page=1):
+    return classmates_query().paginate(page, per_page=PAGE_SIZE).items
+
+
 
 def annotate_buddies(classmates):
     classmates = list(classmates)
@@ -127,7 +130,7 @@ def annotate_buddies(classmates):
 @app.route('/classmates/page/<int:page>')
 @login_required
 def list_classmates(page=1):
-    return render_template('buddy/index.html', user=g.user, classmates=annotate_buddies(my_classmates(page)), everyone="selected")
+    return render_template('buddy/index.html', user=g.user, classmates=annotate_buddies(paginated_classmates(page)), everyone="selected")
 
 
 @app.route('/classmates/buddies')
@@ -144,24 +147,30 @@ def list_buddies(page=1):
 @app.route('/classmates/majors/page/<int:page>')
 @login_required
 def list_classmates_by_major(page=1):
-    
-    # TODO: This isn't going to work with simple pagination.
-    # In order for the results to be correct you'll have to iterate over a list
-    # of majors and draw the people from that list, since many have double majors,etc.
-    # The challenge will be to correctly paginate across majors *and* their contents.
-    # That is, not only organize by major in a deterministic way, but allow a major 
-    # to span a few pages within that deterministic framework.
-    
+    classmates_by_major = classmates_query()\
+                            .add_entity(Major)\
+                            .filter(User.id == MajorMembership.columns['user_id'])\
+                            .filter(MajorMembership.columns['major_id'] == Major.id)\
+                            .order_by(Major.name)\
+                            .paginate(page, per_page=PAGE_SIZE).items
+
+    CLASSMATE = 0
+    MAJOR = 1
+
     classmates = defaultdict(list)
 
-    for classmate in annotate_buddies(my_classmates(page)):
-        if classmate.majors:
-            for major in classmate.majors:
-                classmates[major.name].append(classmate)
-        else:
-            classmates["Undecided"].append(classmate)
+    count = 0
+
+    for classmate_by_major in classmates_by_major:
+        if classmate_by_major[MAJOR].name == "Accounting":
+            count+=1
+        classmates[classmate_by_major[MAJOR].name].append(classmate_by_major[CLASSMATE])
 
     majors = sorted(classmates.keys())
+
+    print majors
+
+    print "Accounting majors on this pull? %s" % count
 
     return render_template('buddy/by_grouping.html', user=g.user, classmates=classmates, groupings=majors, major="selected")
 
@@ -171,7 +180,7 @@ def list_classmates_by_major(page=1):
 def list_classmates_by_language(page=1):
     classmates = defaultdict(list)
 
-    for classmate in annotate_buddies(my_classmates(page)):
+    for classmate in annotate_buddies(paginated_classmates(page)):
         if classmate.languages:
             for language in classmate.languages:
                 classmates[language.name].append(classmate)
@@ -188,7 +197,7 @@ def list_classmates_by_language(page=1):
 def list_classmates_by_location(page=1):
     classmates = defaultdict(list)
 
-    for classmate in annotate_buddies(my_classmates(page)):
+    for classmate in annotate_buddies(paginated_classmates(page)):
         classmates[classmate.location.name if classmate.location else "Unknown"].append(classmate)
 
     locations = sorted(classmates.keys())
