@@ -112,12 +112,12 @@ def classmates_query():
             .filter(User.has_photos == True)\
             .filter(User.id != g.user.id)
 
+
 def paginated_classmates(page=1):
     return classmates_query().paginate(page, per_page=PAGE_SIZE).items
 
 
-
-def annotate_buddies(classmates):
+def mark_buddies(classmates):
     classmates = list(classmates)
     buddy_ids = {buddy.id for buddy in g.user.buddies}
     for classmate in classmates:
@@ -125,12 +125,19 @@ def annotate_buddies(classmates):
     return classmates
 
 
+def mark_buddies_in_group(classmates_by_group):
+    buddy_ids = {buddy.id for buddy in g.user.buddies}
+    for classmate, group in classmates_by_group:
+        classmate.__dict__["is_buddy"] = (classmate.id in buddy_ids)
+    return classmates_by_group
+
+
 
 @app.route('/classmates/')
 @app.route('/classmates/page/<int:page>')
 @login_required
 def list_classmates(page=1):
-    return render_template('buddy/index.html', user=g.user, classmates=annotate_buddies(paginated_classmates(page)), everyone="selected")
+    return render_template('buddy/index.html', user=g.user, classmates=mark_buddies(paginated_classmates(page)), everyone="selected")
 
 
 @app.route('/classmates/buddies')
@@ -154,6 +161,8 @@ def list_classmates_by_major(page=1):
                             .order_by(Major.name)\
                             .paginate(page, per_page=PAGE_SIZE).items
 
+    classmates_by_major = mark_buddies_in_group(classmates_by_major)
+
     classmates = defaultdict(list)
 
     for classmate, major in classmates_by_major:
@@ -167,13 +176,21 @@ def list_classmates_by_major(page=1):
 @app.route('/classmates/languages/page/<int:page>')
 @login_required
 def list_classmates_by_language(page=1):
+
+    classmates_by_language = classmates_query()\
+                            .add_entity(Language)\
+                            .filter(User.id == LanguageMembership.columns['user_id'])\
+                            .filter(LanguageMembership.columns['language_id'] == Language.id)\
+                            .order_by(Language.name)\
+                            .paginate(page, per_page=PAGE_SIZE).items
+
+    classmates_by_language = mark_buddies_in_group(classmates_by_language)
+
+
     classmates = defaultdict(list)
 
-    for classmate in annotate_buddies(paginated_classmates(page)):
-        if classmate.languages:
-            for language in classmate.languages:
-                classmates[language.name].append(classmate)
-        # If you don't indicate a language, we leave you out of this particular view.
+    for classmate, language in classmates_by_language:
+        classmates[language.name].append(classmate)
 
     languages = sorted(classmates.keys())
 
@@ -184,10 +201,19 @@ def list_classmates_by_language(page=1):
 @app.route('/classmates/locations/page/<int:page>')
 @login_required
 def list_classmates_by_location(page=1):
+
+    classmates_by_location = classmates_query()\
+                            .add_entity(Location)\
+                            .filter(User.location_id==Location.id)\
+                            .order_by(Location.name)\
+                            .paginate(page, per_page=PAGE_SIZE).items
+
+    classmates_by_location = mark_buddies_in_group(classmates_by_location)
+
     classmates = defaultdict(list)
 
-    for classmate in annotate_buddies(paginated_classmates(page)):
-        classmates[classmate.location.name if classmate.location else "Unknown"].append(classmate)
+    for classmate, location in classmates_by_location:
+        classmates[location.name].append(classmate)
 
     locations = sorted(classmates.keys())
 
