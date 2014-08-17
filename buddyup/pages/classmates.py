@@ -150,6 +150,19 @@ def list_buddies(page=1):
     return render_template('buddy/index.html', user=g.user, classmates=buddies, buddies="selected")
 
 
+def list_by_group(grouped_classmates, **kwargs):
+    grouped_classmates = mark_buddies_in_group(grouped_classmates)
+
+    classmates = defaultdict(list)
+
+    for classmate, group in grouped_classmates:
+        classmates[group.name].append(classmate)
+
+    groups = sorted(classmates.keys())
+
+    return render_template('buddy/by_grouping.html', user=g.user, classmates=classmates, groupings=groups, **kwargs)
+
+
 @app.route('/classmates/majors/')
 @app.route('/classmates/majors/page/<int:page>')
 @login_required
@@ -161,16 +174,22 @@ def list_classmates_by_major(page=1):
                             .order_by(Major.name)\
                             .paginate(page, per_page=PAGE_SIZE).items
 
-    classmates_by_major = mark_buddies_in_group(classmates_by_major)
+    return list_by_group(classmates_by_major, major="selected")
 
-    classmates = defaultdict(list)
 
-    for classmate, major in classmates_by_major:
-        classmates[major.name].append(classmate)
+@app.route('/classmates/majors/<int:major_id>/')
+@app.route('/classmates/majors/<int:major_id>/page/<int:page>')
+@login_required
+def list_classmates_by_single_major(major_id, page=1):
+    classmates_by_major = classmates_query()\
+                            .add_entity(Major)\
+                            .filter(User.id == MajorMembership.columns['user_id'])\
+                            .filter(MajorMembership.columns['major_id'] == Major.id)\
+                            .filter(Major.id == major_id)\
+                            .paginate(page, per_page=PAGE_SIZE).items
 
-    majors = sorted(classmates.keys())
+    return list_by_group(classmates_by_major, major="selected")
 
-    return render_template('buddy/by_grouping.html', user=g.user, classmates=classmates, groupings=majors, major="selected")
 
 @app.route('/classmates/languages/')
 @app.route('/classmates/languages/page/<int:page>')
@@ -184,17 +203,22 @@ def list_classmates_by_language(page=1):
                             .order_by(Language.name)\
                             .paginate(page, per_page=PAGE_SIZE).items
 
-    classmates_by_language = mark_buddies_in_group(classmates_by_language)
+    return list_by_group(classmates_by_language, language="selected")
 
 
-    classmates = defaultdict(list)
+@app.route('/classmates/languages/<int:language_id>/')
+@app.route('/classmates/languages/<int:language_id>/page/<int:page>')
+@login_required
+def list_classmates_by_single_language(language_id, page=1):
 
-    for classmate, language in classmates_by_language:
-        classmates[language.name].append(classmate)
+    classmates_by_language = classmates_query()\
+                            .add_entity(Language)\
+                            .filter(User.id == LanguageMembership.columns['user_id'])\
+                            .filter(LanguageMembership.columns['language_id'] == Language.id)\
+                            .filter(Language.id == language_id)\
+                            .paginate(page, per_page=PAGE_SIZE).items
 
-    languages = sorted(classmates.keys())
-
-    return render_template('buddy/by_grouping.html', user=g.user, classmates=classmates, groupings=languages, language="selected")
+    return list_by_group(classmates_by_language, language="selected")
 
 
 @app.route('/classmates/locations/')
@@ -208,16 +232,24 @@ def list_classmates_by_location(page=1):
                             .order_by(Location.name)\
                             .paginate(page, per_page=PAGE_SIZE).items
 
-    classmates_by_location = mark_buddies_in_group(classmates_by_location)
 
-    classmates = defaultdict(list)
+    return list_by_group(classmates_by_location, location="selected")
 
-    for classmate, location in classmates_by_location:
-        classmates[location.name].append(classmate)
 
-    locations = sorted(classmates.keys())
 
-    return render_template('buddy/by_grouping.html', user=g.user, classmates=classmates, groupings=locations, location="selected")
+@app.route('/classmates/locations/<int:location_id>/')
+@app.route('/classmates/locations/<int:location_id>/page/<int:page>')
+@login_required
+def list_classmates_by_single_location(location_id, page=1):
+
+    classmates_by_location = classmates_query()\
+                            .add_entity(Location)\
+                            .filter(User.location_id==Location.id)\
+                            .filter(Location.id == location_id)\
+                            .paginate(page, per_page=PAGE_SIZE).items
+
+
+    return list_by_group(classmates_by_location, location="selected")
 
 
 @app.route('/classmate/invite')
