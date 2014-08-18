@@ -33,7 +33,7 @@
 				$(function(){
 					$('#group_list').change(function(){
 						if($('#group_list').val() > 0){
-							window.location.href+=$('#group_list').val();
+							window.location.href="{{url_for(request.endpoint)}}" + $('#group_list').val();
 						}
 					});
 				});
