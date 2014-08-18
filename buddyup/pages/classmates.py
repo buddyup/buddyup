@@ -137,17 +137,25 @@ def mark_buddies_in_group(classmates_by_group):
 @app.route('/classmates/page/<int:page>')
 @login_required
 def list_classmates(page=1):
-    return render_template('buddy/index.html', user=g.user, classmates=mark_buddies(paginated_classmates(page)), everyone="selected")
+
+    link_next = url_for('list_classmates', page=page+1)
+    link_prev = url_for('list_classmates', page=page-1) if page > 1 else None
+
+    return render_template('buddy/index.html', user=g.user, classmates=mark_buddies(paginated_classmates(page)), everyone="selected", next=link_next, prev=link_prev)
 
 
 @app.route('/classmates/buddies')
 @app.route('/classmates/buddies/page/<int:page>')
 @login_required
 def list_buddies(page=1):
+
+    link_next = url_for('list_classmates', page=page+1)
+    link_prev = url_for('list_classmates', page=page-1) if page > 1 else None
+
     buddies = g.user.buddies.order_by(User.full_name).paginate(page, per_page=PAGE_SIZE).items
     for buddy in buddies:
         buddy.__dict__["is_buddy"] = True # We're in 'Buddies' after all!
-    return render_template('buddy/index.html', user=g.user, classmates=buddies, buddies="selected")
+    return render_template('buddy/index.html', user=g.user, classmates=buddies, buddies="selected", next=link_next, prev=link_prev)
 
 
 def list_by_group(grouped_classmates, **kwargs):
