@@ -20,7 +20,7 @@ CLIENT_ID = json.loads(open('auth/client_secrets.json', 'r').read())['web']['cli
 SERVICE = build('plus', 'v1')
 
 
-HOME_LIMIT = 30
+HOME_LIMIT = 24
 
 # Expect behavior: '/' redirects to 
 
@@ -57,26 +57,21 @@ def index():
         return redirect(url_for('home'))
 
 
+
+from sqlalchemy.sql.expression import func
+
 @app.route('/home')
 @login_required
 def home():
-    # TODO: Possible scaling issue. Loads, shuffles, and listifies all classmates in memory? Can the DB handle this for us?
-    # Calculate fellow students without duplicates.
-    # SQLAlchemy ORM objects are unique to the session, not to an
-    # individual query, so we can use a set.
-    unordered_classmates = set()
-    for course in g.user.courses.all():
-        for other in course.users.filter(User.has_photos == True,
-                                         User.id != g.user.id).all():
-            unordered_classmates.add(other)
+    # Note, this pulls from everyone in the database, not just classmates.
+    # If they have a photo, they are considered.
+    classmates = User.query\
+                    .filter(User.has_photos == True)\
+                    .filter(User.id != g.user.id)\
+                    .order_by(func.random())\
+                    .limit(HOME_LIMIT)
 
-    classmates = shuffled(unordered_classmates)
-    count = len(classmates)
-    del classmates[HOME_LIMIT:]
-
-    return render_template('index.html',
-                           classmates=classmates,
-                           count=count) 
+    return render_template('index.html', classmates=classmates) 
 
 
 @app.route('/help')

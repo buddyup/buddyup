@@ -1,30 +1,68 @@
-{% extends "layout.html" %}
-{% from "lib.html" import flash_all %}
-
-{% block title %}Home{% endblock %}
-
-{% block extrahead %}
-
-<script src="{{ js('jquery-ui') }}" type="text/javascript"></script>
-<script src="{{ js('fullcalendar') }}"></script>
-</script>
-
+{% extends "green/global_layout.html" %}
+{% block title %} Classmates {% endblock %}
+{% block pagestyle %}
+<link href="/static/_assets/css/index.css" rel="stylesheet">
 {% endblock %}
-
-
 {% block content %}
-{{ flash_all() }}
-<br><br>
-<div class="homepage">
-<h2 style="color:black;">Who's in Your Class</h2>
-<table class="people">
-{% for row in classmates|batch(5) %}
-<tr>
-	{% for user in row %}
-		<td><a href="{{ profile(user) }}"><img src="{{ photo_large(user) }}" width="200" height="200" class="img-polaroid"></a></td>
-	{% endfor %}
-</tr>
-{% endfor %}
-</table>
-</div>
+
+            <article id="top" class="simple">
+                <div class="wrapper container">
+                    <div class="row text-center">
+                        <h1 class="col-md-6 col-md-offset-3">Who’s in your class?</h1>
+                        <p class="col-md-6 col-md-offset-3">
+                            Meet your classmates. 
+							Your student community is a key component to academic success. 
+							Who don't you know yet?
+                        </p>
+                        <div class="col-md-6 col-md-offset-3">
+                            <a href="javascript:window.scrollTo( 0, 410 );" class="action circle"><span class="icon icon-down">&nbsp;</span></a>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article id="main-content" style="background-color: white">
+                <div class="row block-grid">
+                    <div class="block-group-container">
+                        <div class="block-group">
+							{% for classmate in classmates[0:4] %}
+							{% include "front_tile_small.html" %}
+							{% endfor %}
+                        </div>
+						{% set classmate = classmates[4] %}
+						{% include "front_tile_big.html" %}
+                        <div class="block-group">
+							{% for classmate in classmates[5:9] %}
+							{% include "front_tile_small.html" %}
+							{% endfor %}
+                        </div>
+                    </div>
+                    <div class="block-group-container">
+						{% set classmate = classmates[9] %}
+						{% include "front_tile_big.html" %}
+                        <div class="block-group">
+							{% for classmate in classmates[10:14] %}
+							{% include "front_tile_small.html" %}
+							{% endfor %}
+                        </div>
+						{% set classmate = classmates[14] %}
+						{% include "front_tile_big.html" %}
+                    </div>
+                    <div class="block-group-container">
+                        <div class="block-group">
+							{% for classmate in classmates[15:19] %}
+							{% include "front_tile_small.html" %}
+							{% endfor %}
+                        </div>
+						{% set classmate = classmates[19] %}
+						{% include "front_tile_big.html" %}
+                        <div class="block-group">
+							{% for classmate in classmates[20:24] %}
+							{% include "front_tile_small.html" %}
+							{% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </article>
+
 {% endblock %}
