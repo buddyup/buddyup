@@ -24,7 +24,9 @@
             <article id="main-content" style="background-color: white">
                 <div class="row block-grid">
                     <div class="block-group-container">
-                        <div class="block-group">
+						{% if classmates|list|count >= 24  %}
+
+						<div class="block-group">
 							{% for classmate in classmates[0:4] %}
 							{% include "front_tile_small.html" %}
 							{% endfor %}
@@ -61,6 +63,8 @@
 							{% include "front_tile_small.html" %}
 							{% endfor %}
                         </div>
+
+						{% endif %}
                     </div>
                 </div>
             </article>
