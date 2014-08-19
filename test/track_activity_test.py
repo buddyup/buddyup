@@ -43,7 +43,7 @@ class TrackActivityTests(unittest.TestCase):
 
     def test_track_profile_view(self):
         initial_count = Action.query.count()
-        self.test_client.get('/buddy/view/skippy', follow_redirects=True)
+        self.test_client.get('/classmates/skippy', follow_redirects=True)
         self.assertEqual(initial_count + 1, Action.query.count(), "A page view wasn't recorded?")
 
         
