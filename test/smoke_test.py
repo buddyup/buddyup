@@ -27,7 +27,7 @@ class SmokeTests(unittest.TestCase):
         tc = app.test_client()
         home = tc.get('/login?username=skippy', follow_redirects=True)
 
-        self.assertTrue("Who\'s in Your Class" in home.data, "That doesn't look like the home page.")
+        self.assertTrue("in your class?" in home.data, "That doesn't look like the home page.")
 
 
 if __name__ == '__main__':
