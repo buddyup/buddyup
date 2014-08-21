@@ -1,0 +1,45 @@
+{% extends "green/global_layout.html" %}
+{% block title %} Notifications {% endblock %}
+{% block pagestyle %}
+<link href="/static/_assets/css/everything.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<article id="top" class="simple">
+    <div class="wrapper container">
+        <div class="row">
+            <h1 class="col-md-6 col-md-offset-3">Notifications</h1>
+        </div>
+    </div>
+</article>
+<article id="main-content" class="container">
+
+    <section id="" class="row">
+        <div class="col-md-6 col-md-offset-3">
+				{% if notifications|list|count > 0 %}
+            <div class="group-heading"><h3>Today</h3></div>
+            <ul class="tablelist-group">
+					{% for notification in notifications %}
+	                <li class="tablelist-group-row">
+	                    <ul class="tablelist">
+	                        <li class="icon"><a href="./profile.html"><div class="block circle" style="background-image:url('/static/_assets/images/people/15.jpg')">&nbsp;</div></a></li>
+	                        <li class="main">
+	                            <div class="title">{{notification.payload}}</div>
+	                            <div class="subtitle">{{notification.time}}</div>
+	                        </li>
+							{% if notification.action_link %}
+	                        <li class="action"><a href="{{notification.action_link}}">{{notification.action_text}}</a></li>
+							{% endif %}
+	                    </ul>
+	                </li>
+					{% endfor %}
+            </ul>
+				{% else %}
+You have no notifications.
+				{% endif %}
+        </div>
+    </section>
+
+
+
+</article>
+{% endblock %}

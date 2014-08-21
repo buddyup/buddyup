@@ -116,6 +116,17 @@ class QuestionVote(db.Model):
     value = db.Column(db.Integer)
 
 
+class Notification(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    time = db.Column(db.DateTime)
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    payload = db.Column(db.UnicodeText, default=u"")
+    action_text = db.Column(db.UnicodeText, default=u"")
+    action_link = db.Column(db.UnicodeText, default=u"")
+    deleted = db.Column(db.Boolean, default=False)
+
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     # PSU user names are always <= 8 ASCII characters due to Solaris
@@ -173,8 +184,9 @@ class User(db.Model):
                               primaryjoin=Answer.user_id == id)
     available = db.relationship('Availability', lazy="dynamic",
                                 backref="user")
+    notifications = db.relationship('Notification', backref='recipient',
+                                primaryjoin=Notification.recipient_id == id)
 
-    
 
 class Photo(db.Model):
     id = db.Column(db.Integer, primary_key=True)

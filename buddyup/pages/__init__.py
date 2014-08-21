@@ -12,3 +12,4 @@ from . import lists
 from . import login
 from . import profile
 from . import form_profile
+from . import notifications
