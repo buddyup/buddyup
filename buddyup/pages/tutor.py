@@ -12,7 +12,7 @@ from wtforms.ext.sqlalchemy.fields import (QuerySelectMultipleField,
                                            QuerySelectField)
 
 from buddyup.app import app
-from buddyup.database import User, Course, Major, Location, Availability, db
+from buddyup.database import User, Course, Major, Location, db
 from buddyup.util import sorted_languages, login_required
 from buddyup.templating import render_template
 from buddyup.photo import change_profile_photo, clear_images, ImageError
@@ -49,21 +49,6 @@ def copy_form_tutor(form):
 
     db.session.add(tutor)
     db.session.commit()
-
-    AVAILABILITIES = {
-        'am': ('am',),
-        'pm': ('pm',),
-        'all': ('am', 'pm'),
-        'none': (),
-    }
-
-    AvailabilityTutor.query.filter_by(tutor_id=tutor.id).delete()
-    for i, day in enumerate(form.availability):
-        for time in AVAILABILITIES[day.data]:
-            record = AvailabilityTutor(tutor_id=tutor.id,
-                                        day=i,
-                                      time=time)
-            db.session.add(record)
 
     '''course_id = Course.query.filter_by(name = form.courses_tutoring.data)'''
 

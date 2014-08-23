@@ -8,7 +8,7 @@ from wtforms.fields import TextField, RadioField, FieldList, TextAreaField
 from wtforms.ext.sqlalchemy.fields import (QuerySelectMultipleField,
                                            QuerySelectField)
 from buddyup.app import app
-from buddyup.database import Course, Major, Location, Availability, db
+from buddyup.database import Course, Major, Location, db
 from buddyup.util import sorted_languages, login_required
 
 PHOTO_EXTS = ['jpg', 'jpe', 'jpeg', 'png', 'gif', 'bmp', 'tif', 'tiff']
@@ -41,15 +41,6 @@ class ProfileForm(Form):
                                 get_label=u"name"
 ,                                allow_blank=True,
                                 query_factory=ordered_factory(Location))
-    availability = FieldList(RadioField(choices=[('none', None),
-                                                 ('am', 'AM'),
-                                                 ('pm', 'PM'),
-                                                 ('all', 'All Day')],
-                                        default="none"),
-                             min_entries=7, max_entries=7)
-    # Append a field for each day
-#    for i in range(7):
-#        availability.append_entry()
     validators = [FileAllowed(PHOTO_EXTS, u"Images only!")]
     if app.config.get("BUDDYUP_REQUIRE_PHOTO", True):
         validators.append(required())
@@ -107,15 +98,6 @@ class TutorProfileForm(Form):
                                 #get_label=u"name",
                                 #allow_blank=True,
                                 #query_factory=ordered_factory(Location))
-    availability = FieldList(RadioField(choices=[('none', None),
-                                                 ('am', 'AM'),
-                                                 ('pm', 'PM'),
-                                                 ('all', 'All Day')],
-                                        default="none"),
-                             min_entries=7, max_entries=7)
-    # Append a field for each day
-#    for i in range(7):
-#        availability.append_entry()
     #photo = FileField(u"Profile Photo (required)", validators=[
                       #required(),
                       #FileAllowed(PHOTO_EXTS, u"Images only!")])

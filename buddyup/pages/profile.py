@@ -12,7 +12,7 @@ from wtforms.ext.sqlalchemy.fields import (QuerySelectMultipleField,
                                            QuerySelectField)
 
 from buddyup.app import app
-from buddyup.database import Course, Major, Location, Availability, db
+from buddyup.database import Course, Major, Location, db
 from buddyup.util import sorted_languages, login_required, update_relationship
 from buddyup.templating import render_template
 from buddyup.photo import change_profile_photo, clear_images, ImageError
@@ -70,18 +70,6 @@ def profile_edit():
             form.courses.data = user.courses.all()
             form.location.data = user.location
 
-            times_to_choices = {
-                (False, False): "none",
-                (True, True): "all",
-                (True, False): "am",
-                (False, True): "pm",
-                }
-            times = {(time.day, time.time) for time in user.available}
-            for i, field in enumerate(form.availability):
-               am = (i, "am") in times
-               pm = (i, "pm") in times
-               field.data = times_to_choices[(am, pm)]
-
         return render_template('my/edit_profile.html',
                                form=form,
                                day_names=day_names,
@@ -101,19 +89,6 @@ def copy_form(form):
     user.bio = form.bio.data
     user.email = form.email.data
     
-    AVAILABILITIES = {
-        'am': ('am',),
-        'pm': ('pm',),
-        'all': ('am', 'pm'),
-        'none': (),
-    }
-    Availability.query.filter_by(user_id=user.id).delete()
-    for i, day in enumerate(form.availability):
-        for time in AVAILABILITIES[day.data]:
-            record = Availability(user_id=user.id,
-                                  day=i,
-                                  time=time)
-            db.session.add(record)
     update_relationship(user.courses, form.courses.data)
     update_relationship(user.majors, form.majors.data)
     update_relationship(user.languages, form.languages.data)

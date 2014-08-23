@@ -5,8 +5,7 @@ import json
 
 from flask import flash, request, abort, g, redirect, url_for, request
 
-from buddyup.database import (Course, Language, Event, EventComment,
-                              Availability, Visit, db, Action)
+from buddyup.database import (Course, Language, Event, EventComment, Visit, db, Action)
 from buddyup.app import app, mandrill_client, in_production
 from buddyup.photo import clear_images
 import mandrill
@@ -250,7 +249,6 @@ def delete_user(user):
     delete_records(user.received_event_inv)
     Event.query.filter_by(owner_id=user.id).delete()
     EventComment.query.filter_by(user_id=user.id).delete()
-    Availability.query.filter_by(user_id=user.id).delete()
     Visit.query.filter_by(user_id=user.id).delete()
     db.session.delete(user)
     db.session.commit()

@@ -50,7 +50,6 @@ class BuddyInvitation(db.Model):
     receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     text = db.Column(db.UnicodeText)
     rejected = db.Column(db.Boolean, default=False)
-    #Question: just removed it from the db if rejected?
 
 
 class Course(db.Model):
@@ -58,64 +57,10 @@ class Course(db.Model):
     name = db.Column(db.UnicodeText)
     instructor = db.Column(db.UnicodeText)
     events = db.relationship('Event', backref='course')
-    questions = db.relationship('Question', backref='course', lazy='dynamic')
 
     def __repr__(self):
         return self.name
-
-
-class Answer(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
-    title = db.Column(db.UnicodeText)
-    text = db.Column(db.UnicodeText)
-    time = db.Column(db.DateTime)
-    votes = db.relationship("AnswerVote", backref="answer", lazy='dynamic')
-    
-    @property
-    def html_id(self):
-        return 'a%d' % self.id
  
-
-class Question(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
-    title = db.Column(db.UnicodeText)
-    text = db.Column(db.UnicodeText)
-    time = db.Column(db.DateTime)
-    #TODO: Add a counter of views?
-    answers = db.relationship("Answer",
-            backref="Question", lazy='dynamic',
-            primaryjoin=Answer.question_id == id)
-    votes = db.relationship("QuestionVote", backref="question",
-                            lazy='dynamic')
-
-    def __repr__(self):
-        return '<Question %r>' % self.id
- 
-    @property
-    def html_id(self):
-        return 'q%d' % self.id
-
-
-class AnswerVote(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    answer_id = db.Column(db.Integer, db.ForeignKey('answer.id'))
-    # May change value into boolean
-    value = db.Column(db.Integer)
-
-
-class QuestionVote(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
-    # May change value into boolean
-    value = db.Column(db.Integer)
-
-
 class Notification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     time = db.Column(db.DateTime)
@@ -178,12 +123,6 @@ class User(db.Model):
     languages = db.relationship('Language', lazy='dynamic',
                                 secondary=LanguageMembership,
                                 backref=db.backref('users', lazy="dynamic"))
-    questions = db.relationship('Question', lazy="dynamic", backref='user',
-                                primaryjoin=Question.user_id == id)
-    answers = db.relationship('Answer', lazy="dynamic", backref='user',
-                              primaryjoin=Answer.user_id == id)
-    available = db.relationship('Availability', lazy="dynamic",
-                                backref="user")
     notifications = db.relationship('Notification', backref='recipient',
                                 primaryjoin=Notification.recipient_id == id)
 
@@ -248,13 +187,6 @@ class Notes(db.Model):
 
     def __repr__(self):
         return '<Notes %r>' % self.id
-
-
-class Availability(db.Model):
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'),
-            primary_key=True)
-    day = db.Column(db.Integer, primary_key=True)
-    time = db.Column(db.Enum('am', 'pm', name="ampm"), primary_key=True)
 
 
 class Visit(db.Model):
