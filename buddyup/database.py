@@ -74,8 +74,7 @@ class Notification(db.Model):
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    # PSU user names are always <= 8 ASCII characters due to Solaris
-    # restrictions
+    # Note: Portland State University user names are always <= 8 ASCII characters
     user_name = db.Column(db.String(32), index=True, unique=True)
     full_name = db.Column(db.UnicodeText, default=u"")
     bio = db.Column(db.UnicodeText, default=u"")
@@ -93,30 +92,12 @@ class User(db.Model):
     def __repr__(self):
         return '%s' % self.full_name
 
-    # Photos
-   
     # Relationships
     location = db.relationship('Location')
     courses = db.relationship('Course',
                               secondary=CourseMembership,
                               backref=db.backref('users', lazy="dynamic"),
                               lazy='dynamic')
-    events = db.relationship('Event', lazy="dynamic",
-                             secondary=EventMembership,
-                             backref=db.backref('users', lazy="dynamic"))
-    buddies = db.relationship('User', secondary=Buddy,
-                              lazy='dynamic',
-                              primaryjoin=Buddy.c.user1_id == id,
-                              secondaryjoin=Buddy.c.user2_id == id)
-    sent_bud_inv = db.relationship('BuddyInvitation', backref='sender',
-                                primaryjoin=BuddyInvitation.sender_id == id)
-    received_bud_inv = db.relationship('BuddyInvitation', backref='receiver',
-                                primaryjoin=BuddyInvitation.receiver_id==id)
-    sent_eve_inv = db.relationship('EventInvitation', backref='sender',
-                                primaryjoin=EventInvitation.sender_id==id)
-    received_event_inv = db.relationship('EventInvitation', backref='receiver',
-                                primaryjoin=EventInvitation.receiver_id==id,
-                                lazy="dynamic")
     majors = db.relationship('Major', lazy="dynamic",
                              secondary=MajorMembership,
                              backref='users')
@@ -125,6 +106,24 @@ class User(db.Model):
                                 backref=db.backref('users', lazy="dynamic"))
     notifications = db.relationship('Notification', backref='recipient',
                                 primaryjoin=Notification.recipient_id == id)
+
+    buddies = db.relationship('User', secondary=Buddy,
+                              lazy='dynamic',
+                              primaryjoin=Buddy.c.user1_id == id,
+                              secondaryjoin=Buddy.c.user2_id == id)
+    sent_bud_inv = db.relationship('BuddyInvitation', backref='sender',
+                                primaryjoin=BuddyInvitation.sender_id == id)
+    received_bud_inv = db.relationship('BuddyInvitation', backref='receiver',
+                                primaryjoin=BuddyInvitation.receiver_id==id)
+
+    events = db.relationship('Event', lazy="dynamic",
+                             secondary=EventMembership,
+                             backref=db.backref('users', lazy="dynamic"))
+    sent_eve_inv = db.relationship('EventInvitation', backref='sender',
+                                primaryjoin=EventInvitation.sender_id==id)
+    received_event_inv = db.relationship('EventInvitation', backref='receiver',
+                                primaryjoin=EventInvitation.receiver_id==id,
+                                lazy="dynamic")
 
 
 class Photo(db.Model):
