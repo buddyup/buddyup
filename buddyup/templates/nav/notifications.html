@@ -1,4 +1,4 @@
-{% set notifications = user.notifications %}
+{% set notifications = g.user.notifications %}
 {% if notifications %}
 <li class="hidden-xs pull-right" id="notifications">
     <!-- Notifications dropdown. Appears after Profile because float:right -->
