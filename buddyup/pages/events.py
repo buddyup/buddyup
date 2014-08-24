@@ -365,6 +365,13 @@ def course_events(id):
     # TODO: Make this real
     return render_template('courses/events.html', course=Course.query.get_or_404(id))
 
+
+@app.route('/courses/<course_id>/events/<event_id>')
+@login_required
+def course_event(course_id, event_id):
+    return render_template('courses/event-detail.html')
+
+
 @app.route('/courses/<course_id>/event')
 @login_required
 def new_event(course_id):

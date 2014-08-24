@@ -1,219 +1,101 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Buddy Up</title>
-        <link href="../_assets/css/bootstrap/bootstrap.min.css" rel="stylesheet">
-        <link href="../_assets/css/event-detail.css" rel="stylesheet">
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
-        <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,900' rel='stylesheet' type='text/css'>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <script src="../_assets/js/bootstrap.min.js"></script>
-    </head>
-    <body>
-        <header>
-            <nav class="navbar navbar-default container" role="navigation">
-                <div class="wrapper">
-                    <!-- Mobile menu -->
-                    <div class="navbar-header" id="nav-mobile">
-                        <button id="menu-button" class="navbar-toggle logo-wrapper" data-toggle="collapse" data-target="#nav-main">
-                            <span class="logo">Logo</span>
-                        </button>
-                        <a href="../secondary/all-notifications.html" id="notifications-button" class="navbar-toggle notifications" data-toggle="collapse" data-target="#nav-notifications">
-                            <span class="icon icon-notification"></span><span class="icon icon-badge">4</span>
-                        </a>
-                    </div>
-
-                    <!-- Regular menu -->
-                    <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse" id="nav-main">
-                        <ul class="nav navbar-nav">
-                            <li class="hidden-xs main-link logo-wrapper"><a href="../index.html" class="logo">&nbsp;</a></li>
-                            <li class="visible-xs-block main-link"><a href="../index.html">Home</a></li>
-                            <li class="main-link"><a href="../buddies/index.html">Buddies</a></li>
-                            <li class="main-link"><a href="../courses/index.html">Courses</a></li>
-                            <li class="main-link"><a href="../tutors/index.html">Tutors</a></li>
-                            <li class="hidden-xs pull-right" id="profile-overflow">
-                                <!-- Profile & Overflow dropdown -->
-                                <a href="" data-toggle="dropdown" class="button">
-                                    <span class="img" style="background-image: url('../_assets/images/people/bforrest-200-200.png');">&nbsp;</span>
-                                    <span class="name">Brian Forrester</span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dLabel">
-                                    <li role="presentation">
-                                        <ul class="list overflow-list">
-                                            <li class=""><a href="../secondary/my-profile">My Profile</a></li>
-                                            <li class=""><a href="../secondary/my-events.html">My Events</a></li>
-                                            <li class=""><a href="../secondary/help.html">Help</a></li>
-                                            <li class=""><a href="../registration/logout.html">Log out</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                                <!-- / Profile & Overflow dropdown -->
-                            </li>
-                            <li class="hidden-xs pull-right" id="notifications">
-                                <!-- Notifications dropdown. Appears after Profile because float:right -->
-                                <a href="" data-toggle="dropdown" class="button notifications"><span class="icon icon-notification"></span><span class="icon icon-badge">4</span></a>
-                                <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dLabel">
-                                    <li role="presentation">
-
-                                        
-                                        <ul class="tablelist-group">
-                                            <li class="tablelist-group-row">
-                                                <a href="../buddies/profile.html">
-                                                    <ul class="tablelist">
-                                                        <li class="icon"><div class="block circle" style="background-image:url('../_assets/images/people/15.jpg')">&nbsp;</div></li>
-                                                        <li class="main">
-                                                            <div class="title">John Doe is now following you!</div>
-                                                            <div class="subtitle">5:32PM</div>
-                                                        </li>
-                                                    </ul>
-                                                </a>
-                                            </li>
-                                            <li class="tablelist-group-row">
-                                                <a href="../courses/event-detail.html">
-                                                    <ul class="tablelist">
-                                                        <li class="icon"><div class="block square" style="background-image:url('../_assets/images/courses/stats101.jpg')">&nbsp;</div></li>
-                                                        <li class="main">
-                                                            <div class="title">You've been invited to an event!</div>
-                                                            <div class="subtitle">5:32PM</div>
-                                                        </li>
-                                                    </ul>
-                                                </a>
-                                            </li>
-                                            <li class="see-all">
-                                                <a href="../secondary/all-notifications.html">
-                                                    <span class="icon icon-notification">&nbsp;</span>See all notifications
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                                <!-- / Notifications dropdown -->
-                            </li>
-                            <!-- Reiterate overflow menu ONLY for mobile menu -->
-                            <li class="visible-xs-block"><a href="../secondary/my-profile">My Profile</a></li>
-                            <li class="visible-xs-block"><a href="../secondary/my-events.html">My Events</a></li>
-                            <li class="visible-xs-block"><a href="../secondary/help.html">Help</a></li>
-                            <li class="visible-xs-block"><a href="../registration/logout.html">Log out</a></li>
-                            <!-- /Reiterate overflow menu for mobile menu -->
-                        </ul>
-                    </div> <!-- ./navbar-collapse -->
-                </div><!-- /wrapper -->
-            </nav>
-        </header>
-        
-        <div id="main">
-            <article id="top" class="profile">
-                <div class="wrapper container">
-                    <div class="row">
-                        <div class="course-image" style="background-image:url('../_assets/images/courses/stats101.jpg')">&nbsp;</div>
-                        <h1 class="col-sm-12">Midterms Cram Session</h1>
-                        <div class="col-sm-12 subtitle"><span>Stanford University</span>&bull;<span><a href="./detail.html">Statistics 101</a></span>&bull;<span><a href="./events.html">Events</a></span></div>
-                        <div class="col-sm-12">
-                            <a href="" class="action button primary"><span class="icon icon-event">&nbsp;</span>Join Event</a>
-                        </div>
-                    </div>
-                </div>
-            </article>
-
-            <article id="main-content" class="container">
-
-                <section id="info" class="row">
-                    <div class="col-md-6 col-md-offset-3">
-                        <div class="group-heading">
-                            <h3><span class="icon icon-event">&nbsp;</span>Event Details</h3>
-                        </div>
-                        <div class="location"><span class="icon icon-location">&nbsp;</span>PSU Library in Neuberger Hall<span class="sublocation">Reserved Room 2</span></div>
-                        <div class="date"><span class="day"><span class="icon icon-event">&nbsp;</span>June 11, 2014</span>&bull;<span class="time">6:00PM - 8:00PM</span></div>
-                        <div class="author"><span class="icon icon-person">&nbsp;</span>by <a href="../buddies/profile.html">Darrin Brooks</a></div>
-                        <div class="availability"><span class="icon icon-eye">&nbsp;</span>This event is public.</div>
-                    </div>
-                </section>
-
-                <section id="attendants" class="row">
-                    <div class="col-md-6 col-md-offset-3">
-                        <div class="group-heading">
-                            <h3><span class="icon icon-people">&nbsp;</span>Attendants</h3>
-                            <a href="#" class="right">See all 8</a>
-                        </div>
-                        <ul class="block-list">
-                            <li class="">
-                                <a href="../buddies/profile.html"><div class="block" style="background-image:url('../_assets/images/people/1.jpg')">&nbsp;</div></a>
-                            </li>
-                            <li class="">
-                                <a href="../buddies/profile.html"><div class="block" style="background-image:url('../_assets/images/people/2.jpg')">&nbsp;</div></a>
-                            </li>
-                            <li class="">
-                                <a href="../buddies/profile.html"><div class="block" style="background-image:url('../_assets/images/people/3.jpg')">&nbsp;</div></a>
-                            </li>
-                            <li class="">
-                                <a href="../buddies/profile.html"><div class="block" style="background-image:url('../_assets/images/people/4.jpg')">&nbsp;</div></a>
-                            </li>
-                            <li class="">
-                                <a href="../buddies/profile.html"><div class="block" style="background-image:url('../_assets/images/people/5.jpg')">&nbsp;</div></a>
-                            </li>
-                            <li class="">
-                                <a href="#"><div class="block overflow"><span><sup>+</sup>3</span></div></a>
-                            </li>
-                        </ul>
-                        <a href="./invite-people.html" class="button add small"><span class="icon icon-people">&nbsp;</span>Invite Buddies</a>
-                    </div>
-                </section>
-
-                <section id="comments" class="row">
-                    <div class="col-md-6 col-md-offset-3">
-                        <div class="group-heading">
-                            <h3><span class="icon icon-comment">&nbsp;</span>Comments</h3>
-                        </div>
-                        <ul class="tablelist-group">
-                            <li class="tablelist-group-row">
-                                <ul class="tablelist message">
-                                    <li class="icon"><a href="./profile.html"><div class="block circle" style="background-image:url('../_assets/images/people/15.jpg')">&nbsp;</div></a></li>
-                                    <li class="main">
-                                        <div class="message">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</div>
-                                        <div class="subtitle"><span><a href="./profile.html">Eric Piper</a></span>&bull;<span>June 31 - 5:32PM</span></div>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="tablelist-group-row">
-                                <ul class="tablelist message">
-                                    <li class="icon"><a href="./profile.html"><div class="block circle" style="background-image:url('../_assets/images/people/15.jpg')">&nbsp;</div></a></li>
-                                    <li class="main">
-                                        <div class="message">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </div>
-                                        <div class="subtitle"><span><a href="./profile.html">Eric Piper</a></span>&bull;<span>June 31 - 5:32PM</span></div>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="tablelist-group-row">
-                                <div class="message-add">
-                                    <h4>Add a comment</h4>
-                                    <textarea rows="4"></textarea>
-                                    <a href="#" class="button small submit">Send</a>
-                                </div>
-                            </li>
-                        </ul>
-
-                    </div>
-                </section>
-
-            </article>
-        </div>
-
-        <footer>
-            <div class="container">
-                <p class="row">
-                    <span><a href="../secondary/privacy.html">Privacy Policy</a></spam>
-                    &bull;
-                    <span><a href="../secondary/terms.html">Terms</a></span>
-                    &bull;
-                    <span>&copy;BuddyUp, inc. 2014  &mdash; All rights reserved.</span>
-                    &bull;
-                    <span>Icons by <a href="http://www.entypo.com" target="_blank">Entypo</a></span>
-                </p>
+{% extends "green/global_layout.html" %}
+{% block title %} Courses {% endblock %}
+{% block pagestyle %}
+<link href="/static/_assets/css/event-detail.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<article id="top" class="profile">
+    <div class="wrapper container">
+        <div class="row">
+            <div class="course-image" style="background-image:url('/static/_assets/images/courses/math_chalkboard2.jpg')">&nbsp;</div>
+            <h1 class="col-sm-12">Midterms Cram Session</h1>
+            <div class="col-sm-12 subtitle"><span>Portland State University</span>&bull;<span><a href="./detail.html">Calc 254</a></span>&bull;<span><a href="./events.html">Events</a></span></div>
+            <div class="col-sm-12">
+                <a href="#" class="action button primary"><span class="icon icon-event">&nbsp;</span>Join Event</a>
             </div>
-        </footer>
-    </body>
-</html>
+        </div>
+    </div>
+</article>
+
+<article id="main-content" class="container">
+
+    <section id="info" class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="group-heading">
+                <h3><span class="icon icon-event">&nbsp;</span>Event Details</h3>
+            </div>
+            <div class="location"><span class="icon icon-location">&nbsp;</span>PSU Library in Neuberger Hall<span class="sublocation">Reserved Room 2</span></div>
+            <div class="date"><span class="day"><span class="icon icon-event">&nbsp;</span>June 11, 2014</span>&bull;<span class="time">6:00PM - 8:00PM</span></div>
+            <div class="author"><span class="icon icon-person">&nbsp;</span>by <a href="../buddies/profile.html">Darrin Brooks</a></div>
+            <div class="availability"><span class="icon icon-eye">&nbsp;</span>This event is public.</div>
+        </div>
+    </section>
+
+    <section id="attendants" class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="group-heading">
+                <h3><span class="icon icon-people">&nbsp;</span>Who is going?</h3>
+                <a href="#" class="right">See all 8</a>
+            </div>
+            <ul class="block-list">
+                <li class="">
+                    <a href="../buddies/profile.html"><div class="block" style="background-image:url('/static/_assets/images/people/1.jpg')">&nbsp;</div></a>
+                </li>
+                <li class="">
+                    <a href="../buddies/profile.html"><div class="block" style="background-image:url('/static/_assets/images/people/2.jpg')">&nbsp;</div></a>
+                </li>
+                <li class="">
+                    <a href="../buddies/profile.html"><div class="block" style="background-image:url('/static/_assets/images/people/3.jpg')">&nbsp;</div></a>
+                </li>
+                <li class="">
+                    <a href="../buddies/profile.html"><div class="block" style="background-image:url('/static/_assets/images/people/4.jpg')">&nbsp;</div></a>
+                </li>
+                <li class="">
+                    <a href="../buddies/profile.html"><div class="block" style="background-image:url('/static/_assets/images/people/5.jpg')">&nbsp;</div></a>
+                </li>
+                <li class="">
+                    <a href="#"><div class="block overflow"><span><sup>+</sup>3</span></div></a>
+                </li>
+            </ul>
+            <a href="./invite-people.html" class="button add small"><span class="icon icon-people">&nbsp;</span>Invite Buddies</a>
+        </div>
+    </section>
+
+    <section id="comments" class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="group-heading">
+                <h3><span class="icon icon-comment">&nbsp;</span>Comments</h3>
+            </div>
+            <ul class="tablelist-group">
+                <li class="tablelist-group-row">
+                    <ul class="tablelist message">
+                        <li class="icon"><a href="./profile.html"><div class="block circle" style="background-image:url('/static/_assets/images/people/13.jpg')">&nbsp;</div></a></li>
+                        <li class="main">
+                            <div class="message">Does anyone have notes from week 3? I was out and missed the unit on Taylor series.</div>
+                            <div class="subtitle"><span><a href="./profile.html">Sam Glaaje</a></span>&bull;<span>June 31 - 5:32PM</span></div>
+                        </li>
+                    </ul>
+                </li>
+                <li class="tablelist-group-row">
+                    <ul class="tablelist message">
+                        <li class="icon"><a href="./profile.html"><div class="block circle" style="background-image:url('/static/_assets/images/people/15.jpg')">&nbsp;</div></a></li>
+                        <li class="main">
+                            <div class="message">I don't get off work until 4 so will be a little late.</div>
+                            <div class="subtitle"><span><a href="./profile.html">Eric Piper</a></span>&bull;<span>June 31 - 5:32PM</span></div>
+                        </li>
+                    </ul>
+                </li>
+                <li class="tablelist-group-row">
+                    <div class="message-add">
+                        <h4>Add a comment</h4>
+                        <textarea rows="4"></textarea>
+                        <a href="#" class="button small submit">Send</a>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+    </section>
+
+</article>
+{% endblock %}
