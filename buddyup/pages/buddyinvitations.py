@@ -15,7 +15,7 @@ from buddyup.util import (login_required, events_to_json, email,
 def group():
     events = []
     join_clubs = []
-    event_invitations = (g.user.received_event_inv
+    event_invitations = (g.user.event_invitations_received
                         .filter(EventInvitation.event_id != None)
                         .all())
     invited_unsorted = {}
@@ -35,10 +35,10 @@ def group():
 @app.route("/invite/view")
 @login_required
 def invite_list():
-    event_invitations = (g.user.received_event_inv
+    event_invitations = (g.user.event_invitations_received
                          .filter(EventInvitation.event_id != None)
                          .all())
-    buddy_invitations = g.user.received_bud_inv
+    buddy_invitations = g.user.buddy_invitations_received
     return render_template('my/invitation.html',
                            buddy_invitations=buddy_invitations,
                            event_invitations=event_invitations)

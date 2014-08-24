@@ -111,17 +111,17 @@ class User(db.Model):
                               lazy='dynamic',
                               primaryjoin=Buddy.c.user1_id == id,
                               secondaryjoin=Buddy.c.user2_id == id)
-    sent_bud_inv = db.relationship('BuddyInvitation', backref='sender',
+    buddy_invitations_sent = db.relationship('BuddyInvitation', backref='sender',
                                 primaryjoin=BuddyInvitation.sender_id == id)
-    received_bud_inv = db.relationship('BuddyInvitation', backref='receiver',
+    buddy_invitations_received = db.relationship('BuddyInvitation', backref='receiver',
                                 primaryjoin=BuddyInvitation.receiver_id==id)
 
     events = db.relationship('Event', lazy="dynamic",
                              secondary=EventMembership,
                              backref=db.backref('users', lazy="dynamic"))
-    sent_eve_inv = db.relationship('EventInvitation', backref='sender',
+    event_invitations_sent = db.relationship('EventInvitation', backref='sender',
                                 primaryjoin=EventInvitation.sender_id==id)
-    received_event_inv = db.relationship('EventInvitation', backref='receiver',
+    event_invitations_received = db.relationship('EventInvitation', backref='receiver',
                                 primaryjoin=EventInvitation.receiver_id==id,
                                 lazy="dynamic")
 

@@ -243,10 +243,10 @@ def delete_user(user):
     def delete_records(records):
         for record in records:
             db.delete(record)
-    delete_records(user.sent_bud_inv)
-    delete_records(user.received_bud_inv)
-    delete_records(user.sent_eve_inv)
-    delete_records(user.received_event_inv)
+    delete_records(user.buddy_invitations_sent)
+    delete_records(user.buddy_invitations_received)
+    delete_records(user.event_invitations_sent)
+    delete_records(user.event_invitations_received)
     Event.query.filter_by(owner_id=user.id).delete()
     EventComment.query.filter_by(user_id=user.id).delete()
     Visit.query.filter_by(user_id=user.id).delete()
