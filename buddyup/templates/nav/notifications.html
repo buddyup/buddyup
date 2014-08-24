@@ -1,9 +1,8 @@
 {% set notifications = g.user.notifications %}
-{% if notifications %}
 <li class="hidden-xs pull-right" id="notifications">
     <!-- Notifications dropdown. Appears after Profile because float:right -->
     <a href="" data-toggle="dropdown" class="button notifications"><span class="icon icon-notification"></span>
-		<span class="icon icon-badge">{{notifications|list|count}}</span></a>
+		<span class="icon icon-badge">{% if notifications %}{{notifications|list|count}}{% endif %}</span></a>
     <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dLabel">
         <li role="presentation">
 
@@ -45,4 +44,3 @@
     </ul>
     <!-- / Notifications dropdown -->
 </li>
-{% endif %}
