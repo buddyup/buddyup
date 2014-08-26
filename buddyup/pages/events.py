@@ -1,5 +1,5 @@
 from flask import (g, request, flash, redirect, url_for, session, abort,
-                   get_flashed_messages)
+                   get_flashed_messages, jsonify)
 from datetime import datetime, timedelta
 import time
 from functools import partial
@@ -11,6 +11,8 @@ from buddyup.templating import render_template
 from buddyup.util import (args_get, login_required, form_get, check_empty,
                           events_to_json, checked_regexp)
 from buddyup.pages.eventinvitations import event_invitation_send_list
+
+import os
 
 TIME_REGEXP = re.compile(r"""
     (?P<hour>\d\d?)       # hour
@@ -353,26 +355,104 @@ def calendar():
 
 #--------------------- NEW STUFF BELOW ---------------------------
 
-@app.route('/courses/<id>/events.json')
+@app.route('/courses/<int:id>/events.json')
 @login_required
 def course_events_json(id):
-    # TODO: Make this real
-    return render_template('../static/_assets/plugins/calendar/events.json')
+    course = Course.query.get_or_404(id)
 
-@app.route('/courses/<id>/events')
+    data = {}
+    data["success"] = 1
+    data["result"] = [
+		{
+			"id": "293",
+			"title": "Midterms Study Sesh 1",
+			"url": "/courses/22/events/1",
+			"class": "event-warning",
+			"start": "1413410400000",
+			"end":   "1413410460000"
+		},
+		{
+			"id": "256",
+			"title": "Cram at Justin's House",
+			"url": "/courses/22/events/1",
+			"class": "event-warning",
+			"start": "1413410400000",
+			"end":   "1413410400000"
+		},
+		{
+			"id": "276",
+			"title": "Short day event",
+			"url": "/courses/22/events/1",
+			"class": "event-success",
+			"start": "1413410400000",
+			"end":   "1413410400000"
+		},
+		{
+			"id": "294",
+			"title": "This is information class ",
+			"url": "/courses/22/events/1",
+			"class": "event-info",
+			"start": "1413410400000",
+			"end":   "1413410400000"
+		},
+		{
+			"id": "297",
+			"title": "Mid-term Exam",
+			"url": "/courses/22/events/1",
+			"class": "event-success",
+			"start": "1413496800000",
+			"end":   "1413496800000"
+		},
+		{
+			"id": "54",
+			"title": "This is simple event",
+			"url": "/courses/22/events/1",
+			"class": "",
+			"start": "1412719200000",
+			"end":   "1412719200000"
+		},
+		{
+			"id": "532",
+			"title": "This is inverse event",
+			"url": "/courses/22/events/1",
+			"class": "event-inverse",
+			"start": "1412719200000",
+			"end":   "1412719200000"
+		},
+		{
+			"id": "548",
+			"title": "Midterms Cram Session",
+			"url": "/courses/22/events/1",
+			"class": "event-special",
+			"start": "1413151200000",
+			"end":   "1413151200000"
+		},
+		{
+			"id": "295",
+			"title": "Event 3",
+			"url": "/courses/22/events/1",
+			"class": "event-important",
+			"start": "1412719200000",
+			"end":   "1412719200000"
+		}
+	]
+
+
+    return jsonify(data)
+
+@app.route('/courses/<int:id>/events')
 @login_required
 def course_events(id):
-    # TODO: Make this real
     return render_template('courses/events.html', course=Course.query.get_or_404(id))
 
 
-@app.route('/courses/<course_id>/events/<event_id>')
+@app.route('/courses/<int:course_id>/events/<int:event_id>')
 @login_required
 def course_event(course_id, event_id):
     return render_template('courses/event-detail.html')
 
 
-@app.route('/courses/<course_id>/event')
+@app.route('/courses/<int:course_id>/event')
 @login_required
 def new_event(course_id):
     return render_template('courses/new-event.html', course=Course.query.get_or_404(course_id))
