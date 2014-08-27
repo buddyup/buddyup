@@ -15,39 +15,7 @@
             </div>
             <div class="row">
                 <div class="col-md-9">
-                    <div id="calendar"></div>
-                    <script type="text/javascript" src="/static/_assets/plugins/underscore/underscore-min.js"></script>
-                    <script type="text/javascript" src="/static/_assets/plugins/calendar/calendar.min.js"></script>
-					<script type="text/javascript">
-					var options = {
-					    events_source: '/courses/{{course.id}}/events.json',
-					    view: 'month',
-					    tmpl_path: '/static/_assets/plugins/calendar/tmpls/',
-					    tmpl_cache: false,
-					    // remove 'day' key to default to current day
-					    day: '2014-10-16',
-					    onAfterViewLoad: function(view) {
-							// Writes the title into the H4 in heading
-					        $('#calendar-wrapper h4').text(this.getTitle());
-					    },
-					    classes: {
-					        months: {
-					            general: 'label'
-					        }
-					    }
-					};
-					var calendar = $("#calendar").calendar(options);
-
-					// Functionality for the next/prev buttons
-					(function($) {
-						$('a[data-calendar-nav]').each(function() {
-							var $this = $(this);
-							$this.click(function() {
-								calendar.navigate($this.data('calendar-nav'));
-							});
-						});
-					}(jQuery));
-					</script>
+					{% include "courses/panels/calendar.html" %}
                 </div>
                 <div class="col-md-3">
                     <h4>Upcoming</h4>
@@ -71,7 +39,7 @@
                         <li class="tablelist-group-row">
                             <ul class="tablelist">
                                 <li class="main">
-                                    <div class="title"><a href="./events.html">See all events</a></div>
+                                    <div class="title"><a href="{{url_for('course_events', id=course.id)}}">See all events</a></div>
                                 </li>
                             </ul>
                         </li>

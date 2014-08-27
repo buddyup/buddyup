@@ -34,10 +34,7 @@
                     <a href="{{url_for('new_event', course_id=course.id)}}" class="action button small primary"><span class="icon icon-event-add">&nbsp;</span>New Event</a>
                 </div>
             </div>
-            <div id="calendar"></div>
-            <script type="text/javascript" src="/static/_assets/plugins/underscore/underscore-min.js"></script>
-            <script type="text/javascript" src="/static/_assets/plugins/calendar/calendar.min.js"></script>
-            <script type="text/javascript" src="/static/_assets/plugins/calendar/init-events.js"></script>
+			{% include "courses/panels/calendar.html" %}
         </div>
     </section>
     
