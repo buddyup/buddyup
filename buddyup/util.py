@@ -253,3 +253,42 @@ def delete_user(user):
     db.session.delete(user)
     db.session.commit()
     clear_images(user)
+
+
+from datetime import datetime
+def epoch_milliseconds(when):
+    if not when: return 0
+    epoch = datetime.utcfromtimestamp(0)
+    delta = when - epoch
+    return int(delta.total_seconds() * 1000)
+
+
+def calendar_event(event):
+    return {
+	    'id': "%s" % event.id,
+        'title': event.name,
+        'start': unicode(epoch_milliseconds(event.start)),
+        'end': unicode(epoch_milliseconds(event.end)),
+		'url': "/courses/%s/events/%s" % (event.course_id, event.id),
+        'class': 'event-warning',
+    }
+
+def easy_datetime(date_string):
+    """
+    Format MUST match this without deviation: "Mar 15 2014 15:00"
+    """
+    return datetime.strptime(date_string, "%b %d %Y %H:%M")
+
+
+
+
+
+
+
+
+
+
+
+
+
+

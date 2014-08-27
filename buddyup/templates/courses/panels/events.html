@@ -2,7 +2,7 @@
     <div class="col-md-10 col-md-offset-1">
         <div class="group-heading">
             <h3><a href="{{url_for('course_events', id=course.id)}}"><span class="icon icon-event">&nbsp;</span>Events</a></h3>
-            <a href="{{url_for('course_events', id=course.id)}}" class="right">See all 13 events</a>
+            <a href="{{url_for('course_events', id=course.id)}}" class="right">See all {{course.events|count}} events</a>
         </div>
         <div class="" id="calendar-wrapper">
             <div class="row">

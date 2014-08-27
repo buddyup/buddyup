@@ -64,16 +64,11 @@ class EventTests(unittest.TestCase):
         # JSON should be empty before there are events.
         self.assertEqual(result.data, "{}")
 
+        result = self.test_client.get('/courses/1/events.json', follow_redirects=True)
+        
+        self.assertNotEqual(result.data, "{}")
 
         # JSON should have a single Event afterwards.
-
-        # date = datetime(2014, 1, 15)
-        #
-        # result = events.parse_time("12", "pm", date, "start")
-        #
-        # self.assertEqual(result.hour, 12, "Hour should stay at Noon")
-        #
-        # self.assertEqual(result.day, 15, "The day shouldn't change")
 
         
 

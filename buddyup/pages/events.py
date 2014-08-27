@@ -9,7 +9,7 @@ from buddyup.app import app
 from buddyup.database import Event, Course, EventInvitation, db, EventComment
 from buddyup.templating import render_template
 from buddyup.util import (args_get, login_required, form_get, check_empty,
-                          events_to_json, checked_regexp)
+                          events_to_json, checked_regexp, calendar_event, easy_datetime)
 from buddyup.pages.eventinvitations import event_invitation_send_list
 
 import os
@@ -362,81 +362,7 @@ def course_events_json(id):
 
     data = {}
     data["success"] = 1
-    data["result"] = [
-		{
-			"id": "293",
-			"title": "Midterms Study Sesh 1",
-			"url": "/courses/22/events/1",
-			"class": "event-warning",
-			"start": "1413410400000",
-			"end":   "1413410460000"
-		},
-		{
-			"id": "256",
-			"title": "Cram at Justin's House",
-			"url": "/courses/22/events/1",
-			"class": "event-warning",
-			"start": "1413410400000",
-			"end":   "1413410400000"
-		},
-		{
-			"id": "276",
-			"title": "Short day event",
-			"url": "/courses/22/events/1",
-			"class": "event-success",
-			"start": "1413410400000",
-			"end":   "1413410400000"
-		},
-		{
-			"id": "294",
-			"title": "This is information class ",
-			"url": "/courses/22/events/1",
-			"class": "event-info",
-			"start": "1413410400000",
-			"end":   "1413410400000"
-		},
-		{
-			"id": "297",
-			"title": "Mid-term Exam",
-			"url": "/courses/22/events/1",
-			"class": "event-success",
-			"start": "1413496800000",
-			"end":   "1413496800000"
-		},
-		{
-			"id": "54",
-			"title": "This is simple event",
-			"url": "/courses/22/events/1",
-			"class": "",
-			"start": "1412719200000",
-			"end":   "1412719200000"
-		},
-		{
-			"id": "532",
-			"title": "This is inverse event",
-			"url": "/courses/22/events/1",
-			"class": "event-inverse",
-			"start": "1412719200000",
-			"end":   "1412719200000"
-		},
-		{
-			"id": "548",
-			"title": "Midterms Cram Session",
-			"url": "/courses/22/events/1",
-			"class": "event-special",
-			"start": "1413151200000",
-			"end":   "1413151200000"
-		},
-		{
-			"id": "295",
-			"title": "Event 3",
-			"url": "/courses/22/events/1",
-			"class": "event-important",
-			"start": "1412719200000",
-			"end":   "1412719200000"
-		}
-	]
-
+    data["result"] = [calendar_event(event) for event in course.events]
 
     return jsonify(data)
 
