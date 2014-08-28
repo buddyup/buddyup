@@ -375,7 +375,9 @@ def course_events(id):
 @app.route('/courses/<int:course_id>/events/<int:event_id>')
 @login_required
 def course_event(course_id, event_id):
-    return render_template('courses/event-detail.html')
+    course = Course.query.get(course_id)
+    event = Event.query.get(event_id)
+    return render_template('courses/event-detail.html', course=course, event=event)
 
 
 @app.route('/courses/<int:course_id>/event')
