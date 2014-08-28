@@ -8,8 +8,7 @@ import re
 from buddyup.app import app
 from buddyup.database import Event, Course, EventInvitation, db, EventComment
 from buddyup.templating import render_template
-from buddyup.util import (args_get, login_required, form_get, check_empty,
-                          events_to_json, checked_regexp, calendar_event, easy_datetime)
+from buddyup.util import (args_get, login_required, form_get, check_empty,checked_regexp, calendar_event, easy_datetime)
 from buddyup.pages.eventinvitations import event_invitation_send_list
 
 import os
@@ -341,16 +340,6 @@ def leave_event(event_id):
     db.session.commit()
     flash('Left Group')
     return redirect(url_for('event_view', event_id=event_id))
-
-
-@app.route('/calendar')
-@login_required
-def calendar():
-    events = []
-    for course in g.user.courses.all():
-        events.extend(course.events)
-    event_json = events_to_json(events)
-    return render_template('group/calendar.html', events_json=event_json)
 
 
 #--------------------- NEW STUFF BELOW ---------------------------

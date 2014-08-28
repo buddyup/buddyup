@@ -6,30 +6,7 @@ import mandrill
 from buddyup.app import app
 from buddyup.database import db, BuddyInvitation, User, EventInvitation
 from buddyup.templating import render_template
-from buddyup.util import (login_required, events_to_json, email,
-                          send_mandrill_email_message, get_domain_name)
-
-
-@app.route("/group")
-@login_required
-def group():
-    events = []
-    join_clubs = []
-    event_invitations = (g.user.event_invitations_received
-                        .filter(EventInvitation.event_id != None)
-                        .all())
-    invited_unsorted = {}
-    for inv in event_invitations:
-        invited_unsorted.setdefault(inv.event, inv.sender)
-    # list of (event, buddy) pairs
-    invited = sorted(invited_unsorted.items(), reverse=True,
-                     key=lambda v: v[0].start)
-    for course in g.user.courses.all():
-        events.extend(course.events)
-    event_json = events_to_json(events)
-    return render_template('my/view_invite.html',
-                           events_json=event_json,
-                           invited=invited)
+from buddyup.util import (login_required, email, send_mandrill_email_message, get_domain_name)
 
 
 @app.route("/invite/view")

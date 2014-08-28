@@ -137,25 +137,6 @@ def check_course_membership(course, user=None):
         abort(403)
 
 
-def events_to_json(events):
-    """
-    Convert a list/iterable of events records to a list that can be converted
-    to json to work with the fullcalendar widget. In the template, use::
-    
-        events: {{ events|tojson|safe }}
-    """
-    json = []
-    for event in events:
-        json.append({
-            'id': event.id,
-            'title': event.name,
-            'start': event.start.strftime("%Y-%m-%d %H:%M"),
-            'end': event.end.strftime("%Y-%m-%d %H:%M"),
-            'url': url_for('event_view', event_id=event.id),
-        })
-    return json
-
-
 @app.template_global()
 @app.template_filter()
 def email(user):

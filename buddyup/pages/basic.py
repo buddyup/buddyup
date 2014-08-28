@@ -6,7 +6,7 @@ from flask import url_for, redirect, g, request, session, make_response
 from buddyup.app import app
 from buddyup.database import User
 from buddyup.templating import render_template
-from buddyup.util import login_required, events_to_json, shuffled
+from buddyup.util import login_required, shuffled
 
 from oauth2client.client import AccessTokenRefreshError
 from oauth2client.client import flow_from_clientsecrets
