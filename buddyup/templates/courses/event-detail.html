@@ -9,7 +9,7 @@
         <div class="row">
             <div class="course-image" style="background-image:url('/static/_assets/images/courses/math_chalkboard2.jpg')">&nbsp;</div>
             <h1 class="col-sm-12">{{event.name}}</h1>
-            <div class="col-sm-12 subtitle"><span>{{course.instructor}}</span>&bull;<span><a href="./detail.html">{{course.name}}</a></span>&bull;<span><a href="{{url_for('course_events', id=course.id )}}">Events</a></span></div>
+            <div class="col-sm-12 subtitle"><span>{{course.instructor}}</span>&bull;<span><a href="{{url_for('course_view', id=course.id)}}">{{course.name}}</a></span>&bull;<span><a href="{{url_for('course_events', id=course.id )}}">Events</a></span></div>
             <div class="col-sm-12">
                 <a href="#" class="action button primary"><span class="icon icon-event">&nbsp;</span>Join Event</a>
             </div>
