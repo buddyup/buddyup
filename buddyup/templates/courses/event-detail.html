@@ -25,7 +25,7 @@
                 <h3><span class="icon icon-event">&nbsp;</span>Event Details</h3>
             </div>
             <div class="location"><span class="icon icon-location">&nbsp;</span>{{event.location}}<span class="sublocation">Reserved Room 2</span></div>
-            <div class="date"><span class="day"><span class="icon icon-event">&nbsp;</span>June 11, 2014</span>&bull;<span class="time">6:00PM - 8:00PM</span></div>
+            <div class="date"><span class="day"><span class="icon icon-event">&nbsp;</span>{{event|date_long}}</span>&bull;<span class="time">{{event|time_span}}</span></div>
             <div class="author"><span class="icon icon-person">&nbsp;</span>by <a href="{{profile(event.owner)}}">{{event.owner.full_name}}</a></div>
             <div class="availability"><span class="icon icon-eye">&nbsp;</span>This event is public.</div>
         </div>
