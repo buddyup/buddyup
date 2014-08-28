@@ -35,7 +35,7 @@
         <div class="col-md-6 col-md-offset-3">
             <div class="group-heading">
                 <h3><span class="icon icon-people">&nbsp;</span>Who is going?</h3>
-                <a href="#" class="right">See all 8</a>
+                <a href="#" class="right">See all {{event.invitations|length}}</a>
             </div>
             <ul class="block-list">
                 <li class="">
@@ -67,24 +67,17 @@
                 <h3><span class="icon icon-comment">&nbsp;</span>Comments</h3>
             </div>
             <ul class="tablelist-group">
+				{% for comment in comments %}
                 <li class="tablelist-group-row">
                     <ul class="tablelist message">
-                        <li class="icon"><a href="./profile.html"><div class="block circle" style="background-image:url('/static/_assets/images/people/13.jpg')">&nbsp;</div></a></li>
+                        <li class="icon"><a href="{{profile(comment.user)}}"><div class="block circle" style="background-image:url('{{ photo_large(comment.user) }}')">&nbsp;</div></a></li>
                         <li class="main">
-                            <div class="message">Does anyone have notes from week 3? I was out and missed the unit on Taylor series.</div>
-                            <div class="subtitle"><span><a href="./profile.html">Sam Glaaje</a></span>&bull;<span>June 31 - 5:32PM</span></div>
+                            <div class="message">{{comment.contents}}</div>
+                            <div class="subtitle"><span><a href="{{profile(comment.user)}}">{{comment.user.full_name}}</a></span>&bull;<span>June 31 - 5:32PM</span></div>
                         </li>
                     </ul>
                 </li>
-                <li class="tablelist-group-row">
-                    <ul class="tablelist message">
-                        <li class="icon"><a href="./profile.html"><div class="block circle" style="background-image:url('/static/_assets/images/people/15.jpg')">&nbsp;</div></a></li>
-                        <li class="main">
-                            <div class="message">I don't get off work until 4 so will be a little late.</div>
-                            <div class="subtitle"><span><a href="./profile.html">Eric Piper</a></span>&bull;<span>June 31 - 5:32PM</span></div>
-                        </li>
-                    </ul>
-                </li>
+				{% endfor %}
                 <li class="tablelist-group-row">
                     <div class="message-add">
                         <h4>Add a comment</h4>
