@@ -375,6 +375,11 @@ def new_event(course_id):
     return render_template('courses/new-event.html', course=Course.query.get_or_404(course_id))
 
 
+@app.route('/events')
+@login_required
+def my_events():
+    return render_template('my_events.html', all_events="selected", events=g.user.events.order_by(Event.start))
+
 
 
 

@@ -48,7 +48,7 @@
                                     <li role="presentation">
                                         <ul class="list overflow-list">
                                             <li class=""><a href="{{ profile(user_record) }}">My Profile</a></li>
-											<li class=""><a href="{{ url_for('group') }}">My Events</a></li>
+											<li class=""><a href="{{ url_for('my_events') }}">My Events</a></li>
                                             <li class=""><a href="{{ url_for('help') }}">Help</a></li>
                                             <li class=""><a href="{{ url_for('logout') }}">Log out</a></li>
                                         </ul>
@@ -61,7 +61,7 @@
 							
                             <!-- Reiterate overflow menu ONLY for mobile menu -->
                             <li class="visible-xs-block"><a href="{{ profile(user_record) }}">My Profile</a></li>
-                            <li class="visible-xs-block"><a href="{{ url_for('group') }}">My Events</a></li>
+                            <li class="visible-xs-block"><a href="{{ url_for('my_events') }}">My Events</a></li>
                             <li class="visible-xs-block"><a href="{{ url_for('help') }}">Help</a></li>
                             <li class="visible-xs-block"><a href="{{ url_for('logout') }}">Log out</a></li>
                             <!-- /Reiterate overflow menu for mobile menu -->
