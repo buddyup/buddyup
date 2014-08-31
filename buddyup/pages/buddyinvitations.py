@@ -9,11 +9,21 @@ from buddyup.templating import render_template
 from buddyup.util import (login_required, email, send_mandrill_email_message, get_domain_name, acting_on_self)
 
 
-    # If I POST to an invitation under my account, that means I accept it.
-    # If I POST to an invitation under someone else's account, that means I'm inviting them.
+"""
+Buddy invitations are sent from one user to another. When you invite someone, you POST it under 
+their account. For example, jdoe wants to BuddyUp with jsmith. She'd POST to:
 
+    /classmates/jsmith/invitation
 
+When you respond to an invitation, you POST it to the inviting user's name under *your* own
+invitations. So jsmith would reply with a POST to:
 
+    /classmates/jsmith/invitations/jdoe
+
+(Anyone else who tries to view that endpoint will see a 404.)
+
+The value POSTed to that endpoint determines whether you're accepting or rejecting the invite.
+"""
 
 
 def already_invited(classmate):
@@ -30,6 +40,25 @@ def buddy_up(user1, user2):
         user1.buddies.append(user2)
         user2.buddies.append(user1)
 
+def invite(sender, classmate):
+    # Don't send multiple invitations.
+    if BuddyInvitation.query.filter(BuddyInvitation.sender_id==sender.id, BuddyInvitation.receiver_id==classmate.id).count():
+        return
+
+    invitation = BuddyInvitation(sender_id=sender.id, receiver_id=classmate.id)
+    db.session.add(invitation)
+    db.session.commit()
+
+    notification = Notification(sender_id=sender.id, recipient_id=classmate.id)
+
+    notification.payload = "%s wants to BuddyUp!" % sender.full_name
+    notification.action_text = "Accept"
+    notification.action_link = "/classmates/%s/invitation/%s" % (classmate.user_name, sender.user_name)
+
+    db.session.add(notification)
+    db.session.commit()
+
+
 @app.route("/classmates/<user_name>/invitation", methods=["POST"])
 @login_required
 def invite_send(user_name):
@@ -40,25 +69,11 @@ def invite_send(user_name):
         return redirect(request.referrer) # Just fall through. The UI shouldn't allow these.
 
     if they_invited_you(classmate):
-        # Other user already sent an invite. Go directly to buddies.
         buddy_up(g.user, classmate)
         flash("You are now buddies!")
     else:
-        # Otherwise, send the invitation
-        invitation = BuddyInvitation(sender_id=g.user.id, receiver_id=classmate.id)
-        db.session.add(invitation)
-        db.session.commit()
-
-        notification = Notification(sender_id=g.user.id, recipient_id=classmate.id)
-
-        notification.payload = "%s wants to BuddyUp!" % g.user.full_name
-        notification.action_text = "Accept"
-        notification.action_link = "/classmates/%s/invitation"
-
-        db.session.add(notification)
-        db.session.commit()
-
-        flash("Sent invitation to " + classmate.full_name)
+        invite(g.user, classmate)
+        flash("Buddy invitation sent to " + classmate.full_name)
 
     return redirect(request.referrer)
 
