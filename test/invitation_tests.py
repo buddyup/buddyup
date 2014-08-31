@@ -52,7 +52,7 @@ class InvitationTests(unittest.TestCase):
     def test_buddy_invite(self):
         self.assertEqual(0, BuddyInvitation.query.count(), "No invites should exist yet.")
         
-        self.test_client.get('/invite/send/skippy', follow_redirects=True)
+        self.test_client.post('/classmates/skippy/invitation', data={}, follow_redirects=True)
         
         self.assertEqual(1, BuddyInvitation.query.count(), "An invite wasn't created?")
 

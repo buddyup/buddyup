@@ -297,7 +297,8 @@ def time_pulldown():
     return [time_from_timestamp(time) for time in list_of_times()]
 
 
-
+def acting_on_self(user):
+    return user.id == g.user.id
 
 
 

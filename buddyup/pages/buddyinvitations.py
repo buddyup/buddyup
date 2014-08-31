@@ -6,7 +6,7 @@ import mandrill
 from buddyup.app import app
 from buddyup.database import db, BuddyInvitation, User, EventInvitation
 from buddyup.templating import render_template
-from buddyup.util import (login_required, email, send_mandrill_email_message, get_domain_name)
+from buddyup.util import (login_required, email, send_mandrill_email_message, get_domain_name, acting_on_self)
 
 
 @app.route("/invite/view")
@@ -33,45 +33,38 @@ def compose_invitation_message(invite):
                 (sender.full_name, accept_link, decline_link)
 
 
-@app.route("/invite/send/<user_name>")
+def already_invited(classmate):
+    return BuddyInvitation.query.filter_by(sender_id=g.user.id, receiver_id=classmate.id, rejected=False).count() > 0
+
+def already_buddy(classmate):
+    return g.user.buddies.filter_by(id=classmate.id).count() > 0
+
+@app.route("/classmates/<user_name>/invitation", methods=["POST"])
 @login_required
 def invite_send(user_name):
-    # TODO: Security analysis of this code. Too many WTFs.
-    if (user_name == g.user.user_name):
-        abort(403)
-    other_user_record = User.query.filter_by(user_name=user_name).first_or_404()
-    other_id = other_user_record.id
-    # already a friend
-    if g.user.buddies.filter_by(id=other_id).count() == 1:
-        flash("Already added!")
+    classmate = User.query.filter_by(user_name=user_name).first_or_404()
+
+    if acting_on_self(classmate) or already_invited(classmate) or already_buddy(classmate):
+        return redirect(request.referrer) # Just fall through. The UI shouldn't allow these.
+
     # Other user sent an invite, accept
-    elif (BuddyInvitation.query.filter_by(sender_id=other_id,
-                                          receiver_id=g.user.id).count() == 1):
-        g.user.buddies.append(other_user_record)
-        other_user_record.buddies.append(g.user)
-        flash("Accepted pending invitation")
-    # Already sent an invitation
-    elif (BuddyInvitation.query.filter_by(sender_id=g.user.id,
-                                          receiver_id=other_id).count() == 1):
-        flash("Invitation already pending")
-    # No problems, send the invitation
+    if (BuddyInvitation.query.filter_by(sender_id=classmate.id, receiver_id=g.user.id).count() > 0):
+        g.user.buddies.append(classmate)
+        classmate.buddies.append(g.user)
+        flash("You are now buddies!")
     else:
-        invite_record = BuddyInvitation(sender_id=g.user.id,
-                            receiver_id=other_user_record.id)
-        db.session.add(invite_record)
+        # Otherwise, send the invitation
+        invitation = BuddyInvitation(sender_id=g.user.id, receiver_id=classmate.id)
+        db.session.add(invitation)
         db.session.commit()
-        flash("Sent invitation to " + user_name)
+        flash("Sent invitation to " + classmate.full_name)
 
-        sbj = '%s wants to be your buddy on Buddyup' % email(g.user)
-        msg = compose_invitation_message(invite_record)
+        sbj = '%s wants to be your buddy on Buddyup' % g.user.full_name
+        msg = compose_invitation_message(invitation)
 
-        send_mandrill_email_message(user_recipient=other_user_record,
-                                    subject=sbj, html=msg)
-    # TODO: Don't redirect to referrer (potential security risk?)
-    # the 'or' picks referrer if its available, but uses buddy_view as a
-    # fallback
-    return redirect(request.referrer or url_for('buddy_view',
-                                                user_name=user_name))
+        send_mandrill_email_message(user_recipient=classmate, subject=sbj, html=msg)
+
+    return redirect(request.referrer)
 
 
 @app.route("/invite/deny/<int:inv_id>")
