@@ -8,7 +8,7 @@ import re
 from buddyup.app import app
 from buddyup.database import Event, Course, EventInvitation, db, EventComment
 from buddyup.templating import render_template
-from buddyup.util import (args_get, login_required, form_get, check_empty,checked_regexp, calendar_event, easy_datetime)
+from buddyup.util import (args_get, login_required, form_get, check_empty,checked_regexp, calendar_event, easy_datetime, time_pulldown)
 from buddyup.pages.eventinvitations import event_invitation_send_list
 
 import os
@@ -344,6 +344,40 @@ def leave_event(event_id):
 
 #--------------------- NEW STUFF BELOW ---------------------------
 
+from flask.ext.wtf import Form
+from wtforms import StringField, HiddenField, TextAreaField, SelectField, DateField
+from wtforms.validators import DataRequired, NumberRange
+
+
+SECONDS_IN_A_DAY = 86400
+START_OF_DAY = 0
+END_OF_DAY = (SECONDS_IN_A_DAY - 1)
+
+
+class EventForm(Form):
+    title = StringField(u'Event Title', validators=[DataRequired()])
+    location = StringField(u'Location', validators=[DataRequired()])
+    note = TextAreaField(u'Note')
+    date = DateField(u'Date', format='%m/%d/%y')
+    start = SelectField(u'Start', choices = time_pulldown(), coerce=int, validators=[NumberRange(min=START_OF_DAY, max=END_OF_DAY)])
+    end = SelectField(u'End', choices = time_pulldown(),  coerce=int, validators=[NumberRange(min=START_OF_DAY, max=END_OF_DAY)])
+
+
+@app.route('/courses/<int:course_id>/event', methods=['GET', 'POST'])
+@login_required
+def new_event(course_id):
+    form = EventForm()
+    if request.method != 'POST': return render_template('courses/new-event.html', course=Course.query.get_or_404(course_id), times=time_pulldown(), form=form)
+
+    if form.validate():
+        flash('"%s" was added to the %s calendar for %s.' % (form.title.data, Course.query.get(course_id).name, datetime.strftime(form.date.data, "%m/%d")))
+        return redirect(url_for('course_events', id=course_id))
+    else:
+        field_names = form.errors.keys()
+        flash("Missing important information: %s. Try again." % ", ".join(["%s" % name.capitalize() for name in field_names]))
+        return render_template('courses/new-event.html', course=Course.query.get_or_404(course_id), times=time_pulldown(), form=form)
+
+
 @app.route('/courses/<int:id>/events.json')
 @login_required
 def course_events_json(id):
@@ -372,10 +406,6 @@ def course_event(course_id, event_id):
     return render_template('courses/event-detail.html', course=course, event=event, comments=comments)
 
 
-@app.route('/courses/<int:course_id>/event')
-@login_required
-def new_event(course_id):
-    return render_template('courses/new-event.html', course=Course.query.get_or_404(course_id))
 
 
 @app.route('/events')

@@ -21,6 +21,12 @@
 
 <article id="main-content" class="container">
 
+	{% for message in get_flashed_messages() %} 
+	<div class="alert alert-success">
+		<button type="button" class="close" data-dismiss="alert">&times;</button >{{ message }}
+	</div >
+	{% endfor %}
+
     <section id="events" class="row">
             <div class="col-md-10 col-md-offset-1">
             <div class="group-heading">

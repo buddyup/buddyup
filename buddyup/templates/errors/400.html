@@ -1,17 +1,23 @@
-{% extends "layout.html" %} 
-{% block extrahead %}
-<style type="text/css">
-body 
-	{
-	background-image:url('../static/img/incorrect.jpg');
-	background-position:center; 
-	background-repeat:no-repeat;
-}
-</style>
-{% endblock %}
+{% extends "green/global_layout.html" %}
 {% block content %}
-<br> 
-<h1 style="color:red"> Error 400: Incorrect Requests! </h1>
-<br>
-<h3 style="color:blue"> Sorry, the server could not understand your request.</h3>
+<article id="top" class="simple">
+    <div class="wrapper container">
+        <div class="row">
+            <h1 class="col-md-6 col-md-offset-3">400</h1>
+            <p class="col-md-6 col-md-offset-3">
+                Oops! Something went wrong. (Malformed Request)
+            </p>
+        </div>
+    </div>
+</article>
+
+<article id="main-content" class="container">
+
+    <section id="" class="row">
+        <div class="col-md-6 col-md-offset-3">
+			This is an error in our application and has been noted. If that keeps happening, please email us at <a href="mailto:help@getbuddyup.com">help@getbuddyup.com</a> and tell us how you got here. Thanks!
+        </div>
+    </section>
+
+</article>
 {% endblock %}

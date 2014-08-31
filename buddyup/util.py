@@ -48,7 +48,7 @@ def login_required(func):
 
 
 def _parameter_get(source, var, convert=None, default=_DEFAULT):
-    # Get a 
+    # Get a
     # source: mapping type
     # var: variable name
     # convert: function to call on variable (includes int, float, etc.)
@@ -74,12 +74,12 @@ def form_get(var, convert=None, default=_DEFAULT):
     """
     Get a variable from request.form. Abort with status code 400 if the
     variable is not present unless default is given.
-    
-    convert is a function or class to convert the value. 
-    
+
+    convert is a function or class to convert the value.
+
     If specified, default is used instead of raising an error.
     """
-    
+
     return _parameter_get(request.form, var, convert, default)
 
 
@@ -87,12 +87,12 @@ def args_get(var, convert=None, default=_DEFAULT):
     """
     Get a variable from request.args. Abort with status code 400 if the
     variable is not present unless default is given.
-    
-    convert is a function or class to convert the value. 
-    
+
+    convert is a function or class to convert the value.
+
     If specified, default is used instead of raising an error.
     """
-    
+
     return _parameter_get(request.args, var, convert, default)
 
 
@@ -177,7 +177,7 @@ def update_relationship(rel, records):
     insert_ids = new.viewkeys() - current.viewkeys()
     for id in insert_ids:
         rel.append(new[id])
-    
+
     remove_ids = current.viewkeys() - new.viewkeys()
     for id in remove_ids:
         rel.remove(current[id])
@@ -261,11 +261,31 @@ def easy_datetime(date_string):
     return datetime.strptime(date_string, "%b %d %Y %H:%M")
 
 
+def list_of_times():
+    return [t for t in range(0, 86400, 1800)]
 
+DAY_LENGTH = 86400
+MIDNIGHT = 0
+NOON = DAY_LENGTH / 2
+HOUR = 3600
 
+def time_from_timestamp(timestamp):
+    """
+    'timestamp' represents a half-hour segement of time in the day.
+    It is represented as seconds since midnight. Here we return a tuple
+    of both the timestamp and a string with the equivalent time.
+    """
+    hour = (timestamp // HOUR) or 12
+    if hour > 12:
+        hour = hour - 12
+    meridian = ["AM", "PM"][timestamp >= NOON]
 
+    minutes = ["30", "00"][timestamp % HOUR == 0 or timestamp == 0]
+    timestr = "%s:%s%s" % (hour, minutes, meridian)
+    return timestamp, timestr
 
-
+def time_pulldown():
+    return [time_from_timestamp(time) for time in list_of_times()]
 
 
 

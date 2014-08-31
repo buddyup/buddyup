@@ -1,14 +1,23 @@
-{% extends "layout.html" %} 
-{% block extrahead %}
-<style type="text/css">
-body {
-	background-image: url('../static/img/fail-cupcake.jpg');
-	background-size: cover;
-}
-</style>
-{% endblock %}
-{% block content %}  
-<h1 style="color:red;"> Error 500: Internal Service Error! </h1>
-<h3 style="color:blue;"> Sorry, Our server is having some problems.</h3>
-<h3 style="color:blue;"> Our men are currently investigating them.</h3>
+{% extends "green/global_layout.html" %}
+{% block content %}
+<article id="top" class="simple">
+    <div class="wrapper container">
+        <div class="row">
+            <h1 class="col-md-6 col-md-offset-3">500</h1>
+            <p class="col-md-6 col-md-offset-3">
+                Oops! Something went wrong. (Internal Error)
+            </p>
+        </div>
+    </div>
+</article>
+
+<article id="main-content" class="container">
+
+    <section id="" class="row">
+        <div class="col-md-6 col-md-offset-3">
+			This is an error in our application and has been noted. If that keeps happening, please email us at <a href="mailto:help@getbuddyup.com">help@getbuddyup.com</a> and tell us how you got here. Thanks!
+        </div>
+    </section>
+
+</article>
 {% endblock %}

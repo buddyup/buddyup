@@ -1,7 +1,7 @@
 from flask import g, abort
 
 from flask.ext.wtf import Form
-from wtforms import TextField, HiddenField, TextAreaField
+from wtforms import TextField, HiddenField, TextAreaField, IntegerField
 from wtforms.validators import DataRequired
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 
@@ -40,3 +40,24 @@ class QuestionForm(Form):
 class AnswerForm(Form):
     question_id = HiddenField()
     text = TextAreaField(u"Answer", validators=[DataRequired()])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

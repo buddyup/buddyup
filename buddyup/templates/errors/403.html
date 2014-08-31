@@ -1,15 +1,25 @@
-{% extends "layout.html" %} 
-{% block extrahead %}
-<style type="text/css">
-body {
-	background-image:url('../static/img/forbidden.jpg');
-	background-position:center; 
-	background-repeat:no-repeat;
-}
-</style>
-{% endblock extrahead %}
-{% block content %}
-<h1 style="color:red"> Error 403: Forbidden! </h1>
-<h3 style="color:brown"> You do NOT have permission to access those files.</h3>
+{% extends "green/global_layout.html" %} 
+{% block content %} 
+
+<article id="top" class="simple">
+    <div class="wrapper container">
+        <div class="row">
+            <h1 class="col-md-6 col-md-offset-3">403</h1>
+            <p class="col-md-6 col-md-offset-3">
+                Forbidden - You do not have permission to access this address.
+            </p>
+        </div>
+    </div>
+</article>
+
+<article id="main-content" class="container">
+
+    <section id="" class="row">
+        <div class="col-md-6 col-md-offset-3">
+			You might just be lost, but it's possible our website sent you to this page. If that keeps happening, please email us at <a href="mailto:help@getbuddyup.com">help@getbuddyup.com</a> and tell us how you got here. Thanks!
+        </div>
+    </section>
+
+</article>
 
 {% endblock %}

@@ -6,6 +6,9 @@
 {% endblock %}
 {% block content %}
 
+<script src="/static/_assets/plugins/datepicker/bootstrap-datepicker.js"></script>
+<link href="/static/_assets/plugins/datepicker/datepicker.css" rel="stylesheet">
+
 <article id="top" class="detail">
     <div class="wrapper container">
         <div class="row">
@@ -20,34 +23,32 @@
 
 <article id="main-content" class="container">
 
-    <form role="form">
-        
+	{% for message in get_flashed_messages() %} 
+	<div class="alert alert-danger">
+		<button type="button" class="close" data-dismiss="alert">&times;</button >{{ message }}
+	</div >
+	{% endfor %}
+
+    <form id="event_form" role="form" action="{{request.path}}" method="POST">
+		{{ form.csrf_token }}
         <section id="" class="row">
             <div class="col-md-6 col-md-offset-3">
                 <div class="group-heading"><h3>Step 1: Basic Info</h3></div>
                 
                 <div class="form-group">
-                    <label for="event-title" class="control-label">Event Title</label>
-                    <input type="text" name="event-title" class="form-control" placeholder="">
+					{{form.title.label(class_="control-label")}}
+					{{form.title(class_="form-control")}}
                 </div>
 
                 <div class="form-group">
-                    <label for="" class="control-label">Location</label>
-                    <select class="form-control">
-                        <option></option>
-                        <option>PSU Library at Neubeurger Hall</option>
-                    </select>
-                    <select class="form-control">
-                        <option></option>
-                        <option>Reserved Room</option>
-                    </select>
-                    <span class="message warning">* This room needs to be reserved with your school. <a href="#">Reserve now</a></span>
+					{{form.location.label(class_="control-label")}}
+					{{form.location(class_="form-control")}}
                 </div>
 
                 <div class="form-group">
                     <div>
-                        <label for="date" class="control-label">Date</label>
-                        <input type="text" data-date-format="mm/dd/yy" id="date" name="date" class="datepicker">
+						{{form.date.label(class_="control-label")}}
+						{{form.date(class_="datepicker", **{"data-date-format": "mm/dd/yy"})}}
                         <span class="icon icon-calendar">&nbsp;</span>
                     </div>
                     <script>$( document ).ready( function() { $('#date').datepicker(); });</script>
@@ -58,14 +59,18 @@
                     <div class="range">
                         <div class="from">
                             <span>Starts</span>
-                            <select class="form-control">
-                                <option>8:00AM</option>
+                            <select class="form-control" name="start">
+								{% for time in times %}
+                                <option value="{{time[0]}}" {% if time[1] == "8:00AM" %}selected{% endif %}>{{time[1]}}</option>
+								{% endfor %}
                             </select>
                         </div>
                         <div class="to">
                             <span>End</span>
-                            <select class="form-control">
-                                <option>12:00PM</option>
+                            <select class="form-control" name="end">
+								{% for time in times %}
+                                <option value="{{time[0]}}" {% if time[1] == "8:30AM" %}selected{% endif %}>{{time[1]}}</option>
+								{% endfor %}
                             </select>
                         </div>
                     </div>
@@ -148,7 +153,7 @@
 
         <section id="submit" class="row">
             <div class="col-md-6 col-md-offset-3">
-                <a href="#" class="button submit submit-form">Create Event</a>
+                <a href="javascript:event_form.submit()" class="button submit submit-form">Create Event</a>
             </div>
         </section>
 
