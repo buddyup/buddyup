@@ -4,8 +4,6 @@ from . import basic
 from . import classmates
 from . import courses
 from . import buddyinvitations
-from . import eventcomments
-from . import eventinvitations
 from . import events
 from . import errorhandlers
 from . import lists
