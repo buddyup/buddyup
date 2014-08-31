@@ -49,7 +49,7 @@ def new_event(course_id):
         event.name = form.title.data
         event.location = form.location.data
         event.start = datetime.utcfromtimestamp(date_seconds + form.start.data)
-        event.end = datetime.utcfromtimestamp(date_seconds + form.start.data)
+        event.end = datetime.utcfromtimestamp(date_seconds + form.end.data)
 
         db.session.add(event)
         db.session.commit()

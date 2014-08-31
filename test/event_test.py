@@ -130,7 +130,9 @@ class EventTests(unittest.TestCase):
 
         self.assertEqual(user_id, new_event.owner_id)
 
+        self.assertEqual("03:30PM", new_event.start.strftime("%I:%M%p"))
 
+        self.assertEqual("05:00PM", new_event.end.strftime("%I:%M%p"))
 
 
 if __name__ == '__main__':
