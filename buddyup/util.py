@@ -237,6 +237,15 @@ def delete_user(user):
 
 
 from datetime import datetime
+def epoch_time(when):
+    """
+    Seconds since epoch (Jan 1, 1970)
+    """
+    if not when: return 0
+    epoch = datetime.utcfromtimestamp(0)
+    delta = when - epoch
+    return int(delta.total_seconds())
+
 def epoch_milliseconds(when):
     if not when: return 0
     epoch = datetime.utcfromtimestamp(0)

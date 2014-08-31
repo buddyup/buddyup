@@ -8,7 +8,7 @@ import re
 from buddyup.app import app
 from buddyup.database import Event, Course, EventInvitation, db, EventComment
 from buddyup.templating import render_template
-from buddyup.util import (args_get, login_required, form_get, check_empty,checked_regexp, calendar_event, easy_datetime, time_pulldown)
+from buddyup.util import (args_get, login_required, form_get, check_empty,checked_regexp, calendar_event, easy_datetime, time_pulldown, epoch_time)
 from buddyup.pages.eventinvitations import event_invitation_send_list
 
 import os
@@ -17,7 +17,7 @@ import os
 #--------------------- NEW STUFF BELOW ---------------------------
 
 from flask.ext.wtf import Form
-from wtforms import StringField, HiddenField, TextAreaField, SelectField, DateField
+from wtforms import StringField, HiddenField, TextAreaField, SelectField, DateTimeField
 from wtforms.validators import DataRequired, NumberRange
 
 
@@ -30,7 +30,7 @@ class EventForm(Form):
     title = StringField(u'Event Title', validators=[DataRequired()])
     location = StringField(u'Location', validators=[DataRequired()])
     note = TextAreaField(u'Note')
-    date = DateField(u'Date', format='%m/%d/%y')
+    date = DateTimeField(u'Date', format='%m/%d/%y')
     start = SelectField(u'Start', choices = time_pulldown(), coerce=int, validators=[NumberRange(min=START_OF_DAY, max=END_OF_DAY)])
     end = SelectField(u'End', choices = time_pulldown(),  coerce=int, validators=[NumberRange(min=START_OF_DAY, max=END_OF_DAY)])
 
@@ -42,7 +42,20 @@ def new_event(course_id):
     if request.method != 'POST': return render_template('courses/new-event.html', course=Course.query.get_or_404(course_id), times=time_pulldown(), form=form)
 
     if form.validate():
-        flash('"%s" was added to the %s calendar for %s.' % (form.title.data, Course.query.get(course_id).name, datetime.strftime(form.date.data, "%m/%d")))
+
+        date_seconds = epoch_time(form.date.data)
+
+        event = Event(course_id=course_id, owner_id=g.user.id)
+        event.name = form.title.data
+        event.location = form.location.data
+        event.start = datetime.utcfromtimestamp(date_seconds + form.start.data)
+        event.end = datetime.utcfromtimestamp(date_seconds + form.start.data)
+
+        db.session.add(event)
+        db.session.commit()
+
+
+        flash('"%s" was added to the %s calendar for %s.' % (form.title.data, Course.query.get(course_id).name, datetime.strftime(event.start, "%m/%d at %H:%M %p")))
         return redirect(url_for('course_events', id=course_id))
     else:
         field_names = form.errors.keys()

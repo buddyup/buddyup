@@ -5,6 +5,7 @@ from buddyup.pages import events
 from buddyup.app import app
 from buddyup.database import db, User, Course, Event
 from buddyup.util import time_from_timestamp
+from bs4 import BeautifulSoup
 
 class EventTests(unittest.TestCase):
 
@@ -35,6 +36,8 @@ class EventTests(unittest.TestCase):
         else:
             # Delete users from the memory database, if used.
             User.query.delete()
+            Event.query.delete()
+
 
     @property
     def test_client(self):
@@ -64,20 +67,20 @@ class EventTests(unittest.TestCase):
 
 
     def test_json_for_events(self):
-        
+
         course_id = Course.query.first().id
 
         result = self.test_client.get('/courses/1/events.json', follow_redirects=True)
 
         self.assertEqual(result.status_code, 200)
-        
+
         result = json.loads(result.data)
 
         empty_result = {u'result': [], u'success': 1}
 
         # JSON should be empty before there are events.
         self.assertDictEqual(empty_result, result)
-        
+
         # Now create our Event
         event = Event(course_id=course_id, name="Test Event")
 
@@ -92,7 +95,43 @@ class EventTests(unittest.TestCase):
 
         # JSON should have a single Event afterwards.
 
-        
+    def test_create_event(self):
+        client = self.test_client # Only initiate the client once during this test since we maintain state.
+        user_id = User.query.filter(User.user_name=="test_user").first().id
+        course_id = Course.query.first().id
+        url = '/courses/%s/event' % course_id
+
+        self.assertEqual(0, Event.query.count(), "No events should exist yet.")
+
+        new_event_page = client.get(url, follow_redirects=True)
+
+        self.assertEqual('200 OK', new_event_page.status)
+
+        new_event_request = {
+            "title": "Best Event Ever",
+            "location": "Van Down By The River",
+            "date": "12/25/14",
+            "start": "55800", # 3:30pm
+            "end": "61200", # 5:00pm,
+            "csrf_token": BeautifulSoup(new_event_page.data).find(id="csrf_token")['value']
+        }
+
+        response = client.post(url, data=new_event_request, follow_redirects=True)
+
+        self.assertEqual('200 OK', response.status)
+
+        self.assertFalse("Missing important information" in response.data, "Error found: %s" % [line for line in response.data.split("\n") if "Missing important information" in line])
+
+        self.assertEqual(1, Event.query.count())
+
+        new_event = Event.query.first()
+
+        self.assertEqual(course_id, new_event.course_id)
+
+        self.assertEqual(user_id, new_event.owner_id)
+
+
+
 
 if __name__ == '__main__':
     unittest.main()
