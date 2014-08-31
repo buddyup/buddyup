@@ -2,20 +2,19 @@ import unittest
 import os
 from datetime import datetime
 from buddyup import app
-from buddyup.database import db, Action, User, BuddyInvitation
-from buddyup.pages.buddyinvitations import compose_invitation_message
+from buddyup.database import db, Action, User, BuddyInvitation, Notification
 
 class InvitationTests(unittest.TestCase):
 
     def setUp(self):
         db.create_all()
-        
+
         # Create a user profile to invite.
         skippy = User(user_name="skippy")
         skippy.initialized = True
         db.session.add(skippy)
         db.session.commit()
-        
+
         # Create a user to run our tests as.
         test_user = User(user_name="test_user", full_name="John Smith")
         test_user.initialized = True
@@ -30,7 +29,7 @@ class InvitationTests(unittest.TestCase):
             # Delete objects from the memory database, if used.
             User.query.delete()
             BuddyInvitation.query.delete()
-    
+
     @classmethod
     def tearDownClass(self):
         if os.path.isfile("last_sent.msg"):
@@ -51,17 +50,26 @@ class InvitationTests(unittest.TestCase):
 
     def test_buddy_invite(self):
         self.assertEqual(0, BuddyInvitation.query.count(), "No invites should exist yet.")
-        
+        self.assertEqual(0, Notification.query.count(), "No notifications should exist yet.")
+
         self.test_client.post('/classmates/skippy/invitation', data={}, follow_redirects=True)
-        
+
         self.assertEqual(1, BuddyInvitation.query.count(), "An invite wasn't created?")
 
-        email_sent = open("last_sent.msg").read()
-        
-        self.assertIsNotNone(email_sent)
-        self.assertIn("You have received a buddy request from John Smith on BuddyUp.", email_sent, "Sender's name isn't showing up in the email.")
-        
-        
+        # email_sent = open("last_sent.msg").read()
+        #
+        # self.assertIsNotNone(email_sent)
+        # self.assertIn("You have received a buddy request from John Smith on BuddyUp.", email_sent, "Sender's name isn't showing up in the email.")
+
+        self.assertEqual(1, Notification.query.count(), "Where is the Notification about the invite?")
+
+
+
+
+
+
+
+
 if __name__ == '__main__':
     unittest.main()
 
