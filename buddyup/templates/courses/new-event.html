@@ -59,19 +59,11 @@
                     <div class="range">
                         <div class="from">
                             <span>Starts</span>
-                            <select class="form-control" name="start">
-								{% for time in times %}
-                                <option value="{{time[0]}}" {% if time[1] == "8:00AM" %}selected{% endif %}>{{time[1]}}</option>
-								{% endfor %}
-                            </select>
+							{{form.start(class_="form-control")}}
                         </div>
                         <div class="to">
                             <span>End</span>
-                            <select class="form-control" name="end">
-								{% for time in times %}
-                                <option value="{{time[0]}}" {% if time[1] == "8:30AM" %}selected{% endif %}>{{time[1]}}</option>
-								{% endfor %}
-                            </select>
+							{{form.end(class_="form-control")}}
                         </div>
                     </div>
                 </div>
