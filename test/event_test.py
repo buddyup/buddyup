@@ -46,16 +46,6 @@ class EventTests(unittest.TestCase):
         if login.status == '200 OK': return client
 
 
-    def test_parse_time_at_noon(self):
-
-        date = datetime(2014, 1, 15)
-
-        result = events.parse_time("12", "pm", date, "start")
-        
-        self.assertEqual(result.hour, 12, "Hour should stay at Noon")
-
-        self.assertEqual(result.day, 15, "The day shouldn't change")
-
 
     def test_timestamp_to_time(self):
 
