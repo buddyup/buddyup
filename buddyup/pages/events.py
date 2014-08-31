@@ -87,10 +87,8 @@ def course_events(id):
 def course_event(course_id, event_id):
     course = Course.query.get_or_404(course_id)
     event = Event.query.get_or_404(event_id)
-    comments = EventComment.query.filter(Event.id==event_id).all()
+    comments = EventComment.query.filter(EventComment.event_id == Event.id, Event.id == event.id)
     return render_template('courses/event-detail.html', course=course, event=event, comments=comments)
-
-
 
 
 @app.route('/events')
