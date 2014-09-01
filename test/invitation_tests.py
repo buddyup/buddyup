@@ -2,7 +2,8 @@ import unittest
 import os
 from datetime import datetime
 from buddyup import app
-from buddyup.database import db, Action, User, BuddyInvitation, Notification
+from buddyup.database import db, Action, User, BuddyInvitation, Notification, Buddy
+from buddyup.pages.buddyinvitations import buddy_up
 
 class InvitationTests(unittest.TestCase):
 
@@ -10,7 +11,7 @@ class InvitationTests(unittest.TestCase):
         db.create_all()
 
         # Create a user profile to invite.
-        skippy = User(user_name="skippy")
+        skippy = User(user_name="skippy", full_name="Skippy Johnson")
         skippy.initialized = True
         db.session.add(skippy)
         db.session.commit()
@@ -26,14 +27,7 @@ class InvitationTests(unittest.TestCase):
         if 'DATABASE_URL' in os.environ and os.environ['DATABASE_URL'] != 'sqlite:///:memory:':
             os.remove(os.environ['DATABASE_URL'])
         else:
-            # Delete objects from the memory database, if used.
-            User.query.delete()
-            BuddyInvitation.query.delete()
-
-    @classmethod
-    def tearDownClass(self):
-        if os.path.isfile("last_sent.msg"):
-            os.remove("last_sent.msg")
+            db.drop_all()
 
     @property
     def test_client(self):
@@ -85,6 +79,20 @@ class InvitationTests(unittest.TestCase):
         buddies = db.session.query(User).filter(User.user_name=="test_user").first().buddies.all()
 
         self.assertIn(skippy.id, [b.id for b in buddies], "No buddy relationship was created.")
+
+
+    def test_buddy_up(self):
+        """
+        Test the underlying 'buddy_up' utility function directly.
+        """
+        test_user = User.query.filter(User.user_name=="test_user").first()
+        skippy = User.query.filter(User.user_name=="skippy").first()
+
+        buddy_up(test_user, skippy)
+
+        self.assertIn(test_user, skippy.buddies)
+        self.assertIn(skippy, test_user.buddies)
+
 
 
 if __name__ == '__main__':

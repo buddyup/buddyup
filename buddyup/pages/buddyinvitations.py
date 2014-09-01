@@ -39,6 +39,7 @@ def already_buddy(classmate):
 def buddy_up(user1, user2):
         user1.buddies.append(user2)
         user2.buddies.append(user1)
+        db.session.commit()
 
 def invite(sender, classmate):
     # Don't send multiple invitations.
