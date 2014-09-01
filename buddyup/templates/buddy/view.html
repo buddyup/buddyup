@@ -17,12 +17,14 @@
 			</span>
 
             <div class="col-sm-12">
-				{% if is_buddy %}
-					<a href="#" class="action button primary"><span class="icon icon-person-add">&nbsp;</span>Remove Buddy</a>
-				{% elif not myself %}
-					<a href="#" class="action button primary"><span class="icon icon-person-add">&nbsp;</span>Invite</a>
-				{% else %}
+				{% if myself %}
 					<a href="{{ url_for('profile_edit') }}" class="action button primary">Edit</a>
+				{% else %}
+					{% if is_buddy %}
+						<a href="javascript:$.post('{{url_for('unfriend', current_name=user_record.user_name, user_name=classmate.user_name)}}', function(){ location.reload() });" class="action button primary"><span class="icon icon-remove">&nbsp;</span>Remove Buddy</a>
+					{% else %}
+						<a href="javascript:$.post('{{url_for('invite_send', user_name=classmate.user_name)}}', function(){ location.reload() });" class="action button primary"><span class="icon icon-person-add">&nbsp;</span>Add Buddy</a>
+					{% endif %}
 				{% endif %}
             </div>
         </div>

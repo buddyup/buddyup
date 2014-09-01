@@ -78,17 +78,6 @@ def invite_send(user_name):
     return redirect(request.referrer)
 
 
-@app.route("/invite/deny/<int:inv_id>")
-@login_required
-def invite_deny(inv_id):
-    inv_record = BuddyInvitation.query.get_or_404(inv_id)
-    name = inv_record.sender.full_name
-    db.session.delete(inv_record)
-    db.session.commit()
-    flash("Ignored invitation from " + name)
-    return redirect(url_for('invite_list'))
-
-
 @app.route("/classmates/<receiver_name>/invitations/<sender_name>", methods=["POST"])
 @login_required
 def accept_invitation(receiver_name, sender_name):
