@@ -94,6 +94,21 @@ class InvitationTests(unittest.TestCase):
         self.assertIn(skippy, test_user.buddies)
 
 
+    def test_unbuddy_via_web(self):
+        """
+        Test the underlying 'buddy_up' utility function directly.
+        """
+        test_user = User.query.filter(User.user_name=="test_user").first()
+        skippy = User.query.filter(User.user_name=="skippy").first()
+
+        buddy_up(test_user, skippy)
+
+        self.test_client.post('/classmates/test_user/buddies/skippy', data={}, follow_redirects=True)
+
+        self.assertNotIn(test_user, skippy.buddies)
+        self.assertNotIn(skippy, test_user.buddies)
+
+
 
 if __name__ == '__main__':
     unittest.main()

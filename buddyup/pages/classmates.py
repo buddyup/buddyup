@@ -87,8 +87,11 @@ def buddy_search_results():
                            search_results=buddies)
 
 
-@app.route('/buddy/unfriend/<user_name>')
-def unfriend(user_name):
+@app.route('/classmates/<current_name>/buddies/<user_name>', methods=['POST'])
+def unfriend(current_name, user_name):
+    # We're only allowed to act on our own friends.
+    if g.user.user_name != current_name: abort(404)
+
     user = g.user
     other_user = User.query.filter_by(user_name=user_name).first_or_404()
     if (user.buddies.filter_by(id=other_user.id).count() == 0 or
