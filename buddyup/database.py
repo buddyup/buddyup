@@ -71,7 +71,6 @@ class Notification(db.Model):
     action_link = db.Column(db.UnicodeText, default=u"")
     deleted = db.Column(db.Boolean, default=False)
 
-
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     # Note: Portland State University user names are always <= 8 ASCII characters
@@ -106,6 +105,9 @@ class User(db.Model):
                                 backref=db.backref('users', lazy="dynamic"))
     notifications = db.relationship('Notification', backref='recipient',
                                 primaryjoin=Notification.recipient_id == id)
+
+    notifications_sent = db.relationship('Notification', backref='sender',
+                                primaryjoin=Notification.sender_id == id)
 
     buddies = db.relationship('User', secondary=Buddy,
                               lazy='dynamic',

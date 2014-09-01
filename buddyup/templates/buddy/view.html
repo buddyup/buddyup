@@ -5,6 +5,13 @@
 {% endblock %}
 {% block content %}
 
+{% for message in get_flashed_messages() %} 
+<div class="alert alert-success">
+	<button type="button" class="close" data-dismiss="alert">&times;</button >{{ message }}
+</div >
+{% endfor %}
+
+
 <article id="top" class="profile">
     <div class="wrapper container">
         <div class="row">
