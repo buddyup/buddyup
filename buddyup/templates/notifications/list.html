@@ -21,13 +21,13 @@
 					{% for notification in notifications %}
 	                <li class="tablelist-group-row">
 	                    <ul class="tablelist">
-	                        <li class="icon"><a href="./profile.html"><div class="block circle" style="background-image:url('/static/_assets/images/people/15.jpg')">&nbsp;</div></a></li>
+	                        <li class="icon"><a href="{{url_for('buddy_view', user_name="bfornos")}}"><div class="block circle" style="background-image:url('/static/_assets/images/people/15.jpg')">&nbsp;</div></a></li>
 	                        <li class="main">
 	                            <div class="title">{{notification.payload}}</div>
 	                            <div class="subtitle">{{notification.time}}</div>
 	                        </li>
 							{% if notification.action_link %}
-	                        <li class="action"><a href="{{notification.action_link}}">{{notification.action_text}}</a></li>
+	                        <li class="action"><a href="javascript:jQuery.post('{{notification.action_link}}', {}); alert('hi')">{{notification.action_text}}</a></li>
 							{% endif %}
 	                    </ul>
 	                </li>

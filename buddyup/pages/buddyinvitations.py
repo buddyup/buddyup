@@ -10,7 +10,7 @@ from buddyup.util import (login_required, email, send_mandrill_email_message, ge
 
 
 """
-Buddy invitations are sent from one user to another. When you invite someone, you POST it under 
+Buddy invitations are sent from one user to another. When you invite someone, you POST it under
 their account. For example, jdoe wants to BuddyUp with jsmith. She'd POST to:
 
     /classmates/jsmith/invitation
@@ -53,7 +53,7 @@ def invite(sender, classmate):
 
     notification.payload = "%s wants to BuddyUp!" % sender.full_name
     notification.action_text = "Accept"
-    notification.action_link = "/classmates/%s/invitation/%s" % (classmate.user_name, sender.user_name)
+    notification.action_link = "/classmates/%s/invitations/%s" % (classmate.user_name, sender.user_name)
 
     db.session.add(notification)
     db.session.commit()
@@ -62,7 +62,6 @@ def invite(sender, classmate):
 @app.route("/classmates/<user_name>/invitation", methods=["POST"])
 @login_required
 def invite_send(user_name):
-
     classmate = User.query.filter_by(user_name=user_name).first_or_404()
 
     if acting_on_self(classmate) or already_invited(classmate) or already_buddy(classmate):
@@ -89,19 +88,26 @@ def invite_deny(inv_id):
     return redirect(url_for('invite_list'))
 
 
-@app.route("/invite/accept/<int:inv_id>")
+@app.route("/classmates/<receiver_name>/invitations/<sender_name>", methods=["POST"])
 @login_required
-def invite_accept(inv_id):
-    inv_record = BuddyInvitation.query.get_or_404(inv_id)
-    receiver = g.user
-    sender = inv_record.sender
-    # Sender -> Receiver record
-    if receiver.buddies.filter_by(id=sender.id).count() == 0:
-        sender.buddies.append(receiver)
-    # Receiver -> Sender
-    if sender.buddies.filter_by(id=receiver.id).count() == 0:
-        receiver.buddies.append(sender)
-    db.session.delete(inv_record)
+def accept_invitation(receiver_name, sender_name):
+    receiver = User.query.filter_by(user_name=receiver_name).first_or_404()
+    sender = User.query.filter_by(user_name=sender_name).first_or_404()
+
+    # This method only can be used from the receiver's view.
+    # If we're not the receiver we see nothing.
+    if not acting_on_self(receiver): abort(404)
+
+    invitation = BuddyInvitation.query.filter(BuddyInvitation.sender_id==sender.id, BuddyInvitation.receiver_id==receiver.id).first()
+
+
+    buddy_up(sender, receiver)
+
+
+    invitation.rejected = False
     db.session.commit()
-    flash("Accepted invitation from " + sender.full_name)
-    return redirect(url_for('invite_list'))
+
+    flash("You are now buddies!")
+
+    # Once we've accepted the invitation, go visit the sender's page.
+    return redirect(url_for('buddy_view', user_name=sender_name))
