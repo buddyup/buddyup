@@ -1,10 +1,9 @@
 {% extends "green/global_layout.html" %}
-{% block title %} Classmates {% endblock %}
+{% block title %} Followers of {{course.name}} {% endblock %}
 {% block pagestyle %}
 <link href="/static/_assets/css/buddies.css" rel="stylesheet">
 {% endblock %}
 {% block content %}
-
 <article id="top" class="filter">
     <div class="wrapper container">
         <div class="row">
@@ -36,38 +35,10 @@
 </article>
 
             <article id="main-content" class="container">
-				{% if group_list %}
-				<script>
-				$(function(){
-					$('#group_list').change(function(){
-						if($('#group_list').val() > 0){
-							window.location.href="{{url_for(request.endpoint, course_id=course.id)}}" + $('#group_list').val();
-						}
-					});
-				});
-				</script>
-
-				Filter by &nbsp;&nbsp;
-				<select id="group_list">
-					<option value=0>---</option>
-					{% for group in group_list %}
-					<option value="{{group.id}}">{{group.name}}</option>
-					{% endfor %}
-				</select>
-				<br/>
-				{% endif %}
-
                 <section class="row">
                     <div class="col-md-12 col-md-offset-0">
-
-					{% for grouping in groupings %}
-						
-                        <div class="group-heading">
-                            <h3>{{grouping}}</h3>
-                        </div>
-						
                         <ul class="block-grid">
-							{% for classmate in classmates[grouping] %}
+							{% for classmate in classmates %}
 							<li class="block {% if classmate.is_buddy %}followed{%endif%}" style="background-image:url('{{ photo_large(classmate) }}')">
 								<a href="{{ profile(classmate) }}"><img src="/static/_assets/images/clear.png" /><div class="info hide"><div class="wrapper">
 									<span class="title">{{ classmate.full_name }}</span>
@@ -84,12 +55,11 @@
 										<span class="icon icon-person-add">&nbsp;</span>
 										Invite
 									</span>
-									{% endif %}
+									{%endif%}
 								</div></div></a>
 							</li>
 							{% endfor %}
                         </ul>
-					{% endfor %}
                     </div>
 					{% include "buddy/pagination_nav.html" %}
                 </section>
