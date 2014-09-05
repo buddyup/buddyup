@@ -1,0 +1,176 @@
+{% extends "green/global_layout.html" %}
+{% block title %} {{ classmate.full_name }} {% endblock %}
+{% block pagestyle %}
+<link href="/static/_assets/css/profile.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+
+<article id="top" class="profile">
+    <div class="wrapper container">
+        <div class="row">
+            <div class="profile-image" style="background-image:url('{{ photo_large(classmate) }}')">&nbsp;</div>
+            <h1 class="col-sm-12">{{ classmate.full_name }}</h1>
+			<span class="col-sm-12 subtitle">Portland State University</span>
+
+            <div class="col-sm-12">
+				<a href="#" class="action button primary">Update Photo</a>
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<article id="main-content" class="container">
+
+			{% if classmate.location %}
+				{{ classmate.location.name }}
+			{% endif %}
+
+
+{% for message in get_flashed_messages() %} 
+<div class="alert alert-success">
+	<button type="button" class="close" data-dismiss="alert">&times;</button >{{ message }}
+</div >
+{% endfor %}
+
+
+	{% if classmate.bio %}
+    <section id="about" class="row">
+        <div class="col-md-6 col-md-offset-3">
+			<textarea rows=5>{{classmate.bio}}</textarea>	
+        </div>
+    </section>
+	{%endif%}
+
+    <section id="interests" class="row">
+		{% if classmate.courses.count() > 0 %}
+        <div class="col-md-6 col-md-offset-3">
+            <h3>Courses</h3>
+            <ul>
+				{% for course in classmate.courses %}
+                <li><a href="{{url_for('course_view', id=course.id)}}">{{course}}</a></li>
+				{% endfor %}
+
+            </ul>
+        </div>
+		{%endif%}
+
+		{% if classmate.majors.count() > 0 %}
+        <div class="col-md-6 col-md-offset-3">
+            <h3>Major</h3>
+            <ul>
+				{% for major in classmate.majors %}
+                <li><a href="">{{major.name}}</a></li>
+				{% endfor %}
+            </ul>
+        </div>
+		{%endif%}
+
+		{% if classmate.languages.count() > 0 %}
+        <div class="col-md-6 col-md-offset-3">
+            <h3>Languages</h3>
+            <ul>
+				{% for language in classmate.languages %}
+                <li><a href="">{{language.name}}</a></li>
+				{% endfor %}
+            </ul>
+        </div>
+		{%endif%}
+
+        <div class="col-sm-12">
+            <a href="mailto:{{ classmate|email }}" class="action button primary">Send {{ classmate.full_name }} an email</a>
+        </div>
+    </section>
+
+
+
+
+    <form role="form">
+
+        <section id="" class="row">
+            <div class="col-md-6 col-md-offset-3">
+
+                <div class="form-group">
+                    <label for="" class="control-label">About you</label>
+                    <textarea class="form-control" rows="3"></textarea>
+                    <span class="message pull-right">49 words left</span>
+                </div>
+
+                <div class="multipicker form-group">
+                    <label for="" class="control-label">What's your major?</label>
+                    <div class="multipicker-row">
+                        <select class="form-control">
+                            <option>Biochemistry 101</option>
+                            <option>Chemistry 101</option>
+                            <option>Politics 302</option>
+                            <option>Statistics 101</option>
+                            <option>Zoology 201</option>
+                        </select>
+                    </div>
+                    <div class="multipicker-row">
+                        <select class="form-control">
+                            <option></option>
+                            <option>Biochemistry 101</option>
+                            <option>Chemistry 101</option>
+                            <option>Politics 302</option>
+                            <option>Statistics 101</option>
+                            <option>Zoology 201</option>
+                        </select>
+                        <a href="#" class="remove"><span class="icon icon-remove">&nbsp;</span></a>
+                    </div>
+                    <a href="#" class="button add"><span class="icon icon-add">&nbsp;</span>Add another</a>
+                </div>
+
+                <div class="multipicker form-group">
+                    <label for="" class="control-label">What languages do you speak?</label>
+                    <div class="multipicker-row">
+                        <select class="form-control">
+                            <option></option>
+                            <option>French</option>
+                            <option>Spanish</option>
+                        </select>
+                    </div>
+                    <a href="#" class="button add"><span class="icon icon-add">&nbsp;</span>Add another</a>
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="control-label">What are you interested in?</label>
+                    <input type="text" class="form-control" placeholder="">
+                </div>
+
+                <div class="form-group">
+                    <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="">
+                        I have read and agree to the Terms &amp; Conditions
+                    </label>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="submit" class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <a href="" class="button primary action">Continue</a>
+            </div>
+        </section>
+
+    </form>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+{% endblock %}

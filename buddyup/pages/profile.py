@@ -27,6 +27,29 @@ PHOTO_EXTS = ['jpg', 'jpe', 'jpeg', 'png', 'gif', 'bmp', 'tif', 'tiff']
 PHOTO_EXTS.extend(map(str.upper, PHOTO_EXTS))
 
 
+@app.route('/registration', methods=['GET', 'POST'])
+@login_required
+def register():
+    form = ProfileCreateForm()
+
+    if form.validate_on_submit():
+        term_condition = request.form.getlist('term_condition')
+        print term_condition
+        if term_condition == []:
+            flash("Please agree to terms and conditions")
+            return render_template('setup/landing.html', form=form,
+                            day_names=day_names,)
+        else:
+            copy_form(form)
+            return redirect(url_for('suggestions'))
+    else:
+        return render_template('profile/setup.html',
+                                form=form,
+                                classmate=g.user,
+                                day_names=day_names,
+                                )
+
+
 @app.route('/setup/profile', methods=['GET', 'POST'])
 @login_required
 def profile_create():
@@ -48,6 +71,32 @@ def profile_create():
                                 day_names=day_names,
                                 )
 
+
+@app.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    user = g.user
+    form = ProfileUpdateForm()
+
+    if request.method == 'GET':
+        form.full_name.data = user.full_name
+        form.facebook.data = user.facebook
+        form.twitter.data = user.twitter
+        form.email.data = user.email
+        form.linkedin.data = user.linkedin
+        form.bio.data = user.bio
+        form.majors.data = user.majors.all()
+        form.languages.data = user.languages.all()
+        form.courses.data = user.courses.all()
+        form.location.data = user.location
+
+        return render_template('profile/edit.html',
+                               form=form,
+                               classmate=user,
+                               day_names=day_names,
+                               )
+    else:
+        abort(404) # TODO: Save profile
 
 @app.route('/user/profile', methods=['GET', 'POST'])
 @login_required

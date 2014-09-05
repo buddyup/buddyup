@@ -1,0 +1,94 @@
+{% extends "green/global_layout.html" %}
+{% block title %} {{ classmate.full_name }} {% endblock %}
+{% block pagestyle %}
+<link href="/static/_assets/css/registration.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+
+<article id="top" class="simple container">
+    <div class="wrapper row">
+        <div class="col-md-6 col-md-offset-3">
+            <h1 >Tell us about yourself </h1>
+            <p>
+                Welcome to BuddyUp.org! You’re about ready to join a community of thousands of learners just like you. Before you can contribute or receive messages from members, you must first create a profile. Your profile is how people will see you online, so be thoughtful and take your time. 
+            </p>
+        </div>
+    </div>
+</article>
+
+<article id="main-content" class="container">
+    <form role="form">
+
+        <section id="" class="row">
+            <div class="col-md-6 col-md-offset-3">
+
+                <div class="form-group">
+                    <label for="" class="control-label">About you</label>
+                    <textarea class="form-control" rows="3"></textarea>
+                    <span class="message pull-right">49 words left</span>
+                </div>
+
+                <div class="multipicker form-group">
+                    <label for="" class="control-label">What's your major?</label>
+                    <div class="multipicker-row">
+                        <select class="form-control">
+                            <option>Biochemistry 101</option>
+                            <option>Chemistry 101</option>
+                            <option>Politics 302</option>
+                            <option>Statistics 101</option>
+                            <option>Zoology 201</option>
+                        </select>
+                    </div>
+                    <div class="multipicker-row">
+                        <select class="form-control">
+                            <option></option>
+                            <option>Biochemistry 101</option>
+                            <option>Chemistry 101</option>
+                            <option>Politics 302</option>
+                            <option>Statistics 101</option>
+                            <option>Zoology 201</option>
+                        </select>
+                        <a href="#" class="remove"><span class="icon icon-remove">&nbsp;</span></a>
+                    </div>
+                    <a href="#" class="button add"><span class="icon icon-add">&nbsp;</span>Add another</a>
+                </div>
+
+                <div class="multipicker form-group">
+                    <label for="" class="control-label">What languages do you speak?</label>
+                    <div class="multipicker-row">
+                        <select class="form-control">
+                            <option></option>
+                            <option>French</option>
+                            <option>Spanish</option>
+                        </select>
+                    </div>
+                    <a href="#" class="button add"><span class="icon icon-add">&nbsp;</span>Add another</a>
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="control-label">What are you interested in?</label>
+                    <input type="text" class="form-control" placeholder="">
+                </div>
+
+                <div class="form-group">
+                    <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="">
+                        I have read and agree to the Terms &amp; Conditions
+                    </label>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="submit" class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <a href="" class="button primary action">Continue</a>
+            </div>
+        </section>
+
+    </form>
+
+</article>
+{% endblock %}
