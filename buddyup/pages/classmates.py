@@ -120,17 +120,21 @@ def paginated_classmates(page=1):
     return classmates_query().paginate(page, per_page=PAGE_SIZE).items
 
 
-def mark_buddies(classmates):
+def annotate_classmates(classmates):
     classmates = list(classmates)
+    invited_classmate_ids = {invite.receiver_id for invite in g.user.buddy_invitations_sent}
     buddy_ids = {buddy.id for buddy in g.user.buddies}
     for classmate in classmates:
+        classmate.__dict__["invited"] = (classmate.id in invited_classmate_ids)
         classmate.__dict__["is_buddy"] = (classmate.id in buddy_ids)
     return classmates
 
 
-def mark_buddies_in_group(classmates_by_group):
+def annotate_classmates_in_group(classmates_by_group):
+    invited_classmate_ids = {invite.receiver_id for invite in g.user.buddy_invitations_sent}
     buddy_ids = {buddy.id for buddy in g.user.buddies}
     for classmate, group in classmates_by_group:
+        classmate.__dict__["invited"] = (classmate.id in invited_classmate_ids)
         classmate.__dict__["is_buddy"] = (classmate.id in buddy_ids)
     return classmates_by_group
 
@@ -144,7 +148,7 @@ def list_classmates(page=1):
     link_next = url_for('list_classmates', page=page+1)
     link_prev = url_for('list_classmates', page=page-1) if page > 1 else None
 
-    return render_template('buddy/index.html', user=g.user, classmates=mark_buddies(paginated_classmates(page)), everyone="selected", next=link_next, prev=link_prev)
+    return render_template('buddy/index.html', user=g.user, classmates=annotate_classmates(paginated_classmates(page)), everyone="selected", next=link_next, prev=link_prev)
 
 
 @app.route('/classmates/buddies')
@@ -162,7 +166,7 @@ def list_buddies(page=1):
 
 
 def list_by_group(grouped_classmates, **kwargs):
-    grouped_classmates = mark_buddies_in_group(grouped_classmates)
+    grouped_classmates = annotate_classmates_in_group(grouped_classmates)
 
     classmates = defaultdict(list)
 
