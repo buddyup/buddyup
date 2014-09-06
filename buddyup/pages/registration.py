@@ -30,6 +30,11 @@ def unverified():
     return render_template('registration/unverified.html')
 
 
+@app.route('/terms')
+def terms_and_conditions():
+    return render_template('registration/terms_and_conditions.html')
+
+
 
 # @app.route('/registration', methods=['GET', 'POST'])
 # @login_required
