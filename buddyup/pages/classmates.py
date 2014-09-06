@@ -24,8 +24,9 @@ def buddy_view(user_name):
     # Not our buddy if we're viewing ourselves or they aren't in our buddies list.
     myself = (user_name == g.user.user_name)
     is_buddy = (not myself) and (classmate in g.user.buddies)
+    is_invited = (not myself) and BuddyInvitation.query.filter(BuddyInvitation.sender == g.user, BuddyInvitation.receiver == classmate).count() > 0
 
-    return render_template('buddy/view.html', classmate=classmate, is_buddy=is_buddy, myself=myself)
+    return render_template('buddy/view.html', classmate=classmate, is_buddy=is_buddy, is_invited=is_invited, myself=myself)
 
 
 @app.route("/classmates/search")

@@ -23,7 +23,13 @@
 					{% if is_buddy %}
 						<a href="javascript:$.post('{{url_for('unfriend', current_name=user_record.user_name, user_name=classmate.user_name)}}', function(){ location.reload() });" class="action button primary"><span class="icon icon-remove">&nbsp;</span>Remove Buddy</a>
 					{% else %}
-						<a href="javascript:$.post('{{url_for('invite_send', user_name=classmate.user_name)}}', function(){ location.reload() });" class="action button primary"><span class="icon icon-person-add">&nbsp;</span>Add Buddy</a>
+
+						{% if is_invited %}
+						Invitation Sent
+						{% else %}
+						<a href="javascript:$.post('{{url_for('invite_send', user_name=classmate.user_name)}}', function(){ location.reload() });" class="action button primary"><span class="icon icon-person-add">&nbsp;</span>Invite</a>
+						{% endif %}
+
 					{% endif %}
 				{% endif %}
             </div>
