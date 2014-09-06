@@ -1,0 +1,36 @@
+{% extends "green/global_layout.html" %}
+{% block title %}  {% endblock %}
+{% block nav %}
+<nav class="navbar navbar-default container registration" role="navigation">
+    <div class="wrapper">
+        <img class="logo" src="/static/_assets/images/nav/logo-full@2x.png" height="60"/>
+    </div><!-- /wrapper -->
+</nav>
+{% endblock %}
+
+{% block content %}
+
+
+<article id="top" class="simple container">
+    <div class="wrapper row">
+        <div class="col-md-6 col-md-offset-3">
+            <h1>Welcome!</h1>
+			<p>Welcome to BuddyUp.org! You’re about ready to join a community of thousands of learners just like you.</p>
+			<p>
+				<i>Already have a Buddy Up account? <a href="#">Login here</a></i>
+			</p>
+        </div>
+    </div>
+</article>
+
+<article id="main-content" class="container">
+
+    <section id="" class="row">
+        <div class="col-md-6 col-md-offset-3">
+			<a href="/register" class="button small primary">Register</a>
+		</div>
+	</section>
+
+</article>
+
+{% endblock %}
