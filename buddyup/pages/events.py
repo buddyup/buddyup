@@ -9,7 +9,6 @@ from buddyup.app import app
 from buddyup.database import Event, Course, EventInvitation, db, EventComment
 from buddyup.templating import render_template
 from buddyup.util import (args_get, login_required, form_get, check_empty,checked_regexp, calendar_event, easy_datetime, time_pulldown, epoch_time)
-from buddyup.pages.eventinvitations import event_invitation_send_list
 
 import os
 
