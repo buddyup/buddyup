@@ -20,7 +20,7 @@
             <h1 class="col-sm-12">{{ classmate.full_name }}</h1>
             <div class="profile-image" style="background-image:url('{{ photo_large(classmate) }}')">&nbsp;</div>
             <div class="col-sm-12">
-				<a href="#" class="action button primary">Update Photo</a>
+				<a href="{{url_for('profile_photo')}}" class="action button primary">Update Photo</a>
             </div>
         </div>
     </div>
