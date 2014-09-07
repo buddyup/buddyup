@@ -1,5 +1,14 @@
 {% extends "green/global_layout.html" %}
 {% block title %} {{ classmate.full_name }} {% endblock %}
+{% macro render_errors(field) %}
+	{% if field.errors %}
+		<ul class="errors">
+		{% for error in field.errors %}
+			<li>{{ error }}</li>
+		{% endfor %}
+		</ul>
+	{% endif %}
+{% endmacro %}
 {% block pagestyle %}
 <link href="/static/_assets/css/profile.css" rel="stylesheet">
 {% endblock %}
@@ -22,137 +31,85 @@
 
 <article id="main-content" class="container">
 
-			{% if classmate.location %}
-				{{ classmate.location.name }}
-			{% endif %}
-
-
 {% for message in get_flashed_messages() %} 
 <div class="alert alert-success">
 	<button type="button" class="close" data-dismiss="alert">&times;</button >{{ message }}
-</div >
+</div>
 {% endfor %}
 
-
-	{% if classmate.bio %}
-    <section id="about" class="row">
-        <div class="col-md-6 col-md-offset-3">
-			<textarea rows=5>{{classmate.bio}}</textarea>	
-        </div>
-    </section>
-	{%endif%}
-
-    <section id="interests" class="row">
-		{% if classmate.courses.count() > 0 %}
-        <div class="col-md-6 col-md-offset-3">
-            <h3>Courses</h3>
-            <ul>
-				{% for course in classmate.courses %}
-                <li><a href="{{url_for('course_view', id=course.id)}}">{{course}}</a></li>
-				{% endfor %}
-
-            </ul>
-        </div>
-		{%endif%}
-
-		{% if classmate.majors.count() > 0 %}
-        <div class="col-md-6 col-md-offset-3">
-            <h3>Major</h3>
-            <ul>
-				{% for major in classmate.majors %}
-                <li><a href="">{{major.name}}</a></li>
-				{% endfor %}
-            </ul>
-        </div>
-		{%endif%}
-
-		{% if classmate.languages.count() > 0 %}
-        <div class="col-md-6 col-md-offset-3">
-            <h3>Languages</h3>
-            <ul>
-				{% for language in classmate.languages %}
-                <li><a href="">{{language.name}}</a></li>
-				{% endfor %}
-            </ul>
-        </div>
-		{%endif%}
-
-        <div class="col-sm-12">
-            <a href="mailto:{{ classmate|email }}" class="action button primary">Send {{ classmate.full_name }} an email</a>
-        </div>
-    </section>
-
-
-
-
-    <form role="form">
+	<form id="form" role="form" action="{{ url_for('profile') }}" method="POST"
+		enctype="multipart/form-data">
+		{{ form.csrf_token }}
 
         <section id="" class="row">
             <div class="col-md-6 col-md-offset-3">
 
                 <div class="form-group">
-                    <label for="" class="control-label">About you</label>
-                    <textarea class="form-control" rows="3"></textarea>
-                    <span class="message pull-right">49 words left</span>
+				<label for="" class="control-label">Name</label>
+					{{render_errors(form.full_name)}}
+					{{form.full_name(class_="form-control")}}
                 </div>
 
+
+                <div class="form-group">
+                    <label for="" class="control-label">About you</label>
+					{{render_errors(form.bio)}}
+                    {{form.bio(class_="form-control", rows=5)}}
+                    <span class="message pull-right">49 words left</span>
+                </div>
                 <div class="multipicker form-group">
                     <label for="" class="control-label">What's your major?</label>
+					{{render_errors(form.majors)}}
                     <div class="multipicker-row">
-                        <select class="form-control">
-                            <option>Biochemistry 101</option>
-                            <option>Chemistry 101</option>
-                            <option>Politics 302</option>
-                            <option>Statistics 101</option>
-                            <option>Zoology 201</option>
-                        </select>
+						{{form.majors(class_="form-control")}}
                     </div>
-                    <div class="multipicker-row">
-                        <select class="form-control">
-                            <option></option>
-                            <option>Biochemistry 101</option>
-                            <option>Chemistry 101</option>
-                            <option>Politics 302</option>
-                            <option>Statistics 101</option>
-                            <option>Zoology 201</option>
-                        </select>
-                        <a href="#" class="remove"><span class="icon icon-remove">&nbsp;</span></a>
-                    </div>
-                    <a href="#" class="button add"><span class="icon icon-add">&nbsp;</span>Add another</a>
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="control-label">Location</label>
+					{{render_errors(form.location)}}
+                    {{form.location(class_="form-control")}}
                 </div>
 
                 <div class="multipicker form-group">
                     <label for="" class="control-label">What languages do you speak?</label>
+					{{render_errors(form.languages)}}
                     <div class="multipicker-row">
-                        <select class="form-control">
-                            <option></option>
-                            <option>French</option>
-                            <option>Spanish</option>
-                        </select>
+						{{form.languages(class_="form-control")}}
                     </div>
-                    <a href="#" class="button add"><span class="icon icon-add">&nbsp;</span>Add another</a>
                 </div>
 
                 <div class="form-group">
                     <label for="" class="control-label">What are you interested in?</label>
-                    <input type="text" class="form-control" placeholder="">
+					TODO + ERRORS
                 </div>
 
                 <div class="form-group">
-                    <div class="checkbox">
-                    <label>
-                        <input type="checkbox" value="">
-                        I have read and agree to the Terms &amp; Conditions
-                    </label>
-                    </div>
+                    <label for="" class="control-label">Contact</label>
+
+					<label for="" class="control-label">Facebook</label>
+					{{render_errors(form.facebook)}}
+					{{form.facebook(class_="form-control")}}
+					<label for="" class="control-label">Twitter</label>
+					{{render_errors(form.twitter)}}
+					{{form.twitter(class_="form-control")}}
+					<label for="" class="control-label">LinkedIn</label>
+					{{render_errors(form.linkedin)}}
+					{{form.linkedin(class_="form-control")}}
+
+					<label for="" class="control-label">Email</label>
+					{{render_errors(form.email)}}
+					{{form.email(class_="form-control")}}
                 </div>
+
+
 
             </div>
         </section>
 
         <section id="submit" class="row">
             <div class="col-md-6 col-md-offset-3">
-                <a href="" class="button primary action">Continue</a>
+                <a href="javascript:form.submit()" class="button primary action">Save Settings</a>
             </div>
         </section>
 

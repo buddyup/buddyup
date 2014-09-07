@@ -53,27 +53,31 @@ def profile_create():
 @login_required
 def profile():
     user = g.user
-    form = ProfileUpdateForm()
 
-    if request.method == 'GET':
-        form.full_name.data = user.full_name
-        form.facebook.data = user.facebook
-        form.twitter.data = user.twitter
-        form.email.data = user.email
-        form.linkedin.data = user.linkedin
-        form.bio.data = user.bio
-        form.majors.data = user.majors.all()
-        form.languages.data = user.languages.all()
-        form.courses.data = user.courses.all()
-        form.location.data = user.location
-
-        return render_template('profile/edit.html',
-                               form=form,
-                               classmate=user,
-                               day_names=day_names,
-                               )
+    if user.has_photos == True:
+        form = ProfileUpdateForm()
     else:
-        abort(404) # TODO: Save profile
+        form = ProfileCreateForm()
+
+    if form.validate_on_submit():
+        copy_form(form)
+        return redirect(url_for('buddy_view', user_name=user.user_name))
+    else:
+
+        if request.method == 'GET':
+            form.full_name.data = user.full_name
+            form.facebook.data = user.facebook
+            form.twitter.data = user.twitter
+            form.email.data = user.email
+            form.linkedin.data = user.linkedin
+            form.bio.data = user.bio
+            form.majors.data = user.majors.all()
+            form.languages.data = user.languages.all()
+            form.courses.data = user.courses.all()
+            form.location.data = user.location
+
+    return render_template('profile/edit.html', form=form, classmate=user)
+
 
 @app.route('/user/profile', methods=['GET', 'POST'])
 @login_required
