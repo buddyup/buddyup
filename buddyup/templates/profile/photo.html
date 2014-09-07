@@ -33,18 +33,20 @@
 
     <section id="" class="row">
         <div class="col-md-6 col-md-offset-3">
-            <div class="photo-chooser">
                 <div class="photo-preview"><img src="{{ photo_large(user_record) }}" class="img-rounded" height="200" width="200"></div>
+            <div class="photo-chooser">
                 <!-- 
 					<a href="#" class="button small">Choose Photo</a>
-					<a href="#" class="button small primary">Save</a> 
 				-->
-						
-				<form action="{{profile_photo}}" method="POST" enctype="multipart/form-data">
+				<form id="photo" action="{{profile_photo}}" method="POST" enctype="multipart/form-data">
 					{{ form.csrf_token }}
+					<center>
 					{{ render_errors(form.photo) }}
 					{{ form.photo() }}
-					<input class="btn bnt-primary" type="submit" value="Save">
+					</center>
+
+					<a href="javascript:$('#photo').submit()" class="button small primary">Save</a>
+
 				</form>
 						
             </div>

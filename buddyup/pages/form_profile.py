@@ -70,7 +70,7 @@ class ProfileUpdateForm(ProfileForm):
 
 
 class PhotoCreateForm(Form):
-    photo = FileField(u"Profile Photo", validators=[
+    photo = FileField(u"Profile Photo", validators=[required(),
                       FileAllowed(PHOTO_EXTS, u"Images only!")])
 
 
