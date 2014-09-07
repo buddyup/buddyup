@@ -27,28 +27,6 @@ PHOTO_EXTS = ['jpg', 'jpe', 'jpeg', 'png', 'gif', 'bmp', 'tif', 'tiff']
 PHOTO_EXTS.extend(map(str.upper, PHOTO_EXTS))
 
 
-@app.route('/setup/profile', methods=['GET', 'POST'])
-@login_required
-def profile_create():
-    form = ProfileCreateForm()
-
-    if form.validate_on_submit():
-        term_condition = request.form.getlist('term_condition')
-        print term_condition
-        if term_condition == []:
-            flash("Please agree to terms and conditions")
-            return render_template('setup/landing.html', form=form,
-                            day_names=day_names,)
-        else:
-            copy_form(form)
-            return redirect(url_for('suggestions'))
-    else:
-        return render_template('setup/landing.html',
-                                form=form,
-                                day_names=day_names,
-                                )
-
-
 @app.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
