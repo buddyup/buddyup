@@ -26,16 +26,9 @@
     </div>
 </article>
 
-
-
-
 <article id="main-content" class="container">
 
-{% for message in get_flashed_messages() %} 
-<div class="alert alert-success">
-	<button type="button" class="close" data-dismiss="alert">&times;</button >{{ message }}
-</div>
-{% endfor %}
+{% include "flash.html" %}
 
 	<form id="form" role="form" action="{{ url_for('profile') }}" method="POST"
 		enctype="multipart/form-data">

@@ -62,6 +62,7 @@ class InvitationTests(unittest.TestCase):
         registration_request = {
             "full_name": "Benjamin Franklin",
             'term_condition': 'checked',
+            "email": "bfranklin@testtestetesttest.io",
             "csrf_token": BeautifulSoup(registration_page.data).find(id="csrf_token")['value']
         }
 
