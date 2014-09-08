@@ -27,7 +27,7 @@ def profile_create():
 
     if form.validate_on_submit():
         term_condition = request.form.getlist('term_condition')
-        print term_condition
+
         if term_condition == []:
             flash("Please agree to terms and conditions")
             return render_template('registration/register.html', form=form)

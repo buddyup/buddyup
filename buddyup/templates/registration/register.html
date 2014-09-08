@@ -21,6 +21,12 @@
 
 <article id="main-content" class="container">
 
+{% include 'flash.html' %}
+
+<form>
+	{{form.csrf_token}}
+</form>
+
     <section id="" class="row">
         <div class="col-md-6 col-md-offset-3">
 			<a href="/done" class="button small primary">Finish</a>
