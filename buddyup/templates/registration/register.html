@@ -1,5 +1,18 @@
 {% extends "green/global_layout.html" %}
-{% block title %}  {% endblock %}
+{% block title %}Register{% endblock %}
+{% macro render_errors(field) %}
+	{% if field.errors %}
+		<ul class="errors">
+		{% for error in field.errors %}
+			<li>{{ error }}</li>
+		{% endfor %}
+		</ul>
+	{% endif %}
+{% endmacro %}
+{% block pagestyle %}
+<link href="/static/_assets/css/profile.css" rel="stylesheet">
+{% endblock %}
+
 {% block nav %}
 <nav class="navbar navbar-default container registration" role="navigation">
     <div class="wrapper">
@@ -14,24 +27,108 @@
 <article id="top" class="simple container">
     <div class="wrapper row">
         <div class="col-md-6 col-md-offset-3">
-            <h1>Register</h1>
+            <h1>Tell us a little about yourself</h1>
+			<p>
+				Welcome to BuddyUp.org! You’re about ready to join a community of thousands of 
+				learners just like you. Before you can contribute or receive messages from members, 
+				you must first create a profile. Your profile is how people will see you online, 
+				so be thoughtful and take your time.
+			</p>
         </div>
     </div>
 </article>
 
 <article id="main-content" class="container">
 
-{% include 'flash.html' %}
+{% include "flash.html" %}
 
-<form>
-	{{form.csrf_token}}
-</form>
+		<form id="registration" action="{{ url_for('profile_create') }}" method="POST"
+			enctype="multipart/form-data">
+		{{ form.csrf_token }}
 
-    <section id="" class="row">
-        <div class="col-md-6 col-md-offset-3">
-			<a href="/done" class="button small primary">Finish</a>
-		</div>
-	</section>
+        <section id="" class="row">
+            <div class="col-md-6 col-md-offset-3">
+
+                <div class="form-group">
+				<label for="" class="control-label">{{ form.photo.label.text }}</label>
+				{{ render_errors(form.photo) }}
+				{{ form.photo }}
+				</div>
+				
+                <div class="form-group">
+				<label for="" class="control-label">Name</label>
+					{{render_errors(form.full_name)}}
+					{{form.full_name(class_="form-control")}}
+                </div>
+
+
+                <div class="form-group">
+                    <label for="" class="control-label">About you</label>
+					{{render_errors(form.bio)}}
+                    {{form.bio(class_="form-control", rows=5)}}
+                    <span class="message pull-right">49 words left</span>
+                </div>
+                <div class="multipicker form-group">
+                    <label for="" class="control-label">What's your major?</label>
+					{{render_errors(form.majors)}}
+                    <div class="multipicker-row">
+						{{form.majors(class_="form-control")}}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="control-label">Location</label>
+					{{render_errors(form.location)}}
+                    {{form.location(class_="form-control")}}
+                </div>
+
+                <div class="multipicker form-group">
+                    <label for="" class="control-label">What languages do you speak?</label>
+					{{render_errors(form.languages)}}
+                    <div class="multipicker-row">
+						{{form.languages(class_="form-control")}}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="control-label">What are you interested in?</label>
+					TODO + ERRORS
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="control-label">Contact</label>
+
+					<label for="" class="control-label">Facebook</label>
+					{{render_errors(form.facebook)}}
+					{{form.facebook(class_="form-control")}}
+					<label for="" class="control-label">Twitter</label>
+					{{render_errors(form.twitter)}}
+					{{form.twitter(class_="form-control")}}
+					<label for="" class="control-label">LinkedIn</label>
+					{{render_errors(form.linkedin)}}
+					{{form.linkedin(class_="form-control")}}
+
+					<label for="" class="control-label">Email</label>
+					{{render_errors(form.email)}}
+					{{form.email(class_="form-control")}}
+                </div>
+
+                <div class="form-group">
+<input type="checkbox" name="term_condition"/> I have read and agree to the Terms &amp; Conditions
+                </div>
+
+
+            </div>
+        </section>
+
+        <section id="submit" class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <a href="javascript:registration.submit()" class="button primary action">Save &amp; Continue</a>
+            </div>
+        </section>
+
+    </form>
+
 
 </article>
 

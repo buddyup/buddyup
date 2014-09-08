@@ -1,4 +1,4 @@
-from flask import url_for, redirect, g, request, session, make_response
+from flask import url_for, redirect, g, request, session, make_response, flash
 
 from buddyup.app import app
 from buddyup.database import User
