@@ -180,11 +180,11 @@ def callback_handling():
 
     token_url = "https://{domain}/oauth/token".format(domain=env["AUTH0_DOMAIN"])
     token_payload = {
-    'client_id' : env['AUTH0_CLIENT_ID'], \
-    'client_secret' : env['AUTH0_CLIENT_SECRET'], \
-    'redirect_uri' : env['AUTH0_CALLBACK_URL'], \
-    'code' : code, \
-    'grant_type': 'authorization_code' \
+        'client_id' : env['AUTH0_CLIENT_ID'], \
+        'client_secret' : env['AUTH0_CLIENT_SECRET'], \
+        'redirect_uri' : env['AUTH0_CALLBACK_URL'], \
+        'code' : code, \
+        'grant_type': 'authorization_code' \
     }
 
     token_info = requests.post(token_url, data=json.dumps(token_payload), headers = json_header).json()
@@ -201,13 +201,11 @@ def callback_handling():
     destination = 'home'
     if not existing_user:
         existing_user = create_new_user(user_info['user_id'])
+        existing_user.full_name = user_info["name"]
+        existing_user.email = user_info["email"]
+        existing_user.user_name = user_info["user_id"]
+        db.session.commit()
         destination = 'welcome'
-
-    existing_user.user_name = user_info["user_id"]
-    existing_user.full_name = user_info["name"]
-    existing_user.email = user_info["email"]
-    db.session.commit()
-
 
     establish_session(existing_user)
     # We're saving all user information into the session
