@@ -3,7 +3,7 @@ import json
 from datetime import datetime
 from buddyup.pages import events
 from buddyup.app import app
-from buddyup.database import db, User, Course, Event
+from buddyup.database import db, User, Course, Event, EventInvitation
 from buddyup.util import time_from_timestamp
 from bs4 import BeautifulSoup
 
@@ -133,6 +133,58 @@ class EventTests(unittest.TestCase):
         self.assertEqual("03:30PM", new_event.start.strftime("%I:%M%p"))
 
         self.assertEqual("05:00PM", new_event.end.strftime("%I:%M%p"))
+
+
+
+    def test_invite_event(self):
+        client = self.test_client # Only initiate the client once during this test since we maintain state.
+        user_id = User.query.filter(User.user_name=="test_user").first().id
+        course_id = Course.query.first().id
+        create_event_url = '/courses/%s/event' % course_id
+
+        new_event_page = client.get(create_event_url, follow_redirects=True)
+
+        new_event_request = {
+            "title": "Best Event Ever",
+            "location": "Van Down By The River",
+            "date": "12/25/14",
+            "start": "55800", # 3:30pm
+            "end": "61200", # 5:00pm,
+            "csrf_token": BeautifulSoup(new_event_page.data).find(id="csrf_token")['value']
+        }
+
+        client.post(create_event_url, data=new_event_request, follow_redirects=True)
+
+        # Event exists now. Let's invite Skippy.
+
+        # Skippy shouldn't have an event yet.
+        skippy_id = User.query.filter_by(user_name="skippy").first().id
+        skippy_invite_count = EventInvitation.query.filter_by(receiver_id=skippy_id).count()
+        self.assertEqual(0, skippy_invite_count)
+
+        new_event = Event.query.first()
+
+        event_invite_url = '/courses/%s/events/%s/invitation' % (course_id, new_event.id)
+
+        # Grab the csrf token so we can make our request.
+        csrf_token = client.get(event_invite_url, follow_redirects=True).data
+
+        invitation = {
+            'csrf_token': csrf_token,
+            'receiver_id': skippy_id
+        }
+
+        response = client.post(event_invite_url, data=invitation, follow_redirects=True)
+
+        self.assertEqual('200 OK', response.status)
+
+        test_user_id = User.query.filter_by(user_name="test_user").first().id
+
+        # Skippy should have his invite by now.
+        skippy_invite_count = EventInvitation.query.filter_by(receiver_id=skippy_id, sender_id=test_user_id).count()
+        self.assertEqual(1, skippy_invite_count, "An event invitation should exist.")
+
+
 
 
 if __name__ == '__main__':

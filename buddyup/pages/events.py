@@ -16,8 +16,9 @@ import os
 #--------------------- NEW STUFF BELOW ---------------------------
 
 from flask.ext.wtf import Form
-from wtforms import StringField, HiddenField, TextAreaField, SelectField, DateTimeField
+from wtforms import StringField, HiddenField, TextAreaField, SelectField, DateTimeField, IntegerField
 from wtforms.validators import DataRequired, NumberRange
+from wtforms.validators import required
 
 
 SECONDS_IN_A_DAY = 86400
@@ -88,6 +89,28 @@ def course_event(course_id, event_id):
     event = Event.query.get_or_404(event_id)
     comments = EventComment.query.filter(EventComment.event_id == Event.id, Event.id == event.id)
     return render_template('courses/event-detail.html', course=course, event=event, comments=comments)
+
+
+class EventInvitationForm(Form):
+    receiver_id = IntegerField(validators=[required()])
+
+
+@app.route('/courses/<int:course_id>/events/<int:event_id>/invitation', methods=['GET', 'POST'])
+@login_required
+def course_event_invitation(course_id, event_id):
+    form = EventInvitationForm()
+
+    if form.validate():
+        invitation = EventInvitation()
+        invitation.event_id = event_id
+        invitation.sender_id = g.user.id
+        invitation.receiver_id = form.receiver_id.data
+        db.session.add(invitation)
+        db.session.commit()
+        return "{}"
+    else:
+        return form.csrf_token.current_token
+
 
 
 @app.route('/events')
