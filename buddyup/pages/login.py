@@ -204,7 +204,8 @@ def callback_handling():
     if not existing_user:
         existing_user = create_new_user(user_info['user_id'])
         existing_user.full_name = user_info["name"]
-        existing_user.email = user_info["email"]
+        if "email" in user_info:
+            existing_user.email = user_info["email"]
         existing_user.user_name = user_info["user_id"]
         db.session.commit()
         destination = 'welcome'
