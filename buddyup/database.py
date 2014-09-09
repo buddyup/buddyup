@@ -1,3 +1,5 @@
+import datetime
+
 from buddyup.app import app
 from flask.ext.sqlalchemy import SQLAlchemy
 
@@ -73,13 +75,19 @@ class Notification(db.Model):
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     # Note: Portland State University user names are always <= 8 ASCII characters
-    user_name = db.Column(db.String(32), index=True, unique=True)
+    user_name = db.Column(db.String(255), index=True, unique=True)
     full_name = db.Column(db.UnicodeText, default=u"")
     bio = db.Column(db.UnicodeText, default=u"")
     facebook = db.Column(db.UnicodeText, default=u"")
+    facebook_token = db.Column(db.UnicodeText)
     twitter = db.Column(db.UnicodeText, default=u"")
+    twitter_token = db.Column(db.UnicodeText)
+    twitter_secret = db.Column(db.UnicodeText)
     linkedin = db.Column(db.UnicodeText, default=u"")
+    linkedin_token = db.Column(db.UnicodeText)
+    google_token = db.Column(db.UnicodeText)
     location_id = db.Column(db.Integer, db.ForeignKey('location.id'))
     email = db.Column(db.UnicodeText)
     has_photos = db.Column(db.Boolean, default=False)
