@@ -100,7 +100,7 @@ class EventInvitationForm(Form):
 def course_event_invitation(course_id, event_id):
     form = EventInvitationForm()
 
-    if form.validate():
+    if form.validate_on_submit():
         invitation = EventInvitation()
         invitation.event_id = event_id
         invitation.sender_id = g.user.id
