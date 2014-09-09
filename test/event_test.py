@@ -120,8 +120,6 @@ class EventTests(unittest.TestCase):
 
         self.assertEqual('200 OK', response.status)
 
-        self.assertFalse("Missing important information" in response.data, "Error found: %s" % [line for line in response.data.split("\n") if "Missing important information" in line])
-
         self.assertEqual(1, Event.query.count())
 
         new_event = Event.query.first()
@@ -134,6 +132,32 @@ class EventTests(unittest.TestCase):
 
         self.assertEqual("05:00PM", new_event.end.strftime("%I:%M%p"))
 
+
+
+    def test_event_times(self):
+        """
+        Make sure the Start and End times are sane.
+        """
+        client = self.test_client # Only initiate the client once during this test since we maintain state.
+        user_id = User.query.filter(User.user_name=="test_user").first().id
+        course_id = Course.query.first().id
+        url = '/courses/%s/event' % course_id
+
+        new_event_page = client.get(url, follow_redirects=True)
+        new_event_request = {
+            "title": "Best Event Ever",
+            "location": "Van Down By The River",
+            "date": "12/25/14",
+            "start": "61200", # 5:00pm,
+            "end": "55800", # 3:30pm
+            "csrf_token": BeautifulSoup(new_event_page.data).find(id="csrf_token")['value']
+        }
+
+        response = client.post(url, data=new_event_request, follow_redirects=True)
+
+        self.assertEqual('200 OK', response.status)
+
+        self.assertEqual(0, Event.query.count(), "That event should not have been created because the times are negative.")
 
 
     def test_invite_event(self):

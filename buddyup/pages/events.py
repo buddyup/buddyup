@@ -33,6 +33,15 @@ class EventForm(Form):
     date = DateTimeField(u'Date', format='%m/%d/%y')
     start = SelectField(u'Start', choices = time_pulldown(), coerce=int, validators=[NumberRange(min=START_OF_DAY, max=END_OF_DAY)])
     end = SelectField(u'End', choices = time_pulldown(),  coerce=int, validators=[NumberRange(min=START_OF_DAY, max=END_OF_DAY)])
+    def validate(self):
+        rv = Form.validate(self)
+        if not rv:
+            return False
+        else:
+            if self.start.data > self.end.data:
+                self.start.errors.append('Start time must be before end time.')
+                return False
+        return True
 
 
 @app.route('/courses/<int:course_id>/event', methods=['GET', 'POST'])
@@ -54,12 +63,11 @@ def new_event(course_id):
         db.session.add(event)
         db.session.commit()
 
-
         flash('"%s" was added to the %s calendar for %s.' % (form.title.data, Course.query.get(course_id).name, datetime.strftime(event.start, "%m/%d at %H:%M %p")))
         return redirect(url_for('course_events', id=course_id))
     else:
         field_names = form.errors.keys()
-        flash("Missing important information: %s. Try again." % ", ".join(["%s" % name.capitalize() for name in field_names]))
+        flash("There was a problem. Please look over the information you've given and make sure it is correct.")
         return render_template('courses/new-event.html', course=Course.query.get_or_404(course_id), times=time_pulldown(), form=form)
 
 
