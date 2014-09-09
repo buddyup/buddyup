@@ -27,76 +27,35 @@ PHOTO_EXTS = ['jpg', 'jpe', 'jpeg', 'png', 'gif', 'bmp', 'tif', 'tiff']
 PHOTO_EXTS.extend(map(str.upper, PHOTO_EXTS))
 
 
-@app.route('/registration', methods=['GET', 'POST'])
-@login_required
-def register():
-    form = ProfileCreateForm()
-
-    if form.validate_on_submit():
-        term_condition = request.form.getlist('term_condition')
-        print term_condition
-        if term_condition == []:
-            flash("Please agree to terms and conditions")
-            return render_template('setup/landing.html', form=form,
-                            day_names=day_names,)
-        else:
-            copy_form(form)
-            return redirect(url_for('suggestions'))
-    else:
-        return render_template('profile/setup.html',
-                                form=form,
-                                classmate=g.user,
-                                day_names=day_names,
-                                )
-
-
-@app.route('/setup/profile', methods=['GET', 'POST'])
-@login_required
-def profile_create():
-    form = ProfileCreateForm()
-
-    if form.validate_on_submit():
-        term_condition = request.form.getlist('term_condition')
-        print term_condition
-        if term_condition == []:
-            flash("Please agree to terms and conditions")
-            return render_template('setup/landing.html', form=form,
-                            day_names=day_names,)
-        else:
-            copy_form(form)
-            return redirect(url_for('suggestions'))
-    else:
-        return render_template('setup/landing.html',
-                                form=form,
-                                day_names=day_names,
-                                )
-
-
 @app.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
     user = g.user
-    form = ProfileUpdateForm()
 
-    if request.method == 'GET':
-        form.full_name.data = user.full_name
-        form.facebook.data = user.facebook
-        form.twitter.data = user.twitter
-        form.email.data = user.email
-        form.linkedin.data = user.linkedin
-        form.bio.data = user.bio
-        form.majors.data = user.majors.all()
-        form.languages.data = user.languages.all()
-        form.courses.data = user.courses.all()
-        form.location.data = user.location
-
-        return render_template('profile/edit.html',
-                               form=form,
-                               classmate=user,
-                               day_names=day_names,
-                               )
+    if user.has_photos == True:
+        form = ProfileUpdateForm()
     else:
-        abort(404) # TODO: Save profile
+        form = ProfileCreateForm()
+
+    if form.validate_on_submit():
+        copy_form(form)
+        return redirect(url_for('buddy_view', user_name=user.user_name))
+    else:
+
+        if request.method == 'GET':
+            form.full_name.data = user.full_name
+            form.facebook.data = user.facebook
+            form.twitter.data = user.twitter
+            form.email.data = user.email
+            form.linkedin.data = user.linkedin
+            form.bio.data = user.bio
+            form.majors.data = user.majors.all()
+            form.languages.data = user.languages.all()
+            form.courses.data = user.courses.all()
+            form.location.data = user.location
+
+    return render_template('profile/edit.html', form=form, classmate=user)
+
 
 @app.route('/user/profile', methods=['GET', 'POST'])
 @login_required
@@ -149,7 +108,7 @@ def copy_form(form):
     user.initialized = True
     db.session.commit()
 
-@app.route("/my/photo", methods=["GET", "POST"])
+@app.route("/profile/photo", methods=["GET", "POST"])
 @login_required
 def profile_photo():
     form = PhotoCreateForm()
@@ -165,14 +124,14 @@ def profile_photo():
         else:
             db.session.commit()
             flash("Successfully changed photo")
-        return redirect(url_for('home'))
+        return redirect(url_for('buddy_view', user_name=g.user.user_name))
     else:
-        return render_template("my/photo.html",
+        return render_template("profile/photo.html",
                                form=form,
-                               delete_form=delete_form)
+                               delete_form=delete_form, classmate=g.user)
 
 
-@app.route("/my/photo/delete", methods=["POST"])
+@app.route("/profile/photo/delete", methods=["POST"])
 @login_required
 def profile_photo_delete():
     form = PhotoDeleteForm()
@@ -184,8 +143,3 @@ def profile_photo_delete():
         return redirect(url_for('home'))
 
 
-#@app.route("/my/profile/delete")
-#@login_required
-#def profile_delete():
-    #delete_user(g.user)
-    #return redirect(url_for("logout"))

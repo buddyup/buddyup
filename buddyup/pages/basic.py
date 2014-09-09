@@ -101,12 +101,6 @@ def suggestions():
 def welcome():
     return render_template('setup/welcome.html')
 
-@app.route('/term_and_conditions')
-def term_conditions():
-    return render_template('setup/term_conditions.html')
-
-
-
 
 @app.route('/connect', methods=['POST'])
 def connect():

@@ -1,5 +1,5 @@
 {% extends "green/global_layout.html" %}
-{% block title %} {{ classmate.full_name }} {% endblock %}
+{% block title %}Register{% endblock %}
 {% macro render_errors(field) %}
 	{% if field.errors %}
 		<ul class="errors">
@@ -10,18 +10,30 @@
 	{% endif %}
 {% endmacro %}
 {% block pagestyle %}
-<link href="/static/_assets/css/profile.css" rel="stylesheet">
+<link href="/static/_assets/css/registration.css" rel="stylesheet">
 {% endblock %}
+
+{% block nav %}
+<nav class="navbar navbar-default container registration" role="navigation">
+    <div class="wrapper">
+        <img class="logo" src="/static/_assets/images/nav/logo-full@2x.png" height="60"/>
+    </div><!-- /wrapper -->
+</nav>
+{% endblock %}
+
 {% block content %}
 
-<article id="top" class="profile">
-    <div class="wrapper container">
-        <div class="row">
-            <h1 class="col-sm-12">{{ classmate.full_name }}</h1>
-            <div class="profile-image" style="background-image:url('{{ photo_large(classmate) }}')">&nbsp;</div>
-            <div class="col-sm-12">
-				<a href="{{url_for('profile_photo')}}" class="action button primary">Update Photo</a>
-            </div>
+
+<article id="top" class="simple container">
+    <div class="wrapper row">
+        <div class="col-md-6 col-md-offset-3">
+            <h1>Tell us a little about yourself</h1>
+			<p>
+				Welcome to BuddyUp.org! You’re about ready to join a community of thousands of 
+				learners just like you. Before you can contribute or receive messages from members, 
+				you must first create a profile. Your profile is how people will see you online, 
+				so be thoughtful and take your time.
+			</p>
         </div>
     </div>
 </article>
@@ -30,13 +42,19 @@
 
 {% include "flash.html" %}
 
-	<form id="form" role="form" action="{{ url_for('profile') }}" method="POST"
-		enctype="multipart/form-data">
+		<form id="registration" action="{{ url_for('profile_create') }}" method="POST"
+			enctype="multipart/form-data">
 		{{ form.csrf_token }}
 
         <section id="" class="row">
             <div class="col-md-6 col-md-offset-3">
 
+                <div class="form-group">
+				<label for="" class="control-label">{{ form.photo.label.text }}</label>
+				{{ render_errors(form.photo) }}
+				{{ form.photo }}
+				</div>
+				
                 <div class="form-group">
 				<label for="" class="control-label">Name</label>
 					{{render_errors(form.full_name)}}
@@ -95,6 +113,9 @@
 					{{form.email(class_="form-control")}}
                 </div>
 
+                <div class="form-group">
+<input type="checkbox" name="term_condition"/> I have read and agree to the Terms &amp; Conditions
+                </div>
 
 
             </div>
@@ -102,21 +123,11 @@
 
         <section id="submit" class="row">
             <div class="col-md-6 col-md-offset-3">
-                <a href="javascript:form.submit()" class="button primary action">Save Settings</a>
+                <a href="javascript:registration.submit()" class="button primary action">Save &amp; Continue</a>
             </div>
         </section>
 
     </form>
-
-
-
-
-
-
-
-
-
-
 
 
 </article>

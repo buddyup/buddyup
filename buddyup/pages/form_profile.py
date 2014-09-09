@@ -49,7 +49,7 @@ class ProfileForm(Form):
     facebook = TextField(u"Facebook (optional)")
     twitter = TextField(u"Twitter")
     linkedin = TextField(u"LinkedIn")
-    email = TextField(u"Email Address (optional)", validators=[Optional(), Email()])
+    email = TextField(u"Email Address (required)", validators=[required(), Email()])
     bio = TextAreaField(u'A Few Words About You')
 
 
@@ -70,7 +70,7 @@ class ProfileUpdateForm(ProfileForm):
 
 
 class PhotoCreateForm(Form):
-    photo = FileField(u"Profile Photo", validators=[
+    photo = FileField(u"Profile Photo", validators=[required(),
                       FileAllowed(PHOTO_EXTS, u"Images only!")])
 
 

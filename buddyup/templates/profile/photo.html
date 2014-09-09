@@ -1,0 +1,62 @@
+{% extends "green/global_layout.html" %}
+{% block title %} {{ classmate.full_name }} {% endblock %}
+{% macro render_errors(field) %}
+	{% if field.errors %}
+		<ul class="errors">
+		{% for error in field.errors %}
+			<li>{{ error }}</li>
+		{% endfor %}
+		</ul>
+	{% endif %}
+{% endmacro %}
+{% block pagestyle %}
+<link href="/static/_assets/css/profile.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+
+<article id="top" class="profile">
+    <div class="wrapper container">
+        <div class="row">
+            <h1 class="col-sm-12">Edit Photo</h1>
+        </div>
+    </div>
+</article>
+
+
+<article id="main-content" class="container">
+
+	{% for message in get_flashed_messages() %} 
+	<div class="alert alert-success">
+		<button type="button" class="close" data-dismiss="alert">&times;</button >{{ message }}
+	</div>
+	{% endfor %}
+
+    <section id="" class="row">
+        <div class="col-md-6 col-md-offset-3">
+                <div class="photo-preview"><img src="{{ photo_large(user_record) }}" class="img-rounded" height="200" width="200"></div>
+            <div class="photo-chooser">
+                <!-- 
+					<a href="#" class="button small">Choose Photo</a>
+				-->
+				<form id="photo" action="{{profile_photo}}" method="POST" enctype="multipart/form-data">
+					{{ form.csrf_token }}
+					<center>
+					{{ render_errors(form.photo) }}
+					{{ form.photo() }}
+					</center>
+
+					<a href="javascript:$('#photo').submit()" class="button small primary">Save</a>
+
+				</form>
+						
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+</article>
+
+{% endblock %}
