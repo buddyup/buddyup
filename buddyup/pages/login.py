@@ -67,7 +67,6 @@ def login():
     elif use_google() and 'gplus_id' in session:
         user_name = session['gplus_id']
     else:
-        app.logger.info("SESSION: %s" % session.keys())
         # TODO: This should be an explicit case (based on environment)
         # NOT a fall-through case:
         # Authentication is disabled, so just log the user in.
