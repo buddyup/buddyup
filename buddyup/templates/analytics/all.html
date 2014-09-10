@@ -11,8 +11,8 @@
   ga('send', 'pageview');
 
   // TODO:
-  {% if 'profile' in session %}
-  ga(‘set’, ‘&uid’, '{{session['profile']['id']}}'); // Set the user ID using signed-in user_id.
+  {% if g.user %}
+  ga(‘set’, ‘&uid’, '{{g.user.user_name}}'); // Set the user ID using signed-in user_id.
   {% endif %}
 
   // Intercom
@@ -20,13 +20,10 @@
 </script>
 <script>
   window.intercomSettings = {
-    // TODO: The current logged in user's full name
-    {% if 'profile' in session %}
-    name: "{{session['profile']['name']}}",
-    // TODO: The current logged in user's email address.
-    email: "{{session['profile']['email']}}",
-    // TODO: The current logged in user's sign-up date as a Unix timestamp.
-    // created_at: int({{session['profile']['created_at']}}),
+    {% if g.user %}
+    name: "{{g.user.full_name}}",
+    email: "{{g.user.email}}",
+    created_at: int({{ epoch_time(g.user.created_at) }}),
     {% endif %}
     app_id: "5714bb0i"
 };
