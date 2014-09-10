@@ -1,7 +1,11 @@
 from urllib2 import urlopen, URLError
 from urllib import urlencode, quote
 from xml.etree import cElementTree as etree
+import os
+import json
+import requests
 
+from flask import Flask, request, jsonify, render_template, send_from_directory
 from flask import url_for, request, redirect, flash, abort, session
 
 from buddyup.app import app
@@ -165,3 +169,60 @@ def disconnect():
     if result['status'] == '200':
         del session['credentials']
 
+
+def have_api_keys(env):
+    return set(["AUTH0_DOMAIN", "AUTH0_CLIENT_ID", "AUTH0_CLIENT_SECRET", "AUTH0_CALLBACK_URL"]).issubset(env.keys())
+
+
+# From https://docs.auth0.com/#!/web/python
+
+# Here we're using the /callback route.
+@app.route('/callback')
+def callback_handling():
+    env = os.environ
+    code = request.args.get('code')
+
+    if not have_api_keys(env):
+        return render_template('new_instance.html')
+
+    json_header = {'content-type': 'application/json'}
+
+    token_url = "https://{domain}/oauth/token".format(domain=env["AUTH0_DOMAIN"])
+    token_payload = {
+        'client_id' : env['AUTH0_CLIENT_ID'], \
+        'client_secret' : env['AUTH0_CLIENT_SECRET'], \
+        'redirect_uri' : env['AUTH0_CALLBACK_URL'], \
+        'code' : code, \
+        'grant_type': 'authorization_code' \
+    }
+
+    token_info = requests.post(token_url, data=json.dumps(token_payload), headers = json_header).json()
+
+    user_url = "https://{domain}/userinfo?access_token={access_token}".format(
+    domain=env["AUTH0_DOMAIN"],
+    access_token=token_info['access_token']
+    )
+
+    user_info = requests.get(user_url).json()
+
+    existing_user = User.query.filter(User.user_name == user_info['user_id']).first()
+
+    destination = 'home'
+    if not existing_user:
+        existing_user = create_new_user(user_info['user_id'])
+        existing_user.full_name = user_info["name"]
+        if "email" in user_info:
+            existing_user.email = user_info["email"]
+        existing_user.user_name = user_info["user_id"]
+        db.session.commit()
+        destination = 'welcome'
+
+    establish_session(existing_user)
+    # We're saving all user information into the session
+    session['profile'] = user_info
+
+    record_visit(existing_user)
+
+
+    # Redirect to the User logged in page that you want here
+    return redirect(url_for(destination))
