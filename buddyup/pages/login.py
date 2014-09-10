@@ -170,6 +170,10 @@ def disconnect():
         del session['credentials']
 
 
+def have_api_keys(env):
+    return set(["AUTH0_DOMAIN", "AUTH0_CLIENT_ID", "AUTH0_CLIENT_SECRET", "AUTH0_CALLBACK_URL"]).issubset(env.keys())
+
+
 # From https://docs.auth0.com/#!/web/python
 
 # Here we're using the /callback route.
@@ -177,6 +181,9 @@ def disconnect():
 def callback_handling():
     env = os.environ
     code = request.args.get('code')
+
+    if not have_api_keys(env):
+        return render_template('new_instance.html')
 
     json_header = {'content-type': 'application/json'}
 
