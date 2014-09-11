@@ -15,20 +15,24 @@
             <div class="col-md-12 col-md-offset-0">
                 <ul class="hidden-xs filter">
                     <li><a href="" class="{{all_events}}">All</a></li>
+					{#
                     <li><a href="" class="{{upcoming}}">Upcoming</a></li>
                     <li><a href="" class="{{past}}">Past</a></li>
                     <li><a href="" class="{{by_class}}">By Class</a></li>
                     <li><a href="" class="{{created_by_me}}">Created By Me</a></li>
+					#}
                     <li>&nbsp;</li>
                 </ul>
                 <div class="visible-xs-block dropdown">
                     <a data-toggle="dropdown" class="button dropdown" href="#">Everyone</a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 	                    <li><a href="" class="{{all_events}}">All</a></li>
+						{#
 	                    <li><a href="" class="{{upcoming}}">Upcoming</a></li>
 	                    <li><a href="" class="{{past}}">Past</a></li>
 	                    <li><a href="" class="{{by_class}}">By Class</a></li>
 	                    <li><a href="" class="{{created_by_me}}">Created By Me</a></li>
+						#}
 						<li>&nbsp;</li>
                     </ul>
                 </div>
@@ -40,30 +44,11 @@
 
 <article id="main-content" class="container">
 
-    <!-- <section id="" class="row">
-        <div class="col-md-12 col-md-offset-0">
-	        <h4>Upcoming</h4>
-	        <ul class="tablelist-group">
-	            <li class="tablelist-group-row">
-	                <ul class="tablelist">
-						{% for event in events %}
-	                    <li class="main">
-	                        <div class="title"><a href="./event-detail.html">Midterms Study Sesh</a></div>
-	                        <div class="subtitle"><span class="icon icon-course"> Stat 101</span>&bull;<span class="icon icon-location"> Pioneer Square</span></div>
-	                    </li>
-						{% endfor %}
-	                </ul>
-	            </li>
-	        </ul>
-        </div>
-    </section> -->
-
-
     <section id="notes" class="row">
         <div class="col-md-10 col-md-offset-1">
-            <div class="group-heading">
-                <h3><span class="icon icon-note">&nbsp;</span>All Events</h3>
-            </div>
+            <!-- <div class="group-heading">
+                <h3><span class="icon icon-note">&nbsp;</span>Upcoming Events</h3>
+            </div> -->
             <ul class="tablelist-group">
 				{% for event in events %}
                     <li class="tablelist-group-row">
@@ -76,11 +61,12 @@
                             <li class="action"><a href="{{url_for('course_event', course_id=event.course_id, event_id=event.id)}}">Details</a></li>
                         </ul>
                     </li>
-						{% endfor %}
+				{% else %}
+				No events yet.
+				{% endfor %}
                 </ul>
             </div>
     </section>
-
 
 
 

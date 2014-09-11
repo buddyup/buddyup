@@ -6,7 +6,7 @@ from functools import partial
 import re
 
 from buddyup.app import app
-from buddyup.database import Event, Course, EventInvitation, db, EventComment, User
+from buddyup.database import Event, Course, EventInvitation, db, EventComment, User, EventMembership
 from buddyup.templating import render_template
 from buddyup.util import (args_get, login_required, form_get, check_empty,checked_regexp, calendar_event, easy_datetime, time_pulldown, epoch_time)
 
@@ -97,13 +97,15 @@ def course_event(course_id, event_id):
     event = Event.query.get_or_404(event_id)
     comments = EventComment.query.filter(EventComment.event_id == Event.id, Event.id == event.id)
     attending = event in g.user.events
+    attendees = db.session.query(EventMembership).join(Event).filter(Event.id==event.id).all()
 
     return render_template('courses/event-detail.html',
                             course=course,
                             event=event,
                             comments=comments,
                             form=EventRSVPForm(),
-                            attending=attending)
+                            attending=attending,
+                            attendees=attendees)
 
 
 class EventInvitationForm(Form):
