@@ -48,7 +48,7 @@ class EventForm(Form):
 @login_required
 def new_event(course_id):
     form = EventForm()
-    if request.method != 'POST': return render_template('courses/new-event.html', course=Course.query.get_or_404(course_id), times=time_pulldown(), form=form)
+    if request.method != 'POST': return render_template('courses/events/new.html', course=Course.query.get_or_404(course_id), times=time_pulldown(), form=form)
 
     if form.validate():
 
@@ -68,7 +68,7 @@ def new_event(course_id):
     else:
         field_names = form.errors.keys()
         flash("There was a problem. Please look over the information you've given and make sure it is correct.")
-        return render_template('courses/new-event.html', course=Course.query.get_or_404(course_id), times=time_pulldown(), form=form)
+        return render_template('courses/events/new.html', course=Course.query.get_or_404(course_id), times=time_pulldown(), form=form)
 
 
 @app.route('/courses/<int:id>/events.json')
@@ -87,7 +87,7 @@ def course_events_json(id):
 def course_events(id):
     course = Course.query.get_or_404(id)
     events = Event.query.join(Course).filter(Course.id==course.id).order_by(Event.start)
-    return render_template('courses/events.html', course=course, events=events)
+    return render_template('courses/events/events.html', course=course, events=events)
 
 
 @app.route('/courses/<int:course_id>/events/<int:event_id>')
@@ -99,7 +99,7 @@ def course_event(course_id, event_id):
     attending = event in g.user.events
     attendees = db.session.query(EventMembership).join(Event).filter(Event.id==event.id).all()
 
-    return render_template('courses/event-detail.html',
+    return render_template('courses/events/view.html',
                             course=course,
                             event=event,
                             comments=comments,
