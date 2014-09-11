@@ -48,7 +48,7 @@
     <section id="notes" class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="group-heading">
-                <h3><span class="icon icon-note">&nbsp;</span>All Events</h3>
+                <h3><span class="icon icon-note">&nbsp;</span>Events</h3>
             </div>
             <ul class="tablelist-group">
 
@@ -57,24 +57,16 @@
                         <ul class="tablelist">
                             <li class="date"><span class="date">{{event|date_short}}</span></li>
                             <li class="main">
-                                <div class="title"><a href="./event-detail.html">{{event.name}}</a></div>
+                                <div class="title"><a href="{{url_for('course_event', course_id=course.id, event_id=event.id)}}">{{event.name}}</a></div>
                                 <div class="subtitle"> <span class="time">{{event|time_span}}</span>&bull;<span class="icon icon-course"> {{event.course.name}}</span>&bull;<span class="icon icon-location"> {{event.location}}</span></div>
                             </li>
                             <li class="action"><a href="{{url_for('course_event', course_id=course.id, event_id=event.id)}}">Details</a></li>
                         </ul>
                     </li>
+					{% else %}
+					No events for this class.
 					{% endfor %}
 
-                    <li class="tablelist-group-row">
-                        <ul class="tablelist">
-                            <li class="date"><span class="date">June 31</span></li>
-                            <li class="main">
-                                <div class="title"><a href="./event-detail.html">Midterms Study Sesh</a></div>
-                                <div class="subtitle"> <span class="time">6PM-8PM</span>&bull;<span class="icon icon-course"> Stat 101</span>&bull;<span class="icon icon-location"> Pioneer Square</span></div>
-                            </li>
-                            <li class="action"><a href="#">Details</a></li>
-                        </ul>
-                    </li>
                 </ul>
             </div>
     </section>

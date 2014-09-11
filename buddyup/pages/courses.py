@@ -4,7 +4,7 @@ from buddyup.app import app
 from buddyup.database import (User, BuddyInvitation, Major, MajorMembership,
                               Language, LanguageMembership,
                               Course, CourseMembership, db,
-                              Location, Action)
+                              Location, Action, Event)
 from buddyup.templating import render_template
 from buddyup.util import login_required, args_get, sorted_languages, shuffled, track_activity
 
@@ -13,13 +13,30 @@ from buddyup.pages.classmates import PAGE_SIZE
 from collections import defaultdict
 
 
+
+from datetime import date, timedelta
+
+def upcoming_events(course):
+    """
+    Events for a given Course from today onward.
+    We return a query that you can limit as you see fit.
+    """
+    yesterday = date.today() - timedelta(days=1)
+    return Event.query.join(Course)\
+            .filter(Course.id==course.id)\
+            .filter(Event.start > yesterday)\
+            .order_by(Event.start)
+
+
 @app.route("/courses/<id>")
 @login_required
 @track_activity
 def course_view(id):
     course = Course.query.get_or_404(id)
     followers = course.users.filter(User.has_photos == True)
-    return render_template('courses/view.html', user=g.user, course=course, followers=followers)
+    events = upcoming_events(course).limit(2)
+
+    return render_template('courses/view.html', user=g.user, course=course, followers=followers, events=events)
 
 
 @app.route('/courses')

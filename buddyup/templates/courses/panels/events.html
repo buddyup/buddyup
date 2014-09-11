@@ -20,22 +20,18 @@
                 <div class="col-md-3">
                     <h4>Upcoming</h4>
                     <ul class="tablelist-group">
+
+						{% for event in events %}
                         <li class="tablelist-group-row">
                             <ul class="tablelist">
                                 <li class="main">
-                                    <div class="title"><a href="./event-detail.html">Midterms Study Sesh</a></div>
-                                    <div class="subtitle"><span class="icon icon-course"> Stat 101</span>&bull;<span class="icon icon-location"> Pioneer Square</span></div>
+                                    <div class="title"><a href="{{url_for('course_event', course_id=course.id, event_id=event.id)}}">{{event.name}}</a></div>
+                                    <div class="subtitle"><span class="icon icon-course"> {{course.name}}</span>&bull;<span class="icon icon-location"> {{event.location}}</span></div>
                                 </li>
                             </ul>
                         </li>
-                        <li class="tablelist-group-row">
-                            <ul class="tablelist">
-                                <li class="main">
-                                    <div class="title"><a href="./event-detail.html">Midterms Study Sesh</a></div>
-                                    <div class="subtitle"><span class="icon icon-course"> Stat 101</span>&bull;<span class="icon icon-location"> Pioneer Square</span></div>
-                                </li>
-                            </ul>
-                        </li>
+						{% endfor %}
+
                         <li class="tablelist-group-row">
                             <ul class="tablelist">
                                 <li class="main">
