@@ -52,4 +52,8 @@ def unverified():
 
 @app.route('/terms')
 def terms_and_conditions():
-    return render_template('registration/terms_and_conditions.html')
+    return render_template('registration/terms.html')
+
+@app.route('/privacy')
+def privacy_policy():
+    return render_template('registration/privacy.html')
