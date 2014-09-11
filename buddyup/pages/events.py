@@ -25,14 +25,16 @@ SECONDS_IN_A_DAY = 86400
 START_OF_DAY = 0
 END_OF_DAY = (SECONDS_IN_A_DAY - 1)
 
+TIME_8_00_AM = 28800
+TIME_8_30_AM = 30600
 
 class EventForm(Form):
     title = StringField(u'Event Title', validators=[DataRequired()])
     location = StringField(u'Location', validators=[DataRequired()])
-    note = TextAreaField(u'Note')
+    note = TextAreaField(u'Note', default="Here's some additional details...")
     date = DateTimeField(u'Date', format='%m/%d/%y')
-    start = SelectField(u'Start', choices = time_pulldown(), coerce=int, validators=[NumberRange(min=START_OF_DAY, max=END_OF_DAY)])
-    end = SelectField(u'End', choices = time_pulldown(),  coerce=int, validators=[NumberRange(min=START_OF_DAY, max=END_OF_DAY)])
+    start = SelectField(u'Start', choices = time_pulldown(), coerce=int, validators=[NumberRange(min=START_OF_DAY, max=END_OF_DAY)], default=TIME_8_00_AM)
+    end = SelectField(u'End', choices = time_pulldown(),  coerce=int, validators=[NumberRange(min=START_OF_DAY, max=END_OF_DAY)], default=TIME_8_30_AM)
     def validate(self):
         rv = Form.validate(self)
         if not rv:
@@ -48,6 +50,7 @@ class EventForm(Form):
 @login_required
 def new_event(course_id):
     form = EventForm()
+    course = User.query.get_or_404(course_id)
     if request.method != 'POST': return render_template('courses/events/new.html', course=Course.query.get_or_404(course_id), times=time_pulldown(), form=form)
 
     if form.validate():
@@ -64,7 +67,8 @@ def new_event(course_id):
         db.session.commit()
 
         flash('"%s" was added to the %s calendar for %s.' % (form.title.data, Course.query.get(course_id).name, datetime.strftime(event.start, "%m/%d at %H:%M %p")))
-        return redirect(url_for('course_events', id=course_id))
+
+        return redirect(url_for('course_event_invitation', course_id=course.id, event_id=event.id))
     else:
         field_names = form.errors.keys()
         flash("There was a problem. Please look over the information you've given and make sure it is correct.")
@@ -119,6 +123,8 @@ class EventRSVPForm(Form):
 @login_required
 def course_event_invitation(course_id, event_id):
     form = EventInvitationForm()
+    course = Course.query.get_or_404(course_id)
+    event = Event.query.get_or_404(event_id)
 
     if form.validate_on_submit():
         invitation = EventInvitation()
@@ -129,7 +135,7 @@ def course_event_invitation(course_id, event_id):
         db.session.commit()
         return "{}"
     else:
-        return form.csrf_token.current_token
+        return render_template('courses/events/invite.html', form=form, course=course, event=event)
 
 
 @app.route('/courses/<int:course_id>/events/<int:event_id>/attendee', methods=['GET', 'POST'])

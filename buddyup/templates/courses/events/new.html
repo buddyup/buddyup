@@ -92,70 +92,23 @@
                     </div>
                     <div class="radio horizontal">
                         <label>
-                        <input type="radio" name="avail" id="availPrivate" value="option2">
+                        <input type="radio" name="avail" id="availPrivate" value="option2" disabled>
                             Private event
                         </label>
                     </div>
                 </div>
 
-            </div>
-        </section>
-
-        <section id="" class="row">
-            <div class="col-md-6 col-md-offset-3">
-                <div class="group-heading"><h3>Step 2: Invite People</h3></div>
-                    
-                    <div class="form-group people-list">
-                        <label for="" class="control-label">Invite people from your class</label>
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="invite" id="" value="option1">
-                                Invite everyone
-                            </label>
-                        </div>
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="invite" id="" checked value="option2">
-                                Invite only these people
-                            </label>
-                        </div>
-                        <ul class="tablelist-group">
-                            <li class="tablelist-group-row">
-                                <ul class="tablelist">
-                                    <li class="icon"><a href="./profile.html"><div class="block circle" style="background-image:url('../_assets/images/people/15.jpg')">&nbsp;</div></a></li>
-                                    <li class="main">
-                                        <span class="title">Aaron Cook</span>
-                                        <span class="subtitle">Downtown</span>
-                                    </li>
-                                    <li class="action"><a href="#">Remove</a></li>
-                                </ul>
-                            </li>
-                            <li class="tablelist-group-row">
-                                <ul class="tablelist">
-                                    <li class="icon"><a href="./profile.html"><div class="block circle" style="background-image:url('../_assets/images/people/15.jpg')">&nbsp;</div></a></li>
-                                    <li class="main">
-                                        <span class="title">Rachel Jones</span>
-                                        <span class="subtitle">On Campus</span>
-                                    </li>
-                                    <li class="action"><a href="#">Remove</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                        <a href="#" class="button add"><span class="icon icon-people">&nbsp;</span>Add People</a>
-                    </div>
-
-            </div>
-        </section>
-
-        <section id="" class="row">
-            <div class="col-md-6 col-md-offset-3">
-                <div class="group-heading"><h3>Step 3: Add Comments</h3></div>
                 <div class="form-group">
-                    <textarea rows="4">Here's some additional details...</textarea>
-                    <a href="#" class="button small submit">Add Comment</a>
+                    <label for="avail" class="control-label">Comment</label>
+	                <div class="form-group">
+						{{render_errors(form.note)}}
+						{{form.note(class_="form-control")}}
+	                </div>
                 </div>
+
             </div>
         </section>
+
 
         <section id="submit" class="row">
             <div class="col-md-6 col-md-offset-3">

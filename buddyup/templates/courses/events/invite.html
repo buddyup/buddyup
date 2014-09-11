@@ -1,0 +1,89 @@
+{% extends "green/global_layout.html" %}
+{% block title %} Invite to {{course.name}} {% endblock %}
+{% block pagestyle %}
+<link href="/static/_assets/css/new-event.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+
+<script src="/static/_assets/plugins/datepicker/bootstrap-datepicker.js"></script>
+<link href="/static/_assets/plugins/datepicker/datepicker.css" rel="stylesheet">
+
+<article id="top" class="detail">
+    <div class="wrapper container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <a href="{{url_for('course_view', id=course.id)}}"><div class="thumbnail" style="background-image:url('/static/_assets/images/courses/math_chalkboard2.jpg')">&nbsp;</div></a>
+                <h1>{{event.name}}</h1>
+                <div class="subtitle"><span>{{course.instructor}}</span>&bull;<span><a href="./detail.html">{{course.name}}</a></div>
+            </div>
+        </div>
+    </div>
+</article>
+
+<article id="main-content" class="container">
+
+	{% for message in get_flashed_messages() %} 
+	<div class="alert alert-danger">
+		<button type="button" class="close" data-dismiss="alert">&times;</button >{{ message }}
+	</div >
+	{% endfor %}
+
+    <form id="event_form" role="form" action="{{request.path}}" method="POST">
+		{{ form.csrf_token }}
+
+        <section id="" class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="group-heading"><h3>Step 2: Invite People</h3></div>
+                    
+                    <div class="form-group people-list">
+                        <label for="" class="control-label">Invite people from your class</label>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="invite" id="" checked value="option1">
+                                Invite everyone
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="invite" id="" value="option2" disabled>
+                                Invite only these people
+                            </label>
+                        </div>
+                        <ul class="tablelist-group">
+                            <li class="tablelist-group-row">
+                                <ul class="tablelist">
+                                    <li class="icon"><a href="./profile.html"><div class="block circle" style="background-image:url('../_assets/images/people/15.jpg')">&nbsp;</div></a></li>
+                                    <li class="main">
+                                        <span class="title">Aaron Cook</span>
+                                        <span class="subtitle">Downtown</span>
+                                    </li>
+                                    <li class="action"><a href="#">Remove</a></li>
+                                </ul>
+                            </li>
+                            <li class="tablelist-group-row">
+                                <ul class="tablelist">
+                                    <li class="icon"><a href="./profile.html"><div class="block circle" style="background-image:url('../_assets/images/people/15.jpg')">&nbsp;</div></a></li>
+                                    <li class="main">
+                                        <span class="title">Rachel Jones</span>
+                                        <span class="subtitle">On Campus</span>
+                                    </li>
+                                    <li class="action"><a href="#">Remove</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <a href="#" class="button add"><span class="icon icon-people">&nbsp;</span>Add People</a>
+                    </div>
+
+            </div>
+        </section>
+
+        <section id="submit" class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <a href="javascript:event_form.submit()" class="button submit submit-form">Send Invites!</a>
+            </div>
+        </section>
+
+    </form>
+
+</article>
+{% endblock %}
