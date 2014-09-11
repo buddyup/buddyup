@@ -210,6 +210,52 @@ class EventTests(unittest.TestCase):
 
 
 
+    def test_join_event(self):
+        client = self.test_client # Only initiate the client once during this test since we maintain state.
+        user_id = User.query.filter(User.user_name=="test_user").first().id
+        course_id = Course.query.first().id
+        create_event_url = '/courses/%s/event' % course_id
+
+        new_event_page = client.get(create_event_url, follow_redirects=True)
+
+        new_event_request = {
+            "title": "Best Event Ever",
+            "location": "Van Down By The River",
+            "date": "12/25/14",
+            "start": "55800", # 3:30pm
+            "end": "61200", # 5:00pm,
+            "csrf_token": BeautifulSoup(new_event_page.data).find(id="csrf_token")['value']
+        }
+
+        client.post(create_event_url, data=new_event_request, follow_redirects=True)
+
+        new_event = Event.query.first()
+
+        # Event exists now. Let's join it.
+
+        # First make sure I don't have any events.
+        me = User.query.filter_by(user_name="test_user").first()
+        self.assertEqual(0, me.events.count())
+
+        event_attend_url = '/courses/%s/events/%s/attendee' % (course_id, new_event.id)
+
+        # Grab the csrf token so we can make our request.
+        csrf_token = client.get(event_attend_url, follow_redirects=True).data
+
+        rsvp = {
+            'csrf_token': csrf_token,
+            'attending': True
+        }
+
+        response = client.post(event_attend_url, data=rsvp, follow_redirects=True)
+
+        self.assertEqual('200 OK', response.status)
+
+        me = User.query.filter_by(user_name="test_user").first()
+        self.assertEqual(1, me.events.count())
+
+
+
 
 if __name__ == '__main__':
     unittest.main()

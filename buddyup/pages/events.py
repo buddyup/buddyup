@@ -6,7 +6,7 @@ from functools import partial
 import re
 
 from buddyup.app import app
-from buddyup.database import Event, Course, EventInvitation, db, EventComment
+from buddyup.database import Event, Course, EventInvitation, db, EventComment, User
 from buddyup.templating import render_template
 from buddyup.util import (args_get, login_required, form_get, check_empty,checked_regexp, calendar_event, easy_datetime, time_pulldown, epoch_time)
 
@@ -16,7 +16,7 @@ import os
 #--------------------- NEW STUFF BELOW ---------------------------
 
 from flask.ext.wtf import Form
-from wtforms import StringField, HiddenField, TextAreaField, SelectField, DateTimeField, IntegerField
+from wtforms import StringField, HiddenField, TextAreaField, SelectField, DateTimeField, IntegerField, BooleanField
 from wtforms.validators import DataRequired, NumberRange
 from wtforms.validators import required
 
@@ -102,6 +102,9 @@ def course_event(course_id, event_id):
 class EventInvitationForm(Form):
     receiver_id = IntegerField(validators=[required()])
 
+class EventRSVPForm(Form):
+    attending = BooleanField(validators=[required()])
+
 
 @app.route('/courses/<int:course_id>/events/<int:event_id>/invitation', methods=['GET', 'POST'])
 @login_required
@@ -114,6 +117,20 @@ def course_event_invitation(course_id, event_id):
         invitation.sender_id = g.user.id
         invitation.receiver_id = form.receiver_id.data
         db.session.add(invitation)
+        db.session.commit()
+        return "{}"
+    else:
+        return form.csrf_token.current_token
+
+
+@app.route('/courses/<int:course_id>/events/<int:event_id>/attendee', methods=['GET', 'POST'])
+@login_required
+def course_event_attend(course_id, event_id):
+    form = EventRSVPForm()
+    event = Event.query.get_or_404(event_id)
+
+    if form.validate_on_submit() and form.attending:
+        g.user.events.append(event)
         db.session.commit()
         return "{}"
     else:
