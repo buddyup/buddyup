@@ -244,7 +244,7 @@ class EventTests(unittest.TestCase):
 
         rsvp = {
             'csrf_token': csrf_token,
-            'attending': True
+            'attending': "true"
         }
 
         response = client.post(event_attend_url, data=rsvp, follow_redirects=True)
@@ -254,6 +254,47 @@ class EventTests(unittest.TestCase):
         me = User.query.filter_by(user_name="test_user").first()
         self.assertEqual(1, me.events.count())
 
+
+
+    def test_unjoin_event(self):
+        client = self.test_client # Only initiate the client once during this test since we maintain state.
+        user_id = User.query.filter(User.user_name=="test_user").first().id
+        course_id = Course.query.first().id
+
+        # Create the new event
+        new_event = Event()
+        new_event.title = "Best Event Ever"
+        new_event.location = "Van Down By The River"
+        new_event.start = datetime.strptime("12/25/14 3:30pm", '%m/%d/%y %I:%M%p')
+        new_event.end = datetime.strptime("12/25/14 5:00pm", '%m/%d/%y %I:%M%p')
+        new_event.course_id = course_id
+
+        db.session.add(new_event)
+        db.session.commit()
+
+        # Join the event.
+        me = User.query.filter_by(user_name="test_user").first()
+        me.events.append(new_event)
+
+        # Verify that we're attending the event.
+        me = User.query.filter_by(user_name="test_user").first()
+        self.assertEqual(1, me.events.count())
+
+        # Let's unjoin
+        event_attend_url = '/courses/%s/events/%s/attendee' % (course_id, new_event.id)
+
+        # Grab the csrf token so we can make our request.
+        csrf_token = client.get(event_attend_url, follow_redirects=True).data
+
+        rsvp = {
+            'csrf_token': csrf_token,
+            'attending': "false"
+        }
+
+        client.post(event_attend_url, data=rsvp, follow_redirects=True)
+
+        me = User.query.filter_by(user_name="test_user").first()
+        self.assertEqual(0, me.events.count())
 
 
 

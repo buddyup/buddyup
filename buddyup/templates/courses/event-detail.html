@@ -4,6 +4,7 @@
 <link href="/static/_assets/css/event-detail.css" rel="stylesheet">
 {% endblock %}
 {% block content %}
+
 <article id="top" class="profile">
     <div class="wrapper container">
         <div class="row">
@@ -11,7 +12,24 @@
             <h1 class="col-sm-12">{{event.name}}</h1>
             <div class="col-sm-12 subtitle"><span>{{course.instructor}}</span>&bull;<span><a href="{{url_for('course_view', id=course.id)}}">{{course.name}}</a></span>&bull;<span><a href="{{url_for('course_events', id=course.id )}}">Events</a></span></div>
             <div class="col-sm-12">
-                <a href="#" class="action button primary"><span class="icon icon-event">&nbsp;</span>Join Event</a>
+				<script>
+				$( document ).ready(function(){
+					$("#join").click(function(){
+						var rsvp = {
+							csrf_token: "{{form.csrf_token.current_token}}",
+							attending: "{{(not attending)|lower}}"
+						};
+						$.post("{{url_for('course_event_attend', course_id=course.id, event_id=event.id)}}", rsvp, function(){ location.reload() });
+					});
+				});
+				</script>
+
+				{% if attending %}
+                <a href="#" id="join" class="action button primary"><span class="icon icon-event">&nbsp;</span>Attending</a>
+				{% else %}
+
+                <a href="#" id="join" class="action button primary"><span class="icon icon-event">&nbsp;</span>Join Event</a>
+				{% endif %}
             </div>
         </div>
     </div>

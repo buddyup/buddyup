@@ -16,8 +16,8 @@ import os
 #--------------------- NEW STUFF BELOW ---------------------------
 
 from flask.ext.wtf import Form
-from wtforms import StringField, HiddenField, TextAreaField, SelectField, DateTimeField, IntegerField, BooleanField
-from wtforms.validators import DataRequired, NumberRange
+from wtforms import StringField, HiddenField, TextAreaField, SelectField, DateTimeField, IntegerField, TextField
+from wtforms.validators import DataRequired, NumberRange, AnyOf
 from wtforms.validators import required
 
 
@@ -96,14 +96,21 @@ def course_event(course_id, event_id):
     course = Course.query.get_or_404(course_id)
     event = Event.query.get_or_404(event_id)
     comments = EventComment.query.filter(EventComment.event_id == Event.id, Event.id == event.id)
-    return render_template('courses/event-detail.html', course=course, event=event, comments=comments)
+    attending = event in g.user.events
+
+    return render_template('courses/event-detail.html',
+                            course=course,
+                            event=event,
+                            comments=comments,
+                            form=EventRSVPForm(),
+                            attending=attending)
 
 
 class EventInvitationForm(Form):
     receiver_id = IntegerField(validators=[required()])
 
 class EventRSVPForm(Form):
-    attending = BooleanField(validators=[required()])
+    attending = TextField(validators=[required(), AnyOf(["true", "false"])])
 
 
 @app.route('/courses/<int:course_id>/events/<int:event_id>/invitation', methods=['GET', 'POST'])
@@ -129,9 +136,16 @@ def course_event_attend(course_id, event_id):
     form = EventRSVPForm()
     event = Event.query.get_or_404(event_id)
 
-    if form.validate_on_submit() and form.attending:
-        g.user.events.append(event)
-        db.session.commit()
+    if form.validate_on_submit():
+        if form.attending.data == "true":
+            app.logger.info("ATTEND")
+            g.user.events.append(event)
+            db.session.commit()
+        else:
+            app.logger.info("BAIL")
+            g.user.events.remove(event)
+            db.session.commit()
+
         return "{}"
     else:
         return form.csrf_token.current_token
