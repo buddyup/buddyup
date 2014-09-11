@@ -86,7 +86,7 @@ def course_events_json(id):
 @login_required
 def course_events(id):
     course = Course.query.get_or_404(id)
-    events = Event.query.filter(Course.id==course.id).order_by(Event.start)
+    events = Event.query.join(Course).filter(Course.id==course.id).order_by(Event.start)
     return render_template('courses/events.html', course=course, events=events)
 
 
