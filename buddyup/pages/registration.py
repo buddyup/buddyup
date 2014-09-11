@@ -13,16 +13,15 @@ def start():
     return render_template('registration/start.html')
 
 
-# @app.route('/dev/register')
-# @login_required
-# def view_registration_page():
-#     # TODO: Remove this after development is complete.
-#     return render_template('registration/register.html')
-
-
 @app.route('/register', methods=['GET', 'POST'])
 @login_required
 def profile_create():
+    # Don't let already-registered users back to this screen
+    # TODO: Make this a decorator. The Start and Done screens
+    # could also use this, though not as critically.
+    if g.user and g.user.initialized:
+        return redirect('home')
+
     form = ProfileCreateForm()
 
     if form.validate_on_submit():
