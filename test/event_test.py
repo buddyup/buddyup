@@ -191,7 +191,7 @@ class EventTests(unittest.TestCase):
         event_invite_url = '/courses/%s/events/%s/invitation' % (course_id, new_event.id)
 
         # Grab the csrf token so we can make our request.
-        csrf_token = client.get(event_invite_url, follow_redirects=True).data
+        csrf_token = BeautifulSoup(client.get(event_invite_url, follow_redirects=True).data).find(id="csrf_token")['value']
 
         invitation = {
             'csrf_token': csrf_token,

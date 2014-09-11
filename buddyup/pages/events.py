@@ -117,6 +117,9 @@ class EventInvitationForm(Form):
 
 class EventRSVPForm(Form):
     attending = TextField(validators=[required(), AnyOf(["true", "false"])])
+    @property
+    def is_attending(self):
+        return self.attending.data == "true"
 
 
 @app.route('/courses/<int:course_id>/events/<int:event_id>/invitation', methods=['GET', 'POST'])
@@ -141,22 +144,20 @@ def course_event_invitation(course_id, event_id):
 @app.route('/courses/<int:course_id>/events/<int:event_id>/attendee', methods=['GET', 'POST'])
 @login_required
 def course_event_attend(course_id, event_id):
-    form = EventRSVPForm()
+    rsvp = EventRSVPForm()
     event = Event.query.get_or_404(event_id)
 
-    if form.validate_on_submit():
-        if form.attending.data == "true":
-            app.logger.info("ATTEND")
+    if rsvp.validate_on_submit():
+        if rsvp.is_attending:
             g.user.events.append(event)
             db.session.commit()
         else:
-            app.logger.info("BAIL")
             g.user.events.remove(event)
             db.session.commit()
 
         return "{}"
     else:
-        return form.csrf_token.current_token
+        return rsvp.csrf_token.current_token
 
 
 
