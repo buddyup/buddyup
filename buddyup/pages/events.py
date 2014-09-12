@@ -115,6 +115,10 @@ def course_event(course_id, event_id):
 class EventInvitationForm(Form):
     receiver_id = IntegerField(validators=[required()])
 
+class EventCommentForm(Form):
+    contents = TextField(validators=[required()])
+
+
 class EventRSVPForm(Form):
     attending = TextField(validators=[required(), AnyOf(["true", "false"])])
     @property
@@ -159,6 +163,28 @@ def course_event_attend(course_id, event_id):
     else:
         return rsvp.csrf_token.current_token
 
+
+
+@app.route('/courses/<int:course_id>/events/<int:event_id>/comment', methods=['GET', 'POST'])
+@login_required
+def course_event_comment(course_id, event_id):
+
+    form = EventCommentForm()
+    course = Course.query.get_or_404(course_id)
+    event = Event.query.get_or_404(event_id)
+
+    if form.validate_on_submit():
+        comment = EventComment()
+        comment.event_id = event_id
+        comment.user_id = g.user.id
+        comment.contents = form.contents.data
+        comment.time = datetime.now()
+
+        db.session.add(comment)
+        db.session.commit()
+
+    # No matter what, come back to the event page.
+    return redirect(url_for('course_event', course_id=course_id, event_id=event_id))
 
 
 @app.route('/events')

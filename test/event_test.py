@@ -3,7 +3,7 @@ import json
 from datetime import datetime
 from buddyup.pages import events
 from buddyup.app import app
-from buddyup.database import db, User, Course, Event, EventInvitation
+from buddyup.database import db, User, Course, Event, EventInvitation, EventComment
 from buddyup.util import time_from_timestamp
 from bs4 import BeautifulSoup
 
@@ -297,6 +297,46 @@ class EventTests(unittest.TestCase):
         self.assertEqual(0, me.events.count())
 
 
+
+    def test_event_comment(self):
+        client = self.test_client # Only initiate the client once during this test since we maintain state.
+        user_id = User.query.filter(User.user_name=="test_user").first().id
+        course_id = Course.query.first().id
+        url = '/courses/%s/event' % course_id
+
+        new_event_page = client.get(url, follow_redirects=True)
+
+        new_event_request = {
+            "title": "Best Event Ever",
+            "location": "Van Down By The River",
+            "date": "12/25/14",
+            "start": "55800", # 3:30pm
+            "end": "61200", # 5:00pm,
+            "csrf_token": BeautifulSoup(new_event_page.data).find(id="csrf_token")['value']
+        }
+
+        response = client.post(url, data=new_event_request, follow_redirects=True)
+
+        new_event = Event.query.first()
+
+        self.assertEqual(0, EventComment.query.join(Event).filter(Event.id == new_event.id).count())
+
+        url = '/courses/%s/events/%s/comment' % (course_id, new_event.id)
+
+        csrf_token = BeautifulSoup(client.get(url, follow_redirects=True).data).find(id="csrf_token")['value']
+
+        comment_request = {
+            "contents": "Best Event Ever",
+            "csrf_token": csrf_token
+        }
+
+        response = client.post(url, data=comment_request, follow_redirects=True)
+
+        self.assertEqual('200 OK', response.status)
+
+        self.assertEqual(1, EventComment.query.count())
+
+        self.assertEqual("Best Event Ever", EventComment.query.first().contents)
 
 if __name__ == '__main__':
     unittest.main()
