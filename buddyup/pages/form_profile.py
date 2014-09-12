@@ -4,7 +4,7 @@ from flask.ext.wtf import Form
 from flask.ext.wtf.file import FileField, FileAllowed
 
 from wtforms.validators import required, Email, Optional
-from wtforms.fields import TextField, RadioField, FieldList, TextAreaField
+from wtforms.fields import TextField, RadioField, FieldList, TextAreaField, SelectField
 from wtforms.ext.sqlalchemy.fields import (QuerySelectMultipleField,
                                            QuerySelectField)
 from buddyup.app import app
@@ -80,8 +80,31 @@ class PhotoDeleteForm(Form):
     """
 
 
-# Tutor forms are currently unused
 
+
+class TutorApplicationForm(Form):
+    """
+    Base class for the create and edit profile forms
+    """
+    courses = QuerySelectMultipleField(u"Courses",
+                                      get_label=u"name",
+                                      query_factory=ordered_factory(Course))
+    languages = QuerySelectMultipleField(u"Languages",
+                                         get_label=u"name",
+                                         query_factory=sorted_languages)
+
+    status = SelectField("Status", choices=[("looking", "Looking for new clients"), ("interested", "Interested in becoming a tutor")])
+
+    location = QuerySelectField(u"Location",
+                                get_label=u"name",
+                                allow_blank=True,
+                                query_factory=ordered_factory(Location))
+
+    price = TextField(u"Price", validators=[Optional()])
+    per = SelectField(choices=[("hour", "per hour"), ("session", "per session")])
+
+
+# Tutor forms below are currently unused
 
 class TutorProfileForm(Form):
     """

@@ -37,6 +37,24 @@ LanguageMembership = db.Table('languagemembership',
 
 
 
+
+
+
+TutorCourse = db.Table('tutorcourse',
+    db.Column('course_id', db.Integer, db.ForeignKey('course.id')),
+    db.Column('tutor_id', db.Integer, db.ForeignKey('tutor.id')),
+    )
+
+TutorLanguage = db.Table('tutorlanguage',
+    db.Column('language_id', db.Integer, db.ForeignKey('language.id')),
+    db.Column('tutor_id', db.Integer, db.ForeignKey('tutor.id')),
+    )
+
+
+
+
+
+
 # Main tables
 
 class EventInvitation(db.Model):
@@ -248,5 +266,26 @@ class Action(db.Model):
     path = db.Column(db.String(255))
     verb = db.Column(db.String(8))
 
-class TutorApplication(db.Model):
+
+class Tutor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    courses = db.relationship('Course',
+                              secondary=TutorCourse,
+                              backref=db.backref('tutors', lazy="dynamic"),
+                              lazy='dynamic')
+    languages = db.relationship('Language', lazy='dynamic',
+                                secondary=TutorLanguage,
+                                backref=db.backref('tutors', lazy="dynamic"))
+    location = db.relationship('Location')
+    location_id = db.Column(db.Integer, db.ForeignKey('location.id'))
+    status = db.Column(db.String(255))
+    price = db.Column(db.String(255))
+    per = db.Column(db.String(255))
+
+
+
+
+
+
+
