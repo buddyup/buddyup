@@ -101,7 +101,8 @@ def course_event(course_id, event_id):
     event = Event.query.get_or_404(event_id)
     comments = EventComment.query.filter(EventComment.event_id == Event.id, Event.id == event.id)
     attending = event in g.user.events
-    attendees = db.session.query(EventMembership).join(Event).filter(Event.id==event.id).all()
+    # attendees = db.session.query(EventMembership).join(Event).filter(Event.id==event.id).all()
+    attendees = User.query.join(EventMembership).join(Event).filter(EventMembership.c.event_id==event.id).all()
 
     return render_template('courses/events/view.html',
                             course=course,

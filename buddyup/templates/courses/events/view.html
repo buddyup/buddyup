@@ -56,24 +56,16 @@
                 <a href="#" class="right">See all {{attendees|length}}</a>
             </div>
             <ul class="block-list">
-                <li class="">
-                    <a href="../buddies/profile.html"><div class="block" style="background-image:url('/static/_assets/images/people/1.jpg')">&nbsp;</div></a>
-                </li>
-                <li class="">
-                    <a href="../buddies/profile.html"><div class="block" style="background-image:url('/static/_assets/images/people/2.jpg')">&nbsp;</div></a>
-                </li>
-                <li class="">
-                    <a href="../buddies/profile.html"><div class="block" style="background-image:url('/static/_assets/images/people/3.jpg')">&nbsp;</div></a>
-                </li>
-                <li class="">
-                    <a href="../buddies/profile.html"><div class="block" style="background-image:url('/static/_assets/images/people/4.jpg')">&nbsp;</div></a>
-                </li>
-                <li class="">
-                    <a href="../buddies/profile.html"><div class="block" style="background-image:url('/static/_assets/images/people/5.jpg')">&nbsp;</div></a>
-                </li>
-                <li class="">
-                    <a href="#"><div class="block overflow"><span><sup>+</sup>3</span></div></a>
-                </li>
+				{% for attendee in attendees[:5]%}
+	            <li class="">
+	                <a href="{{profile(attendee)}}"><div class="block" style="background-image:url('{{ photo_large(attendee) }}')">&nbsp;</div></a>
+	            </li>
+				{% endfor %}
+				{% if attendees|length > 5 %}
+	            <li class="">
+	                <a href="#"><div class="block overflow"><span><sup>+</sup>{{attendees|length - 5}}</span></div></a>
+	            </li>
+				{% endif %}
             </ul>
             <a href="#" class="button add small" data-toggle="modal" data-target="#myModal"><span class="icon icon-people">&nbsp;</span>Invite Buddies</a>
 
