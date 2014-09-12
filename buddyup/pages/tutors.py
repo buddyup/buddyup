@@ -25,16 +25,22 @@ PHOTO_EXTS.extend(map(str.upper, PHOTO_EXTS))
 def extract_names(records):
     return sorted(record.name for record in records)
 
+def already_applied():
+    return Tutor.query.join(User).filter(User.id==g.user.id).count() > 0
+
 @app.route('/tutors/', methods=['GET', 'POST'])
 @login_required
 def tutor_application():
+    if already_applied():
+        return redirect(url_for('tutor_application_complete'))
+
     form = TutorApplicationForm()
-    
+
     if form.validate_on_submit():
 
         application = Tutor()
         application.user_id = g.user.id
-        
+
         for course in form.courses.data:
             application.courses.append(course)
 
