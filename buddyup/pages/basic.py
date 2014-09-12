@@ -62,6 +62,7 @@ def index():
 PRESELECTED_IDS = [102, 126, 158, 161, 165, 183, 186, 187, 193, 213, 220, 292, 293, 295, 301, 307, 310, 32, 325, 338, 340, 347,  353, 356, 367, 37, 373, 384, 388, 393, 397, 408, 409, 419, 428, 432, 466, 47, 471, 485, 494, 496, 499, 50, 51, 514, 520, 529, 533, 552, 554, 58, 581, 616, 618, 651, 660, 668, 682, 688, 693, 699, 704, 74, 745, 761, 763, 767, 770, 776, 781, 786, 788, 791, 797, 82, 829, 832, 86, 92, 96]
 
 from sqlalchemy.sql.expression import func
+from buddyup.pages.classmates import annotate_classmates
 
 @app.route('/home')
 @login_required
@@ -81,7 +82,7 @@ def home():
     # or adapted for new schools.
     selected = shuffled(PRESELECTED_IDS)[:HOME_LIMIT]
 
-    return render_template('index.html', classmates=User.query.filter(User.id.in_(selected)))
+    return render_template('index.html', classmates=annotate_classmates(User.query.filter(User.id.in_(selected))))
 
 
 @app.route('/help')

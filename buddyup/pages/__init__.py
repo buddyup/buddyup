@@ -12,3 +12,4 @@ from . import login
 from . import profile
 from . import form_profile
 from . import notifications
+from . import tutors
