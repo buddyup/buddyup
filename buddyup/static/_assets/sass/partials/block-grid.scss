@@ -4,7 +4,7 @@
 
 	.block
 	{
-
+		position: relative;
 		display: inline-block;
 
 		@include respond-to-size-xs
@@ -36,7 +36,6 @@
 		{
 			display: block;
 			width: 100%;
-			height: 100%;
 
 			text-decoration: none;
 		}
@@ -73,78 +72,95 @@
 				font-size: 30px;
 			}
 		}
+	}
+}
 
-		&.selected, &:hover
+// Only apply hover events to non-mobile browsers
+
+html:not(.mobile) .block-grid .block
+{
+//	border: 1px solid red !important;
+
+	&.selected, &:hover
+	{
+		position: relative;
+
+		.info
 		{
-			position: relative;
+			position: absolute;
+			top: 0px;
+			left: 0px;
 
-			.info
+			display: block !important;
+			width: 100%;
+			height: 100%;
+
+			background-color: transparentize( $color-primary, 0.15 );
+
+			.wrapper
 			{
-				// border: 1px solid red;
-				position: absolute;
-				top: 0px;
-				left: 0px;
-
-				display: table !important;
-				width: 100%;
+				position: relative;
 				height: 100%;
 
-				background-color: transparentize( $color-primary, 0.15 );
+				display: block;
+				text-align: center;
+				vertical-align: middle;
+			}
 
-				.wrapper
+			.wrapper > span
+			{
+				position: absolute !important;
+
+				display: inline-block;
+				width: 100%;
+
+
+				color: white;
+
+				&.title
 				{
-					display: table-cell;
-					text-align: center;
-					vertical-align: middle;
+					top: 45%;
+					@include transform( translate(0, -45%) );
+					left: 0px;
+
+					font-weight: 600;
+					font-size: 18px;
 				}
 
-				.wrapper > span
+				&.subtitle
 				{
-					position: relative;
+					top: 45%;
+					@include transform( translate(0, -45%) );
+					left: 0px;
 
-					display: inline-block;
-					width: 100%;
+					margin-top: 1.5em;
+					font-size: 14px;
 
-					color: white;
+					.icon
+					{ font-size: 22px !important; }
+				}
 
-					&.title
-					{
-						font-weight: 600;
-						font-size: 18px;
-					}
+				&.button
+				{
+					@include button( white, $color-primary );
 
-					&.subtitle
-					{
-						margin-top: 5px;
-						font-size: 14px;
+					bottom: 20px;
+					left: 20%;
+					width: 60%;
 
-						.icon
-						{ font-size: 22px !important; }
-					}
+					line-height: 110% !important;
+					padding: 0.5em 1em 0.5em 1em !important;
 
-					&.button
-					{
-						@include button( white, $color-primary );
+					.icon
+					{ 
+						display: inline-block;
+						padding-bottom: 0.15em;
 
-						position: absolute;
-						bottom: 20px;
-						left: 20%;
-						width: 60%;
+						font-size: 22px !important; 
 
-						padding: 0.35em 1em 0.5em 1em !important;
-
-						.icon
-						{ 
-							display: inline-block;
-							padding-bottom: 0.15em;
-
-							font-size: 22px !important; 
-
-						}
 					}
 				}
 			}
 		}
 	}
-
 }

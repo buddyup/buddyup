@@ -73,7 +73,7 @@
                         <li class="icon"><a href="{{profile(comment.user)}}"><div class="block circle" style="background-image:url('{{ photo_large(comment.user) }}')">&nbsp;</div></a></li>
                         <li class="main">
                             <div class="message">{{comment.contents}}</div>
-                            <div class="subtitle"><span><a href="{{profile(comment.user)}}">{{comment.user.full_name}}</a></span>&bull;<span>June 31 - 5:32PM</span></div>
+                            <div class="subtitle"><span><a href="{{profile(comment.user)}}">{{comment.user.full_name}}</a></span>&bull;<span>June 31 - 5:32PM</span>{% include "flag/_flag_button.html" %}</div>
                         </li>
                     </ul>
                 </li>

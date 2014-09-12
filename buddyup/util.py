@@ -237,6 +237,7 @@ def delete_user(user):
 
 
 from datetime import datetime
+@app.template_global()
 def epoch_time(when):
     """
     Seconds since epoch (Jan 1, 1970)
