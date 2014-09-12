@@ -5,7 +5,7 @@ import json
 
 from flask import flash, request, abort, g, redirect, url_for, request
 
-from buddyup.database import (Course, Language, Event, EventComment, Visit, db, Action)
+from buddyup.database import (Course, Language, Event, EventComment, Visit, db, Action, User, Tutor, TutorCourse, TutorLanguage)
 from buddyup.app import app, mandrill_client, in_production
 from buddyup.photo import clear_images
 import mandrill
@@ -220,14 +220,23 @@ def get_domain_name():
     return app.config.get('DOMAIN_NAME', 'buddyup.herokuapp.com')
 
 
+# TODO: Add boolean to deactivate users instead of deleting them.
+# This code is relatively untested and shouldn't be considered production-quality.
 def delete_user(user):
+    if Tutor.query.filter_by(user_id=user.id).count() > 0:
+        print "Clear Tutors table first."
+        return
+
     def delete_records(records):
         for record in records:
             db.delete(record)
+    # TODO: Cascades for some of this?
     delete_records(user.buddy_invitations_sent)
     delete_records(user.buddy_invitations_received)
     delete_records(user.event_invitations_sent)
     delete_records(user.event_invitations_received)
+
+    Action.query.filter_by(user_id=user.id).delete()
     Event.query.filter_by(owner_id=user.id).delete()
     EventComment.query.filter_by(user_id=user.id).delete()
     Visit.query.filter_by(user_id=user.id).delete()
@@ -302,5 +311,26 @@ def acting_on_self(user):
     return user.id == g.user.id
 
 
+#----------------------------------------------------------------------------
+# Demo & Diagnostic support methods
+#----------------------------------------------------------------------------
+import urllib
+def wipe_user(user_name):
+    """
+    Remove the user and everything associated with that user. Helpful
+    with testing/demoing the login system.
+    """
+    user_name = urllib.unquote(user_name) # Username is coming straight from the url bar.
+    user = User.query.filter(User.user_name==user_name).first()
+    delete_user(user)
 
+def populate_event(event_id):
+    """
+    Create some attendees for the event.
+    """
+    event = Event.query.get(event_id)
+    users = User.query.filter(User.has_photos==True).limit(10)
+    for user in users:
+        user.events.append(event)
+    db.session.commit()
 
