@@ -66,9 +66,9 @@ def new_event(course_id):
         db.session.add(event)
         db.session.commit()
 
-        flash('"%s" was added to the %s calendar for %s.' % (form.title.data, Course.query.get(course_id).name, datetime.strftime(event.start, "%m/%d at %H:%M %p")))
-
-        return redirect(url_for('course_event_invitation', course_id=course.id, event_id=event.id))
+        return redirect(url_for('course_event', course_id=course.id, event_id=event.id))
+        # TODO: Bring back the invitations view (Step 2) when that part is ready.
+        # return redirect(url_for('course_event_invitation', course_id=course.id, event_id=event.id))
     else:
         field_names = form.errors.keys()
         flash("There was a problem. Please look over the information you've given and make sure it is correct.")
