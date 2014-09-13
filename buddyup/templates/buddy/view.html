@@ -39,7 +39,7 @@
 
 <article id="main-content" class="container">
 
-{% for message in get_flashed_messages() %} 
+{% for message in get_flashed_messages() %}
 <div class="alert alert-success">
 	<button type="button" class="close" data-dismiss="alert">&times;</button >{{ message }}
 </div >
@@ -91,9 +91,12 @@
         </div>
 		{%endif%}
 
+		{% if not myself %}
         <div class="col-sm-12">
             <a href="mailto:{{ classmate|email }}" class="action button primary">Send {{ classmate.full_name }} an email</a>
         </div>
+		{% endif %}
+
     </section>
 
 </article>
