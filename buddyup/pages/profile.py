@@ -38,7 +38,7 @@ def profile():
         form = ProfileCreateForm()
 
     if form.validate_on_submit():
-        copy_form(form)
+        update_current_user(form)
         return redirect(url_for('buddy_view', user_name=user.user_name))
     else:
 
@@ -51,43 +51,12 @@ def profile():
             form.bio.data = user.bio
             form.majors.data = user.majors.all()
             form.languages.data = user.languages.all()
-            form.courses.data = user.courses.all()
             form.location.data = user.location
 
     return render_template('profile/edit.html', form=form, classmate=user)
 
 
-@app.route('/user/profile', methods=['GET', 'POST'])
-@login_required
-def profile_edit():
-    user = g.user
-    if user.has_photos == True:
-        form = ProfileUpdateForm()
-    else:
-        form = ProfileCreateForm()
-    if not form.validate_on_submit():
-        if request.method == 'GET':
-            form.full_name.data = user.full_name
-            form.facebook.data = user.facebook
-            form.twitter.data = user.twitter
-            form.email.data = user.email
-            form.linkedin.data = user.linkedin
-            form.bio.data = user.bio
-            form.majors.data = user.majors.all()
-            form.languages.data = user.languages.all()
-            form.courses.data = user.courses.all()
-            form.location.data = user.location
-
-        return render_template('my/edit_profile.html',
-                               form=form,
-                               day_names=day_names,
-                               )
-    else:
-        copy_form(form)
-        return redirect(url_for('buddy_view', user_name=user.user_name))
-
-
-def copy_form(form):
+def update_current_user(form):
     user = g.user
     user.full_name = form.full_name.data
     user.location = form.location.data
@@ -96,15 +65,14 @@ def copy_form(form):
     user.linkedin = form.linkedin.data
     user.bio = form.bio.data
     user.email = form.email.data
-    
-    update_relationship(user.courses, form.courses.data)
+
     update_relationship(user.majors, form.majors.data)
     update_relationship(user.languages, form.languages.data)
+
     if form.photo.data:
-#        for name in dir(form.photo):
-#            app.logger.info("%s: %r", name, getattr(form.photo, name))
         storage = request.files[u"photo"]
         change_profile_photo(user, storage)
+
     user.initialized = True
     db.session.commit()
 

@@ -4,7 +4,7 @@ from buddyup.app import app
 from buddyup.database import User
 from buddyup.util import login_required, shuffled
 from buddyup.templating import render_template
-from buddyup.pages.profile import copy_form
+from buddyup.pages.profile import update_current_user
 from buddyup.pages.form_profile import ProfileCreateForm
 
 @app.route('/start')
@@ -31,7 +31,7 @@ def profile_create():
             flash("Please agree to terms and conditions")
             return render_template('registration/register.html', form=form)
         else:
-            copy_form(form)
+            update_current_user(form)
             return redirect(url_for('registration_complete'))
     else:
         return render_template('registration/register.html', form=form)
