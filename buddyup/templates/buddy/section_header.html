@@ -1,0 +1,21 @@
+<article id="top" class="filter">
+    <div class="wrapper container">
+        <div class="row">
+            <div class="col-md-12 col-md-offset-0">
+                <h1>Classmates</h1>
+                <a href="{{url_for('invite_friend')}}" class="action button small primary">Invite a Friend</a>
+            </div>
+            <div class="col-md-12 col-md-offset-0">
+                <ul class="hidden-xs filter">
+					{% include "buddy/nav.html" %}
+                </ul>
+                <div class="visible-xs-block dropdown">
+                    <a data-toggle="dropdown" class="button dropdown" href="#">Everyone</a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+						{% include "buddy/nav.html" %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
