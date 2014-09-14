@@ -57,32 +57,31 @@ def index():
         return redirect(url_for('home'))
 
 
-
-
-PRESELECTED_IDS = [102, 126, 158, 161, 165, 183, 186, 187, 193, 213, 220, 292, 293, 295, 301, 307, 310, 32, 325, 338, 340, 347,  353, 356, 367, 37, 373, 384, 388, 393, 397, 408, 409, 419, 428, 432, 466, 47, 471, 485, 494, 496, 499, 50, 51, 514, 520, 529, 533, 552, 554, 58, 581, 616, 618, 651, 660, 668, 682, 688, 693, 699, 704, 74, 745, 761, 763, 767, 770, 776, 781, 786, 788, 791, 797, 82, 829, 832, 86, 92, 96]
-
 from sqlalchemy.sql.expression import func
+
+def random_students():
+    # This pulls from everyone in the database, not just coursemates.
+    # If they have a photo, they are considered.
+    return User.query\
+            .filter(User.has_photos == True)\
+            .filter(User.id != g.user.id)\
+            .order_by(func.random())\
+            .limit(HOME_LIMIT)
+
+from os import environ
+def preselected():
+    if not environ.get("PRESELECTED_IDS"): return []
+    ids = [int(id) for id in environ.get("PRESELECTED_IDS").split(',')]
+    selected = shuffled(ids)[:HOME_LIMIT]
+    return list(User.query.filter(User.id.in_(selected)))
+
 from buddyup.pages.classmates import annotate_classmates
 
 @app.route('/home')
 @login_required
 def home():
-    # Note, this pulls from everyone in the database, not just classmates.
-    # If they have a photo, they are considered.
-    # classmates = User.query\
-    #                 .filter(User.has_photos == True)\
-    #                 .filter(User.id != g.user.id)\
-    #                 .order_by(func.random())\
-    #                 .limit(HOME_LIMIT)
-
-    # TODO: Remove this once we have a better solution or we have better photos in the database.
-    # This is pulling from a list of pre-screened photos that all meet the criteria of being
-    # fully square and full bleed (no borders in the image). This is a crutch to make sure
-    # our front page meets design criteria. PDX/PSU specific!!! This will have to be removed 
-    # or adapted for new schools.
-    selected = shuffled(PRESELECTED_IDS)[:HOME_LIMIT]
-
-    return render_template('index.html', classmates=annotate_classmates(User.query.filter(User.id.in_(selected))))
+    classmates = preselected() or random_students()
+    return render_template('index.html', classmates=annotate_classmates(classmates))
 
 
 @app.route('/help')
