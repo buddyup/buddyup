@@ -11,9 +11,9 @@
 				
 				{% for notification in notifications %}
                 <li class="tablelist-group-row">
-                    <a href="./buddies/profile.html">
+                    <a href="{{url_for('list_notifications')}}">
                         <ul class="tablelist">
-                            <li class="icon"><div class="block circle" style="background-image:url('/static/_assets/images/people/15.jpg')">&nbsp;</div></li>
+                            <li class="icon"><div class="block circle" style="background-image:url('{{ photo_large(notification.sender) }}')">&nbsp;</div></li>
                             <li class="main">
                                 <div class="title">{{notification.payload}}</div>
                                 <div class="subtitle">5:32PM</div>
