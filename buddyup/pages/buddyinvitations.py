@@ -6,7 +6,7 @@ import mandrill
 from buddyup.app import app
 from buddyup.database import db, BuddyInvitation, User, EventInvitation, Notification
 from buddyup.templating import render_template
-from buddyup.util import (login_required, email, send_mandrill_email_message, get_domain_name, acting_on_self)
+from buddyup.util import (login_required, email, send_mandrill_email_message, acting_on_self)
 
 
 """

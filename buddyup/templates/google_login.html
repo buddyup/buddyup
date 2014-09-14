@@ -9,13 +9,13 @@
 
     <script src="https://cdn.auth0.com/w2/auth0-widget-5.2.min.js"></script>
     <script type="text/javascript">
-        
+
         var widget = new Auth0Widget({
           domain:         'buddyup.auth0.com',
           clientID:       'fz6fSOkZ3SmuLIeylQlYE9X0ZVlKruSJ',
-          callbackURL:    'http://localhost:5000/callback'
+          callbackURL:    'http://{{request.host}}/callback'
         });
-        
+
       </script>
 		<!-- Le styles -->
 		<link href="{{ css('bootstrap') }}" rel="stylesheet" type="text/css">
@@ -33,7 +33,7 @@
 				<div style="margin-top: 60px">
 					<center><img src='/static/img/buddyup_logo_orange_800x222.png'/></center>
 				</div>
-			</div>      
+			</div>
 			<div class="text-center">
     			<button class="btn btn-primary" onclick="widget.signin({ scope: 'openid profile email' })">Log in</button>
     		</div>

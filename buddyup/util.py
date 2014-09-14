@@ -216,10 +216,6 @@ def send_mandrill_email_message(user_recipient, subject, html):
         raise
 
 
-def get_domain_name():
-    return app.config.get('DOMAIN_NAME', 'buddyup.herokuapp.com')
-
-
 # TODO: Add boolean to deactivate users instead of deleting them.
 # This code is relatively untested and shouldn't be considered production-quality.
 def delete_user(user):
