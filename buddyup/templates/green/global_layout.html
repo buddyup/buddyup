@@ -19,15 +19,8 @@
 			{% block nav %}
             <nav class="navbar navbar-default container" role="navigation">
                 <div class="wrapper">
-                    <!-- Mobile menu -->
-                    <div class="navbar-header" id="nav-mobile">
-                        <button id="menu-button" class="navbar-toggle logo-wrapper" data-toggle="collapse" data-target="#nav-main">
-                            <span class="logo">Logo</span>
-                        </button>
-                        <a href="/secondary/all-notifications.html" id="notifications-button" class="navbar-toggle notifications" data-toggle="collapse" data-target="#nav-notifications">
-                            <span class="icon icon-notification"></span><span class="icon icon-badge">4</span>
-                        </a>
-                    </div>
+
+					{% include "nav/mobile.html" %}
 
                     <!-- Regular menu -->
                     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -61,7 +54,7 @@
                             </li>
 
 							{% include "nav/notifications.html" %}
-							
+
                             <!-- Reiterate overflow menu ONLY for mobile menu -->
                             <li class="visible-xs-block"><a href="{{ profile(user_record) }}">My Profile</a></li>
                             <li class="visible-xs-block"><a href="{{ url_for('my_events') }}">My Events</a></li>
@@ -73,12 +66,12 @@
 							{% endif %}
                         </ul>
                     </div> <!-- ./navbar-collapse -->
-					
+
                 </div><!-- /wrapper -->
             </nav>
 			{% endblock %}
         </header>
-        
+
         <div id="main">
 			{% block content %}
 			{% endblock %}
