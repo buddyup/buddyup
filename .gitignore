@@ -11,3 +11,4 @@ venv
 *.kate-swp
 *.db
 .lock
+*.~lock*
