@@ -10,3 +10,4 @@ venv
 *.swp
 *.kate-swp
 *.db
+.lock
