@@ -3,6 +3,10 @@ from __future__ import with_statement
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 from logging.config import fileConfig
+import os
+import sys
+sys.path.insert(0, os.getcwd())
+
 # Import required to set target_metadata
 from buddyup.database import db
 

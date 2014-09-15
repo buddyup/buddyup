@@ -100,8 +100,9 @@ class TutorApplicationForm(Form):
                                 allow_blank=True,
                                 query_factory=ordered_factory(Location))
 
-    price = TextField(u"Price", validators=[Optional()])
-    per = SelectField(choices=[("hour", "per hour"), ("session", "per session")])
+    # TODO: decide on this, long-term
+    # price = TextField(u"Price", validators=[Optional()])
+    # per = SelectField(choices=[("hour", "per hour"), ("session", "per session")])
 
 
 # Tutor forms below are currently unused
