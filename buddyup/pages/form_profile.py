@@ -49,7 +49,7 @@ class ProfileForm(Form):
     facebook = TextField(u"Facebook (optional)")
     twitter = TextField(u"Twitter")
     linkedin = TextField(u"LinkedIn")
-    email = TextField(u"Email Address (required)", validators=[required(), Email()])
+    email = TextField(u".edu Email Address (required)", validators=[required(), Email()])
     bio = TextAreaField(u'A Few Words About You')
 
 

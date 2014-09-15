@@ -42,75 +42,78 @@
 
 {% include "flash.html" %}
 
-		<form id="registration" action="{{ url_for('profile_create') }}" method="POST"
-			enctype="multipart/form-data">
-		{{ form.csrf_token }}
+        <form id="registration" action="{{ url_for('profile_create') }}" method="POST"
+            enctype="multipart/form-data">
+        {{ form.csrf_token }}
 
         <section id="" class="row">
             <div class="col-md-6 col-md-offset-3">
 
                 <div class="form-group">
-				<label for="" class="control-label">{{ form.photo.label.text }}</label>
-				{{ render_errors(form.photo) }}
-				{{ form.photo }}
-				</div>
-				
+                <label for="" class="control-label">{{ form.photo.label.text }}</label>
+                {{ render_errors(form.photo) }}
+                {{ form.photo }}
+                </div>
+                
                 <div class="form-group">
-				<label for="" class="control-label">Name</label>
-					{{render_errors(form.full_name)}}
-					{{form.full_name(class_="form-control")}}
+				    <label for="" class="control-label">{{ form.email.label.text }}</label>
+				    {{render_errors(form.email)}}
+				    {{form.email(class_="form-control")}}
+                </div>
+
+                <div class="form-group">
+                <label for="" class="control-label">Name</label>
+                    {{render_errors(form.full_name)}}
+                    {{form.full_name(class_="form-control")}}
                 </div>
 
 
                 <div class="form-group">
                     <label for="" class="control-label">About you</label>
-					{{render_errors(form.bio)}}
+                    {{render_errors(form.bio)}}
                     {{form.bio(class_="form-control", rows=5)}}
                     <span class="message pull-right">49 words left</span>
                 </div>
                 <div class="multipicker form-group">
                     <label for="" class="control-label">What's your major?</label>
-					{{render_errors(form.majors)}}
+                    {{render_errors(form.majors)}}
                     <div class="multipicker-row">
-						{{form.majors(class_="form-control")}}
+                        {{form.majors(class_="form-control")}}
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="" class="control-label">Location</label>
-					{{render_errors(form.location)}}
+                    {{render_errors(form.location)}}
                     {{form.location(class_="form-control")}}
                 </div>
 
                 <div class="multipicker form-group">
                     <label for="" class="control-label">What languages do you speak?</label>
-					{{render_errors(form.languages)}}
+                    {{render_errors(form.languages)}}
                     <div class="multipicker-row">
-						{{form.languages(class_="form-control")}}
+                        {{form.languages(class_="form-control")}}
                     </div>
                 </div>
 
-                <div class="form-group">
+    <!--             <div class="form-group">
                     <label for="" class="control-label">What are you interested in?</label>
-					TODO + ERRORS
-                </div>
+                    TODO + ERRORS
+                </div> -->
 
                 <div class="form-group">
                     <label for="" class="control-label">Contact</label>
 
-					<label for="" class="control-label">Facebook</label>
-					{{render_errors(form.facebook)}}
-					{{form.facebook(class_="form-control")}}
-					<label for="" class="control-label">Twitter</label>
-					{{render_errors(form.twitter)}}
-					{{form.twitter(class_="form-control")}}
-					<label for="" class="control-label">LinkedIn</label>
-					{{render_errors(form.linkedin)}}
-					{{form.linkedin(class_="form-control")}}
+                    <label for="" class="control-label">Facebook</label>
+                    {{render_errors(form.facebook)}}
+                    {{form.facebook(class_="form-control")}}
+                    <label for="" class="control-label">Twitter</label>
+                    {{render_errors(form.twitter)}}
+                    {{form.twitter(class_="form-control")}}
+                    <label for="" class="control-label">LinkedIn</label>
+                    {{render_errors(form.linkedin)}}
+                    {{form.linkedin(class_="form-control")}}
 
-					<label for="" class="control-label">Email</label>
-					{{render_errors(form.email)}}
-					{{form.email(class_="form-control")}}
                 </div>
 
                 <div class="form-group">
