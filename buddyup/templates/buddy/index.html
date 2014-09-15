@@ -10,6 +10,7 @@
 <article id="main-content" class="container">
     <section class="row">
         <div class="col-md-12 col-md-offset-0">
+        	{% if classmates|list|count > 0 %}
             <ul class="block-grid">
 				{% for classmate in classmates %}
 				<li class="block {% if classmate.is_buddy %}followed{%endif%}" style="background-image:url('{{ photo_large(classmate) }}')">
@@ -35,7 +36,7 @@
 							</span>
 							{% endif %}
 
-						{%endif%}
+						{% endif %}
 
 
 
@@ -43,8 +44,13 @@
 				</li>
 				{% endfor %}
             </ul>
+            {% else %}
+				<p>You don't have any classmates yet - add some <a href="/courses">courses</a> to get started!</p>
+			{% endif %}
         </div>
-		{% include "buddy/pagination_nav.html" %}
+        {% if classmates|list|count > 0 %}
+			{% include "buddy/pagination_nav.html" %}
+		{% endif %}
     </section>
 </article>
 
