@@ -16,7 +16,7 @@ import os
 #--------------------- NEW STUFF BELOW ---------------------------
 
 from flask.ext.wtf import Form
-from wtforms import StringField, HiddenField, TextAreaField, SelectField, DateTimeField, IntegerField, TextField
+from wtforms import StringField, HiddenField, TextAreaField, SelectField, DateTimeField, IntegerField, TextField, BooleanField
 from wtforms.validators import DataRequired, NumberRange, AnyOf
 from wtforms.validators import required
 
@@ -114,7 +114,8 @@ def course_event(course_id, event_id):
 
 
 class EventInvitationForm(Form):
-    receiver_id = IntegerField(validators=[required()])
+    # We're only using the form for its CSRF token.
+    pass
 
 class EventCommentForm(Form):
     contents = TextField(validators=[required()])
@@ -127,6 +128,15 @@ class EventRSVPForm(Form):
         return self.attending.data == "true"
 
 
+def send_event_invitation(sender, recipient, event):
+    # Stub. Doesn't do anything yet. Awaiting tests.
+    invitation = EventInvitation()
+    # invitation.event_id = event_id
+    # invitation.sender_id = g.user.id
+    # db.session.add(invitation)
+    # db.session.commit()
+
+from buddyup.pages.courses import coursemates_query
 @app.route('/courses/<int:course_id>/events/<int:event_id>/invitation', methods=['GET', 'POST'])
 @login_required
 def course_event_invitation(course_id, event_id):
@@ -135,15 +145,23 @@ def course_event_invitation(course_id, event_id):
     event = Event.query.get_or_404(event_id)
 
     if form.validate_on_submit():
-        invitation = EventInvitation()
-        invitation.event_id = event_id
-        invitation.sender_id = g.user.id
-        invitation.receiver_id = form.receiver_id.data
-        db.session.add(invitation)
-        db.session.commit()
-        return "{}"
+        invite_everyone = (request.form["everyone"] == "true")
+        invited = [int(id) for id in request.form.getlist("invited")]
+
+        invitees = coursemates_query(course.id)
+
+        if not invite_everyone:
+            invitees = coursemates_query(course.id).filter(User.id.in_(invited))
+
+        for invitee in invitees:
+            send_event_invitation(g.user, invitee, event)
+
+        invitees = list(invitees)
+
+        return "Invite %s users: %s" % (len(invitees), ", ".join([i.user_name for i in invitees]))
     else:
-        return render_template('courses/events/invite.html', form=form, course=course, event=event)
+        coursemates = coursemates_query(course.id)
+        return render_template('courses/events/invite.html', form=form, course=course, event=event, coursemates=coursemates)
 
 
 @app.route('/courses/<int:course_id>/events/<int:event_id>/attendee', methods=['GET', 'POST'])
