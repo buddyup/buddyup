@@ -34,7 +34,6 @@
 			<span class="location">
 				Location: {{ user.location.name }}
 			</span>
-			<a class="btn btn-medium btn-primary" style="float: right; margin-left:-25px;" href="{{ url_for('invite_send', user_name=user.user_name) }}">Invite</a>
 			{% if not loop.last %}
 				<hr>
 			{% endif %}
