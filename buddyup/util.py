@@ -306,6 +306,19 @@ def time_pulldown():
 def acting_on_self(user):
     return user.id == g.user.id
 
+from buddyup.database import Notification
+
+def send_notification(sender, recipient, payload, **kwargs):
+
+    notification = Notification(sender_id=sender.id, recipient_id=recipient.id)
+
+    notification.payload = payload
+    notification.action_text = kwargs['action_text'] if 'action_text' in kwargs else ""
+    notification.action_link = kwargs['action_link'] if 'action_link' in kwargs else ""
+
+    db.session.add(notification)
+    db.session.commit()
+
 
 #----------------------------------------------------------------------------
 # Demo & Diagnostic support methods
