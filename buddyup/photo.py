@@ -59,7 +59,7 @@ def get_photo_url(user_record, size, bucket=None):
     """
     Get a photo size's URL based on the given Dimensions
     """
-    if user_record.has_photos:
+    if user_record.has_photos and ('AWS_S3_BUCKET' in app.config):
         if bucket is None:
             bucket = app.config['AWS_S3_BUCKET']
         return "http://{bucket}.s3.amazonaws.com/{key}".format(
