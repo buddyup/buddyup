@@ -39,6 +39,8 @@ class EventTests(unittest.TestCase):
             # Delete users from the memory database, if used.
             User.query.delete()
             Event.query.delete()
+            EventInvitation.query.delete()
+            Notification.query.delete()
 
 
     @property
@@ -220,6 +222,44 @@ class EventTests(unittest.TestCase):
 
         # Skippy should have his invite by now.
         skippy_invite_count = EventInvitation.query.filter_by(receiver_id=skippy_id, sender_id=test_user_id).count()
+        self.assertEqual(1, skippy_invite_count)
+
+        # Skippy should have an invitation.
+        self.assertEqual(1, Notification.query.count())
+
+
+    def test_create_event_with_invited_coursemates(self):
+        client = self.test_client # Only initiate the client once during this test since we maintain state.
+        test_user = User.query.filter(User.user_name=="test_user").first()
+        skippy = User.query.filter(User.user_name=="skippy").first()
+
+        course = Course.query.first()
+
+        # We and skippy need to be coursemates.
+        test_user.courses.append(course)
+        skippy.courses.append(course)
+
+        db.session.commit()
+
+        create_event_url = '/courses/%s/event' % course.id
+
+        new_event_page = client.get(create_event_url, follow_redirects=True)
+
+        new_event_request = {
+            "title": "Best Event Ever",
+            "location": "Van Down By The River",
+            "date": "12/25/14",
+            "start": "55800", # 3:30pm
+            "end": "61200", # 5:00pm,
+            "everyone": "false",
+            "invited": [skippy.id],
+            "csrf_token": BeautifulSoup(new_event_page.data).find(id="csrf_token")['value']
+        }
+
+        client.post(create_event_url, data=new_event_request, follow_redirects=True)
+
+        # Skippy should have an invite.
+        skippy_invite_count = EventInvitation.query.filter_by(receiver_id=skippy.id, sender_id=test_user.id).count()
         self.assertEqual(1, skippy_invite_count)
 
         # Skippy should have an invitation.

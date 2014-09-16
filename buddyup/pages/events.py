@@ -66,9 +66,21 @@ def new_event(course_id):
         db.session.add(event)
         db.session.commit()
 
+        invite_everyone = (request.form.get("everyone") == "true")
+        invited = [int(id) for id in request.form.getlist("invited")]
+
+        invitees = coursemates_query(course.id)
+
+        # TODO: Need to prevent people already invited from being reinvited.
+        if not invite_everyone:
+            invitees = coursemates_query(course.id).filter(User.id.in_(invited))
+
+        for invitee in invitees:
+            send_event_invitation(g.user, invitee, event)
+
+        flash("Invitations sent.")
+
         return redirect(url_for('course_event', course_id=course.id, event_id=event.id))
-        # TODO: Bring back the invitations view (Step 2) when that part is ready.
-        # return redirect(url_for('course_event_invitation', course_id=course.id, event_id=event.id))
     else:
         field_names = form.errors.keys()
         flash("There was a problem. Please look over the information you've given and make sure it is correct.")
@@ -157,7 +169,7 @@ def course_event_invitation(course_id, event_id):
     event = Event.query.get_or_404(event_id)
 
     if form.validate_on_submit():
-        invite_everyone = (request.form["everyone"] == "true")
+        invite_everyone = (request.form.get("everyone") == "true")
         invited = [int(id) for id in request.form.getlist("invited")]
 
         invitees = coursemates_query(course.id)
