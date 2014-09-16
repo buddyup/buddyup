@@ -3,7 +3,7 @@ import json
 from datetime import datetime
 from buddyup.pages import events
 from buddyup.app import app
-from buddyup.database import db, User, Course, Event, EventInvitation, EventComment
+from buddyup.database import db, User, Course, Event, EventInvitation, EventComment, Notification
 from buddyup.util import time_from_timestamp
 from bs4 import BeautifulSoup
 
@@ -18,14 +18,16 @@ class EventTests(unittest.TestCase):
         db.session.commit()
 
         # Create a user profile to invite.
-        skippy = User(user_name="skippy")
+        skippy = User(user_name="skippy", full_name="Skippy Binks")
         skippy.initialized = True
+        skippy.has_photos = True
         db.session.add(skippy)
         db.session.commit()
 
         # Create a user to run our tests as.
         test_user = User(user_name="test_user", full_name="John Smith")
         test_user.initialized = True
+        test_user.has_photos = True
         db.session.add(test_user)
         db.session.commit()
 
@@ -160,11 +162,20 @@ class EventTests(unittest.TestCase):
         self.assertEqual(0, Event.query.count(), "That event should not have been created because the times are negative.")
 
 
-    def test_invite_event(self):
+    def test_invite_coursemate_to_event(self):
         client = self.test_client # Only initiate the client once during this test since we maintain state.
-        user_id = User.query.filter(User.user_name=="test_user").first().id
-        course_id = Course.query.first().id
-        create_event_url = '/courses/%s/event' % course_id
+        test_user = User.query.filter(User.user_name=="test_user").first()
+        skippy = User.query.filter(User.user_name=="skippy").first()
+
+        course = Course.query.first()
+
+        # We and skippy need to be coursemates.
+        test_user.courses.append(course)
+        skippy.courses.append(course)
+
+        db.session.commit()
+
+        create_event_url = '/courses/%s/event' % course.id
 
         new_event_page = client.get(create_event_url, follow_redirects=True)
 
@@ -186,16 +197,19 @@ class EventTests(unittest.TestCase):
         skippy_invite_count = EventInvitation.query.filter_by(receiver_id=skippy_id).count()
         self.assertEqual(0, skippy_invite_count)
 
+        self.assertEqual(0, Notification.query.count())
+
         new_event = Event.query.first()
 
-        event_invite_url = '/courses/%s/events/%s/invitation' % (course_id, new_event.id)
+        event_invite_url = '/courses/%s/events/%s/invitation' % (course.id, new_event.id)
 
         # Grab the csrf token so we can make our request.
         csrf_token = BeautifulSoup(client.get(event_invite_url, follow_redirects=True).data).find(id="csrf_token")['value']
 
         invitation = {
             'csrf_token': csrf_token,
-            'receiver_id': skippy_id
+            'everyone': "false",
+            'invited': [skippy_id]
         }
 
         response = client.post(event_invite_url, data=invitation, follow_redirects=True)
@@ -206,7 +220,10 @@ class EventTests(unittest.TestCase):
 
         # Skippy should have his invite by now.
         skippy_invite_count = EventInvitation.query.filter_by(receiver_id=skippy_id, sender_id=test_user_id).count()
-        self.assertEqual(1, skippy_invite_count, "An event invitation should exist.")
+        self.assertEqual(1, skippy_invite_count)
+
+        # Skippy should have an invitation.
+        self.assertEqual(1, Notification.query.count())
 
 
 

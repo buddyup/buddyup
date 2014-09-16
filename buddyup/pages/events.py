@@ -127,14 +127,26 @@ class EventRSVPForm(Form):
     def is_attending(self):
         return self.attending.data == "true"
 
+from buddyup.util import send_notification
 
-def send_event_invitation(sender, recipient, event):
-    # Stub. Doesn't do anything yet. Awaiting tests.
+def send_event_invitation(sender, receiver, event):
     invitation = EventInvitation()
-    # invitation.event_id = event_id
-    # invitation.sender_id = g.user.id
-    # db.session.add(invitation)
-    # db.session.commit()
+    invitation.event_id = event.id
+    invitation.sender_id = g.user.id
+    invitation.receiver_id = receiver.id
+    db.session.add(invitation)
+    db.session.commit()
+
+    event_link = '<a href="%s">%s</a>' % (url_for('course_event', course_id=event.course.id, event_id=event.id), event.name)
+
+    payload = "%s invited you to '%s'" % (sender.full_name, event_link)
+    text = "Accept"
+    link = url_for('course_event_invitation', course_id=event.course.id, event_id=event.id)
+
+    send_notification(sender, receiver, payload, action_text=text, action_link=link)
+
+
+
 
 from buddyup.pages.courses import coursemates_query
 @app.route('/courses/<int:course_id>/events/<int:event_id>/invitation', methods=['GET', 'POST'])
@@ -150,15 +162,16 @@ def course_event_invitation(course_id, event_id):
 
         invitees = coursemates_query(course.id)
 
+        # TODO: Need to prevent people already invited from being reinvited.
         if not invite_everyone:
             invitees = coursemates_query(course.id).filter(User.id.in_(invited))
 
         for invitee in invitees:
             send_event_invitation(g.user, invitee, event)
 
-        invitees = list(invitees)
+        flash("Invitations sent.")
 
-        return "Invite %s users: %s" % (len(invitees), ", ".join([i.user_name for i in invitees]))
+        return redirect(url_for('course_event', course_id=course.id, event_id=event.id))
     else:
         coursemates = coursemates_query(course.id)
         return render_template('courses/events/invite.html', form=form, course=course, event=event, coursemates=coursemates)
