@@ -102,7 +102,7 @@ def coursemates_query(course_id):
     Return EVERYONE taking the course.
     This returns a query object which you can refine further.
     """
-    return User.query.filter(User.courses.any(Course.id==22))\
+    return User.query.filter(User.courses.any(Course.id==course_id))\
             .filter(User.has_photos == True)\
             .filter(User.id != g.user.id)
 
