@@ -1,6 +1,6 @@
 import unittest
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from buddyup.pages import events
 from buddyup.app import app
 from buddyup.database import db, User, Course, Event, EventInvitation, EventComment, Notification
@@ -36,13 +36,11 @@ class EventTests(unittest.TestCase):
         if 'DATABASE_URL' in os.environ and os.environ['DATABASE_URL'] != 'sqlite:///:memory:':
             os.remove(os.environ['DATABASE_URL'])
         else:
-            # Delete users from the memory database, if used.
-            User.query.delete()
-            Event.query.delete()
-            EventInvitation.query.delete()
-            Notification.query.delete()
+            db.drop_all()
 
 
+    # TODO: Make this NOT a property, it causes too much hassle w/ sqlalchemy sessions. Call once
+    # and cache in your test method.
     @property
     def test_client(self):
         """
@@ -99,6 +97,7 @@ class EventTests(unittest.TestCase):
 
         # JSON should have a single Event afterwards.
 
+
     def test_create_event(self):
         client = self.test_client # Only initiate the client once during this test since we maintain state.
         user_id = User.query.filter(User.user_name=="test_user").first().id
@@ -135,6 +134,9 @@ class EventTests(unittest.TestCase):
         self.assertEqual("03:30PM", new_event.start.strftime("%I:%M%p"))
 
         self.assertEqual("05:00PM", new_event.end.strftime("%I:%M%p"))
+
+        # Owner should automatically attend event.
+        self.assertIn(new_event, User.query.filter(User.user_name=="test_user").first().events.all())
 
 
 
@@ -268,33 +270,31 @@ class EventTests(unittest.TestCase):
 
 
     def test_join_event(self):
-        client = self.test_client # Only initiate the client once during this test since we maintain state.
-        user_id = User.query.filter(User.user_name=="test_user").first().id
-        course_id = Course.query.first().id
-        create_event_url = '/courses/%s/event' % course_id
+        client = self.test_client
 
-        new_event_page = client.get(create_event_url, follow_redirects=True)
+        # Create the event directly, with Skippy as the owner.
+        skippy = User.query.filter(User.user_name=="skippy").first()
+        course = Course.query.first()
 
-        new_event_request = {
-            "title": "Best Event Ever",
-            "location": "Van Down By The River",
-            "date": "12/25/14",
-            "start": "55800", # 3:30pm
-            "end": "61200", # 5:00pm,
-            "csrf_token": BeautifulSoup(new_event_page.data).find(id="csrf_token")['value']
-        }
+        event = Event()
+        event.course = course
+        event.title = "Best Event Ever"
+        event.location = "Van Down By The River"
+        event.start = datetime.now()+ timedelta(days=1)
+        event.end = datetime.now() + timedelta(days=1, hours=2)
+        event.owner = skippy
 
-        client.post(create_event_url, data=new_event_request, follow_redirects=True)
+        db.session.add(event)
+        db.session.commit()
 
-        new_event = Event.query.first()
+        test_user = User.query.filter(User.user_name=="test_user").first()
 
-        # Event exists now. Let's join it.
+        self.assertEqual(0, test_user.events.count())
 
-        # First make sure I don't have any events.
-        me = User.query.filter_by(user_name="test_user").first()
-        self.assertEqual(0, me.events.count())
+        # We have to re-fetch the event because it's not bound to a session. More puzzles from sqlalchemy.
+        event = Event.query.first()
 
-        event_attend_url = '/courses/%s/events/%s/attendee' % (course_id, new_event.id)
+        event_attend_url = '/courses/%s/events/%s/attendee' % (event.course.id, event.id)
 
         # Grab the csrf token so we can make our request.
         csrf_token = client.get(event_attend_url, follow_redirects=True).data
@@ -308,37 +308,42 @@ class EventTests(unittest.TestCase):
 
         self.assertEqual('200 OK', response.status)
 
-        me = User.query.filter_by(user_name="test_user").first()
-        self.assertEqual(1, me.events.count())
+        # Refresh test_user from the DB.
+        test_user = User.query.filter_by(user_name="test_user").first()
+        self.assertEqual(1, test_user.events.count())
 
 
 
     def test_unjoin_event(self):
-        client = self.test_client # Only initiate the client once during this test since we maintain state.
-        user_id = User.query.filter(User.user_name=="test_user").first().id
-        course_id = Course.query.first().id
+        client = self.test_client
 
-        # Create the new event
-        new_event = Event()
-        new_event.title = "Best Event Ever"
-        new_event.location = "Van Down By The River"
-        new_event.start = datetime.strptime("12/25/14 3:30pm", '%m/%d/%y %I:%M%p')
-        new_event.end = datetime.strptime("12/25/14 5:00pm", '%m/%d/%y %I:%M%p')
-        new_event.course_id = course_id
+        # Create the event directly, with Skippy as the owner.
+        skippy = User.query.filter(User.user_name=="skippy").first()
+        course = Course.query.first()
 
-        db.session.add(new_event)
+        event = Event()
+        event.course = course
+        event.title = "Best Event Ever"
+        event.location = "Van Down By The River"
+        event.start = datetime.now()+ timedelta(days=1)
+        event.end = datetime.now() + timedelta(days=1, hours=2)
+        event.owner = skippy
+
+        db.session.add(event)
         db.session.commit()
 
+        test_user = User.query.filter(User.user_name=="test_user").first()
+
         # Join the event.
-        me = User.query.filter_by(user_name="test_user").first()
-        me.events.append(new_event)
+        test_user.events.append(event)
+        db.session.commit()
 
         # Verify that we're attending the event.
-        me = User.query.filter_by(user_name="test_user").first()
-        self.assertEqual(1, me.events.count())
+        test_user = User.query.filter_by(user_name="test_user").first()
+        self.assertEqual(1, test_user.events.count())
 
         # Let's unjoin
-        event_attend_url = '/courses/%s/events/%s/attendee' % (course_id, new_event.id)
+        event_attend_url = '/courses/%s/events/%s/attendee' % (event.course.id, event.id)
 
         # Grab the csrf token so we can make our request.
         csrf_token = client.get(event_attend_url, follow_redirects=True).data
@@ -350,8 +355,8 @@ class EventTests(unittest.TestCase):
 
         client.post(event_attend_url, data=rsvp, follow_redirects=True)
 
-        me = User.query.filter_by(user_name="test_user").first()
-        self.assertEqual(0, me.events.count())
+        test_user = User.query.filter_by(user_name="test_user").first()
+        self.assertEqual(0, test_user.events.count())
 
 
 

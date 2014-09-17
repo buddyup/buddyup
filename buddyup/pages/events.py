@@ -71,6 +71,10 @@ def new_event(course_id):
         event.note = form.note.data
 
         db.session.add(event)
+
+        # The event owner should automatically join the new event.
+        g.user.events.append(event)
+
         db.session.commit()
 
         invite_everyone = (request.form.get("everyone") == "true")
@@ -92,7 +96,6 @@ def new_event(course_id):
         field_names = form.errors.keys()
         flash("There was a problem. Please look over the information you've given and make sure it is correct.")
         coursemates = coursemates_query(course.id)
-        app.logger.info(coursemates.count())
         return render_template('courses/events/new.html',
                                 course=Course.query.get_or_404(course_id),
                                 coursemates=coursemates,
