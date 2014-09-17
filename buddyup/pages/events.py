@@ -51,7 +51,12 @@ class EventForm(Form):
 def new_event(course_id):
     form = EventForm()
     course = User.query.get_or_404(course_id)
-    if request.method != 'POST': return render_template('courses/events/new.html', course=Course.query.get_or_404(course_id), times=time_pulldown(), form=form)
+    if request.method != 'POST':
+        return render_template('courses/events/new.html',
+                                course=Course.query.get_or_404(course_id),
+                                coursemates=coursemates_query(course.id),
+                                times=time_pulldown(),
+                                form=form)
 
     if form.validate():
 
@@ -62,6 +67,8 @@ def new_event(course_id):
         event.location = form.location.data
         event.start = datetime.utcfromtimestamp(date_seconds + form.start.data)
         event.end = datetime.utcfromtimestamp(date_seconds + form.end.data)
+
+        event.note = form.note.data
 
         db.session.add(event)
         db.session.commit()
@@ -84,7 +91,13 @@ def new_event(course_id):
     else:
         field_names = form.errors.keys()
         flash("There was a problem. Please look over the information you've given and make sure it is correct.")
-        return render_template('courses/events/new.html', course=Course.query.get_or_404(course_id), times=time_pulldown(), form=form)
+        coursemates = coursemates_query(course.id)
+        app.logger.info(coursemates.count())
+        return render_template('courses/events/new.html',
+                                course=Course.query.get_or_404(course_id),
+                                coursemates=coursemates,
+                                times=time_pulldown(),
+                                form=form)
 
 
 @app.route('/courses/<int:id>/events.json')
@@ -120,7 +133,10 @@ def course_event(course_id, event_id):
                             course=course,
                             event=event,
                             comments=comments,
-                            form=EventRSVPForm(),
+                            join_form=EventRSVPForm(),
+                            invite_form=EventInvitationForm(),
+                            comment_form=EventCommentForm(),
+                            coursemates=coursemates_query(course.id),
                             attending=attending,
                             attendees=attendees)
 
@@ -181,7 +197,8 @@ def course_event_invitation(course_id, event_id):
         for invitee in invitees:
             send_event_invitation(g.user, invitee, event)
 
-        flash("Invitations sent.")
+        if invitees.count() > 0:
+            flash("Invitations sent.")
 
         return redirect(url_for('course_event', course_id=course.id, event_id=event.id))
     else:

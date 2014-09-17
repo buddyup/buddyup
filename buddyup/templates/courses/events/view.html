@@ -16,7 +16,7 @@
 				$( document ).ready(function(){
 					$("#join").click(function(){
 						var rsvp = {
-							csrf_token: "{{form.csrf_token.current_token}}",
+							csrf_token: "{{join_form.csrf_token.current_token}}",
 							attending: "{{(not attending)|lower}}"
 						};
 						$.post("{{url_for('course_event_attend', course_id=course.id, event_id=event.id)}}", rsvp, function(){ location.reload() });
@@ -44,12 +44,23 @@
             <div class="group-heading">
                 <h3><span class="icon icon-event">&nbsp;</span>Event Details</h3>
             </div>
-            <div class="location"><span class="icon icon-location">&nbsp;</span>{{event.location}}<span class="sublocation">Reserved Room 2</span></div>
+            <div class="location"><span class="icon icon-location">&nbsp;</span>{{event.location}}</div>
             <div class="date"><span class="day"><span class="icon icon-event">&nbsp;</span>{{event|date_long}}</span>&bull;<span class="time">{{event|time_span}}</span></div>
             <div class="author"><span class="icon icon-person">&nbsp;</span>by <a href="{{profile(event.owner)}}">{{event.owner.full_name}}</a></div>
             <div class="availability"><span class="icon icon-eye">&nbsp;</span>This event is public.</div>
         </div>
     </section>
+
+	{% if event.note %}
+    <section id="info" class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="group-heading">
+                <h3><span class="icon icon-note">&nbsp;</span>Notes</h3>
+            </div>
+			{{event.note}}
+        </div>
+    </section>
+	{% endif %}
 
     <section id="attendants" class="row">
         <div class="col-md-6 col-md-offset-3">
@@ -83,24 +94,28 @@
                             <div id="select-options" class=""><a href="">Select All</a>&nbsp;|&nbsp;<a href="">Select None</a></div>
                             <div class="form-group">
                                 <ul class="tablelist-group">
-									{% for x in range(10) %}
-                                    <li class="tablelist-group-row">
-                                        <ul class="tablelist">
-                                            <li class="icon"><a href="./profile.html"><div class="block circle" style="background-image:url('../_assets/images/people/15.jpg')">&nbsp;</div></a></li>
-                                            <li class="main">
-                                                <span class="title">Aaron Cook</span>
-                                                <span class="subtitle">Downtown</span>
-                                            </li>
-                                            <li class="action"><input type="checkbox" value=""></li>
-                                        </ul>
-                                    </li>
+									<form id="invite_form" action="{{ url_for('course_event_invitation', course_id=course.id, event_id=event.id) }}" method="POST">
+									{{ invite_form.csrf_token }}
+
+									{% for coursemate in coursemates %}
+		                            <li class="tablelist-group-row">
+		                                <ul class="tablelist">
+		                                    <li class="icon"><a href="{{profile(coursemate)}}"><div class="block circle" style="background-image:url('{{photo_large(coursemate) }}')">&nbsp;</div></a></li>
+		                                    <li class="main">
+		                                        <span class="title">{{coursemate.full_name}}</span>
+		                                        <span class="subtitle">{{coursemate.location}}</span>
+		                                    </li>
+		                                    <li class="action"><input type="checkbox" name="invited" value="{{coursemate.id}}"></li>
+		                                </ul>
+		                            </li>
 									{% endfor %}
+									</form>
                                 </ul>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <a class="button default" data-dismiss="modal">Cancel</a>
-                            <a class="button primary">Invite 3 people</a>
+                            <a href="javascript:invite_form.submit()" class="button primary">Invite {{0}} people</a>
                         </div>
                     </div>
                 </div>
@@ -129,7 +144,7 @@
                 <li class="tablelist-group-row">
                     <div class="message-add">
 						<form id="comment_form" action="{{ url_for('course_event_comment', course_id=course.id, event_id=event.id) }}" method="POST">
-						{{ form.csrf_token }}
+						{{ comment_form.csrf_token }}
                         <h4>Add a comment</h4>
                         <textarea rows="4" name="contents"></textarea>
                         <a href="javascript:comment_form.submit()" class="button small submit">Post</a>
@@ -142,4 +157,4 @@
     </section>
 
 </article>
->{% endblock %}
+{% endblock %}
