@@ -31,7 +31,7 @@ TIME_8_30_AM = 30600
 class EventForm(Form):
     title = StringField(u'Event Title', validators=[DataRequired()])
     location = StringField(u'Location', validators=[DataRequired()])
-    note = TextAreaField(u'Note', default="Here's some additional details...")
+    note = TextAreaField(u'Note', default="Here are some additional details...")
     date = DateTimeField(u'Date', format='%m/%d/%y')
     start = SelectField(u'Start', choices = time_pulldown(), coerce=int, validators=[NumberRange(min=START_OF_DAY, max=END_OF_DAY)], default=TIME_8_00_AM)
     end = SelectField(u'End', choices = time_pulldown(),  coerce=int, validators=[NumberRange(min=START_OF_DAY, max=END_OF_DAY)], default=TIME_8_30_AM)
