@@ -75,7 +75,7 @@
             <ul class="block-list">
 				{% for attendee in attendees[:5]%}
 	            <li class="">
-	                <a href="{{profile(attendee)}}"><div class="block" style="background-image:url('{{ photo_large(attendee) }}')">&nbsp;</div></a>
+	                <a href="{{profile(attendee)}}"><div class="block" title="{{attendee.full_name}}" style="background-image:url('{{ photo_large(attendee) }}')">&nbsp;</div></a>
 	            </li>
 				{% endfor %}
 				{% if attendees|length > 5 %}

@@ -230,6 +230,77 @@ class EventTests(unittest.TestCase):
         self.assertEqual(1, Notification.query.count())
 
 
+    def test_invite_coursemate_is_idempotent(self):
+        client = self.test_client # Only initiate the client once during this test since we maintain state.
+        test_user = User.query.filter(User.user_name=="test_user").first()
+        skippy = User.query.filter(User.user_name=="skippy").first()
+
+        course = Course.query.first()
+
+        # We and skippy need to be coursemates.
+        test_user.courses.append(course)
+        skippy.courses.append(course)
+
+        db.session.commit()
+
+        create_event_url = '/courses/%s/event' % course.id
+
+        new_event_page = client.get(create_event_url, follow_redirects=True)
+
+        new_event_request = {
+            "title": "Best Event Ever",
+            "location": "Van Down By The River",
+            "date": "12/25/14",
+            "start": "55800", # 3:30pm
+            "end": "61200", # 5:00pm,
+            "csrf_token": BeautifulSoup(new_event_page.data).find(id="csrf_token")['value']
+        }
+
+        client.post(create_event_url, data=new_event_request, follow_redirects=True)
+
+        # Event exists now. Let's invite Skippy.
+
+        # Skippy shouldn't have an event yet.
+        skippy_id = User.query.filter_by(user_name="skippy").first().id
+        skippy_invite_count = EventInvitation.query.filter_by(receiver_id=skippy_id).count()
+        self.assertEqual(0, skippy_invite_count)
+
+        self.assertEqual(0, Notification.query.count())
+
+        new_event = Event.query.first()
+
+        event_invite_url = '/courses/%s/events/%s/invitation' % (course.id, new_event.id)
+
+        # Post invitation twice, raising the question, "Does this generate two invites?"
+
+        invitation = {
+            'csrf_token': BeautifulSoup(client.get(event_invite_url, follow_redirects=True).data).find(id="csrf_token")['value'],
+            'everyone': "false",
+            'invited': [skippy_id]
+        }
+
+        response = client.post(event_invite_url, data=invitation, follow_redirects=True)
+
+        invitation = {
+            'csrf_token': BeautifulSoup(client.get(event_invite_url, follow_redirects=True).data).find(id="csrf_token")['value'],
+            'everyone': "false",
+            'invited': [skippy_id]
+        }
+
+        response = client.post(event_invite_url, data=invitation, follow_redirects=True)
+
+
+        test_user_id = User.query.filter_by(user_name="test_user").first().id
+
+        # Skippy should have his invite by now.
+        skippy_invite_count = EventInvitation.query.filter_by(receiver_id=skippy_id, sender_id=test_user_id).count()
+        self.assertEqual(1, skippy_invite_count)
+
+        # Skippy should have an invitation.
+        self.assertEqual(1, Notification.query.count())
+
+
+
     def test_create_event_with_invited_coursemates(self):
         client = self.test_client # Only initiate the client once during this test since we maintain state.
         test_user = User.query.filter(User.user_name=="test_user").first()

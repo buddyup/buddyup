@@ -193,9 +193,13 @@ def course_event_invitation(course_id, event_id):
 
         invitees = coursemates_query(course.id)
 
-        # TODO: Need to prevent people already invited from being reinvited.
         if not invite_everyone:
-            invitees = coursemates_query(course.id).filter(User.id.in_(invited))
+            already_invited = [i.receiver_id for i in EventInvitation.query.filter(EventInvitation.event_id==event_id)]
+
+            # Invite selected coursemates as long as they aren't already invited by the current user.
+            invitees = coursemates_query(course.id)\
+                                        .filter(User.id.in_(invited))\
+                                        .filter(~User.id.in_(already_invited))
 
         for invitee in invitees:
             send_event_invitation(g.user, invitee, event)
