@@ -1,20 +1,28 @@
 from flask import g, request, abort, redirect, url_for
 
 from buddyup.app import app
-from buddyup.database import (User, BuddyInvitation, Major, MajorMembership,
-                              Language, LanguageMembership,
-                              Course, CourseMembership, db,
-                              Location, Action)
+from buddyup.database import db, User, Notification
 from buddyup.templating import render_template
-from buddyup.util import login_required, args_get, sorted_languages, shuffled, track_activity
-
-from collections import defaultdict
+from buddyup.util import login_required
 
 
-@app.route("/notifications")
+@app.route('/notifications/')
 @login_required
-@track_activity
 def list_notifications():
-    return render_template('notifications/list.html', notifications=g.user.notifications, user=g.user)
+    notifications = Notification.query.filter(Notification.recipient_id==g.user.id).filter(Notification.deleted!=True)
+    return render_template('notifications/list.html', notifications=notifications, user=g.user)
 
 
+@app.route('/notifications/<int:id>', methods=['POST'])
+@login_required
+def clear_notification(id):
+    notification = Notification.query.get_or_404(id)
+
+    # YOU MUST OWN THIS NOTIFICATION.
+    if notification.recipient != g.user:
+        abort(404)
+
+    db.session.delete(notification)
+    db.session.commit()
+
+    return "{}"

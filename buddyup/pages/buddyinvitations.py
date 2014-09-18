@@ -97,7 +97,5 @@ def accept_invitation(receiver_name, sender_name):
     invitation.rejected = False
     db.session.commit()
 
-    flash("You are now buddies!")
-
     # Once we've accepted the invitation, go visit the sender's page.
     return redirect(url_for('buddy_view', user_name=sender_name))

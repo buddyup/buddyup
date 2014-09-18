@@ -14,8 +14,18 @@
 <article id="main-content" class="container">
 <script>
 $(function(){
-	$('li.action a').click(function(click){
-		$(click.target).replaceWith("Accepted");
+	$('li.action a.accept').click(function(click){
+
+		var actionURL = click.target.href;
+		var notificationURL = click.target.getAttribute('data-notification');
+
+		$.post(actionURL, {}, function(){
+
+			$.post(notificationURL, {}, function(){
+				$(click.target).replaceWith("Accepted");
+			})
+		});
+
 		return false;
 	})
 });
@@ -35,7 +45,7 @@ $(function(){
 	                            <div class="subtitle">{{notification.time}}</div>
 	                        </li>
 							{% if notification.action_link %}
-	                        <li class="action"><a href="{{notification.action_link}}">{{notification.action_text}}</a></li>
+	                        <li class="action"><a href="{{notification.action_link}}" class="accept" data-notification="{{url_for('clear_notification', id=notification.id)}}">{{notification.action_text}}</a></li>
 							{% endif %}
 	                    </ul>
 	                </li>

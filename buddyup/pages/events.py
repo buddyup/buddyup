@@ -172,7 +172,7 @@ def send_event_invitation(sender, receiver, event):
 
     payload = "%s invited you to '%s'" % (sender.full_name, event_link)
     text = "Accept"
-    link = url_for('course_event_invitation', course_id=event.course.id, event_id=event.id)
+    link = url_for('accept_event_invitation', course_id=event.course.id, event_id=event.id, invitation_id=invitation.id)
 
     send_notification(sender, receiver, payload, action_text=text, action_link=link)
 
@@ -207,6 +207,22 @@ def course_event_invitation(course_id, event_id):
     else:
         coursemates = coursemates_query(course.id)
         return render_template('courses/events/invite.html', form=form, course=course, event=event, coursemates=coursemates)
+
+
+@app.route('/courses/<int:course_id>/events/<int:event_id>/invitations/<int:invitation_id>', methods=['POST'])
+@login_required
+def accept_event_invitation(course_id, event_id, invitation_id):
+
+    invitation = EventInvitation.query.get_or_404(invitation_id)
+
+    # If we're not the receiver we see nothing.
+    if invitation.receiver != g.user: abort(404)
+
+    g.user.events.append(invitation.event)
+    db.session.commit()
+
+    return "{}"
+
 
 
 @app.route('/courses/<int:course_id>/events/<int:event_id>/attendee', methods=['GET', 'POST'])
