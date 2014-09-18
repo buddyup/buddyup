@@ -10,7 +10,7 @@ Descriptions:
 class Base:
     BUDDYUP_ENABLE_AUTHENTICATION = True  # TODO: Default to CAS? Is that right?
     BUDDYUP_ENABLE_ADMIN_ALL_USERS = False
-    CAS_SERVER = 'https://sso.pdx.edu/cas'
+    CAS_SERVER = os.environ.get('CAS_SERVER', 'https://sso.pdx.edu/cas')
     SECRET_KEY = 'foo'
     DEFAULT_EMAIL_FORMAT = "buddyupdev+{user}@gmail.com"
     BUDDYUP_REQUIRE_PHOTO = True
@@ -21,7 +21,7 @@ class Dev(Base):
     BUDDYUP_ENABLE_ADMIN_ALL_USERS = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/buddyup.db'
     # MockCAS server for testing
-    CAS_SERVER = 'http://localhost:8000'
+    CAS_SERVER = os.environ.get('CAS_SERVER', 'http://localhost:8000')
     ADMIN_USER = 'mockuser'
     BUDDYUP_REQUIRE_PHOTO = False
     DEFAULT_EMAIL_FORMAT = "buddyupdev+{user}@gmail.com"
