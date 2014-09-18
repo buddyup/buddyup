@@ -4,7 +4,7 @@
 from collections import namedtuple
 from io import BytesIO
 
-from PIL import Image
+from PIL import Image, ImageOps
 import boto
 from boto.s3.key import Key
 
@@ -71,18 +71,11 @@ def get_photo_url(user_record, size, bucket=None):
 
 def scale(image, size):
     """
-    Scale an image, replacing the background with alpha transparency.
+    Scale an image, cropping centered to a specified size.
     Use tobytes() on the return value to get a bytestring for transmission.
     """
-
-    final = Image.new('RGBA', size, (255, 255, 255, 0))
-    resized = image.copy()
-    resized.thumbnail(size, Image.ANTIALIAS)
-    overlay_x, overlay_y = resized.size
-    new_x, new_y = size
-    box = ((new_x - overlay_x) // 2, (new_y - overlay_y) // 2)
-    final.paste(resized, box)
-    return final
+    resized = ImageOps.fit(image, size, method=Image.ANTIALIAS, centering=(0.5, 0.5))
+    return resized
 
 
 def change_profile_photo(user, storage):
@@ -100,6 +93,8 @@ def change_profile_photo(user, storage):
         else:
             base_image = Image.open(BytesIO(stream.read()))
         images = [scale(base_image, size) for size in SIZES]
+        # Upload the original.
+        images.append(base_image)
     except IndexError:
         raise ImageError("Incorrectly formatted image")
     upload(user, images)
