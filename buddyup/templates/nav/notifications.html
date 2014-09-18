@@ -9,7 +9,7 @@
             
             <ul class="tablelist-group">
 				
-				{% for notification in notifications %}
+				{% for notification in notifications[:3] %}
                 <li class="tablelist-group-row">
                     <a href="{{url_for('list_notifications')}}">
                         <ul class="tablelist">
