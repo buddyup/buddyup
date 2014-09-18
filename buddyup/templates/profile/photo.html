@@ -13,6 +13,13 @@
 <link href="/static/_assets/css/profile.css" rel="stylesheet">
 {% endblock %}
 {% block content %}
+<script>
+$(function(){
+	$('a.submit-photo').click(function(){
+		$('form#photo').submit();
+	})
+});
+</script>
 
 <article id="top" class="profile">
     <div class="wrapper container">
@@ -45,7 +52,7 @@
 					{{ form.photo() }}
 					</center>
 
-					<a href="javascript:$('#photo').submit()" class="button small primary">Save</a>
+					<a href="#" class="button small primary submit-photo">Save</a>
 
 				</form>
 						

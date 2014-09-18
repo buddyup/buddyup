@@ -11,6 +11,11 @@ $(function(){
 	})
 });
 
+$(function(){
+	$('a.invite-buddy').click(function(){
+		$.post("{{url_for('invite_send', user_name=classmate.user_name)}}", function(){ location.reload() });
+	})
+});
 </script>
 <article id="top" class="profile">
     <div class="wrapper container">
@@ -34,7 +39,7 @@ $(function(){
 						{% if is_invited %}
 						Invitation Sent
 						{% else %}
-						<a href="javascript:$.post('{{url_for('invite_send', user_name=classmate.user_name)}}', function(){ location.reload() });" class="action button primary"><span class="icon icon-person-add">&nbsp;</span>Invite</a>
+						<a href="#" class="action button primary invite-buddy"><span class="icon icon-person-add">&nbsp;</span>Invite</a>
 						{% endif %}
 
 					{% endif %}
