@@ -17,7 +17,7 @@ $(function(){
         <div class="row">
             <div class="profile-image" style="background-image:url('{{ photo_large(classmate) }}')">&nbsp;</div>
             <h1 class="col-sm-12">{{ classmate.full_name }}</h1>
-			<span class="col-sm-12 subtitle">Portland State University
+			<span class="col-sm-12 subtitle">{# Portland State University #}
 			{% if classmate.location %}
 				&nbsp;&bull;&nbsp;{{ classmate.location.name }}
 			{% endif %}
