@@ -43,7 +43,7 @@ def buddy_search():
             if user not in buddies:
                 general.add(user)
     classmates = shuffled(general) + shuffled(buddies)
- 
+
     return render_template('buddy/search.html',
                            courses=courses,
                            majors=majors,
@@ -102,6 +102,11 @@ def unfriend(current_name, user_name):
         user.buddies.remove(other_user)
         other_user.buddies.remove(user)
         db.session.commit()
+
+        # Delete relationship both ways.
+        clear_buddy_invites(g.user.id, other_user.id)
+        clear_buddy_invites(other_user.id, g.user.id)
+
         return redirect(request.referrer)
 
 
