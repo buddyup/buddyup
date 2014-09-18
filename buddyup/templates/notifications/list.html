@@ -23,7 +23,7 @@
 	                    <ul class="tablelist">
 	                        <li class="icon"><a href="{{profile(notification.sender)}}"><div class="block circle" style="background-image:url('{{photo_thumbnail(notification.sender)}}')">&nbsp;</div></a></li>
 	                        <li class="main">
-	                            <div class="title">{{notification.payload}}</div>
+	                            <div class="title">{{notification.payload|safe}}</div>
 	                            <div class="subtitle">{{notification.time}}</div>
 	                        </li>
 							{% if notification.action_link %}

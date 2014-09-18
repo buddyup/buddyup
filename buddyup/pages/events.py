@@ -16,7 +16,7 @@ import os
 #--------------------- NEW STUFF BELOW ---------------------------
 
 from flask.ext.wtf import Form
-from wtforms import StringField, HiddenField, TextAreaField, SelectField, DateTimeField, IntegerField, TextField
+from wtforms import StringField, HiddenField, TextAreaField, SelectField, DateTimeField, IntegerField, TextField, BooleanField
 from wtforms.validators import DataRequired, NumberRange, AnyOf
 from wtforms.validators import required
 
@@ -31,7 +31,7 @@ TIME_8_30_AM = 30600
 class EventForm(Form):
     title = StringField(u'Event Title', validators=[DataRequired()])
     location = StringField(u'Location', validators=[DataRequired()])
-    note = TextAreaField(u'Note', default="Here's some additional details...")
+    note = TextAreaField(u'Note', default="Here are some additional details...")
     date = DateTimeField(u'Date', format='%m/%d/%y')
     start = SelectField(u'Start', choices = time_pulldown(), coerce=int, validators=[NumberRange(min=START_OF_DAY, max=END_OF_DAY)], default=TIME_8_00_AM)
     end = SelectField(u'End', choices = time_pulldown(),  coerce=int, validators=[NumberRange(min=START_OF_DAY, max=END_OF_DAY)], default=TIME_8_30_AM)
@@ -51,7 +51,12 @@ class EventForm(Form):
 def new_event(course_id):
     form = EventForm()
     course = User.query.get_or_404(course_id)
-    if request.method != 'POST': return render_template('courses/events/new.html', course=Course.query.get_or_404(course_id), times=time_pulldown(), form=form)
+    if request.method != 'POST':
+        return render_template('courses/events/new.html',
+                                course=Course.query.get_or_404(course_id),
+                                coursemates=coursemates_query(course.id),
+                                times=time_pulldown(),
+                                form=form)
 
     if form.validate():
 
@@ -63,16 +68,39 @@ def new_event(course_id):
         event.start = datetime.utcfromtimestamp(date_seconds + form.start.data)
         event.end = datetime.utcfromtimestamp(date_seconds + form.end.data)
 
+        event.note = form.note.data
+
         db.session.add(event)
+
+        # The event owner should automatically join the new event.
+        g.user.events.append(event)
+
         db.session.commit()
 
+        invite_everyone = (request.form.get("everyone") == "true")
+        invited = [int(id) for id in request.form.getlist("invited")]
+
+        invitees = coursemates_query(course.id)
+
+        # TODO: Need to prevent people already invited from being reinvited.
+        if not invite_everyone:
+            invitees = coursemates_query(course.id).filter(User.id.in_(invited))
+
+        for invitee in invitees:
+            send_event_invitation(g.user, invitee, event)
+
+        flash("Invitations sent.")
+
         return redirect(url_for('course_event', course_id=course.id, event_id=event.id))
-        # TODO: Bring back the invitations view (Step 2) when that part is ready.
-        # return redirect(url_for('course_event_invitation', course_id=course.id, event_id=event.id))
     else:
         field_names = form.errors.keys()
         flash("There was a problem. Please look over the information you've given and make sure it is correct.")
-        return render_template('courses/events/new.html', course=Course.query.get_or_404(course_id), times=time_pulldown(), form=form)
+        coursemates = coursemates_query(course.id)
+        return render_template('courses/events/new.html',
+                                course=Course.query.get_or_404(course_id),
+                                coursemates=coursemates,
+                                times=time_pulldown(),
+                                form=form)
 
 
 @app.route('/courses/<int:id>/events.json')
@@ -108,13 +136,17 @@ def course_event(course_id, event_id):
                             course=course,
                             event=event,
                             comments=comments,
-                            form=EventRSVPForm(),
+                            join_form=EventRSVPForm(),
+                            invite_form=EventInvitationForm(),
+                            comment_form=EventCommentForm(),
+                            coursemates=coursemates_query(course.id),
                             attending=attending,
                             attendees=attendees)
 
 
 class EventInvitationForm(Form):
-    receiver_id = IntegerField(validators=[required()])
+    # We're only using the form for its CSRF token.
+    pass
 
 class EventCommentForm(Form):
     contents = TextField(validators=[required()])
@@ -126,7 +158,28 @@ class EventRSVPForm(Form):
     def is_attending(self):
         return self.attending.data == "true"
 
+from buddyup.util import send_notification
 
+def send_event_invitation(sender, receiver, event):
+    invitation = EventInvitation()
+    invitation.event_id = event.id
+    invitation.sender_id = g.user.id
+    invitation.receiver_id = receiver.id
+    db.session.add(invitation)
+    db.session.commit()
+
+    event_link = '<a href="%s">%s</a>' % (url_for('course_event', course_id=event.course.id, event_id=event.id), event.name)
+
+    payload = "%s invited you to '%s'" % (sender.full_name, event_link)
+    text = "Accept"
+    link = url_for('course_event_invitation', course_id=event.course.id, event_id=event.id)
+
+    send_notification(sender, receiver, payload, action_text=text, action_link=link)
+
+
+
+
+from buddyup.pages.courses import coursemates_query
 @app.route('/courses/<int:course_id>/events/<int:event_id>/invitation', methods=['GET', 'POST'])
 @login_required
 def course_event_invitation(course_id, event_id):
@@ -135,15 +188,25 @@ def course_event_invitation(course_id, event_id):
     event = Event.query.get_or_404(event_id)
 
     if form.validate_on_submit():
-        invitation = EventInvitation()
-        invitation.event_id = event_id
-        invitation.sender_id = g.user.id
-        invitation.receiver_id = form.receiver_id.data
-        db.session.add(invitation)
-        db.session.commit()
-        return "{}"
+        invite_everyone = (request.form.get("everyone") == "true")
+        invited = [int(id) for id in request.form.getlist("invited")]
+
+        invitees = coursemates_query(course.id)
+
+        # TODO: Need to prevent people already invited from being reinvited.
+        if not invite_everyone:
+            invitees = coursemates_query(course.id).filter(User.id.in_(invited))
+
+        for invitee in invitees:
+            send_event_invitation(g.user, invitee, event)
+
+        if invitees.count() > 0:
+            flash("Invitations sent.")
+
+        return redirect(url_for('course_event', course_id=course.id, event_id=event.id))
     else:
-        return render_template('courses/events/invite.html', form=form, course=course, event=event)
+        coursemates = coursemates_query(course.id)
+        return render_template('courses/events/invite.html', form=form, course=course, event=event, coursemates=coursemates)
 
 
 @app.route('/courses/<int:course_id>/events/<int:event_id>/attendee', methods=['GET', 'POST'])

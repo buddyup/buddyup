@@ -32,7 +32,7 @@
 
 <article id="main-content" class="container">
 
-	{% for message in get_flashed_messages() %} 
+	{% for message in get_flashed_messages() %}
 	<div class="alert alert-danger">
 		<button type="button" class="close" data-dismiss="alert">&times;</button >{{ message }}
 	</div >
@@ -43,7 +43,7 @@
         <section id="" class="row">
             <div class="col-md-6 col-md-offset-3">
                 <div class="group-heading"><h3>Step 1: Basic Info</h3></div>
-                
+
                 <div class="form-group">
 					{{form.title.label(class_="control-label")}}
 					{{render_errors(form.title)}}
@@ -81,7 +81,7 @@
                         </div>
                     </div>
                 </div>
-
+{#
                 <div class="form-group">
                     <label for="avail" class="control-label">Availability</label>
                     <div class="radio horizontal">
@@ -97,9 +97,9 @@
                         </label>
                     </div>
                 </div>
-
+#}
                 <div class="form-group">
-                    <label for="avail" class="control-label">Comment</label>
+                    <label for="avail" class="control-label">Notes</label>
 	                <div class="form-group">
 						{{render_errors(form.note)}}
 						{{form.note(class_="form-control")}}
@@ -108,6 +108,47 @@
 
             </div>
         </section>
+
+
+        <section id="" class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="group-heading"><h3>Step 2: Invite People</h3></div>
+
+                    <div class="form-group people-list">
+                        <label for="" class="control-label">Invite people from your class</label>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="everyone" id="" checked value="true">
+                                Invite everyone
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="everyone" id="" value="false">
+                                Invite only these people
+                            </label>
+                        </div>
+                        <ul class="tablelist-group">
+							{% for coursemate in coursemates %}
+
+                            <li class="tablelist-group-row">
+                                <ul class="tablelist">
+                                    <li class="icon"><a href="{{profile(coursemate)}}"><div class="block circle" style="background-image:url('{{photo_large(coursemate) }}')">&nbsp;</div></a></li>
+                                    <li class="main">
+                                        <span class="title">{{coursemate.full_name}}</span>
+                                        <span class="subtitle">{{coursemate.location}}</span>
+                                    </li>
+                                    <li class="action"><input type="checkbox" name="invited" value="{{coursemate.id}}"></li>
+                                </ul>
+                            </li>
+							{% endfor %}
+                        </ul>
+                    </div>
+
+            </div>
+        </section>
+
+
 
 
         <section id="submit" class="row">
