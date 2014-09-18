@@ -1,41 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title> Intro page</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+{% extends "green/global_layout.html" %}
 
-    <script src="https://cdn.auth0.com/w2/auth0-widget-5.2.min.js"></script>
-    <script type="text/javascript">
+{% block head %}{{super()}}
+<script src="https://cdn.auth0.com/w2/auth0-widget-5.2.min.js"></script>
+<script type="text/javascript">
 
-        var widget = new Auth0Widget({
-          domain:         'buddyup.auth0.com',
-          clientID:       'fz6fSOkZ3SmuLIeylQlYE9X0ZVlKruSJ',
-          callbackURL:    'http://{{request.host}}/callback'
-        });
+var widget = new Auth0Widget({
+  domain:         'buddyup.auth0.com',
+  clientID:       'fz6fSOkZ3SmuLIeylQlYE9X0ZVlKruSJ',
+  callbackURL:    'http://{{request.host}}/callback'
+});
 
-      </script>
-		<!-- Le styles -->
-		<link href="{{ css('bootstrap') }}" rel="stylesheet" type="text/css">
-		<link href="{{ css('bootstrap-responsive') }}" rel="stylesheet" type="text/css">
-		<style>
-		h2 {color: #666;}
-		</style>
-	</head>
-
-	<body>
-		<div class="container">
-
-			<!-- Jumbotron -->
-			<div class="jumbotron">
-				<div style="margin-top: 60px">
-					<center><img src='/static/img/buddyup_logo_orange_800x222.png'/></center>
-				</div>
-			</div>
-			<div class="text-center">
-    			<button class="btn btn-primary" onclick="widget.signin({ scope: 'openid profile email' })">Log in</button>
-    		</div>
-	</body>
-</html>
+</script>
+<!-- Le styles -->
+<link href="{{ css('bootstrap') }}" rel="stylesheet" type="text/css">
+<link href="{{ css('bootstrap-responsive') }}" rel="stylesheet" type="text/css">
+<style type="text/css">
+	.logo_image {
+		margin: 60px 0;
+	}
+	footer {
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+	}
+</style>
+{% endblock %}
+{% block body %}
+<div class="container signup">
+	<div class="logo_image">
+		<center><img src='/static/img/buddyup_logo_orange_800x222.png'/></center>
+	</div>
+	
+	<div class="text-center">
+		<button class="button primary" onclick="widget.signin({ scope: 'openid profile email' })">Sign in to Buddy Up</button>
+	</div>
+</div>
+{% endblock %}

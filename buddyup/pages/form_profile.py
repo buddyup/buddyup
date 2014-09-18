@@ -49,7 +49,7 @@ class ProfileForm(Form):
     facebook = TextField(u"Facebook (optional)")
     twitter = TextField(u"Twitter")
     linkedin = TextField(u"LinkedIn")
-    email = TextField(u"Email Address (required)", validators=[required(), Email()])
+    email = TextField(u".edu Email Address (required)", validators=[required(), Email()])
     bio = TextAreaField(u'A Few Words About You')
 
 
@@ -100,8 +100,9 @@ class TutorApplicationForm(Form):
                                 allow_blank=True,
                                 query_factory=ordered_factory(Location))
 
-    price = TextField(u"Price", validators=[Optional()])
-    per = SelectField(choices=[("hour", "per hour"), ("session", "per session")])
+    # TODO: decide on this, long-term
+    # price = TextField(u"Price", validators=[Optional()])
+    # per = SelectField(choices=[("hour", "per hour"), ("session", "per session")])
 
 
 # Tutor forms below are currently unused
