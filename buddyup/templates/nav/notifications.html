@@ -15,7 +15,7 @@
                         <ul class="tablelist">
                             <li class="icon"><div class="block circle" style="background-image:url('{{ photo_large(notification.sender) }}')">&nbsp;</div></li>
                             <li class="main">
-                                <div class="title">{{notification.payload|safe}}</div>
+                                <div class="title">{{notification.payload|safe|striptags}}</div>
                                 <div class="subtitle">{{notification.time|date_long}}</div>
                             </li>
                         </ul>
