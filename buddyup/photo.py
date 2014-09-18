@@ -13,11 +13,11 @@ from buddyup.templating import img
 
 Dimensions = namedtuple('Dimensions', 'x y')
 
-TINY_SIZE = Dimensions(20, 20)
+
 THUMB_SIZE = Dimensions(50, 50)
 LARGE_SIZE = Dimensions(200, 200)
 
-SIZES = [TINY_SIZE, THUMB_SIZE, LARGE_SIZE]
+SIZES = [THUMB_SIZE, LARGE_SIZE]
 GENERIC_PHOTO = 'default-profile-{0.x}x{0.y}.png'
 
 
@@ -28,15 +28,6 @@ to_image_name = "{.user_name}-{}-{}.png".format
 
 class ImageError(Exception):
     pass
-
-
-
-@app.template_global()
-def photo_tiny(user_record):
-    """
-    Get the URL for a User's tiny image
-    """
-    return get_photo_url(user_record, TINY_SIZE)
 
 
 @app.template_global()
