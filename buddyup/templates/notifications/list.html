@@ -42,7 +42,7 @@ $(function(){
 	                        <li class="icon"><a href="{{profile(notification.sender)}}"><div class="block circle" style="background-image:url('{{photo_thumbnail(notification.sender)}}')">&nbsp;</div></a></li>
 	                        <li class="main">
 	                            <div class="title">{{notification.payload|safe}}</div>
-	                            <div class="subtitle">{{notification.time}}</div>
+	                            <div class="subtitle">{{date_long(notification.time)}}</div>
 	                        </li>
 							{% if notification.action_link %}
 	                        <li class="action"><a href="{{notification.action_link}}" class="accept" data-notification="{{url_for('clear_notification', id=notification.id)}}">{{notification.action_text}}</a></li>

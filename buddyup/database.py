@@ -83,7 +83,7 @@ class Course(db.Model):
  
 class Notification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    time = db.Column(db.DateTime)
+    time = db.Column(db.DateTime, default=datetime.datetime.now)
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     payload = db.Column(db.UnicodeText, default=u"")

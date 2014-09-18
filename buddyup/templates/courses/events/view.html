@@ -45,7 +45,7 @@
                 <h3><span class="icon icon-event">&nbsp;</span>Event Details</h3>
             </div>
             <div class="location"><span class="icon icon-location">&nbsp;</span>{{event.location}}</div>
-            <div class="date"><span class="day"><span class="icon icon-event">&nbsp;</span>{{event|date_long}}</span>&bull;<span class="time">{{event|time_span}}</span></div>
+            <div class="date"><span class="day"><span class="icon icon-event">&nbsp;</span>{{event.start|date_long}}</span>&bull;<span class="time">{{event|time_span}}</span></div>
 			{% if event.owner == g.user %}
             <div class="author"><span class="icon icon-person">&nbsp;</span>You created this event.</div>
 			{% else %}

@@ -286,17 +286,6 @@ def my_events():
     return render_template('my_events.html', all_events="selected", events=g.user.events.order_by(Event.start))
 
 
-# TODO: Move these helpers into some sort of view/adapter class
-@app.template_global()
-@app.template_filter()
-def date_short(event):
-    return event.start.strftime("%b %d") if event else ""
-
-@app.template_global()
-@app.template_filter()
-def date_long(event):
-    return event.start.strftime("%b %d, %Y") if event else ""
-
 
 @app.template_global()
 @app.template_filter()
