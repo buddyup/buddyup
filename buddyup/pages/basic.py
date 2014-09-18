@@ -35,7 +35,7 @@ def index():
                               for x in xrange(32))
                 session['state'] = state
                 
-                return render_template('google_login.html',
+                return render_template('social_login.html',
                                    CLIENT_ID=CLIENT_ID,
                                    STATE=state)
             else:
@@ -45,7 +45,7 @@ def index():
                 ENABLE_AUTHENTICATION = app.config['BUDDYUP_ENABLE_AUTHENTICATION']
                 all_users = User.query.order_by(User.user_name).all()
                 all_usernames = [user.user_name for user in all_users]
-                return render_template('intro.html',
+                return render_template('cas_login.html',
                                        ENABLE_AUTHENTICATION=ENABLE_AUTHENTICATION,
                                        all_usernames=all_usernames,
                                        cas_service=app.cas_service)
