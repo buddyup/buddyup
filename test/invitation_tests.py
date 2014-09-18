@@ -80,6 +80,8 @@ class InvitationTests(unittest.TestCase):
 
         self.assertIn(skippy.id, [b.id for b in buddies], "No buddy relationship was created.")
 
+        self.assertEqual(0, BuddyInvitation.query.count(), "After accepting, BuddyInvites should be deleted.")
+
 
     def test_buddy_up(self):
         """

@@ -88,13 +88,9 @@ def accept_invitation(receiver_name, sender_name):
     # If we're not the receiver we see nothing.
     if not acting_on_self(receiver): abort(404)
 
-    invitation = BuddyInvitation.query.filter(BuddyInvitation.sender_id==sender.id, BuddyInvitation.receiver_id==receiver.id).first()
-
-
     buddy_up(sender, receiver)
 
-
-    invitation.rejected = False
+    BuddyInvitation.query.filter(BuddyInvitation.sender_id==sender.id, BuddyInvitation.receiver_id==receiver.id).delete()
     db.session.commit()
 
     # Once we've accepted the invitation, go visit the sender's page.

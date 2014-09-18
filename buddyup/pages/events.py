@@ -213,6 +213,11 @@ def course_event_invitation(course_id, event_id):
         return render_template('courses/events/invite.html', form=form, course=course, event=event, coursemates=coursemates)
 
 
+def clear_event_invites(user_id, event_id):
+    EventInvitation.query.filter(EventInvitation.event_id==event_id, EventInvitation.receiver_id==user_id).delete()
+    db.session.commit()
+
+
 @app.route('/courses/<int:course_id>/events/<int:event_id>/invitations/<int:invitation_id>', methods=['POST'])
 @login_required
 def accept_event_invitation(course_id, event_id, invitation_id):
@@ -222,8 +227,10 @@ def accept_event_invitation(course_id, event_id, invitation_id):
     # If we're not the receiver we see nothing.
     if invitation.receiver != g.user: abort(404)
 
+    # Join the event.
     g.user.events.append(invitation.event)
-    db.session.commit()
+
+    clear_event_invites(g.user.id, invitation.event.id)
 
     return "{}"
 
@@ -242,6 +249,8 @@ def course_event_attend(course_id, event_id):
         else:
             g.user.events.remove(event)
             db.session.commit()
+
+        clear_event_invites(g.user.id, event.id)
 
         return "{}"
     else:
