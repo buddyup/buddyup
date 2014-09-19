@@ -49,8 +49,8 @@ def tutor_application():
 
         application.location = form.location.data
         application.status = form.status.data
-        application.price = form.price.data
-        application.per = form.per.data
+        # application.price = form.price.data
+        # application.per = form.per.data
 
         db.session.add(application)
         db.session.commit()

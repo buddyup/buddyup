@@ -1,4 +1,22 @@
-Chinese
+American Sign Language
+Arabic
+Chinese - Cantonese
+Chinese - Mandarin
+Danish
+French
+German
+Greek
+Hebrew
+Italian
+Japanese
 Korean
+Latin
+Nepalese
+Norwegian
+Persian
+Portugese
 Russian
 Spanish
+Swedish
+Turkish
+Vietnamese

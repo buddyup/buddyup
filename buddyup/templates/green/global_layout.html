@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        {% block head %}
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,11 +11,14 @@
 		{% block pagestyle %}{% endblock %}
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,900' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script src="/static/_assets/js/bootstrap.min.js"></script>
 		<script src="/static/_assets/js/detect-mobile.js"></script>
+        {% endblock %}
     </head>
     <body>
+    {% block body %}
         <header>
 			{% block nav %}
             <nav class="navbar navbar-default container" role="navigation">
@@ -45,7 +49,7 @@
                                         <ul class="list overflow-list">
                                             <li class=""><a href="{{ profile(user_record) }}">My Profile</a></li>
 											<li class=""><a href="{{ url_for('my_events') }}">My Events</a></li>
-                                            <li class=""><a href="{{ url_for('help') }}">Help</a></li>
+                                            <li class=""><a id="Intercom" href="mailto:pzthv8fq@incoming.intercom.io">Help</a></li>
                                             <li class=""><a href="{{ url_for('logout') }}">Log out</a></li>
                                         </ul>
                                     </li>
@@ -58,7 +62,6 @@
                             <!-- Reiterate overflow menu ONLY for mobile menu -->
                             <li class="visible-xs-block"><a href="{{ profile(user_record) }}">My Profile</a></li>
                             <li class="visible-xs-block"><a href="{{ url_for('my_events') }}">My Events</a></li>
-                            <li class="visible-xs-block"><a href="{{ url_for('help') }}">Help</a></li>
                             <li class="visible-xs-block"><a href="{{ url_for('logout') }}">Log out</a></li>
                             <!-- /Reiterate overflow menu for mobile menu -->
 
@@ -76,7 +79,8 @@
 			{% block content %}
 			{% endblock %}
         </div>
-
+    {% endblock %}
+    {% block footer %}
         <footer>
             <div class="container">
                 <p class="row">
@@ -90,6 +94,7 @@
                 </p>
             </div>
         </footer>
-        {% include "analytics/all.html" %}
+    {% endblock %}
+    {% include "analytics/all.html" %}
     </body>
 </html>

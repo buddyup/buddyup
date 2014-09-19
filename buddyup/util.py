@@ -320,6 +320,25 @@ def send_notification(sender, recipient, payload, **kwargs):
     db.session.commit()
 
 
+@app.template_global()
+@app.template_filter()
+def date_short(time):
+    return time.strftime("%b %d") if time else ""
+
+@app.template_global()
+@app.template_filter()
+def date_long(time):
+    return time.strftime("%b %d, %Y") if time else ""
+
+
+@app.template_global()
+@app.template_filter()
+def date_and_time(time):
+    # June 31 - 5:32PM
+    return time.strftime("%B %d, %I:%M%p") if time else ""
+
+
+
 #----------------------------------------------------------------------------
 # Demo & Diagnostic support methods
 #----------------------------------------------------------------------------

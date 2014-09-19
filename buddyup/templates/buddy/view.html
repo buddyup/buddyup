@@ -4,13 +4,25 @@
 <link href="/static/_assets/css/profile.css" rel="stylesheet">
 {% endblock %}
 {% block content %}
+<script>
+$(function(){
+	$('a.remove-buddy').click(function(){
+		$.post("{{url_for('unfriend', current_name=user_record.user_name, user_name=classmate.user_name)}}", function(){ location.reload() });
+	})
+});
 
+$(function(){
+	$('a.invite-buddy').click(function(){
+		$.post("{{url_for('invite_send', user_name=classmate.user_name)}}", function(){ location.reload() });
+	})
+});
+</script>
 <article id="top" class="profile">
     <div class="wrapper container">
         <div class="row">
             <div class="profile-image" style="background-image:url('{{ photo_large(classmate) }}')">&nbsp;</div>
             <h1 class="col-sm-12">{{ classmate.full_name }}</h1>
-			<span class="col-sm-12 subtitle">Portland State University
+			<span class="col-sm-12 subtitle">{# Portland State University #}
 			{% if classmate.location %}
 				&nbsp;&bull;&nbsp;{{ classmate.location.name }}
 			{% endif %}
@@ -21,13 +33,13 @@
 					<a href="{{ url_for('profile') }}" class="action button primary">Edit</a>
 				{% else %}
 					{% if is_buddy %}
-						<a href="javascript:$.post('{{url_for('unfriend', current_name=user_record.user_name, user_name=classmate.user_name)}}', function(){ location.reload() });" class="action button primary"><span class="icon icon-remove">&nbsp;</span>Remove Buddy</a>
+						<a href="#" class="action button primary remove-buddy"><span class="icon icon-remove">&nbsp;</span>Remove Buddy</a>
 					{% else %}
 
 						{% if is_invited %}
 						Invitation Sent
 						{% else %}
-						<a href="javascript:$.post('{{url_for('invite_send', user_name=classmate.user_name)}}', function(){ location.reload() });" class="action button primary"><span class="icon icon-person-add">&nbsp;</span>Invite</a>
+						<a href="#" class="action button primary invite-buddy"><span class="icon icon-person-add">&nbsp;</span>Invite</a>
 						{% endif %}
 
 					{% endif %}

@@ -77,6 +77,10 @@ def invite_send(user_name):
 
     return redirect(request.referrer)
 
+def clear_buddy_invites(sender_id, receiver_id):
+    BuddyInvitation.query.filter(BuddyInvitation.sender_id==sender_id, BuddyInvitation.receiver_id==receiver_id).delete()
+    db.session.commit()
+
 
 @app.route("/classmates/<receiver_name>/invitations/<sender_name>", methods=["POST"])
 @login_required
@@ -88,16 +92,9 @@ def accept_invitation(receiver_name, sender_name):
     # If we're not the receiver we see nothing.
     if not acting_on_self(receiver): abort(404)
 
-    invitation = BuddyInvitation.query.filter(BuddyInvitation.sender_id==sender.id, BuddyInvitation.receiver_id==receiver.id).first()
-
-
     buddy_up(sender, receiver)
 
-
-    invitation.rejected = False
-    db.session.commit()
-
-    flash("You are now buddies!")
+    clear_buddy_invites(sender.id, receiver.id)
 
     # Once we've accepted the invitation, go visit the sender's page.
     return redirect(url_for('buddy_view', user_name=sender_name))

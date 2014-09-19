@@ -53,7 +53,7 @@
 				{% for event in events %}
                     <li class="tablelist-group-row">
                         <ul class="tablelist">
-                            <li class="date"><span class="date">{{event|date_short}}</span></li>
+                            <li class="date"><span class="date">{{event.start|date_short}}</span></li>
                             <li class="main">
                                 <div class="title"><a href="{{url_for('course_event', course_id=event.course_id, event_id=event.id)}}">{{event.name}}</a></div>
                                 <div class="subtitle"> <span class="time">{{event.start.strftime("%I%p").lstrip("0")}}-{{event.end.strftime("%I%p").lstrip("0")}}</span>&bull;<span class="icon icon-course"> {{event.course.name}}</span>&bull;<span class="icon icon-location"> {{event.location}}</span></div>

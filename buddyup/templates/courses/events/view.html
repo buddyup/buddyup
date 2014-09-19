@@ -45,7 +45,7 @@
                 <h3><span class="icon icon-event">&nbsp;</span>Event Details</h3>
             </div>
             <div class="location"><span class="icon icon-location">&nbsp;</span>{{event.location}}</div>
-            <div class="date"><span class="day"><span class="icon icon-event">&nbsp;</span>{{event|date_long}}</span>&bull;<span class="time">{{event|time_span}}</span></div>
+            <div class="date"><span class="day"><span class="icon icon-event">&nbsp;</span>{{event.start|date_long}}</span>&bull;<span class="time">{{event|time_span}}</span></div>
 			{% if event.owner == g.user %}
             <div class="author"><span class="icon icon-person">&nbsp;</span>You created this event.</div>
 			{% else %}
@@ -75,7 +75,7 @@
             <ul class="block-list">
 				{% for attendee in attendees[:5]%}
 	            <li class="">
-	                <a href="{{profile(attendee)}}"><div class="block" style="background-image:url('{{ photo_large(attendee) }}')">&nbsp;</div></a>
+	                <a href="{{profile(attendee)}}"><div class="block" title="{{attendee.full_name}}" style="background-image:url('{{ photo_large(attendee) }}')">&nbsp;</div></a>
 	            </li>
 				{% endfor %}
 				{% if attendees|length > 5 %}
@@ -140,7 +140,7 @@
                         <li class="icon"><a href="{{profile(comment.user)}}"><div class="block circle" style="background-image:url('{{ photo_large(comment.user) }}')">&nbsp;</div></a></li>
                         <li class="main">
                             <div class="message">{{comment.contents}}</div>
-                            <div class="subtitle"><span><a href="{{profile(comment.user)}}">{{comment.user.full_name}}</a></span>&bull;<span>June 31 - 5:32PM</span>{% include "flag/_flag_button.html" %}</div>
+                            <div class="subtitle"><span><a href="{{profile(comment.user)}}">{{comment.user.full_name}}</a></span>&bull;<span>{{comment.time|date_and_time}}</span>{% include "flag/_flag_button.html" %}</div>
                         </li>
                     </ul>
                 </li>

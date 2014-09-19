@@ -172,7 +172,7 @@ def send_event_invitation(sender, receiver, event):
 
     payload = "%s invited you to '%s'" % (sender.full_name, event_link)
     text = "Accept"
-    link = url_for('course_event_invitation', course_id=event.course.id, event_id=event.id)
+    link = url_for('accept_event_invitation', course_id=event.course.id, event_id=event.id, invitation_id=invitation.id)
 
     send_notification(sender, receiver, payload, action_text=text, action_link=link)
 
@@ -193,9 +193,13 @@ def course_event_invitation(course_id, event_id):
 
         invitees = coursemates_query(course.id)
 
-        # TODO: Need to prevent people already invited from being reinvited.
         if not invite_everyone:
-            invitees = coursemates_query(course.id).filter(User.id.in_(invited))
+            already_invited = [i.receiver_id for i in EventInvitation.query.filter(EventInvitation.event_id==event_id)]
+
+            # Invite selected coursemates as long as they aren't already invited by the current user.
+            invitees = coursemates_query(course.id)\
+                                        .filter(User.id.in_(invited))\
+                                        .filter(~User.id.in_(already_invited))
 
         for invitee in invitees:
             send_event_invitation(g.user, invitee, event)
@@ -207,6 +211,29 @@ def course_event_invitation(course_id, event_id):
     else:
         coursemates = coursemates_query(course.id)
         return render_template('courses/events/invite.html', form=form, course=course, event=event, coursemates=coursemates)
+
+
+def clear_event_invites(user_id, event_id):
+    EventInvitation.query.filter(EventInvitation.event_id==event_id, EventInvitation.receiver_id==user_id).delete()
+    db.session.commit()
+
+
+@app.route('/courses/<int:course_id>/events/<int:event_id>/invitations/<int:invitation_id>', methods=['POST'])
+@login_required
+def accept_event_invitation(course_id, event_id, invitation_id):
+
+    invitation = EventInvitation.query.get_or_404(invitation_id)
+
+    # If we're not the receiver we see nothing.
+    if invitation.receiver != g.user: abort(404)
+
+    # Join the event.
+    g.user.events.append(invitation.event)
+
+    clear_event_invites(g.user.id, invitation.event.id)
+
+    return "{}"
+
 
 
 @app.route('/courses/<int:course_id>/events/<int:event_id>/attendee', methods=['GET', 'POST'])
@@ -222,6 +249,8 @@ def course_event_attend(course_id, event_id):
         else:
             g.user.events.remove(event)
             db.session.commit()
+
+        clear_event_invites(g.user.id, event.id)
 
         return "{}"
     else:
@@ -256,17 +285,6 @@ def course_event_comment(course_id, event_id):
 def my_events():
     return render_template('my_events.html', all_events="selected", events=g.user.events.order_by(Event.start))
 
-
-# TODO: Move these helpers into some sort of view/adapter class
-@app.template_global()
-@app.template_filter()
-def date_short(event):
-    return event.start.strftime("%b %d") if event else ""
-
-@app.template_global()
-@app.template_filter()
-def date_long(event):
-    return event.start.strftime("%b %d, %Y") if event else ""
 
 
 @app.template_global()

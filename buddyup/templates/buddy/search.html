@@ -1,86 +1,94 @@
-{% extends "layout.html" %}
-{% from "lib.html" import flash_all %}
-{% block title %} Search Buddies {% endblock %}
-{% block extrahead %}
-<style>
-.span2	{width: 300px;}
-.span6	{width: 400px;}
-
-</style>
-{% endblock %}
+{% extends "green/global_layout.html" %}
+{% block title %} Search {% endblock %}
 {% block content %}
-{{ flash_all() }}
-<br><br>
-<div class="container">
+<article id="top" class="simple">
+    <div class="wrapper container">
+        <div class="row">
+            <h1 class="col-md-6 col-md-offset-3">Search</h1>
+        </div>
+    </div>
+</article>
 
-	<div class="buddy-search" style="box-shadow: 3px 3px 5px #888888;">
-	<h3> Buddy Search </h3>
-	<br>
-			<form action="{{ url_for('buddy_search_results') }}">
-				<label> Course </label>
-				<select style="width: 240px" name="course">
-					<option value="-1">
-						All Enrolled Courses
-					</option>
-				{% for course_record in courses %}
+<article id="main-content" class="container">
+    <section id="" class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="group-heading"><h3>Find Your Classmates</h3></div>
+
+			<form class="form-horizontal" role="form" action="{{ url_for('buddy_search_results') }}">
+
+			  <div class="form-group">
+			    <label for="name" class="col-sm-2 control-label">Name</label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" id="name" name="name" placeholder="Full Name">
+			    </div>
+			  </div>
+
+			  <div class="form-group">
+			    <label for="course" class="col-sm-2 control-label">Course</label>
+			    <div class="col-sm-10">
+				<select name="course">
+					<option value="-1">All Enrolled Courses</option>
+					{% for course_record in courses %}
 					<option value="{{ course_record.id }}">
 						{{ course_record.name }} by {{ course_record.instructor }}
 					</option>
-				{% endfor %}
-				</select>
-			
-				<label> Major </label>
-				<select style="width: 240px" name="major">
-					<option value="-1">Any Major</option>
-					{% for major_record in majors %}
-						<option value="{{ major_record.id }}">
-							{{ major_record.name }}
-						</option>
 					{% endfor %}
 				</select>
-			
-				<label> Language </label>
-				<select style="width: 240px" name="language">
-					<option value="-1">Any Language</option>
-					{% for language_record in languages %}
+			    </div>
+			  </div>
+
+			  <div class="form-group">
+			    <label for="major" class="col-sm-2 control-label">Major</label>
+			    <div class="col-sm-10">
+				<select name="major">
+					<option value="-1">Any Major</option>
+					{% for major_record in majors %}
+					<option value="{{ major_record.id }}">
+						{{ major_record.name }}
+					</option>
+					{% endfor %}
+				</select>
+			    </div>
+			  </div>
+
+			  <div class="form-group">
+			    <label for="language" class="col-sm-2 control-label">Language</label>
+			    <div class="col-sm-10">
+					<select name="language">
+						<option value="-1">Any Language</option>
+						{% for language_record in languages %}
 						<option value="{{ language_record.id }}">
 							{{ language_record.name }}
 						</option>
-					{% endfor %}
-				</select>
+						{% endfor %}
+					</select>
+			    </div>
+			  </div>
 
-				<label> Location </label>
-				<select style="width:240px" name="location">
-					<option value="-1">Any Location</option>
-					{% for location_record in locations %}
-						<option value="{{ location_record.id }}">
-							{{ location_record.name }}
+			  <div class="form-group">
+			    <label for="location" class="col-sm-2 control-label">Location</label>
+			    <div class="col-sm-10">
+					<select name="location">
+						<option value="-1">Any Language</option>
+						{% for language_record in languages %}
+						<option value="{{ language_record.id }}">
+							{{ language_record.name }}
 						</option>
-					{% endfor %}
-				</select>
+						{% endfor %}
+					</select>
+			    </div>
+			  </div>
 
-				<label> Name </label>  
-				<input type="text" placeholder="Full Name" name="name" style="width:225px;" >
-				<br/>
-				<div class="btn-group">
-					<input class="btn btn-large btn-danger" style="" value="Search" type="submit" >
-				</div>
-		  </form>
-	  </div>
+			  <div class="form-group">
+			    <div class="col-sm-offset-2 col-sm-10">
+			      <button type="submit" class="button primary">Search</button>
+			    </div>
+			  </div>
 
+			</form>
 
-	<div class="photos"> 
-	<h3> Your classmates on BuddyUp </h3><br><br>
-	<table class="classmate">
-	{% for row in classmates|batch(3) %}
-	<tr>
-		{% for classmate in row %}
-			<td><a href="{{ profile(classmate) }}"><img src="{{ photo_large(classmate) }}" width="200" height="200" class="img-polaroid"></a></td>
-		{% endfor %}
-	</tr>
-	{% endfor %}
-	</table>         
-	</div>
+        </div>
+    </section>
+</article>
 
-</div>
 {% endblock %}

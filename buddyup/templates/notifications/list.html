@@ -12,6 +12,24 @@
     </div>
 </article>
 <article id="main-content" class="container">
+<script>
+$(function(){
+	$('li.action a.accept').click(function(click){
+
+		var actionURL = click.target.href;
+		var notificationURL = click.target.getAttribute('data-notification');
+
+		$.post(actionURL, {}, function(){
+
+			$.post(notificationURL, {}, function(){
+				$(click.target).replaceWith("Accepted");
+			})
+		});
+
+		return false;
+	})
+});
+</script>
 
     <section id="" class="row">
         <div class="col-md-6 col-md-offset-3">
@@ -24,10 +42,10 @@
 	                        <li class="icon"><a href="{{profile(notification.sender)}}"><div class="block circle" style="background-image:url('{{photo_thumbnail(notification.sender)}}')">&nbsp;</div></a></li>
 	                        <li class="main">
 	                            <div class="title">{{notification.payload|safe}}</div>
-	                            <div class="subtitle">{{notification.time}}</div>
+	                            <div class="subtitle">{{date_long(notification.time)}}</div>
 	                        </li>
 							{% if notification.action_link %}
-	                        <li class="action"><a href="javascript:jQuery.post('{{notification.action_link}}', function(){window.location.href='{{profile(notification.sender)}}'});">{{notification.action_text}}</a></li>
+	                        <li class="action"><a href="{{notification.action_link}}" class="accept" data-notification="{{url_for('clear_notification', id=notification.id)}}">{{notification.action_text}}</a></li>
 							{% endif %}
 	                    </ul>
 	                </li>

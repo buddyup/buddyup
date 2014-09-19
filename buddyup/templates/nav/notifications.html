@@ -9,14 +9,14 @@
             
             <ul class="tablelist-group">
 				
-				{% for notification in notifications %}
+				{% for notification in notifications[:3] %}
                 <li class="tablelist-group-row">
                     <a href="{{url_for('list_notifications')}}">
                         <ul class="tablelist">
                             <li class="icon"><div class="block circle" style="background-image:url('{{ photo_large(notification.sender) }}')">&nbsp;</div></li>
                             <li class="main">
-                                <div class="title">{{notification.payload|safe}}</div>
-                                <div class="subtitle">5:32PM</div>
+                                <div class="title">{{notification.payload|safe|striptags}}</div>
+                                <div class="subtitle">{{notification.time|date_long}}</div>
                             </li>
                         </ul>
                     </a>

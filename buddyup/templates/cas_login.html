@@ -1,0 +1,27 @@
+{% extends "green/global_layout.html" %}
+{% block head %}{{super()}}
+<!-- Le styles -->
+<link href="{{ css('bootstrap') }}" rel="stylesheet" type="text/css">
+<link href="{{ css('bootstrap-responsive') }}" rel="stylesheet" type="text/css">
+<style type="text/css">
+	.logo_image {
+		margin: 60px 0;
+	}
+	footer {
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+	}
+</style>
+{% endblock %}
+{% block body %}
+<div class="container signup">
+	<div class="logo_image">
+		<center><img src='/static/img/buddyup_logo_orange_800x222.png'/></center>
+	</div>
+	
+	<div class="text-center">
+		<a class="button primary" href="{{ login_url }}">Sign In to Buddy Up</a>
+	</div>
+</div>
+{% endblock %}

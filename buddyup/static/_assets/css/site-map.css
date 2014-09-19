@@ -652,3 +652,9 @@ ul.block-list li a .block.overflow sup { font-size: .5em; }
 
 /* line 6, ../sass/pages/site-map.scss */
 ul.bulleted li { padding-top: 0.5em; padding-bottom: 0.5em; }
+
+.flagCommentButton {
+    display: inline-block;
+    background: transparent;
+    color: gray;
+}
