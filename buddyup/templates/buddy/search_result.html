@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "green/global_layout.html" %}
 {% from "lib.html" import flash_all %}
 {% block title %}Buddy Search Results {% endblock %}
 {% block extrahead %}
@@ -18,27 +18,39 @@
 {% endblock extrahead %}
 
 {% block content %}
-{{ flash_all() }}
-<br>
-<h1> Buddies Search Results</h1>
-<br><br>
-<div class="well span6 offset2">
-	{% if search_results|length == 0 %}
-		<p class="text-center">No Results Found</p>
-	{% else %}
-		{% for user in search_results %}
-		<div class="result">
-			<img src="{{ photo_thumbnail(user) }}" height="50px" width="50px"
-				class="img-polaroid" style="float:left">
-			<a href="{{ profile(user) }}" class="name"><b>{{ user.full_name }}</b></a> <br>
-			<span class="location">
-				Location: {{ user.location.name }}
-			</span>
-			{% if not loop.last %}
-				<hr>
+<article id="top" class="simple">
+    <div class="wrapper container">
+        <div class="row">
+            <h1 class="col-md-6 col-md-offset-3">Search</h1>
+        </div>
+    </div>
+</article>
+
+<article id="main-content" class="container">
+    <section id="" class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="group-heading"><h3>Results</h3></div>
+            <ul class="tablelist-group">
+			{% if search_results|length == 0 %}
+				<li class="tablelist-group-row">No Results Found</li>
+			{% else %}
+
+				{% for user in search_results %}
+                <li class="tablelist-group-row">
+                    <ul class="tablelist">
+                        <li class="icon"><a href="{{profile(user)}}"><div class="block circle" style="background-image:url('{{photo_large(user)}}')">&nbsp;</div></a></li>
+                        <li class="main">
+                            <div class="title">{{user.full_name}}</div>
+                            <div class="subtitle">5:32PM</div>
+                        </li>
+                        <li class="action"><a href="{{profile(user)}}">View</a></li>
+                    </ul>
+                </li>
+				{% endfor %}
+
 			{% endif %}
-		</div>
-		{% endfor %}
-	{% endif %}
-</div>
+            </ul>
+        </div>
+    </section>
+</article>
 {% endblock %}
