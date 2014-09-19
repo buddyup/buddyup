@@ -211,7 +211,7 @@ a.notifications > .icon-notification + .icon-badge { position: absolute; top: 20
   /* line 184, ../sass/partials/nav.scss */
   #nav-main .logo-wrapper .logo { width: 45px; height: 45px; border-radius: 0px; }
   /* line 190, ../sass/partials/nav.scss */
-  #nav-main .main-link { width: 12%; text-align: center; }
+  #nav-main .main-link { width: auto; text-align: center; }
   /* line 195, ../sass/partials/nav.scss */
   #nav-main .main-link a { padding-top: 26px !important; }
   /* line 203, ../sass/partials/nav.scss */
