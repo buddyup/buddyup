@@ -32,16 +32,14 @@ $(function(){
 				{% if myself %}
 					<a href="{{ url_for('profile') }}" class="action button primary">Edit</a>
 				{% else %}
-					{% if is_buddy %}
-						<a href="#" class="action button primary remove-buddy"><span class="icon icon-remove">&nbsp;</span>Remove Buddy</a>
-					{% else %}
-
+                    {% if not is_buddy %}
 						{% if is_invited %}
 						Invitation Sent
 						{% else %}
 						<a href="#" class="action button primary invite-buddy"><span class="icon icon-person-add">&nbsp;</span>Invite</a>
 						{% endif %}
-
+                    {% else %}
+                        <a href="mailto:{{ classmate|email }}" class="action button primary">Send {{ classmate.full_name }} an message</a>
 					{% endif %}
 				{% endif %}
             </div>
@@ -103,11 +101,10 @@ $(function(){
         </div>
 		{%endif%}
 
-		{% if not myself %}
-        <div class="col-sm-12">
-            <a href="mailto:{{ classmate|email }}" class="action button primary">Send {{ classmate.full_name }} an email</a>
-        </div>
-		{% endif %}
+        {% if is_buddy %}
+            <a href="#" class="action button primary remove-buddy"><span class="icon icon-remove">&nbsp;</span>Remove Buddy</a>
+        {% endif %}
+
 
     </section>
 
