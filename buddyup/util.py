@@ -331,6 +331,13 @@ def date_long(time):
     return time.strftime("%b %d, %Y") if time else ""
 
 
+@app.template_global()
+@app.template_filter()
+def date_and_time(time):
+    # June 31 - 5:32PM
+    return time.strftime("%B %d, %I:%M%p") if time else ""
+
+
 
 #----------------------------------------------------------------------------
 # Demo & Diagnostic support methods
