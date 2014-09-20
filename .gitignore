@@ -12,3 +12,4 @@ venv
 *.db
 .lock
 *.~lock*
+.sass-cache
