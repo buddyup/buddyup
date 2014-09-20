@@ -69,10 +69,10 @@
 			    <label for="location" class="col-sm-2 control-label">Location</label>
 			    <div class="col-sm-10">
 					<select name="location">
-						<option value="-1">Any Language</option>
-						{% for language_record in languages %}
-						<option value="{{ language_record.id }}">
-							{{ language_record.name }}
+						<option value="-1">Any Location</option>
+						{% for location in locations %}
+						<option value="{{ location.id }}">
+							{{ location.name }}
 						</option>
 						{% endfor %}
 					</select>
