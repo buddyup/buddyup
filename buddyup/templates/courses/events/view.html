@@ -86,6 +86,20 @@
             </ul>
             <a href="#" class="button add small" data-toggle="modal" data-target="#myModal"><span class="icon icon-people">&nbsp;</span>Invite Buddies</a>
 
+<script>
+$(function(){
+	$('a#select-all').click(function(){
+		$('input[type=checkbox]').prop('checked', true);
+		return false;
+	});
+
+	$('a#select-none').click(function(){
+		$('input[type=checkbox]').prop('checked', false);
+		return false;
+	});
+});
+</script>
+
 
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -95,7 +109,7 @@
                             <h4 class="modal-title" id="myModalLabel">Invite People</h4>
                         </div>
                         <div class="modal-body">
-                            <div id="select-options" class=""><a href="">Select All</a>&nbsp;|&nbsp;<a href="">Select None</a></div>
+                            <div id="select-options" class=""><a href="" id="select-all">Select All</a>&nbsp;|&nbsp;<a href="" id="select-none">Select None</a></div>
                             <div class="form-group">
                                 <ul class="tablelist-group">
 									<form id="invite_form" action="{{ url_for('course_event_invitation', course_id=course.id, event_id=event.id) }}" method="POST">
@@ -119,7 +133,7 @@
                         </div>
                         <div class="modal-footer">
                             <a class="button default" data-dismiss="modal">Cancel</a>
-                            <a href="javascript:invite_form.submit()" class="button primary">Invite {{0}} people</a>
+                            <a href="javascript:invite_form.submit()" class="button primary">Invite</a>
                         </div>
                     </div>
                 </div>
