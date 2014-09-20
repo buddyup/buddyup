@@ -720,41 +720,47 @@ section > div { padding-top: 40px; padding-bottom: 40px; border-bottom: 1px soli
 /* line 37, ../sass/pages/profile.scss */
 section:last-child > div { border-bottom: none; }
 
-/* line 41, ../sass/pages/profile.scss */
+/* line 43, ../sass/pages/profile.scss */
 #stats { margin-top: 0 !important; }
-/* line 45, ../sass/pages/profile.scss */
+/* line 47, ../sass/pages/profile.scss */
 #stats > div { padding-top: 20px; padding-bottom: 20px; }
-/* line 51, ../sass/pages/profile.scss */
+/* line 53, ../sass/pages/profile.scss */
 #stats ul { width: 100%; }
-/* line 57, ../sass/pages/profile.scss */
+/* line 59, ../sass/pages/profile.scss */
 #stats ul li, #stats ul li a { font-family: "Lato", "HelveticaNeue", "Helvetica", "Arial", sans-serif; font-size: 34px; color: #999999; text-decoration: none; }
-/* line 65, ../sass/pages/profile.scss */
+/* line 67, ../sass/pages/profile.scss */
 #stats ul li .icon { color: #ffaa00; top: -3px; }
 
-/* line 79, ../sass/pages/profile.scss */
+/* line 81, ../sass/pages/profile.scss */
 #about p { font-size: 20px; line-height: 2em; }
 
-/* line 93, ../sass/pages/profile.scss */
+/* line 95, ../sass/pages/profile.scss */
 #interests ul li { display: inline-block; margin-right: 0.5em; margin-bottom: 1.0em; }
-/* line 99, ../sass/pages/profile.scss */
-#interests ul li:last-child { margin-right: 0; }
 /* line 101, ../sass/pages/profile.scss */
+#interests ul li:last-child { margin-right: 0; }
+/* line 103, ../sass/pages/profile.scss */
 #interests ul li a { color: #0098cb; background-color: rgba(0, 152, 203, 0.1); }
 /* line 115, ../sass/partials/mixins.scss */
 #interests ul li a:hover { color: white; background-color: #0098cb; text-decoration: none; }
 
-/* line 114, ../sass/pages/profile.scss */
+/* line 116, ../sass/pages/profile.scss */
 #common ul { width: 100%; }
-/* line 118, ../sass/pages/profile.scss */
+/* line 120, ../sass/pages/profile.scss */
 #common ul li { padding-left: 10px; padding-right: 10px; width: 33%; }
-/* line 124, ../sass/pages/profile.scss */
+/* line 126, ../sass/pages/profile.scss */
 #common ul li .number-block { color: #0098cb; background-color: #f9fafb; border: 1px solid #e7edef; width: 100%; padding-top: 30px; padding-bottom: 30px; font-family: "Lato", "HelveticaNeue", "Helvetica", "Arial", sans-serif; font-weight: 100; font-size: 60px; }
-/* line 137, ../sass/pages/profile.scss */
+/* line 139, ../sass/pages/profile.scss */
 #common ul li .number-block-caption { margin-top: 5px; font-size: 14px; color: #b3b3b3; }
-/* line 145, ../sass/pages/profile.scss */
+/* line 147, ../sass/pages/profile.scss */
 #common ul li .icon { font-size: 16px; }
 
-/* line 153, ../sass/pages/profile.scss */
+/* line 155, ../sass/pages/profile.scss */
 #message { text-align: left; }
-/* line 157, ../sass/pages/profile.scss */
+/* line 159, ../sass/pages/profile.scss */
 #message h4 { padding-bottom: 20px; }
+
+/* line 165, ../sass/pages/profile.scss */
+label { text-align: left; }
+
+/* line 166, ../sass/pages/profile.scss */
+input[type=text] { width: 100% !important; }

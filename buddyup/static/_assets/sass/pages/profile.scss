@@ -36,7 +36,9 @@ section
 
 	&:last-child > div
 	{ border-bottom: none; }
+
 }
+
 
 #stats
 {
@@ -68,7 +70,7 @@ section
 				top: -3px;
 			}
 		}
-	}	
+	}
 }
 
 #about
@@ -159,3 +161,6 @@ section
 		padding-bottom: 20px;
 	}
 }
+
+label { text-align: left; }
+input[type=text]{ width: 100% !important;}
