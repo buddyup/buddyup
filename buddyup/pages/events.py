@@ -54,7 +54,7 @@ def new_event(course_id):
     if request.method != 'POST':
         return render_template('courses/events/new.html',
                                 course=Course.query.get_or_404(course_id),
-                                coursemates=coursemates_query(course.id),
+                                coursemates=coursemates_query(course.id).order_by(User.full_name),
                                 times=time_pulldown(),
                                 form=form)
 
@@ -139,7 +139,7 @@ def course_event(course_id, event_id):
                             join_form=EventRSVPForm(),
                             invite_form=EventInvitationForm(),
                             comment_form=EventCommentForm(),
-                            coursemates=coursemates_query(course.id),
+                            coursemates=coursemates_query(course.id).order_by(User.full_name),
                             attending=attending,
                             attendees=attendees)
 
