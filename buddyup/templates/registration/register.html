@@ -72,7 +72,6 @@
                     <label for="" class="control-label">About you</label>
                     {{render_errors(form.bio)}}
                     {{form.bio(class_="form-control", rows=5)}}
-                    <span class="message pull-right">49 words left</span>
                 </div>
                 <div class="multipicker form-group">
                     <label for="" class="control-label">What's your major?</label>
@@ -102,19 +101,23 @@
                 </div> -->
 
                 <div class="form-group">
-                    <label for="" class="control-label">Contact</label>
+					<label for="facebook" class="control-label">Facebook</label>
+					{{render_errors(form.facebook)}}
+					{{form.facebook(class_="form-control", placeholder="http://facebook.com/yournamehere")}}
+				</div>
 
-                    <label for="" class="control-label">Facebook</label>
-                    {{render_errors(form.facebook)}}
-                    {{form.facebook(class_="form-control")}}
-                    <label for="" class="control-label">Twitter</label>
-                    {{render_errors(form.twitter)}}
-                    {{form.twitter(class_="form-control")}}
-                    <label for="" class="control-label">LinkedIn</label>
-                    {{render_errors(form.linkedin)}}
-                    {{form.linkedin(class_="form-control")}}
+                <div class="form-group">
+					<label for="twitter" class="control-label">Twitter</label>
+					{{render_errors(form.twitter)}}
+					{{form.twitter(class_="form-control", placeholder="@yourhandle")}}
+				</div>
 
-                </div>
+                <div class="form-group">
+					<label for="linkedin" class="control-label">LinkedIn</label>
+					{{render_errors(form.linkedin)}}
+					{{form.linkedin(class_="form-control")}}
+				</div>
+
 
                 <div class="form-group">
 <input type="checkbox" name="term_condition"/> I have read and agree to the <a href="/terms" target="_blank">Terms &amp; Conditions</a>.

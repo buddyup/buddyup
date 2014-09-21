@@ -766,3 +766,9 @@ header { margin-bottom: 20px; }
 
 /* line 51, ../sass/pages/registration.scss */
 footer { border-top: none; border-bottom: none; }
+
+/* line 57, ../sass/pages/registration.scss */
+label { text-align: left; }
+
+/* line 58, ../sass/pages/registration.scss */
+input[type=text] { width: 100% !important; }
