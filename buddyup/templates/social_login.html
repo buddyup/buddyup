@@ -1,5 +1,4 @@
 {% extends "green/global_layout.html" %}
-
 {% block head %}{{super()}}
 <script src="https://cdn.auth0.com/w2/auth0-widget-5.2.min.js"></script>
 <script type="text/javascript">
@@ -19,6 +18,7 @@ var widget = new Auth0Widget({
 		margin: 60px 0;
 	}
 	footer {
+		display: none;
 		position: absolute;
 		bottom: 0;
 		width: 100%;
