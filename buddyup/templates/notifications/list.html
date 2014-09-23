@@ -19,12 +19,15 @@ $(function(){
 		var actionURL = click.target.href;
 		var notificationURL = click.target.getAttribute('data-notification');
 
-		$.post(actionURL, {}, function(){
-
-			$.post(notificationURL, {}, function(){
-				$(click.target).replaceWith("Accepted");
-			})
-		});
+		$.post(actionURL).complete(
+			function(request){
+				if( request.status == 200 || request.status == 404){
+					$.post(notificationURL, {}, function(){
+						$(click.target).replaceWith("Accepted");
+					})
+				}
+			}
+		);
 
 		return false;
 	})
