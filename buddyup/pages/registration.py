@@ -19,8 +19,8 @@ def profile_create():
     # Don't let already-registered users back to this screen
     # TODO: Make this a decorator. The Start and Done screens
     # could also use this, though not as critically.
-    # if g.user and g.user.initialized:
-    #     return redirect('home')
+    if g.user and g.user.initialized:
+        return redirect('home')
 
     form = ProfileCreateForm()
 
