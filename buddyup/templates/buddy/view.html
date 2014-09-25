@@ -36,7 +36,7 @@ $(function(){
 						{% if is_invited %}
 						Invitation Sent
 						{% else %}
-						<a href="#" class="action button primary invite-buddy"><span class="icon icon-person-add">&nbsp;</span>Invite</a>
+						<a href="#" class="action button primary invite-buddy"><span class="icon icon-person-add">&nbsp;</span>Connect</a>
 						{% endif %}
                     {% else %}
                         <a href="mailto:{{ classmate|email }}" class="action button primary">Send {{ classmate.full_name }} a message</a>
