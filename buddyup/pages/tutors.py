@@ -57,7 +57,7 @@ def tutor_application():
 
         return redirect(url_for('tutor_application_complete'))
     else:
-        return render_template('tutors/application.html', form=form)
+        return render_template('tutors/application.html', form=form, courses=Course.query.all())
 
 
 @app.route('/tutors/applied', methods=['GET', 'POST'])

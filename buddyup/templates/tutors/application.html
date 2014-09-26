@@ -63,7 +63,45 @@
             </div>
         </section>
 
+{#
+        <section id="" class="row">
+            <div class="col-md-6 col-md-offset-3">
+
+                    <div class="form-group people-list">
+                        <ul class="tablelist-group">
+							{% for course in courses %}
+
+                            <li class="tablelist-group-row">
+                                <ul class="tablelist">
+                                    <li class="icon"><a href="#"><div class="block circle" style="background-image:url('')">&nbsp;</div></a></li>
+                                    <li class="main">
+                                        <span class="title">{{course.name}}</span>
+                                        <span class="subtitle">{{course.instructor}}</span>
+                                    </li>
+                                    <li class="action"><input type="checkbox" name="invited" value="{{course.id}}"></li>
+                                </ul>
+                            </li>
+							{% endfor %}
+                        </ul>
+                    </div>
+
+            </div>
+        </section>
+#}
+
     </form>
 
 </article>
+
+
+
+
+
+
+
+
+
+
+
+
 {% endblock %}
