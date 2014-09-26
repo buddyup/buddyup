@@ -93,7 +93,7 @@ class TutorApplicationForm(Form):
                                          get_label=u"name",
                                          query_factory=sorted_languages)
 
-    status = SelectField("Status", choices=[("looking", "Looking for new clients"), ("interested", "Interested in becoming a tutor")])
+    # status = SelectField("Status", choices=[("looking", "Looking for new clients"), ("interested", "Interested in becoming a tutor")])
 
     location = QuerySelectField(u"Location",
                                 get_label=u"name",

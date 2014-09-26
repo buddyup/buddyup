@@ -47,8 +47,8 @@ def tutor_application():
         for language in form.languages.data:
             application.languages.append(language)
 
-        application.location = form.location.data
-        application.status = form.status.data
+        # application.location = form.location.data
+        # application.status = form.status.data
         # application.price = form.price.data
         # application.per = form.per.data
 

@@ -17,7 +17,7 @@ from apiclient.discovery import build
 
 # Google Specific
 CLIENT_ID = json.loads(open('auth/client_secrets.json', 'r').read())['web']['client_id']
-SERVICE = build('plus', 'v1')
+# SERVICE = build('plus', 'v1')
 
 
 HOME_LIMIT = 24
