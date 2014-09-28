@@ -13,3 +13,4 @@ venv
 .lock
 *.~lock*
 .sass-cache
+.env
