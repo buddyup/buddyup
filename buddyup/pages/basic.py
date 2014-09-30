@@ -7,7 +7,7 @@ from flask import url_for, redirect, g, request, session, make_response
 from buddyup.app import app
 from buddyup.database import User, db
 from buddyup.templating import render_template
-from buddyup.util import login_required, shuffled, send_email
+from buddyup.util import login_required, shuffled, send_out_verify_email
 
 from oauth2client.client import AccessTokenRefreshError
 from oauth2client.client import flow_from_clientsecrets
@@ -111,27 +111,7 @@ def send_verify_email():
         g.user.email_verify_code = u"%s" % m.hexdigest()
         db.session.commit()
 
-    invite_info = {
-        'NAME': g.user.full_name,
-        'RECIPIENT': g.user.email,
-        'DOMAIN': app.config.get('DOMAIN_NAME', ''),
-        'CODE': g.user.email_verify_code
-    }
-
-    subject = "Verify your email with BuddyUp!"
-    message = """Hi {NAME},
-
-Welcome to BuddyUp!  
-
-To keep BuddyUp safe, we require that you verify your .edu email to continue using BuddyUp, by clicking the link below.
-
-http://{DOMAIN}/verify-email/{CODE}
-
-Thanks,
-
-The BuddyUp Team""".format(**invite_info)
-
-    send_email(g.user, subject, message)
+    send_out_verify_email(g.user)
 
     return render_template('send_verify_email.html')
 

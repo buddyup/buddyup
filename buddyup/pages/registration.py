@@ -2,7 +2,7 @@ from flask import url_for, redirect, g, request, session, make_response, flash
 
 from buddyup.app import app
 from buddyup.database import User
-from buddyup.util import login_required, shuffled
+from buddyup.util import login_required, shuffled, send_out_verify_email
 from buddyup.templating import render_template
 from buddyup.pages.profile import update_current_user
 from buddyup.pages.form_profile import ProfileCreateForm
@@ -32,6 +32,7 @@ def profile_create():
             return render_template('registration/register.html', form=form)
         else:
             update_current_user(form)
+            send_out_verify_email(g.user)
             return redirect(url_for('registration_complete'))
     else:
         return render_template('registration/register.html', form=form)

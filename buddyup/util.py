@@ -215,6 +215,29 @@ def send_email(user_recipient, subject, text):
         print 'A mandrill error occurred: %s - %s' % (e.__class__, e)
         raise
 
+def send_out_verify_email(user):
+    invite_info = {
+            'NAME': user.full_name,
+            'RECIPIENT': user.email,
+            'DOMAIN': app.config.get('DOMAIN_NAME', ''),
+            'CODE': user.email_verify_code
+        }
+
+    subject = "Verify your email with BuddyUp!"
+    message = """Hi {NAME},
+
+Welcome to BuddyUp!  
+
+To keep BuddyUp safe, we require that you verify your .edu email to continue using BuddyUp, by clicking the link below.
+
+http://{DOMAIN}/verify-email/{CODE}
+
+Thanks,
+
+The BuddyUp Team""".format(**invite_info)
+
+    send_email(user, subject, message)
+
 
 # TODO: Add boolean to deactivate users instead of deleting them.
 # This code is relatively untested and shouldn't be considered production-quality.
