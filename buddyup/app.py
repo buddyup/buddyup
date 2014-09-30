@@ -13,7 +13,7 @@ ALLOWED_UNVERIFIED_ENDPOINTS = [
     'send_verify_email',
     'logout',
 ]
-USER_VERIFY_EMAIL_GRACE_PERIOD = datetime.timedelta(seconds=24)
+USER_VERIFY_EMAIL_GRACE_PERIOD = datetime.timedelta(hours=24)
 
 
 app = Flask(__name__)
@@ -68,7 +68,7 @@ def setup():
             app.logger.warning("Session with uid %s is invalid, clearing session", session['user_id'])
             session.clear()
         else:
-            # Verify 
+            # Verify email has been confirmed.
             if "static/" not in request.path and\
                 not g.user.email_verified and\
                 g.user.created_at + USER_VERIFY_EMAIL_GRACE_PERIOD < datetime.datetime.now() and\
