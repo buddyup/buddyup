@@ -1,10 +1,11 @@
-import random
+import hashlib
 import json
+import random
 import string
 from flask import url_for, redirect, g, request, session, make_response
 
 from buddyup.app import app
-from buddyup.database import User
+from buddyup.database import User, db
 from buddyup.templating import render_template
 from buddyup.util import login_required, shuffled
 
@@ -94,6 +95,12 @@ def verify_email():
 @app.route('/send-verify-email')
 @login_required
 def send_verify_email():
+    # Just in case they're in a funky account space, re-send this email.
+    if not g.user.email_verify_code:
+        m = hashlib.sha1()
+        m.update("Verify email for %s" % g.user.user_name)
+        g.user.email_verify_code = u"%s" % m.hexdigest()
+        db.session.commit()
     return render_template('send_verify_email.html')
 
 

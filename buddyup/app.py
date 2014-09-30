@@ -7,7 +7,7 @@ from flask.ext.heroku import Heroku
 import mandrill
 
 
-ALLOWED_UNVERIFIED_ENDPOINTS = ['verify_email', 'send_verify_email']
+ALLOWED_UNVERIFIED_ENDPOINTS = ['verify_email', 'send_verify_email', 'logout']
 USER_VERIFY_EMAIL_GRACE_PERIOD = datetime.timedelta(hours=24)
 
 

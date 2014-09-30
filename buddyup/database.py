@@ -1,4 +1,5 @@
 import datetime
+import uuid
 
 from buddyup.app import app
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -110,6 +111,7 @@ class User(db.Model):
     email = db.Column(db.UnicodeText)
     has_photos = db.Column(db.Boolean, default=False)
     email_verified = db.Column(db.Boolean, default=False)
+    email_verify_code = db.Column(db.UnicodeText, default=u"")
     #tutor = db.Column(db.Boolean, default = False)
 
     # Initialized flag
