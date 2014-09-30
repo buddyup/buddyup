@@ -191,8 +191,8 @@ def shuffled(iterable):
 
 def send_mandrill_email_message(user_recipient, subject, html):
     IP_POOL = 'Main Pool'
-    FROM_EMAIL = 'noreply@getbuddyup.com'
-    FROM_NAME = 'Buddyup noreply'
+    FROM_EMAIL = 'noreply@buddyup.org'
+    FROM_NAME = 'BuddyUp noreply'
     try:
         message = {'from_email': FROM_EMAIL,
                    'from_name': FROM_NAME,

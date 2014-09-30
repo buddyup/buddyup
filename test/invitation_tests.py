@@ -61,6 +61,18 @@ class InvitationTests(unittest.TestCase):
         self.assertEqual(1, BuddyInvitation.query.count(), "An invite wasn't created?")
         self.assertEqual(1, Notification.query.count(), "Where is the Notification about the invite?")
 
+        # We should see an email
+        import os.path
+        self.assertTrue(os.path.isfile("./last_sent.msg"))
+
+        import json
+        email = json.load(open("./last_sent.msg"))
+
+        self.assertEqual("John Smith wants to BuddyUp!", email["subject"])
+
+        self.assertIn("Hi Skippy Johnson!", email["html"])
+
+
         # Now we need to make sure that the link we got in the Notification is right.
         notification = Notification.query.first()
 

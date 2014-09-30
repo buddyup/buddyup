@@ -7,7 +7,7 @@ from buddyup.database import (User, BuddyInvitation, Major, MajorMembership,
                               Location, Action)
 from buddyup.templating import render_template
 from buddyup.util import login_required, args_get, sorted_languages, shuffled, track_activity
-
+from buddyup.pages.buddyinvitations import clear_buddy_invites
 from collections import defaultdict
 
 PAGE_SIZE=45

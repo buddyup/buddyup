@@ -36,10 +36,34 @@ def they_invited_you(classmate):
 def already_buddy(classmate):
     return g.user.buddies.filter_by(id=classmate.id).count() > 0
 
+
 def buddy_up(user1, user2):
         user1.buddies.append(user2)
         user2.buddies.append(user1)
         db.session.commit()
+
+
+def email_invitation(from_user, to_user):
+
+    invite_info = {
+        'SENDER': from_user.full_name,
+        'RECIPIENT': to_user.full_name,
+        'DOMAIN': app.config.get('DOMAIN_NAME', ''),
+    }
+
+    subject = "%s wants to BuddyUp!" % invite_info['SENDER']
+
+    message = """Hi {RECIPIENT}!
+
+{SENDER} wants to be your buddy on BuddyUp.
+View and respond to this invitation at: http://{DOMAIN}/notifications
+
+Thanks,
+
+The BuddyUp Team""".format(**invite_info)
+
+    send_mandrill_email_message(to_user, subject, message)
+
 
 def invite(sender, classmate):
     # Don't send multiple invitations.
@@ -58,6 +82,8 @@ def invite(sender, classmate):
 
     db.session.add(notification)
     db.session.commit()
+
+    email_invitation(sender, classmate)
 
 
 @app.route("/classmates/<user_name>/invitation", methods=["POST"])
