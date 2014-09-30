@@ -109,6 +109,7 @@ class User(db.Model):
     location_id = db.Column(db.Integer, db.ForeignKey('location.id'))
     email = db.Column(db.UnicodeText)
     has_photos = db.Column(db.Boolean, default=False)
+    email_verified = db.Column(db.Boolean, default=False)
     #tutor = db.Column(db.Boolean, default = False)
 
     # Initialized flag

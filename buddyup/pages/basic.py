@@ -84,6 +84,19 @@ def home():
     return render_template('index.html', classmates=annotate_classmates(classmates))
 
 
+@app.route('/verify-email')
+@login_required
+def verify_email():
+    next_page = request.args.get('next')
+    return render_template('verify_email.html', next_page=next_page)
+
+
+@app.route('/send-verify-email')
+@login_required
+def send_verify_email():
+    return render_template('send_verify_email.html')
+
+
 @app.route('/help')
 @login_required
 def help():

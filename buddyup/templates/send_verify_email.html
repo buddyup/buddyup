@@ -1,0 +1,18 @@
+{% extends "green/global_layout.html" %}
+{% block title %} Verify Your Identify {% endblock %}
+{% block pagestyle %}
+<link href="/static/_assets/css/index.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+            <article id="top" class="simple">
+                <div class="wrapper container">
+                    <div class="row text-center">
+                        <h1 class="col-md-12">Verification Email Resent.</h1>
+                        <p class="col-md-6 col-md-offset-3">
+                            Check your email at {{g.user.email}}, and click the link!
+                        </p>
+                    </div>
+                </div>
+            </article>
+{% endblock %}

@@ -1,10 +1,14 @@
+import datetime
 import os, logging
 
-from flask import Flask, g, session
+from flask import Flask, g, session, url_for, redirect, request
 from flask.ext.runner import Runner
 from flask.ext.heroku import Heroku
 import mandrill
 
+
+ALLOWED_UNVERIFIED_ENDPOINTS = ['verify_email', 'send_verify_email']
+USER_VERIFY_EMAIL_GRACE_PERIOD = datetime.timedelta(hours=24)
 
 
 app = Flask(__name__)
@@ -58,6 +62,16 @@ def setup():
         if g.user is None:
             app.logger.warning("Session with uid %s is invalid, clearing session", session['user_id'])
             session.clear()
+        else:
+            # Verify 
+            print request.endpoint
+            print request.endpoint not in ALLOWED_UNVERIFIED_ENDPOINTS
+            if "static/" not in request.path and\
+                not g.user.email_verified and\
+                g.user.created_at + USER_VERIFY_EMAIL_GRACE_PERIOD < datetime.datetime.now() and\
+                request.endpoint not in ALLOWED_UNVERIFIED_ENDPOINTS:
+                    print "redirect to the verify page"
+                    return redirect("%s?next=%s" % (url_for('verify_email'), request.path))
     else:
         g.user = None
 
