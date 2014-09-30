@@ -52,7 +52,7 @@ from . import photo
 
 
 def in_production():
-    return config_type == "production"
+    return config_type.lower() == "production"
 
 @app.before_request
 def setup():
