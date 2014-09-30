@@ -94,7 +94,7 @@ class Notification(db.Model):
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.datetime.now)
     # Note: Portland State University user names are always <= 8 ASCII characters
     user_name = db.Column(db.String(255), index=True, unique=True)
     full_name = db.Column(db.UnicodeText, default=u"")
