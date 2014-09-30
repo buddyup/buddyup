@@ -189,15 +189,15 @@ def shuffled(iterable):
     return l
 
 
-def send_mandrill_email_message(user_recipient, subject, html):
+def send_email(user_recipient, subject, text):
     IP_POOL = 'Main Pool'
     FROM_EMAIL = 'noreply@buddyup.org'
-    FROM_NAME = 'BuddyUp noreply'
+    FROM_NAME = 'BuddyUp'
     try:
         message = {'from_email': FROM_EMAIL,
                    'from_name': FROM_NAME,
                    'headers': {'Reply-To': FROM_EMAIL},
-                   'html': html,
+                   'text': text,
                    'subject': subject,
                    'to': [{'email': email(user_recipient),
                            'name': user_recipient.full_name,
