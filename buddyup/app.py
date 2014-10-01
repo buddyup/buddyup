@@ -35,7 +35,8 @@ from_env('ADMIN_USER',
          'SECRET_KEY',
          'HELP_URL',
          'AWS_S3_BUCKET',
-         'DEMO_MODE'
+         'DEMO_MODE',
+         'SSO_INSTANCE',
          )
 
 if 'DATABASE_URL' in os.environ:
@@ -69,7 +70,9 @@ def setup():
             session.clear()
         else:
             # Verify email has been confirmed.
-            if "static/" not in request.path and\
+
+            if "SSO_INSTANCE" in app.config and app.config["SSO_INSTANCE"].lower() != "false" and\
+                "static/" not in request.path and\
                 not g.user.email_verified and\
                 g.user.created_at + USER_VERIFY_EMAIL_GRACE_PERIOD < datetime.datetime.now() and\
                 request.endpoint not in ALLOWED_UNVERIFIED_ENDPOINTS:

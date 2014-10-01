@@ -1,9 +1,10 @@
 #from flask.ext
+import re
 
 from flask.ext.wtf import Form
 from flask.ext.wtf.file import FileField, FileAllowed
 
-from wtforms.validators import required, Email, Optional
+from wtforms.validators import required, Email, Optional, Regexp
 from wtforms.fields import TextField, RadioField, FieldList, TextAreaField, SelectField
 from wtforms.ext.sqlalchemy.fields import (QuerySelectMultipleField,
                                            QuerySelectField)
@@ -49,7 +50,7 @@ class ProfileForm(Form):
     facebook = TextField(u"Facebook (optional)")
     twitter = TextField(u"Twitter")
     linkedin = TextField(u"LinkedIn")
-    email = TextField(u".edu Email Address (required)", validators=[required(), Email()])
+    email = TextField(u".edu Email Address (required)", validators=[required(), Email(), Regexp("(?:[^@?]*)@(?:(?:(?:[A-z_]+\.)*edu)|buddyup\.org)$", flags=re.IGNORECASE, message=u'You must use your .edu email address.')])
     bio = TextAreaField(u'A Few Words About You')
 
 
