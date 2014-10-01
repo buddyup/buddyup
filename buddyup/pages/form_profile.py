@@ -7,7 +7,7 @@ from wtforms.validators import required, Email, Optional
 from wtforms.fields import TextField, RadioField, FieldList, TextAreaField, SelectField
 from wtforms.ext.sqlalchemy.fields import (QuerySelectMultipleField,
                                            QuerySelectField)
-from buddyup.app import app
+from buddyup.app import app, in_production
 from buddyup.database import Course, Major, Location, db
 from buddyup.util import sorted_languages, login_required
 
@@ -42,7 +42,7 @@ class ProfileForm(Form):
 ,                                allow_blank=True,
                                 query_factory=ordered_factory(Location))
     validators = [FileAllowed(PHOTO_EXTS, u"Images only!")]
-    if app.config.get("BUDDYUP_REQUIRE_PHOTO", True):
+    if app.config.get("BUDDYUP_REQUIRE_PHOTO", True) and in_production():
         validators.append(required())
 
     photo = FileField(u"Profile Photo (required)", validators=validators)
@@ -55,7 +55,7 @@ class ProfileForm(Form):
 
 class ProfileCreateForm(ProfileForm):
     validators = [FileAllowed(PHOTO_EXTS, u"Images only!")]
-    if app.config.get("BUDDYUP_REQUIRE_PHOTO", True):
+    if app.config.get("BUDDYUP_REQUIRE_PHOTO", True) and in_production():
         validators.append(required())
 
     photo = FileField(u"Profile Photo (required)", validators=validators)
