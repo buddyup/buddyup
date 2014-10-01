@@ -16,8 +16,8 @@ class Base:
     BUDDYUP_REQUIRE_PHOTO = True
 
 class Dev(Base):
-    AUTHENTICATION_SCHEME = 'google'
-    BUDDYUP_ENABLE_AUTHENTICATION = False
+    AUTHENTICATION_SCHEME = os.environ.get('AUTHENTICATION_SCHEME', 'google').lower()
+    BUDDYUP_ENABLE_AUTHENTICATION = (AUTHENTICATION_SCHEME == "cas")
     BUDDYUP_ENABLE_ADMIN_ALL_USERS = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/buddyup.db'
     # MockCAS server for testing
