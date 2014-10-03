@@ -11,6 +11,7 @@ ALLOWED_UNVERIFIED_ENDPOINTS = [
     'verify_email',
     'confirm_verify_email',
     'send_verify_email',
+    'profile_create',
     'logout',
 ]
 USER_VERIFY_EMAIL_GRACE_PERIOD = datetime.timedelta(hours=24)
