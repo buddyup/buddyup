@@ -1,12 +1,13 @@
-import random
+import hashlib
 import json
+import random
 import string
 from flask import url_for, redirect, g, request, session, make_response
 
 from buddyup.app import app
-from buddyup.database import User
+from buddyup.database import User, db
 from buddyup.templating import render_template
-from buddyup.util import login_required, shuffled
+from buddyup.util import login_required, shuffled, send_out_verify_email
 
 from oauth2client.client import AccessTokenRefreshError
 from oauth2client.client import flow_from_clientsecrets
@@ -82,6 +83,37 @@ from buddyup.pages.classmates import annotate_classmates
 def home():
     classmates = preselected() or random_students()
     return render_template('index.html', classmates=annotate_classmates(classmates))
+
+
+@app.route('/verify-email')
+@login_required
+def verify_email():
+    next_page = request.args.get('next')
+    return render_template('verify_email.html', next_page=next_page)
+
+@app.route('/verify-email/<path:code>')
+@login_required
+def confirm_verify_email(code):
+    if code and g.user.email_verify_code == code:
+        g.user.email_verified = True
+        db.session.commit()
+
+    next_page = request.args.get('next')
+    return render_template('verify_email.html', next_page=next_page)
+
+@app.route('/send-verify-email')
+@login_required
+def send_verify_email():
+    # Just in case they're in a funky account space, re-send this email.
+    if not g.user.email_verify_code:
+        m = hashlib.sha1()
+        m.update("Verify email for %s" % g.user.user_name)
+        g.user.email_verify_code = u"%s" % m.hexdigest()
+        db.session.commit()
+
+    send_out_verify_email(g.user)
+
+    return render_template('send_verify_email.html')
 
 
 @app.route('/help')

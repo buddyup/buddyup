@@ -14,3 +14,6 @@ venv
 *.~lock*
 .sass-cache
 .env
+last_sent.msg
+
+dev_data.dump

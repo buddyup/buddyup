@@ -1,8 +1,10 @@
 from urllib2 import urlopen, URLError
 from urllib import urlencode, quote
 from xml.etree import cElementTree as etree
-import os
+import hashlib
 import json
+import os
+
 import requests
 
 from flask import Flask, request, jsonify, render_template, send_from_directory
@@ -214,6 +216,10 @@ def callback_handling():
         if "email" in user_info:
             existing_user.email = user_info["email"]
         existing_user.user_name = user_info["user_id"]
+        
+        m = hashlib.sha1()
+        m.update("Verify email for %s" % user_info["user_id"])
+        existing_user.email_verify_code = m.hexdigest()
         db.session.commit()
         destination = 'welcome'
 

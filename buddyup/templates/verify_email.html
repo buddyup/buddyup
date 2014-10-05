@@ -1,0 +1,48 @@
+{% extends "green/global_layout.html" %}
+{% block title %} Verify Your Identify {% endblock %}
+{% block pagestyle %}
+<link href="/static/_assets/css/index.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<article id="top" class="simple">
+    <div class="wrapper container">
+    {% if g.user.email_verified %}
+        <div class="row text-center">
+            <h1 class="col-md-12">Thanks for Keeping BuddyUp Safe.</h1>
+            <p class="col-md-12">
+                By verifying your email, you've helped keep BuddyUp safe for everyone. Thanks!
+            </p>
+        </div>
+        {% if next_page %}
+        <div class="row text-center">
+            <br/>
+            <p class="col-md-6 col-md-offset-3">
+                <a href="{{next_page}}" class="btn btn-primary">Continue <i class="fa-chevron-right fa"></i></a>
+            </p>
+        </div>
+        {% endif %}
+    {% else %}
+        <div class="row text-center">
+            <h1 class="col-md-12">Help Keep BuddyUp Safe.</h1>
+            <p class="col-md-6 col-md-offset-3">
+                To keep BuddyUp safe, we require that you verify your .edu email.  We sent you an email at {{g.user.email}} when you signed up - click that link, and you're all set!
+            </p>
+        </div>
+        <div class="row text-center">
+            {# The stylesheet is completely broken.  Rows are supposed to have padding! #}
+            <br/>
+            <p class="col-md-6 col-md-offset-3">
+                Don't see it?  Check your spam folder, or hit resend below.
+            </p>
+        </div>
+        <div class="row text-center">
+            <br/>
+            <p class="col-md-6 col-md-offset-3">
+                <a href="/send-verify-email" class="btn btn-primary"><i class="fa-repeat fa"></i> Resend Email</a>
+            </p>
+        </div>
+    {% endif %}
+    </div>
+</article>
+{% endblock %}
