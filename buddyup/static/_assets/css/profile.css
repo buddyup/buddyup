@@ -245,8 +245,8 @@ a.notifications > .icon-notification + .icon-badge { position: absolute; top: 20
 /* line 307, ../sass/partials/nav.scss */
 #notifications .dropdown-menu .see-all { padding-top: 20px; padding-bottom: 20px; padding-left: 20px; padding-right: 20px; }
 /* line 314, ../sass/partials/nav.scss */
-#notifications .dropdown-menu .see-all a { color: #0098cb; font-size: 16px; }
-/* line 127, ../sass/partials/mixins.scss */
+#notifications .dropdown-menu .see-all a { color: #0098cb; background-color: #f9fafb; font-size: 16px; }
+/* line 128, ../sass/partials/mixins.scss */
 #notifications .dropdown-menu .see-all a:hover { color: white; background-color: #0098cb; border-radius: 0px; text-decoration: none; }
 /* line 319, ../sass/partials/nav.scss */
 #notifications .dropdown-menu .see-all a .icon { font-size: 2em; line-height: 0; top: 3px; }
@@ -304,7 +304,7 @@ ul.tablelist-group li.tablelist-group-row ul.tablelist li.icon .icon-file:before
 /* line 94, ../sass/partials/list.scss */
 ul.tablelist-group li.tablelist-group-row ul.tablelist li.icon .icon-file:after { content: '\1F4C4'; position: absolute; top: -0.15em; left: 0.275em; line-height: 0; font-family: "Entypo"; font-size: 40px; }
 /* line 108, ../sass/partials/list.scss */
-ul.tablelist-group li.tablelist-group-row ul.tablelist li.icon .block { background-repeat: no-repeat; background-size: 100% auto; background-position: center center; display: inline-block; width: 45px; height: 45px; }
+ul.tablelist-group li.tablelist-group-row ul.tablelist li.icon .block { background-repeat: no-repeat; background-size: auto 100%; background-position: center center; display: inline-block; width: 45px; height: 45px; }
 /* line 116, ../sass/partials/list.scss */
 ul.tablelist-group li.tablelist-group-row ul.tablelist li.icon .block.circle { border-radius: 45px; }
 /* line 123, ../sass/partials/list.scss */
@@ -314,8 +314,8 @@ ul.tablelist-group li.tablelist-group-row ul.tablelist li.date .date { display: 
 /* line 141, ../sass/partials/list.scss */
 ul.tablelist-group li.tablelist-group-row ul.tablelist li.main { text-align: left; }
 /* line 145, ../sass/partials/list.scss */
-ul.tablelist-group li.tablelist-group-row ul.tablelist li.main a { color: #0098cb; }
-/* line 127, ../sass/partials/mixins.scss */
+ul.tablelist-group li.tablelist-group-row ul.tablelist li.main a { color: #0098cb; background-color: #f9fafb; }
+/* line 128, ../sass/partials/mixins.scss */
 ul.tablelist-group li.tablelist-group-row ul.tablelist li.main a:hover { color: white; background-color: #0098cb; border-radius: 0px; text-decoration: none; }
 /* line 150, ../sass/partials/list.scss */
 ul.tablelist-group li.tablelist-group-row ul.tablelist li.main .title { display: block; color: #191919; font-size: 16px; font-weight: 600; }
@@ -332,8 +332,8 @@ ul.tablelist-group li.tablelist-group-row ul.tablelist li.main .subtitle span.ic
 /* line 183, ../sass/partials/list.scss */
 ul.tablelist-group li.tablelist-group-row ul.tablelist li.action { font-size: 14px; }
 /* line 187, ../sass/partials/list.scss */
-ul.tablelist-group li.tablelist-group-row ul.tablelist li.action a { color: #0098cb; }
-/* line 127, ../sass/partials/mixins.scss */
+ul.tablelist-group li.tablelist-group-row ul.tablelist li.action a { color: #0098cb; background-color: #f9fafb; }
+/* line 128, ../sass/partials/mixins.scss */
 ul.tablelist-group li.tablelist-group-row ul.tablelist li.action a:hover { color: white; background-color: #0098cb; border-radius: 0px; text-decoration: none; }
 
 /* line 205, ../sass/partials/list.scss */
@@ -363,7 +363,7 @@ ul.block-list li { display: inline-block; float: left; width: 80px; height: 80px
 /* line 275, ../sass/partials/list.scss */
 ul.block-list li a { text-decoration: none; }
 /* line 279, ../sass/partials/list.scss */
-ul.block-list li a .block { background-repeat: no-repeat; background-size: 100% auto; background-position: center center; width: 100%; height: 100%; border: 1px solid #e7edef; }
+ul.block-list li a .block { background-repeat: no-repeat; background-size: auto 100%; background-position: center center; width: 100%; height: 100%; border: 1px solid #e7edef; }
 /* line 287, ../sass/partials/list.scss */
 ul.block-list li a .block.overflow { color: #0098cb; background-color: #f9fafb; border: 1px solid #e7edef; text-align: center; font-size: 30px; }
 /* line 294, ../sass/partials/list.scss */
@@ -408,48 +408,55 @@ h1 { font-size: 52px; }
 /* line 48, ../sass/partials/_base.scss */
 h3, h3 a { text-transform: uppercase; font-size: 18px; color: #191919; }
 /* line 54, ../sass/partials/_base.scss */
-h3 a, h3 a a { text-decoration: none !important; }
+h3 a, h3 a a { text-decoration: none !important; background-color: transparent !important; }
+/* line 60, ../sass/partials/_base.scss */
+h3 a:hover, h3 a a:hover { color: #0098cb !important; }
 
-/* line 58, ../sass/partials/_base.scss */
+/* line 67, ../sass/partials/_base.scss */
 h4 { font-size: 18px; color: #191919; }
 
-/* line 64, ../sass/partials/_base.scss */
+/* line 73, ../sass/partials/_base.scss */
 h4 + p { margin-top: 10px; }
 
+/* line 78, ../sass/partials/_base.scss */
+article#main-content section p a[href]:not(.button) { color: #0098cb; background-color: #f9fafb; }
+/* line 128, ../sass/partials/mixins.scss */
+article#main-content section p a[href]:not(.button):hover { color: white; background-color: #0098cb; border-radius: 0px; text-decoration: none; }
+
 /*/ Main Container styling /*/
-/* line 71, ../sass/partials/_base.scss */
+/* line 85, ../sass/partials/_base.scss */
 article#main-content { padding-top: 60px; padding-bottom: 100px; }
 
-/* line 77, ../sass/partials/_base.scss */
+/* line 91, ../sass/partials/_base.scss */
 article#main-content section { padding-top: 40px; margin-top: 40px; }
-/* line 82, ../sass/partials/_base.scss */
+/* line 96, ../sass/partials/_base.scss */
 article#main-content section:first-child { padding-top: 0px; }
-/* line 85, ../sass/partials/_base.scss */
+/* line 99, ../sass/partials/_base.scss */
 article#main-content section:last-child { margin-top: 0px; }
 
 /*/  Headings  /*/
-/* line 91, ../sass/partials/_base.scss */
+/* line 105, ../sass/partials/_base.scss */
 .group-heading { overflow: auto; padding-bottom: 10px; margin-bottom: 20px; border-bottom: 1px solid #f3f6f7; }
-/* line 99, ../sass/partials/_base.scss */
+/* line 113, ../sass/partials/_base.scss */
 .group-heading h3 { float: left; }
-/* line 103, ../sass/partials/_base.scss */
+/* line 117, ../sass/partials/_base.scss */
 .group-heading h3 .icon { margin-right: 5px; font-size: 1.5em; line-height: 0em; }
-/* line 112, ../sass/partials/_base.scss */
-.group-heading a.right { color: #0098cb; float: right; font-size: 14px; }
-/* line 127, ../sass/partials/mixins.scss */
+/* line 126, ../sass/partials/_base.scss */
+.group-heading a.right { color: #0098cb; background-color: #f9fafb; float: right; font-size: 14px; }
+/* line 128, ../sass/partials/mixins.scss */
 .group-heading a.right:hover { color: white; background-color: #0098cb; border-radius: 0px; text-decoration: none; }
 
 /*/ Special classes /*/
-/* line 124, ../sass/partials/_base.scss */
+/* line 138, ../sass/partials/_base.scss */
 .hide { display: none; }
 
-/* line 126, ../sass/partials/_base.scss */
+/* line 140, ../sass/partials/_base.scss */
 ul.horizontal { display: table; }
 
-/* line 129, ../sass/partials/_base.scss */
+/* line 143, ../sass/partials/_base.scss */
 ul.horizontal li { display: table-cell; }
 
-/* line 132, ../sass/partials/_base.scss */
+/* line 146, ../sass/partials/_base.scss */
 ul.bulleted { list-style-type: disc; padding-left: 1.25em; }
 
 /*/ Bootstrap overrides /*/
@@ -469,13 +476,13 @@ ul.bulleted { list-style-type: disc; padding-left: 1.25em; }
 /* line 41, ../sass/partials/top.scss */
 #top .subtitle span.icon:before { font-size: 1.5em; color: #b2b2b2; }
 /* line 47, ../sass/partials/top.scss */
-#top .subtitle span a { color: #0098cb; color: #7f7f7f; }
-/* line 127, ../sass/partials/mixins.scss */
+#top .subtitle span a { color: #0098cb; background-color: #f9fafb; color: #7f7f7f; }
+/* line 128, ../sass/partials/mixins.scss */
 #top .subtitle span a:hover { color: white; background-color: #0098cb; border-radius: 0px; text-decoration: none; }
 /* line 55, ../sass/partials/top.scss */
 #top a.action { display: inline-block; }
 /* line 60, ../sass/partials/top.scss */
-#top .thumbnail { background-repeat: no-repeat; background-size: 100% auto; background-position: center center; border-radius: 0; border: 1px solid #7f7f7f; }
+#top .thumbnail { background-repeat: no-repeat; background-size: auto 100%; background-position: center center; border-radius: 0; border: 1px solid #7f7f7f; }
 @media only screen and (max-width: 767px) { /* line 60, ../sass/partials/top.scss */
   #top .thumbnail { width: 44px; height: 44px; float: left; margin-right: 20px; } }
 @media only screen and (min-width: 768px) { /* line 60, ../sass/partials/top.scss */
@@ -559,9 +566,9 @@ ul.bulleted { list-style-type: disc; padding-left: 1.25em; }
 /* line 341, ../sass/partials/top.scss */
 #top.profile div.profile-image, #top.profile div.course-image { display: inline-block; background-color: white; border: 1px solid #f3f6f7; }
 /* line 348, ../sass/partials/top.scss */
-#top.profile div.profile-image { width: 180px; height: 180px; border-radius: 180px; background-repeat: no-repeat; background-size: 100% auto; background-position: center center; }
+#top.profile div.profile-image { width: 180px; height: 180px; border-radius: 180px; background-repeat: no-repeat; background-size: auto 100%; background-position: center center; }
 /* line 354, ../sass/partials/top.scss */
-#top.profile div.course-image { width: 150px; height: 150px; border-radius: 5px; background-repeat: no-repeat; background-size: 100% auto; background-position: center center; }
+#top.profile div.course-image { width: 150px; height: 150px; border-radius: 5px; background-repeat: no-repeat; background-size: auto 100%; background-position: center center; }
 /* line 360, ../sass/partials/top.scss */
 #top.profile h1 { padding-top: 20px; padding-bottom: 5px; }
 /* line 366, ../sass/partials/top.scss */
@@ -602,8 +609,8 @@ select, input { width: auto !important; }
 /* line 102, ../sass/partials/form.scss */
 .message .icon { font-size: 1.75em; }
 /* line 107, ../sass/partials/form.scss */
-.message a { color: #0098cb; }
-/* line 127, ../sass/partials/mixins.scss */
+.message a { color: #0098cb; background-color: #f9fafb; }
+/* line 128, ../sass/partials/mixins.scss */
 .message a:hover { color: white; background-color: #0098cb; border-radius: 0px; text-decoration: none; }
 
 /* line 113, ../sass/partials/form.scss */
@@ -712,7 +719,7 @@ input[type="text"]::-webkit-input-placeholder { color: #bbb; font-style: italic;
 .people-list a.button.add.inactive { color: #0098cb !important; background-color: rgba(0, 152, 203, 0.2) !important; border: 1px solid rgba(0, 152, 203, 0.2) !important; }
 
 /* line 345, ../sass/partials/form.scss */
-.photo-chooser .photo-preview { background-repeat: no-repeat; background-size: 100% auto; background-position: center center; width: 100px; height: 100px; background-color: #dddddd; }
+.photo-chooser .photo-preview { background-repeat: no-repeat; background-size: auto 100%; background-position: center center; width: 100px; height: 100px; background-color: #dddddd; }
 /* line 355, ../sass/partials/form.scss */
 .photo-chooser a.button { margin-top: 20px; display: inline-block; padding: 0.75em 1.15em 0.75em 1.15em; border-radius: 5px; font-weight: 400; font-size: 16px; text-decoration: none; font-size: 18px; color: #0098cb; background-color: white; border: 1px solid #0098cb; font-size: 14px !important; line-height: 1em; padding: 0.5em 1em 0.75em 1em !important; }
 /* line 65, ../sass/partials/mixins.scss */

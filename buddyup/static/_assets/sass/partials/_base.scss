@@ -52,7 +52,16 @@ h3, h3 a
 	color: $color-gray-dark;
 
 	a
-	{ text-decoration: none !important; }
+	{ 
+		text-decoration: none !important; 
+		background-color: transparent !important;
+	}
+
+	a:hover
+	{
+		// fix for hover effects of @mixin text-link
+		color: $color-primary !important;
+	}
 }
 
 h4
@@ -64,6 +73,11 @@ h4
 h4 + p
 {
 	margin-top: 10px;
+}
+
+article#main-content section p a[href]:not(.button)
+{
+	@include text-link;
 }
 
 /*/ Main Container styling /*/
