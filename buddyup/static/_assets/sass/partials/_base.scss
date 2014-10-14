@@ -6,6 +6,7 @@
 @import "icons";
 @import "nav";
 @import "list";
+@import "flash";
 @import "footer";
 
 
@@ -42,12 +43,10 @@ h3,h4,h5
 h1
 {
 	font-size: 52px;
-	// font-weight: 100;
 }
 
 h3, h3 a
 {
-	// font-weight: 200;
 	text-transform: uppercase;
 	font-size: 18px;
 	color: $color-gray-dark;
@@ -58,12 +57,16 @@ h3, h3 a
 
 h4
 {
-	// font-weight: 200;
 	font-size: 18px;
 	color: $color-gray-dark;
 }
 
-/*/ /*/
+h4 + p
+{
+	margin-top: 10px;
+}
+
+/*/ Main Container styling /*/
 
 article#main-content
 {
@@ -83,6 +86,38 @@ article#main-content section
 	{ margin-top: 0px; }
 }
 
+/*/  Headings  /*/
+
+.group-heading
+{
+	overflow: auto;
+	padding-bottom: 10px;
+	margin-bottom: 20px;
+
+	border-bottom: 1px solid $color-border-lighter;
+
+	h3
+	{
+		float: left;
+
+		.icon
+		{
+			margin-right: 5px;
+
+			font-size: 1.5em;
+			line-height: 0em;
+		}
+	}
+
+	a.right
+	{
+		@include text-link;
+
+		float: right;
+
+		font-size: 14px;
+	}
+}
 
 /*/ Special classes /*/
 
@@ -108,42 +143,3 @@ div#main .container
 	// padding-right: $col / 2;
 }
 
-/*/  Temp area  /*/
-
-
-.group-heading
-{
-	overflow: auto;
-	padding-bottom: 10px;
-	margin-bottom: 20px;
-
-	border-bottom: 1px solid $color-border-lighter;
-
-	h3
-	{
-		float: left;
-
-		.icon
-		{
-			margin-right: 5px;
-
-			font-size: 1.5em;
-			line-height: 0em;
-			// color: $color-text;
-		}
-	}
-
-	a.right
-	{
-		@include text-link;
-
-		float: right;
-
-		font-size: 14px;
-	}
-}
-
-h4 + p
-{
-	margin-top: 10px;
-}

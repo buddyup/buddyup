@@ -1,0 +1,26 @@
+@mixin alert-styling( $color )
+{
+	border: 1px solid transparentize( $color, 0.5 );
+	background-color: transparentize( $color, 0.98 );
+
+	color: $color;
+}
+
+$color-alert-default : darken( orange, 5% );
+
+.alert
+{
+	@include alert-styling( $color-alert-default );
+	font-weight: bold;
+	text-align: center;
+}
+
+.alert.alert-success
+{
+	@include alert-styling( green );
+}
+
+.alert.alert-danger
+{
+	@include alert-styling( red );
+}

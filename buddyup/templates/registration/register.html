@@ -40,13 +40,20 @@
 
 <article id="main-content" class="container">
 
-{% include "flash.html" %}
+        {% if get_flashed_messages() %}
+        <section id="" class="row">
+            <div class="col-md-8 col-md-offset-2">
+                {% include "flash.html" %}
+            </div>
+        </section>
+        {% endif %}
 
         <form id="registration" action="{{ url_for('profile_create') }}" method="POST"
             enctype="multipart/form-data">
         {{ form.csrf_token }}
 
         <section id="" class="row">
+
             <div class="col-md-6 col-md-offset-3">
 
                 <div class="form-group">

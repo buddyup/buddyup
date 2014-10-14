@@ -370,6 +370,15 @@ ul.block-list li a .block.overflow span { display: block; position: relative; to
 /* line 302, ../sass/partials/list.scss */
 ul.block-list li a .block.overflow sup { font-size: .5em; }
 
+/* line 11, ../sass/partials/flash.scss */
+.alert { border: 1px solid rgba(230, 149, 0, 0.5); background-color: rgba(230, 149, 0, 0.02); color: #e69500; font-weight: bold; text-align: center; }
+
+/* line 18, ../sass/partials/flash.scss */
+.alert.alert-success { border: 1px solid rgba(0, 128, 0, 0.5); background-color: rgba(0, 128, 0, 0.02); color: green; }
+
+/* line 23, ../sass/partials/flash.scss */
+.alert.alert-danger { border: 1px solid rgba(255, 0, 0, 0.5); background-color: rgba(255, 0, 0, 0.02); color: red; }
+
 /* line 1, ../sass/partials/footer.scss */
 footer { background: #f9fafb; border-top: 1px solid #f3f6f7; font-size: 11px; color: #88a7b2; }
 /* line 9, ../sass/partials/footer.scss */
@@ -380,69 +389,69 @@ footer span { margin-left: 1em; margin-right: 1em; padding-top: 0.5em; padding-b
 footer a { color: #88a7b2; }
 
 /*/  /*/
-/* line 14, ../sass/partials/_base.scss */
+/* line 15, ../sass/partials/_base.scss */
 body { font-family: "Open Sans", "HelveticaNeue", "Helvetica", "Arial", sans-serif !important; font-weight: 300; color: #7f7f7f; font-size: 16px; line-height: 1.5em !important; }
 
-/* line 23, ../sass/partials/_base.scss */
+/* line 24, ../sass/partials/_base.scss */
 h1, h2, h3, h4, h5 { font-family: "Lato", "HelveticaNeue", "Helvetica", "Arial", sans-serif; line-height: 1em; }
 
-/* line 29, ../sass/partials/_base.scss */
+/* line 30, ../sass/partials/_base.scss */
 h1, h2 { font-family: "Lato", "HelveticaNeue", "Helvetica", "Arial", sans-serif; font-weight: 200; }
 
-/* line 36, ../sass/partials/_base.scss */
+/* line 37, ../sass/partials/_base.scss */
 h3, h4, h5 { font-family: "Lato", "HelveticaNeue", "Helvetica", "Arial", sans-serif; font-weight: 400; }
 
-/* line 42, ../sass/partials/_base.scss */
+/* line 43, ../sass/partials/_base.scss */
 h1 { font-size: 52px; }
 
 /* line 48, ../sass/partials/_base.scss */
 h3, h3 a { text-transform: uppercase; font-size: 18px; color: #191919; }
-/* line 55, ../sass/partials/_base.scss */
+/* line 54, ../sass/partials/_base.scss */
 h3 a, h3 a a { text-decoration: none !important; }
 
-/* line 59, ../sass/partials/_base.scss */
+/* line 58, ../sass/partials/_base.scss */
 h4 { font-size: 18px; color: #191919; }
 
-/*/ /*/
-/* line 68, ../sass/partials/_base.scss */
+/* line 64, ../sass/partials/_base.scss */
+h4 + p { margin-top: 10px; }
+
+/*/ Main Container styling /*/
+/* line 71, ../sass/partials/_base.scss */
 article#main-content { padding-top: 60px; padding-bottom: 100px; }
 
-/* line 74, ../sass/partials/_base.scss */
+/* line 77, ../sass/partials/_base.scss */
 article#main-content section { padding-top: 40px; margin-top: 40px; }
-/* line 79, ../sass/partials/_base.scss */
-article#main-content section:first-child { padding-top: 0px; }
 /* line 82, ../sass/partials/_base.scss */
+article#main-content section:first-child { padding-top: 0px; }
+/* line 85, ../sass/partials/_base.scss */
 article#main-content section:last-child { margin-top: 0px; }
 
-/*/ Special classes /*/
-/* line 89, ../sass/partials/_base.scss */
-.hide { display: none; }
-
+/*/  Headings  /*/
 /* line 91, ../sass/partials/_base.scss */
-ul.horizontal { display: table; }
-
-/* line 94, ../sass/partials/_base.scss */
-ul.horizontal li { display: table-cell; }
-
-/* line 97, ../sass/partials/_base.scss */
-ul.bulleted { list-style-type: disc; padding-left: 1.25em; }
-
-/*/ Bootstrap overrides /*/
-/*/  Temp area  /*/
-/* line 114, ../sass/partials/_base.scss */
 .group-heading { overflow: auto; padding-bottom: 10px; margin-bottom: 20px; border-bottom: 1px solid #f3f6f7; }
-/* line 122, ../sass/partials/_base.scss */
+/* line 99, ../sass/partials/_base.scss */
 .group-heading h3 { float: left; }
-/* line 126, ../sass/partials/_base.scss */
+/* line 103, ../sass/partials/_base.scss */
 .group-heading h3 .icon { margin-right: 5px; font-size: 1.5em; line-height: 0em; }
-/* line 136, ../sass/partials/_base.scss */
+/* line 112, ../sass/partials/_base.scss */
 .group-heading a.right { color: #0098cb; float: right; font-size: 14px; }
 /* line 127, ../sass/partials/mixins.scss */
 .group-heading a.right:hover { color: white; background-color: #0098cb; border-radius: 0px; text-decoration: none; }
 
-/* line 146, ../sass/partials/_base.scss */
-h4 + p { margin-top: 10px; }
+/*/ Special classes /*/
+/* line 124, ../sass/partials/_base.scss */
+.hide { display: none; }
 
+/* line 126, ../sass/partials/_base.scss */
+ul.horizontal { display: table; }
+
+/* line 129, ../sass/partials/_base.scss */
+ul.horizontal li { display: table-cell; }
+
+/* line 132, ../sass/partials/_base.scss */
+ul.bulleted { list-style-type: disc; padding-left: 1.25em; }
+
+/*/ Bootstrap overrides /*/
 /*/  /*/
 /* line 5, ../sass/partials/top.scss */
 #top { padding-top: 40px; background-color: #f9fafb; border-top: 1px solid #f3f6f7; border-bottom: 1px solid #f3f6f7; color: #568da3; }
