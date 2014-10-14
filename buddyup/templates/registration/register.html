@@ -42,24 +42,6 @@
 
 {% include "flash.html" %}
 
-<style>
-
-.icon-problem:before
-{
-	position: absolute;
-	content: '\1F4A5';
-	font-size: 4em;
-	top:  -0.25em;
-	left: -0.25em;
-	color: #ffaa00;
-}
-
-ul.errors li {
-	margin-left: 1.5em;
-}
-
-</style>
-
         <form id="registration" action="{{ url_for('profile_create') }}" method="POST"
             enctype="multipart/form-data">
         {{ form.csrf_token }}
@@ -69,51 +51,54 @@ ul.errors li {
 
                 <div class="form-group">
                 <label for="" class="control-label">{{ form.photo.label.text }}</label>
-				{% if form.photo.errors %}<span class="icon icon-problem">&nbsp;</span>{% endif %}
-                {{ render_errors(form.photo) }}
+				{% if form.photo.errors %}<div class="form-error">{% endif %}
                 {{ form.photo }}
+                {{ render_errors(form.photo) }}
+                {% if form.photo.errors %}</div>{% endif %}
                 </div>
 
                 <div class="form-group">
 				    <label for="" class="control-label">{{ form.email.label.text }}</label>
-					{% if form.email.errors %}<span class="icon icon-problem">&nbsp;</span>{% endif %}
-				    {{render_errors(form.email)}}
+					{% if form.email.errors %}<div class="form-error">{% endif %}
 				    {{form.email(class_="form-control")}}
+                    {{render_errors(form.email)}}
+                    {% if form.email.errors %}</div>{% endif %}
                 </div>
 
                 <div class="form-group">
 					<label for="" class="control-label">{{ form.full_name.label.text }}</label>
-					{% if form.full_name.errors %}<span class="icon icon-problem">&nbsp;</span>{% endif %}
-                    {{render_errors(form.full_name)}}
+					{% if form.full_name.errors %}<div class="form-error">{% endif %}
                     {{form.full_name(class_="form-control")}}
+                    {{render_errors(form.full_name)}}
+                    {% if form.full_name.errors %}</div>{% endif %}
                 </div>
 
 
                 <div class="form-group">
                     <label for="" class="control-label">About you</label>
-                    {{render_errors(form.bio)}}
                     {{form.bio(class_="form-control", rows=5)}}
+                    {{render_errors(form.bio)}}
                 </div>
                 <div class="multipicker form-group">
                     <label for="" class="control-label">What's your major?</label>
-                    {{render_errors(form.majors)}}
                     <div class="multipicker-row">
                         {{form.majors(class_="form-control")}}
                     </div>
+                    {{render_errors(form.majors)}}
                 </div>
 
                 <div class="form-group">
                     <label for="" class="control-label">Location</label>
-                    {{render_errors(form.location)}}
                     {{form.location(class_="form-control")}}
+                    {{render_errors(form.location)}}
                 </div>
 
                 <div class="multipicker form-group">
                     <label for="" class="control-label">What languages do you speak?</label>
-                    {{render_errors(form.languages)}}
                     <div class="multipicker-row">
                         {{form.languages(class_="form-control")}}
                     </div>
+                    {{render_errors(form.languages)}}
                 </div>
 
     <!--             <div class="form-group">
@@ -123,20 +108,20 @@ ul.errors li {
 
                 <div class="form-group">
 					<label for="facebook" class="control-label">Facebook</label>
-					{{render_errors(form.facebook)}}
 					{{form.facebook(class_="form-control", placeholder="http://facebook.com/yournamehere")}}
+                    {{render_errors(form.facebook)}}
 				</div>
 
                 <div class="form-group">
 					<label for="twitter" class="control-label">Twitter</label>
-					{{render_errors(form.twitter)}}
 					{{form.twitter(class_="form-control", placeholder="@yourhandle")}}
+                    {{render_errors(form.twitter)}}
 				</div>
 
                 <div class="form-group">
 					<label for="linkedin" class="control-label">LinkedIn</label>
-					{{render_errors(form.linkedin)}}
 					{{form.linkedin(class_="form-control")}}
+                    {{render_errors(form.linkedin)}}
 				</div>
 
 

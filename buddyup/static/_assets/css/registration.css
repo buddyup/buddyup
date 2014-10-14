@@ -602,54 +602,54 @@ html:not(.mobile) .block-grid .block.selected .info .wrapper > span.button .icon
 #top.profile .subtitle { padding-bottom: 30px; color: #7f7f7f; font-size: 16px; }
 
 /*/ Bootstrap Overrides /*/
-/* line 4, ../sass/partials/form.scss */
+/* line 5, ../sass/partials/form.scss */
 select, input { width: auto !important; }
 
-/* line 9, ../sass/partials/form.scss */
+/* line 10, ../sass/partials/form.scss */
 .form-group { padding-top: 20px !important; padding-bottom: 20px !important; }
-/* line 14, ../sass/partials/form.scss */
+/* line 15, ../sass/partials/form.scss */
 .form-group label { display: block; width: 100%; }
 
-/* line 24, ../sass/partials/form.scss */
+/* line 25, ../sass/partials/form.scss */
 .form-group:last-child { padding-bottom: 0px; }
-/* line 27, ../sass/partials/form.scss */
+/* line 28, ../sass/partials/form.scss */
 .form-group label { padding-bottom: 10px; margin-bottom: 20px; color: #191919; font-size: 16px; font-weight: normal; text-transform: uppercase; border-bottom: 1px dotted #f3f6f7; }
-/* line 39, ../sass/partials/form.scss */
+/* line 40, ../sass/partials/form.scss */
 .form-group, .form-group .checkbox label, .form-group .radio label { padding-bottom: 0px; color: #7f7f7f; font-size: 14px; font-weight: normal; text-transform: none; border-bottom: none; }
-/* line 50, ../sass/partials/form.scss */
+/* line 51, ../sass/partials/form.scss */
 .form-group .radio { line-height: 1.5em; }
-/* line 63, ../sass/partials/form.scss */
+/* line 64, ../sass/partials/form.scss */
 .form-group select + select { margin-top: 10px; }
 
 /*/ General form input styling /*/
-/* line 71, ../sass/partials/form.scss */
+/* line 72, ../sass/partials/form.scss */
 .radio.horizontal, .checkbox.horizontal { display: inline-block; margin-right: 1.5em; }
 
-/* line 77, ../sass/partials/form.scss */
+/* line 78, ../sass/partials/form.scss */
 .message { display: block; width: 100%; padding-top: 0.5em; padding-bottom: 0.5em; font-size: 14px; }
-/* line 86, ../sass/partials/form.scss */
+/* line 87, ../sass/partials/form.scss */
 .message.success { color: green; }
-/* line 91, ../sass/partials/form.scss */
+/* line 92, ../sass/partials/form.scss */
 .message.warning { color: orange; }
-/* line 96, ../sass/partials/form.scss */
+/* line 97, ../sass/partials/form.scss */
 .message.error { color: red; }
-/* line 101, ../sass/partials/form.scss */
+/* line 102, ../sass/partials/form.scss */
 .message .icon { font-size: 1.75em; }
-/* line 106, ../sass/partials/form.scss */
+/* line 107, ../sass/partials/form.scss */
 .message a { color: #0098cb; }
 /* line 127, ../sass/partials/mixins.scss */
 .message a:hover { color: white; background-color: #0098cb; border-radius: 0px; text-decoration: none; }
 
-/* line 112, ../sass/partials/form.scss */
+/* line 113, ../sass/partials/form.scss */
 input, .form-group input, textarea, .form-group textarea { border-radius: 8px !important; background-color: #f9fafb !important; border: 1px solid #e7edef !important; }
 
-/* line 123, ../sass/partials/form.scss */
+/* line 124, ../sass/partials/form.scss */
 input, .form-group input { padding: 0.5em; font-size: 16px !important; height: auto !important; color: #7f7f7f !important; }
 
-/* line 132, ../sass/partials/form.scss */
+/* line 133, ../sass/partials/form.scss */
 .form-group textarea, textarea { padding: 1em; width: 100%; }
 
-/* line 138, ../sass/partials/form.scss */
+/* line 139, ../sass/partials/form.scss */
 textarea + a.submit, textarea + .message + a.submit, .form-group textarea + a.submit, .form-group textarea + .message + a.submit { margin-top: 20px !important; display: inline-block; padding: 0.75em 1.15em 0.75em 1.15em; border-radius: 5px; font-weight: 400; font-size: 16px; text-decoration: none; font-size: 18px; color: #0098cb; background-color: white; border: 1px solid #0098cb; }
 /* line 65, ../sass/partials/mixins.scss */
 textarea + a.submit .icon, textarea + .message + a.submit .icon, .form-group textarea + a.submit .icon, .form-group textarea + .message + a.submit .icon { font-size: 30px; }
@@ -658,10 +658,10 @@ textarea + a.submit:hover, textarea + .message + a.submit:hover, .form-group tex
 /* line 86, ../sass/partials/mixins.scss */
 textarea + a.submit.inactive, textarea + .message + a.submit.inactive, .form-group textarea + a.submit.inactive, .form-group textarea + .message + a.submit.inactive { color: #0098cb !important; background-color: rgba(0, 152, 203, 0.2) !important; border: 1px solid rgba(0, 152, 203, 0.2) !important; }
 
-/* line 148, ../sass/partials/form.scss */
+/* line 149, ../sass/partials/form.scss */
 section#submit > div { padding-top: 40px; border-top: 1px solid #e7edef; }
 
-/* line 154, ../sass/partials/form.scss */
+/* line 155, ../sass/partials/form.scss */
 a.submit.submit-form { display: inline-block; padding: 0.75em 1.15em 0.75em 1.15em; border-radius: 5px; font-weight: 400; font-size: 16px; text-decoration: none; font-size: 18px; color: white; background-color: #ffaa00; border: 1px solid #ffaa00; padding: 0.75em; padding-left: 2em; padding-right: 2em; }
 /* line 65, ../sass/partials/mixins.scss */
 a.submit.submit-form .icon { font-size: 30px; }
@@ -670,32 +670,47 @@ a.submit.submit-form:hover { background-color: transparent; color: #ffaa00; }
 /* line 86, ../sass/partials/mixins.scss */
 a.submit.submit-form.inactive { color: #ffaa00 !important; background-color: rgba(255, 170, 0, 0.2) !important; border: 1px solid rgba(255, 170, 0, 0.2) !important; }
 
-/*/ Custom Controls /*/
-/* line 168, ../sass/partials/form.scss */
-.range { overflow: auto; }
-/* line 172, ../sass/partials/form.scss */
-.range .from, .range .to { float: left; overflow: auto; }
-/* line 177, ../sass/partials/form.scss */
-.range .from span, .range .to span { float: left; padding-right: 1em; margin-top: 0.5em; }
+/* line 61, ../../../../../../../../../../../Users/azeven/.rvm/gems/ruby-1.9.3-p327/gems/compass-core-1.0.0/stylesheets/compass/css3/_user-interface.scss */
+input[type="text"]:-moz-placeholder { color: #bbb; font-style: italic; }
+/* line 64, ../../../../../../../../../../../Users/azeven/.rvm/gems/ruby-1.9.3-p327/gems/compass-core-1.0.0/stylesheets/compass/css3/_user-interface.scss */
+input[type="text"]::-moz-placeholder { color: #bbb; font-style: italic; }
+/* line 67, ../../../../../../../../../../../Users/azeven/.rvm/gems/ruby-1.9.3-p327/gems/compass-core-1.0.0/stylesheets/compass/css3/_user-interface.scss */
+input[type="text"]:-ms-input-placeholder { color: #bbb; font-style: italic; }
+/* line 56, ../../../../../../../../../../../Users/azeven/.rvm/gems/ruby-1.9.3-p327/gems/compass-core-1.0.0/stylesheets/compass/css3/_user-interface.scss */
+input[type="text"]::-webkit-input-placeholder { color: #bbb; font-style: italic; }
+
+/*/ Error Styling /*/
 /* line 184, ../sass/partials/form.scss */
+.form-group .form-error input, .form-group .form-error select, .form-group .form-error textarea { border: 1px solid red !important; background-color: rgba(255, 0, 0, 0.1) !important; }
+/* line 195, ../sass/partials/form.scss */
+.form-group ul.errors li { margin-left: 0px; color: red; }
+
+/*/ Custom Controls /*/
+/* line 205, ../sass/partials/form.scss */
+.range { overflow: auto; }
+/* line 209, ../sass/partials/form.scss */
+.range .from, .range .to { float: left; overflow: auto; }
+/* line 214, ../sass/partials/form.scss */
+.range .from span, .range .to span { float: left; padding-right: 1em; margin-top: 0.5em; }
+/* line 221, ../sass/partials/form.scss */
 .range .from select, .range .to select { float: left; }
-/* line 190, ../sass/partials/form.scss */
+/* line 227, ../sass/partials/form.scss */
 .range .from { margin-right: 30px; }
 
-/* line 213, ../sass/partials/form.scss */
+/* line 250, ../sass/partials/form.scss */
 .datepicker + .icon { position: relative; left: -2.5em; top: .22em; padding-top: 10px; }
-/* line 222, ../sass/partials/form.scss */
+/* line 259, ../sass/partials/form.scss */
 .datepicker + .icon:before { font-size: 2.75em !important; }
 
-/* line 233, ../sass/partials/form.scss */
+/* line 270, ../sass/partials/form.scss */
 .multipicker .multipicker-row select, .multipicker .multipicker-row a.remove { display: inline-block; }
-/* line 238, ../sass/partials/form.scss */
+/* line 275, ../sass/partials/form.scss */
 .multipicker .multipicker-row select { width: 75% !important; }
-/* line 243, ../sass/partials/form.scss */
+/* line 280, ../sass/partials/form.scss */
 .multipicker .multipicker-row a.remove { margin-left: 10px; color: #7f7f7f; font-size: 36px; text-decoration: none; }
-/* line 251, ../sass/partials/form.scss */
+/* line 288, ../sass/partials/form.scss */
 .multipicker .multipicker-row a.remove:hover { color: red; }
-/* line 256, ../sass/partials/form.scss */
+/* line 293, ../sass/partials/form.scss */
 .multipicker a.button.add { margin-top: 20px !important; display: inline-block; padding: 0.75em 1.15em 0.75em 1.15em; border-radius: 5px; font-weight: 400; font-size: 16px; text-decoration: none; font-size: 18px; color: #0098cb; background-color: white; border: 1px solid #0098cb; font-size: 14px !important; line-height: 1em; padding: 0.5em 1em 0.75em 1em !important; }
 /* line 65, ../sass/partials/mixins.scss */
 .multipicker a.button.add .icon { font-size: 30px; }
@@ -704,15 +719,15 @@ a.submit.submit-form.inactive { color: #ffaa00 !important; background-color: rgb
 /* line 86, ../sass/partials/mixins.scss */
 .multipicker a.button.add.inactive { color: #0098cb !important; background-color: rgba(0, 152, 203, 0.2) !important; border: 1px solid rgba(0, 152, 203, 0.2) !important; }
 
-/* line 267, ../sass/partials/form.scss */
+/* line 304, ../sass/partials/form.scss */
 .input-list .input-list-row input, .input-list .input-list-row a.remove { display: inline-block; }
-/* line 272, ../sass/partials/form.scss */
+/* line 309, ../sass/partials/form.scss */
 .input-list .input-list-row input { width: 75% !important; }
-/* line 277, ../sass/partials/form.scss */
+/* line 314, ../sass/partials/form.scss */
 .input-list .input-list-row a.remove { margin-left: 10px; color: #7f7f7f; font-size: 36px; text-decoration: none; }
-/* line 285, ../sass/partials/form.scss */
+/* line 322, ../sass/partials/form.scss */
 .input-list .input-list-row a.remove:hover { color: red; }
-/* line 290, ../sass/partials/form.scss */
+/* line 327, ../sass/partials/form.scss */
 .input-list a.button.add { margin-top: 20px !important; display: inline-block; padding: 0.75em 1.15em 0.75em 1.15em; border-radius: 5px; font-weight: 400; font-size: 16px; text-decoration: none; font-size: 18px; color: #0098cb; background-color: white; border: 1px solid #0098cb; font-size: 14px !important; line-height: 1em; padding: 0.5em 1em 0.75em 1em !important; }
 /* line 65, ../sass/partials/mixins.scss */
 .input-list a.button.add .icon { font-size: 30px; }
@@ -721,7 +736,7 @@ a.submit.submit-form.inactive { color: #ffaa00 !important; background-color: rgb
 /* line 86, ../sass/partials/mixins.scss */
 .input-list a.button.add.inactive { color: #0098cb !important; background-color: rgba(0, 152, 203, 0.2) !important; border: 1px solid rgba(0, 152, 203, 0.2) !important; }
 
-/* line 299, ../sass/partials/form.scss */
+/* line 336, ../sass/partials/form.scss */
 .people-list a.button.add { margin-top: 20px !important; display: inline-block; padding: 0.75em 1.15em 0.75em 1.15em; border-radius: 5px; font-weight: 400; font-size: 16px; text-decoration: none; font-size: 18px; color: #0098cb; background-color: white; border: 1px solid #0098cb; font-size: 14px !important; line-height: 1em; padding: 0.5em 1em 0.75em 1em !important; }
 /* line 65, ../sass/partials/mixins.scss */
 .people-list a.button.add .icon { font-size: 30px; }
@@ -730,9 +745,9 @@ a.submit.submit-form.inactive { color: #ffaa00 !important; background-color: rgb
 /* line 86, ../sass/partials/mixins.scss */
 .people-list a.button.add.inactive { color: #0098cb !important; background-color: rgba(0, 152, 203, 0.2) !important; border: 1px solid rgba(0, 152, 203, 0.2) !important; }
 
-/* line 308, ../sass/partials/form.scss */
+/* line 345, ../sass/partials/form.scss */
 .photo-chooser .photo-preview { background-repeat: no-repeat; background-size: 100% auto; background-position: center center; width: 100px; height: 100px; background-color: #dddddd; }
-/* line 318, ../sass/partials/form.scss */
+/* line 355, ../sass/partials/form.scss */
 .photo-chooser a.button { margin-top: 20px; display: inline-block; padding: 0.75em 1.15em 0.75em 1.15em; border-radius: 5px; font-weight: 400; font-size: 16px; text-decoration: none; font-size: 18px; color: #0098cb; background-color: white; border: 1px solid #0098cb; font-size: 14px !important; line-height: 1em; padding: 0.5em 1em 0.75em 1em !important; }
 /* line 65, ../sass/partials/mixins.scss */
 .photo-chooser a.button .icon { font-size: 30px; }
@@ -741,13 +756,13 @@ a.submit.submit-form.inactive { color: #ffaa00 !important; background-color: rgb
 /* line 86, ../sass/partials/mixins.scss */
 .photo-chooser a.button.inactive { color: #0098cb !important; background-color: rgba(0, 152, 203, 0.2) !important; border: 1px solid rgba(0, 152, 203, 0.2) !important; }
 
-/* line 327, ../sass/partials/form.scss */
+/* line 364, ../sass/partials/form.scss */
 .input-then-select input { float: left; }
-/* line 332, ../sass/partials/form.scss */
+/* line 369, ../sass/partials/form.scss */
 .input-then-select select { float: left; margin-left: 10px; }
 
 /*/ Buttons /*/
-/* line 342, ../sass/partials/form.scss */
+/* line 379, ../sass/partials/form.scss */
 .button.submit { display: inline-block; padding: 0.75em 1.15em 0.75em 1.15em; border-radius: 5px; font-weight: 400; font-size: 16px; text-decoration: none; font-size: 18px; color: white; background-color: #0098cb; border: 1px solid #0098cb; }
 /* line 65, ../sass/partials/mixins.scss */
 .button.submit .icon { font-size: 30px; }
