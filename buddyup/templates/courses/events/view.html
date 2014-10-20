@@ -165,7 +165,7 @@ $(function(){
 						{{ comment_form.csrf_token }}
                         <h4>Add a comment</h4>
                         <textarea rows="4" name="contents"></textarea>
-                        <a href="javascript:comment_form.submit()" class="button small submit">Post</a>
+                        <a href="#" onclick="Intercom('trackEvent', 'commented-on-event');comment_form.submit()" class="button small submit">Post</a>
 						</form>
                     </div>
                 </li>

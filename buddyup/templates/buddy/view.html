@@ -7,12 +7,14 @@
 <script>
 $(function(){
 	$('a.remove-buddy').click(function(){
+        Intercom('trackEvent', 'removed-buddy');
 		$.post("{{url_for('unfriend', current_name=user_record.user_name, user_name=classmate.user_name)}}", function(){ location.reload() });
 	})
 });
 
 $(function(){
 	$('a.invite-buddy').click(function(){
+        Intercom('trackEvent', 'invite-sent');
 		$.post("{{url_for('invite_send', user_name=classmate.user_name)}}", function(){ location.reload() });
 	})
 });
@@ -39,7 +41,7 @@ $(function(){
 						<a href="#" class="action button primary invite-buddy"><span class="icon icon-person-add">&nbsp;</span>Connect</a>
 						{% endif %}
                     {% else %}
-                        <a href="mailto:{{ classmate|email }}" class="action button primary">Send {{ classmate.full_name }} a message</a>
+                        <a href="mailto:{{ classmate|email }}" class="action button primary" onclick="Intercom('trackEvent', 'sent-message');">Send {{ classmate.full_name }} a message</a>
 					{% endif %}
 				{% endif %}
             </div>
@@ -112,4 +114,10 @@ $(function(){
 
 </article>
 
+{% endblock %}
+
+{% block bottom_js %}
+<script>
+Intercom('trackEvent', 'viewed-profile');
+</script>
 {% endblock %}

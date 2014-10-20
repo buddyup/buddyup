@@ -107,23 +107,19 @@
 
         <section id="submit" class="row">
             <div class="col-md-6 col-md-offset-3">
-                <a href="javascript:form.submit()" class="button primary action">Save Settings</a>
+                <a href="#" onclick="Intercom('trackEvent', 'edited-my-profile');form.submit()" class="button primary action">Save Settings</a>
             </div>
         </section>
 
     </form>
 
-
-
-
-
-
-
-
-
-
-
-
 </article>
 
+{% endblock %}
+
+
+{% block bottom_js %}
+<script>
+Intercom('trackEvent', 'viewed-my-profile');
+</script>
 {% endblock %}
