@@ -21,6 +21,15 @@
     email: "{{g.user.email}}",
     created_at: {{ epoch_time(g.user.created_at) }},
     user_id: "{{g.user.user_name}}",
+    school: "{{g.school_name}}",
+    num_sent_requests: {{g.num_sent_requests}},
+    num_buddies: {{g.num_buddies}},
+    num_classes: {{g.num_classes}},
+    num_events_attended: {{g.num_events_attended}},
+    has_bio: {{g.has_bio|lower}},
+    email_verified: {{g.email_verified|lower}},
+    is_tutor: {{g.is_tutor|lower}},
+
     widget: { "activator": "#Intercom" },
     app_id: "5714bb0i"
   });

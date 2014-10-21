@@ -70,3 +70,10 @@
             </article>
 
 {% endblock %}
+
+
+{% block bottom_js %}
+<script>
+Intercom('trackEvent', 'hit-home-page');
+</script>
+{% endblock %}
