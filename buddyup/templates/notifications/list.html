@@ -19,6 +19,14 @@ $(function(){
 		var actionURL = click.target.href;
 		var notificationURL = click.target.getAttribute('data-notification');
 
+        if (actionURL.indexOf("events") != -1) {
+            Intercom('trackEvent', 'attending-event');
+        } else {
+            if (actionURL.indexOf("classmates") != -1) {
+                Intercom('trackEvent', 'confirmed-buddy');
+            }
+        }
+
 		$.post(actionURL).complete(
 			function(request){
 				if( request.status == 200 || request.status == 404){

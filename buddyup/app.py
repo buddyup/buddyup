@@ -63,6 +63,8 @@ def in_production():
 
 @app.before_request
 def setup():
+    g.school_name = app.config["DOMAIN_NAME"].split(".")[0]
+
     if 'user_id' in session:
         g.user = database.User.query.get(session['user_id'])
         # Invalid user id, kill the session with fire!
@@ -70,14 +72,26 @@ def setup():
             app.logger.warning("Session with uid %s is invalid, clearing session", session['user_id'])
             session.clear()
         else:
-            # Verify email has been confirmed.
+            # Tack on metadata
+            g.num_sent_requests = len(g.user.buddy_invitations_sent)
+            g.num_buddies = g.user.buddies.count()
+            g.num_classes = g.user.courses.count()
+            g.num_events_attended = g.user.events.count()
+            g.has_bio = g.user.bio != ""
+            g.email_verified = g.user.email_verified
+            try:
+                g.is_tutor = g.user.tutor
+            except AttributeError:
+                g.is_tutor = False
 
+            # Verify email has been confirmed.
             if "SSO_INSTANCE" in app.config and app.config["SSO_INSTANCE"].lower() != "false" and\
                 "static/" not in request.path and\
                 not g.user.email_verified and\
                 g.user.created_at + USER_VERIFY_EMAIL_GRACE_PERIOD < datetime.datetime.now() and\
                 request.endpoint not in ALLOWED_UNVERIFIED_ENDPOINTS:
                     return redirect("%s?next=%s" % (url_for('verify_email'), request.path))
+
     else:
         g.user = None
 

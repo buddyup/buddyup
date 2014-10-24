@@ -36,3 +36,9 @@ var widget = new Auth0Widget({
 	</div>
 </div>
 {% endblock %}
+
+{% block bottom_js %}
+<script>
+Intercom('trackEvent', 'hit-signin-page');
+</script>
+{% endblock %}

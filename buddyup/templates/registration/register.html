@@ -160,3 +160,9 @@ ul.errors li {
 </article>
 
 {% endblock %}
+
+{% block bottom_js %}
+<script>
+Intercom('trackEvent', 'authenticated');
+</script>
+{% endblock %}
