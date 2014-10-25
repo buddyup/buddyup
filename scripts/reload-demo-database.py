@@ -88,10 +88,14 @@ def create_user(user_info):
     If you want to make a study group for any of my classes, send me a buddy invite.
     I'm usually on campus weekdays between 10 and 4."
     """
-    user.location=lookup_location("On-campus")
-    user.courses=[lookup_course("MATH 340")]
-    user.majors=[lookup_major("Architecture")]
-    user.languages=[lookup_language("Spanish")]
+    user.location = lookup_location("On-campus")
+    user.courses = [lookup_course("MATH 340")]
+    user.majors = [lookup_major("Architecture")]
+    user.languages = [lookup_language("Spanish")]
+    user.verified = True
+    user.has_photos = True
+    user.email_verified = True
+    user.email = "info+%s@buddyup.org" % user_name(full_name)
 
     return user
 
@@ -110,7 +114,7 @@ users = [create_user(u) for u in user_info]
 print "Creating users"
 
 for user in users:
-    print "Adding {}".format(user.full_name)
+    print "Adding {} {}".format(user.full_name, user.email)
     db.session.add(user)
 
 db.session.commit()
