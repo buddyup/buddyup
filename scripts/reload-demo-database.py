@@ -86,7 +86,7 @@ def create_user(user_info):
     user.user_name=user_name(full_name),
     user.bio = """Taking a full load this term and looking to stay on top of things. 
     If you want to make a study group for any of my classes, send me a buddy invite.
-    I'm usually on campus weekdays between 10 and 4."
+    I'm usually on campus weekdays between 10 and 4.
     """
     user.location = lookup_location("On-campus")
     user.courses = [lookup_course("MATH 340")]
