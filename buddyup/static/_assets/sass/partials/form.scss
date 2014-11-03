@@ -1,3 +1,4 @@
+@import "compass/css3/user-interface";
 
 /*/ Bootstrap Overrides /*/
 
@@ -161,6 +162,42 @@ a.submit.submit-form
 
 	// font-size: 20px;
 	// width: 100%;
+}
+
+input[type="text"]
+{
+	@include input-placeholder
+	{
+		color: #bbb;
+		font-style: italic;
+	}
+}
+
+/*/ Error Styling /*/
+
+$color-error-red : red;
+
+.form-group 
+{
+	.form-error
+	{
+		input,
+		select,
+		textarea
+		{
+			border: 1px solid $color-error-red !important;
+			background-color: transparentize( $color-error-red, 0.9 ) !important;
+		}
+	}
+
+	ul.errors
+	{
+		li
+		{
+			margin-left: 0px;
+			color: $color-error-red;
+		}
+	}
 }
 
 /*/ Custom Controls /*/

@@ -40,52 +40,44 @@
 
 <article id="main-content" class="container">
 
-{% include "flash.html" %}
-
-<style>
-
-.icon-problem:before
-{
-	position: absolute;
-	content: '\1F4A5';
-	font-size: 4em;
-	top:  -0.25em;
-	left: -0.25em;
-	color: #ffaa00;
-}
-
-ul.errors li {
-	margin-left: 1.5em;
-}
-
-</style>
+        {% if get_flashed_messages() %}
+        <section id="" class="row">
+            <div class="col-md-8 col-md-offset-2">
+                {% include "flash.html" %}
+            </div>
+        </section>
+        {% endif %}
 
         <form id="registration" action="{{ url_for('profile_create') }}" method="POST"
             enctype="multipart/form-data">
         {{ form.csrf_token }}
 
         <section id="" class="row">
+
             <div class="col-md-6 col-md-offset-3">
 
                 <div class="form-group">
                 <label for="" class="control-label">{{ form.photo.label.text }}</label>
-				{% if form.photo.errors %}<span class="icon icon-problem">&nbsp;</span>{% endif %}
+				{% if form.photo.errors %}<div class="form-error">{% endif %}
                 {{ render_errors(form.photo) }}
                 {{ form.photo }}
+                {% if form.photo.errors %}</div>{% endif %}
                 </div>
 
                 <div class="form-group">
 				    <label for="" class="control-label">{{ form.email.label.text }}</label>
-					{% if form.email.errors %}<span class="icon icon-problem">&nbsp;</span>{% endif %}
-				    {{render_errors(form.email)}}
+					{% if form.email.errors %}<div class="form-error">{% endif %}
+                    {{render_errors(form.email)}}
 				    {{form.email(class_="form-control")}}
+                    {% if form.email.errors %}</div>{% endif %}
                 </div>
 
                 <div class="form-group">
 					<label for="" class="control-label">{{ form.full_name.label.text }}</label>
-					{% if form.full_name.errors %}<span class="icon icon-problem">&nbsp;</span>{% endif %}
+					{% if form.full_name.errors %}<div class="form-error">{% endif %}
                     {{render_errors(form.full_name)}}
                     {{form.full_name(class_="form-control")}}
+                    {% if form.full_name.errors %}</div>{% endif %}
                 </div>
 
 
@@ -123,19 +115,19 @@ ul.errors li {
 
                 <div class="form-group">
 					<label for="facebook" class="control-label">Facebook</label>
-					{{render_errors(form.facebook)}}
+                    {{render_errors(form.facebook)}}
 					{{form.facebook(class_="form-control", placeholder="http://facebook.com/yournamehere")}}
 				</div>
 
                 <div class="form-group">
 					<label for="twitter" class="control-label">Twitter</label>
-					{{render_errors(form.twitter)}}
+                    {{render_errors(form.twitter)}}
 					{{form.twitter(class_="form-control", placeholder="@yourhandle")}}
 				</div>
 
                 <div class="form-group">
 					<label for="linkedin" class="control-label">LinkedIn</label>
-					{{render_errors(form.linkedin)}}
+                    {{render_errors(form.linkedin)}}
 					{{form.linkedin(class_="form-control")}}
 				</div>
 

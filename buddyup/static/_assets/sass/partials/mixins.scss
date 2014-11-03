@@ -19,7 +19,7 @@
 @mixin block-background
 {
 	background-repeat: no-repeat;
-	background-size: 100% auto;
+	background-size: auto 100%;
 	background-position: center center;
 }
 
@@ -123,6 +123,7 @@
 @mixin text-link
 {
 	color: $color-primary;
+	background-color: $color-background-blue;
 
 	&:hover
 	{ 

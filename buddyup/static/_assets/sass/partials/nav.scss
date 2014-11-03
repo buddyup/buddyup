@@ -27,7 +27,7 @@ button,
 	border-radius: 0;
 
 	border: 1px solid $color-border-lighter;
-	@include box-shadow( 0px 2px 3px 0px transparentize( $color-blue-dull-dark, 0.9 ) );
+	@include box-shadow( 0px 2px 3px 0px transparentize( $color-gray-medium, 0.9 ) );
 
 	.tablelist
 	{
@@ -79,7 +79,7 @@ header
 
 a.notifications
 {
-	color: $color-blue-dull-dark !important;
+	color: $color-gray-medium !important;
 	text-decoration: none;
 
 	&  > .icon-notification
@@ -103,10 +103,10 @@ a.notifications
 	a
 	{
 		font-family: $font-title;
-		font-weight: 900;
+		font-weight: 600;
 		font-size: 16px;
 		text-transform: uppercase;
-		color: $color-blue-dull-dark !important;
+		color: $color-gray-medium !important;
 
 		&:hover
 		{
@@ -146,7 +146,7 @@ a.notifications
 			padding-left: 20px;
 			padding-right: 20px;
 
-			color: $color-blue-dull-dark;
+			color: $color-gray-medium;
 			font-weight: 400;
 			font-size: 16px;
 			text-decoration: none;
@@ -172,7 +172,7 @@ a.notifications
 				& > a
 				{
 					display: inline-block;
-					height: 75px !important;
+					height: 90px !important;
 				}
 			}
 		}
@@ -194,7 +194,7 @@ a.notifications
 
 			a
 			{
-				padding-top: 26px !important;
+				padding-top: 35px !important;
 			}
 		}
 
@@ -202,7 +202,7 @@ a.notifications
 		{
 			& > a
 			{
-				padding-top: 14px;
+				padding-top: 20px;
 			}
 		}
 
@@ -210,7 +210,7 @@ a.notifications
 		{
 			& > a
 			{
-				padding-top: 30px;
+				padding-top: 37px;
 			}
 
 			.dropdown-menu
@@ -285,7 +285,7 @@ a.notifications
 	{ 
 		width: 100%;
 
-		color: $color-blue-dull-dark;
+		color: $color-gray-medium;
 	}
 }
 
@@ -387,7 +387,7 @@ a.notifications
 
 			font-family: $font-symbol;
 			font-size: 36px;
-			color: $color-blue-dull-light;
+			color: $color-gray-light;
 		}
 
 		&:hover:before
