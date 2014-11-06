@@ -1,7 +1,7 @@
 import unittest
 import json
 from datetime import datetime
-from buddyup.pages import events
+from buddyup.pages.tutors import tutors_for_course
 from buddyup.app import app
 from buddyup.database import db, User, Course, Tutor, Language, Location
 from buddyup.util import time_from_timestamp
@@ -30,7 +30,6 @@ class TutorTests(unittest.TestCase):
         db.session.add(Location(name="Los Angeles"))
         db.session.add(Location(name="Vancouver"))
 
-
         db.session.commit()
 
     def tearDown(self):
@@ -38,9 +37,7 @@ class TutorTests(unittest.TestCase):
         if 'DATABASE_URL' in os.environ and os.environ['DATABASE_URL'] != 'sqlite:///:memory:':
             os.remove(os.environ['DATABASE_URL'])
         else:
-            # Delete users from the memory database, if used.
-            User.query.delete()
-            Tutor.query.delete()
+            db.drop_all()
 
 
     @property
@@ -89,6 +86,30 @@ class TutorTests(unittest.TestCase):
         self.assertEqual(Language.query.first(), new_tutor.languages.first())
 
 
+    def test_tutor_verification(self):
+
+        course = Course.query.first()
+        user = User.query.first()
+
+        self.assertEqual(0, len(tutors_for_course(course)))
+
+        # Tutor is created when they apply to be a tutor
+        tutor = Tutor()
+        tutor.user_id = user.id
+        tutor.courses.append(course)
+        db.session.add(tutor)
+        db.session.commit()
+
+        # They're unapproved though, so we shouldn't see anything yet.
+        self.assertEqual(0, len(tutors_for_course(course)))
+
+        # Approve them.
+        tutor = Tutor.query.first()
+        tutor.approved = True
+        db.session.commit()
+
+        # Now they should show up.
+        self.assertEqual(1, len(tutors_for_course(course)))
 
 
 if __name__ == '__main__':
