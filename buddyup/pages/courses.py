@@ -9,6 +9,7 @@ from buddyup.templating import render_template
 from buddyup.util import login_required, args_get, sorted_languages, shuffled, track_activity
 
 from buddyup.pages.classmates import PAGE_SIZE
+from buddyup.pages.tutors import tutors_for_course
 
 from collections import defaultdict
 
@@ -35,8 +36,9 @@ def course_view(id):
     course = Course.query.get_or_404(id)
     followers = course.users.filter(User.has_photos == True)
     events = upcoming_events(course).limit(2)
+    tutors = tutors_for_course(course)
 
-    return render_template('courses/view.html', user=g.user, course=course, followers=followers, events=events)
+    return render_template('courses/view.html', user=g.user, course=course, followers=followers, events=events, tutors=tutors)
 
 
 @app.route('/courses')
