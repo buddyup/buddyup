@@ -286,6 +286,7 @@ class Tutor(db.Model):
     status = db.Column(db.String(255))
     price = db.Column(db.String(255))
     per = db.Column(db.String(255))
+    approved = db.Column(db.Boolean, default=False)
 
 
 

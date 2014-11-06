@@ -10,7 +10,7 @@ from wtforms.ext.sqlalchemy.fields import (QuerySelectMultipleField,
                                            QuerySelectField)
 
 from buddyup.app import app
-from buddyup.database import User, Course, Major, Location, db, Tutor
+from buddyup.database import User, Course, Major, Location, db, Tutor, TutorCourse
 from buddyup.util import sorted_languages, login_required
 from buddyup.templating import render_template
 from buddyup.photo import change_profile_photo, clear_images, ImageError
@@ -65,3 +65,6 @@ def tutor_application():
 def tutor_application_complete():
     return render_template('tutors/thankyou.html')
 
+def tutors_for_course(course):
+    user_ids = [t.user_id for t in course.tutors if t.approved]
+    return list(User.query.filter(User.id.in_(user_ids)))
