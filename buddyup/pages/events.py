@@ -8,7 +8,9 @@ import re
 from buddyup.app import app
 from buddyup.database import Event, Course, EventInvitation, db, EventComment, User, EventMembership
 from buddyup.templating import render_template
-from buddyup.util import (args_get, login_required, form_get, check_empty,checked_regexp, calendar_event, easy_datetime, time_pulldown, epoch_time)
+from buddyup.util import args_get, login_required, form_get, check_empty,\
+                        checked_regexp, calendar_event, easy_datetime, time_pulldown, epoch_time,\
+                        send_email
 
 import os
 
@@ -44,6 +46,12 @@ class EventForm(Form):
                 self.start.errors.append('Start time must be before end time.')
                 return False
         return True
+
+
+@app.route('/new-event', methods=['GET',])
+@login_required
+def new_event_course_chooser():
+    return render_template('events/new.html', courses=g.user.courses.all())
 
 
 @app.route('/courses/<int:course_id>/event', methods=['GET', 'POST'])
@@ -168,7 +176,10 @@ def send_event_invitation(sender, receiver, event):
     db.session.add(invitation)
     db.session.commit()
 
-    event_link = '<a href="%s">%s</a>' % (url_for('course_event', course_id=event.course.id, event_id=event.id), event.name)
+    event_link = '<a href="%s%s">%s</a>' % (
+            app.config.get('DOMAIN_NAME', ''),
+            url_for('course_event', course_id=event.course.id, event_id=event.id), 
+            event.name)
 
     payload = "%s invited you to '%s'" % (sender.full_name, event_link)
     text = "Accept"
@@ -176,7 +187,26 @@ def send_event_invitation(sender, receiver, event):
 
     send_notification(sender, receiver, payload, action_text=text, action_link=link)
 
+    invite_info = {
+        'SENDER': sender.full_name,
+        'RECIPIENT': receiver.full_name,
+        'DOMAIN': app.config.get('DOMAIN_NAME', ''),
+        'EVENT_LINK': url_for('course_event', course_id=event.course.id, event_id=event.id),
+        'EVENT_NAME': event.name
+    }
 
+    subject = "%s wants to BuddyUp!" % invite_info['SENDER']
+
+    message = """Hi {RECIPIENT}!
+
+{SENDER} created a new event, {EVENT_NAME}, and wants you to come!
+See all the details and respond at: http://{DOMAIN}{EVENT_LINK}
+
+Happy Studying,
+
+The BuddyUp Team""".format(**invite_info)
+
+    send_email(receiver, "New event: %s" % event.name, message)
 
 
 from buddyup.pages.courses import coursemates_query

@@ -1,0 +1,31 @@
+{% extends "green/global_layout.html" %}
+{% block title %} New Event{% endblock %}
+
+{% block pagestyle %}
+<link href="/static/_assets/css/new-event.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<article id="top" class="detail">
+    <div class="wrapper container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="thumbnail" style="background-image:url('/static/_assets/images/courses/math_chalkboard2.jpg')">&nbsp;</div>
+                <h1>New Study Session</h1>
+                <div class="subtitle">Which course do you want to create a study session for?</div>
+            </div>
+        </div>
+    </div>
+</article>
+
+<article id="main-content" class="container">
+    <section id="" class="row course_picker_buttons">
+        <div class="col-md-6 col-md-offset-3">
+            {% for course in courses %}
+                <a class="btn btn-primary" href="{{url_for('new_event', course_id=course.id)}}">{{course.name}}</a>
+            {% endfor %}
+        </div>
+    </section>
+
+</article>
+{% endblock %}
