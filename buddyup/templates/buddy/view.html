@@ -40,8 +40,6 @@ $(function(){
 						{% else %}
 						<a href="#" class="action button primary invite-buddy"><span class="icon icon-person-add">&nbsp;</span>Connect</a>
 						{% endif %}
-                    {% else %}
-                        <a href="mailto:{{ classmate|email }}" class="action button primary" onclick="Intercom('trackEvent', 'sent-message');">Send {{ classmate.full_name }} a message</a>
 					{% endif %}
 				{% endif %}
             </div>
@@ -76,7 +74,7 @@ $(function(){
 		             + "subject=" + escape("A message from {{user_record.full_name}} on BuddyUp")
 		             + "&body=" + escape(document.getElementById('buddy_message').value)
 		    ;
-
+			Intercom('trackEvent', 'sent-message');
 		    window.location.href = link;
 		}
 		</script>
