@@ -65,11 +65,14 @@ $(function(){
 			<p>{{ p }}</p>
 		{% endfor %}
         </div>
-		
+    </section>
+	{%endif%}
+
+	{% if classmate.email %}
+    <section id="message" class="row">
 		<script>
 		function sendMail() {
-		    var link = "mailto:{{classmate.email}}"
-		             + "?"
+		    var link = "mailto:{{classmate.email}}?"
 		             + "subject=" + escape("A message from {{user_record.full_name}} on BuddyUp")
 		             + "&body=" + escape(document.getElementById('buddy_message').value)
 		    ;
@@ -77,18 +80,13 @@ $(function(){
 		    window.location.href = link;
 		}
 		</script>
-
-        <section id="message" class="row">
-            <div class="col-md-6 col-md-offset-3 form-wrapper">
-                <h4>Send {{classmate.full_name}} a message</h4>
-                <textarea id="buddy_message" rows="5">Hi {{classmate.full_name}}! </textarea>
-                <a href="#" class="button small submit" onclick="sendMail(); return false">Send</a>
-            </div>
-        </section>
-		
+        <div class="col-md-6 col-md-offset-3 form-wrapper">
+            <h4>Send {{classmate.full_name}} a message</h4>
+            <textarea id="buddy_message" rows="5">Hi {{classmate.full_name}}! </textarea>
+            <a href="#" class="button small submit" onclick="sendMail(); return false">Send</a>
+        </div>
     </section>
 	{%endif%}
-
 
     <section id="interests" class="row">
 		{% if classmate.courses.count() > 0 %}
