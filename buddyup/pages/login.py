@@ -222,6 +222,12 @@ def callback_handling():
         existing_user.email_verify_code = m.hexdigest()
         db.session.commit()
         destination = 'welcome'
+    else:
+        if not existing_user.email_verify_code:
+            m = hashlib.sha1()
+            m.update("Verify email for %s" % user_info["user_id"])
+            existing_user.email_verify_code = m.hexdigest()
+            db.session.commit()
 
     establish_session(existing_user)
     # We're saving all user information into the session
