@@ -104,7 +104,7 @@ $(function(){
             <h3>Major</h3>
             <ul>
 				{% for major in classmate.majors %}
-                <li><a href="">{{major.name}}</a></li>
+                <li><a href="{{url_for('list_classmates_by_single_major', major_id=major.id)}}">{{major.name}}</a></li>
 				{% endfor %}
             </ul>
         </div>
@@ -115,7 +115,7 @@ $(function(){
             <h3>Languages</h3>
             <ul>
 				{% for language in classmate.languages %}
-                <li><a href="">{{language.name}}</a></li>
+                <li><a href="{{url_for('list_classmates_by_single_language', language_id=language.id)}}">{{language.name}}</a></li>
 				{% endfor %}
             </ul>
         </div>
