@@ -39,7 +39,11 @@
                             <li class="main-link"><a href="/classmates">Classmates</a></li>
                             <li class="main-link"><a href="/courses">Courses</a></li>
                             <li class="main-link"><a href="/tutors">Tutors</a></li>
+                            <li class="main-link study_session_header">
+                                <a href="{{ url_for('new_event_course_chooser') }}" class="">+ Study Session</a>
+                            </li>
                             <li class="hidden-xs pull-right" id="profile-overflow">
+
                                 <!-- Profile & Overflow dropdown -->
                                 <a href="" data-toggle="dropdown" class="button">
                                     <span class="img" style="background-image: url('{{ photo_large(user_record) }}');">&nbsp;</span>
