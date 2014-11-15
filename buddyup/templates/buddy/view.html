@@ -40,8 +40,6 @@ $(function(){
 						{% else %}
 						<a href="#" class="action button primary invite-buddy"><span class="icon icon-person-add">&nbsp;</span>Connect</a>
 						{% endif %}
-                    {% else %}
-                        <a href="mailto:{{ classmate|email }}" class="action button primary" onclick="Intercom('trackEvent', 'sent-message');">Send {{ classmate.full_name }} a message</a>
 					{% endif %}
 				{% endif %}
             </div>
@@ -68,6 +66,26 @@ $(function(){
     </section>
 	{%endif%}
 
+	{% if classmate.email %}
+    <section id="message" class="row">
+		<script>
+		function sendMail() {
+		    var link = "mailto:{{classmate.email}}?"
+		             + "subject=" + escape("A message from {{user_record.full_name}} on BuddyUp")
+		             + "&body=" + escape(document.getElementById('buddy_message').value)
+		    ;
+			Intercom('trackEvent', 'sent-message');
+		    window.location.href = link;
+		}
+		</script>
+        <div class="col-md-6 col-md-offset-3 form-wrapper">
+            <h4>Send {{classmate.full_name}} a message</h4>
+            <textarea id="buddy_message" rows="5">Hi {{classmate.full_name}}! </textarea>
+            <a href="#" class="button small submit" style="float:right" onclick="sendMail(); return false">Send</a>
+        </div>
+    </section>
+	{%endif%}
+
     <section id="interests" class="row">
 		{% if classmate.courses.count() > 0 %}
         <div class="col-md-6 col-md-offset-3">
@@ -86,7 +104,7 @@ $(function(){
             <h3>Major</h3>
             <ul>
 				{% for major in classmate.majors %}
-                <li><a href="">{{major.name}}</a></li>
+                <li><a href="{{url_for('list_classmates_by_single_major', major_id=major.id)}}">{{major.name}}</a></li>
 				{% endfor %}
             </ul>
         </div>
@@ -97,7 +115,7 @@ $(function(){
             <h3>Languages</h3>
             <ul>
 				{% for language in classmate.languages %}
-                <li><a href="">{{language.name}}</a></li>
+                <li><a href="{{url_for('list_classmates_by_single_language', language_id=language.id)}}">{{language.name}}</a></li>
 				{% endfor %}
             </ul>
         </div>
