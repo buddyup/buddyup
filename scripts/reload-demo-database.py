@@ -9,7 +9,6 @@ if environ.get("DEMO_SITE", "").lower() != "true":
 
 
 sys.path.insert(0, os.getcwd())
-# sys.path.insert(0, os.path.join(os.getcwd(), ".."))
 
 
 from buddyup.database import db, Location, Language, Major, Course, User, Tutor
@@ -150,7 +149,8 @@ for user in users:
     print "Adding {} {}".format(user.full_name, user.email)
     db.session.add(user)
     db.session.commit()
-    if random.choice([1,2]) == 1:
+    if random.choice([True,False]):
+        print " - a tutor"
         t = Tutor()
         t.user_id = user.id
         t.approved = True
