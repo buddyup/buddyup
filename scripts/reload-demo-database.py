@@ -20,6 +20,21 @@ COURSES = [
     "ART 324", # Collage and Assemblage
     "HIST 365", # Asian Civilization
 ]
+MAJORS = [
+    "Architecture",
+    "Business",
+    "Psychology",
+    "Mathematics",
+    "Physics",
+]
+LANGUAGES = [
+    "English",
+    "Spanish",
+    "Cantonese",
+    "Mandarin",
+    "Hindi",
+    "French",
+]
 
 
 print "Dropping database"
@@ -44,21 +59,13 @@ db.session.add(Location(name="South of campus"))
 
 print "Creating languages"
 # Languages
-db.session.add(Language(name="Spanish"))
-db.session.add(Language(name="Cantonese"))
-db.session.add(Language(name="Mandarin"))
-db.session.add(Language(name="Hindi"))
-db.session.add(Language(name="French"))
-
+for l in LANGUAGES:
+    db.session.add(Language(name=l))
 
 print "Creating majors"
 # Major
-db.session.add(Major(name="Architecture"))
-db.session.add(Major(name="Business"))
-db.session.add(Major(name="Psychology"))
-db.session.add(Major(name="Mathematics"))
-db.session.add(Major(name="Physics"))
-
+for m in MAJORS:
+    db.session.add(Major(name=m))
 
 print "Creating courses"
 # Courses
@@ -94,8 +101,8 @@ def create_user(user_info):
     user.bio = """Taking a full load this term and looking to stay on top of things. If you want to make a study group for any of my classes, send me a buddy invite. I'm usually on campus weekdays between 10 and 4."""
     user.location = lookup_location("On-campus")
     user.courses = [lookup_course(c) for c in random.sample(COURSES, 2)]
-    user.majors = [lookup_major("Architecture")]
-    user.languages = [lookup_language("Spanish")]
+    user.majors = [lookup_major(random.choice(MAJORS))]
+    user.languages = [lookup_language("English"), lookup_language(random.choice(LANGUAGES))]
     user.verified = True
     user.has_photos = True
     user.email_verified = True
