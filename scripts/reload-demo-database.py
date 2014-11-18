@@ -101,8 +101,6 @@ def create_user(user_info):
     user.email_verified = True
     user.email = "info+%s@buddyup.org" % user_name(full_name)
 
-
-
     return user
 
 
