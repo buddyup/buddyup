@@ -90,5 +90,10 @@
         </div>
     </section>
 </article>
+{% endblock %}
 
+{% block bottom_js %}
+<script>
+Intercom('trackEvent', 'visited-advanced-search');
+</script>
 {% endblock %}
