@@ -1,6 +1,6 @@
-<li><a href="{{url_for('list_buddies')}}" class="{{buddies}}">Buddies</a></li>
-<li><a href="{{url_for('list_classmates')}}" class="{{everyone}}">Everyone</a></li>
-<li><a href="{{url_for('list_classmates_by_major')}}" class="{{major}}">Major</a></li>
-<li><a href="{{url_for('list_classmates_by_language')}}" class="{{language}}">Language</a></li>
-<li><a href="{{url_for('list_classmates_by_location')}}" class="{{location}}">Location</a></li>
+<li><a onclick="Intercom('trackEvent', 'viewed_classmates_by_buddies');" href="{{url_for('list_buddies')}}" class="{{buddies}}">Buddies</a></li>
+<li><a onclick="Intercom('trackEvent', 'viewed_classmates_by_everyone');" href="{{url_for('list_classmates')}}" class="{{everyone}}">Everyone</a></li>
+<li><a onclick="Intercom('trackEvent', 'viewed_classmates_by_major');" href="{{url_for('list_classmates_by_major')}}" class="{{major}}">Major</a></li>
+<li><a onclick="Intercom('trackEvent', 'viewed_classmates_by_language');" href="{{url_for('list_classmates_by_language')}}" class="{{language}}">Language</a></li>
+<li><a onclick="Intercom('trackEvent', 'viewed_classmates_by_location');" href="{{url_for('list_classmates_by_location')}}" class="{{location}}">Location</a></li>
 <li><a href="{{url_for('buddy_search')}}">Advanced Search</a></li>
