@@ -1,15 +1,27 @@
-from buddyup.database import db, Location, Language, Major, Course, User
-
+import random
+import os
 import sys
 from os import environ
 
-if environ.get("DEMO_SITE", "") != "true":
+if environ.get("DEMO_SITE", "").lower() != "true":
     print "You can only load demo data on a demo server instance. Aborting."
     sys.exit()
 
 
-import sys, os
 sys.path.insert(0, os.getcwd())
+# sys.path.insert(0, os.path.join(os.getcwd(), ".."))
+
+
+from buddyup.database import db, Location, Language, Major, Course, User, Tutor
+
+COURSES = [
+    "MATH 340", # Calculus for Business and Economics
+    "STAT 300", # Introduction to Probability and Statistics
+    "BIOL 102", # Essentials of Human Anatomy and Physiology
+    "ART 324", # Collage and Assemblage
+    "HIST 365", # Asian Civilization
+]
+
 
 print "Dropping database"
 db.drop_all()
@@ -51,12 +63,8 @@ db.session.add(Major(name="Physics"))
 
 print "Creating courses"
 # Courses
-db.session.add(Course(name="MATH 340", instructor="Hudson University")) # Calculus for Business and Economics
-db.session.add(Course(name="STAT 300", instructor="Hudson University")) # Introduction to Probability and Statistics
-db.session.add(Course(name="BIOL 102", instructor="Hudson University")) # Essentials of Human Anatomy and Physiology
-db.session.add(Course(name="ART 324", instructor="Hudson University")) # Collage and Assemblage
-db.session.add(Course(name="HIST 365", instructor="Hudson University")) # Asian Civilization
-
+for c in COURSES:
+    db.session.add(Course(name=c, instructor="Hudson University"))
 
 # Save all of these so we can compose users from them.
 db.session.commit()
@@ -86,13 +94,15 @@ def create_user(user_info):
     user.user_name=user_name(full_name),
     user.bio = """Taking a full load this term and looking to stay on top of things. If you want to make a study group for any of my classes, send me a buddy invite. I'm usually on campus weekdays between 10 and 4."""
     user.location = lookup_location("On-campus")
-    user.courses = [lookup_course("MATH 340")]
+    user.courses = [lookup_course(c) for c in random.sample(COURSES, 2)]
     user.majors = [lookup_major("Architecture")]
     user.languages = [lookup_language("Spanish")]
     user.verified = True
     user.has_photos = True
     user.email_verified = True
     user.email = "info+%s@buddyup.org" % user_name(full_name)
+
+
 
     return user
 
@@ -139,5 +149,11 @@ print "Creating users"
 for user in users:
     print "Adding {} {}".format(user.full_name, user.email)
     db.session.add(user)
-
-db.session.commit()
+    db.session.commit()
+    if random.choice([1,2]) == 1:
+        t = Tutor()
+        t.user_id = user.id
+        t.approved = True
+        t.courses.append(lookup_course(random.choice(COURSES)))
+        db.session.add(t)
+        db.session.commit()
