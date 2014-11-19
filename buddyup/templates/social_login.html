@@ -1,14 +1,14 @@
 {% extends "green/global_layout.html" %}
 {% block head %}{{super()}}
 <script src="https://cdn.auth0.com/w2/auth0-widget-5.2.min.js"></script>
-<script type="text/javascript">
+<script>
+	  var widget = new Auth0Widget({
+			domain:         'buddyup.auth0.com',
+			clientID:       'fz6fSOkZ3SmuLIeylQlYE9X0ZVlKruSJ',
+			callbackURL:    'http://{{request.host}}/callback' 
+	  });
 
-var widget = new Auth0Widget({
-  domain:         'buddyup.auth0.com',
-  clientID:       'fz6fSOkZ3SmuLIeylQlYE9X0ZVlKruSJ',
-  callbackURL:    'http://{{request.host}}/callback'
-});
-
+	  widget.signin({ container: 'root', chrome: true, scope: 'openid profile email' });
 </script>
 <!-- Le styles -->
 <link href="{{ css('bootstrap') }}" rel="stylesheet" type="text/css">
@@ -23,17 +23,48 @@ var widget = new Auth0Widget({
 		bottom: 0;
 		width: 100%;
 	}
+	#a0-widget {
+		width: 280px !important;
+	}
+	#a0-onestep {
+		box-shadow: none !important;
+		color: inherit;
+		width: 280px !important;
+	}
+	#root {
+		margin-top: 20px;
+	}
+	#top { 
+		background-color: #FFF
+	}
+	.a0-avatar {
+		display: none !important;
+	}
+	#root h1 {
+		display: none !important;
+	}
 </style>
 {% endblock %}
-{% block body %}
+{% block content %}
 <div class="container signup">
-	<div class="logo_image">
-		<center><img src='/static/_assets/images/buddyup_logo.png'/></center>
-	</div>
-	
-	<div class="text-center">
-		<button class="button primary" onclick="widget.signin({ scope: 'openid profile email' })">Sign into BuddyUp</button>
-	</div>
+
+            <article id="top" class="simple">
+                <div class="container">
+                    <div class="row text-center">
+                        <h1 class="col-md-12">Welcome to BuddyUp</h1>
+                        <p class="col-md-12">
+                            The simple way to connect to your classmates and succeed.<br/>
+                            <br/>
+                            Log in
+                        </p>
+                    	<div id="root" style="width: 280px; margin: 40px auto;">
+						    <span class="loader">Loading...</span>
+						</div>
+						
+
+					</div>
+				</div>
+			</article>
 </div>
 {% endblock %}
 
