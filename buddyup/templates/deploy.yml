@@ -1,0 +1,21 @@
+heroku:
+    fork: hudson-buddyup
+    addons:
+        - rediscloud
+    config:
+        TZ: "America/Los_Angeles"
+    cloned_config:
+        buddyup-will:
+            - WILL_URL
+            - WILL_USERNAME
+            - WILL_PASSWORD
+            - WILL_TOKEN
+            - WILL_V2_TOKEN
+            - WILL_NAME
+            - WILL_HANDLE
+            - WILL_REDIS_URL
+            - WILL_AWS_ACCESS_KEY_ID
+            - WILL_AWS_SECRET_ACCESS_KEY
+            - WILL_AWS_DEV_BUCKET_NAME
+    scale:
+        web: 1

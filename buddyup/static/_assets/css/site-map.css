@@ -693,3 +693,17 @@ ul.bulleted li { padding-top: 0.5em; padding-bottom: 0.5em; }
   /* Seriously??  We have importants scattered??  */
   color: #ffaa00 !important;
 }
+
+label.checkbox-inline {
+  text-transform: none !important;
+  border: none !important;
+  width: auto !important;
+  display: inline-block !important;
+  margin: 0 10px 0 0 !important;
+}
+label.radio {
+  text-transform: none;
+  border: none;
+  width: auto;
+  margin: 0 0 0 20px;
+}

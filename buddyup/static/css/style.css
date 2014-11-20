@@ -85,3 +85,18 @@ ul.social li {
 .unsocial {
 /*	opacity: 0.40;*/
 }
+
+
+label.checkbox-inline {
+  text-transform: none;
+  border: none;
+  width: auto;
+  display: inline-block;
+  margin: 0 10px 0 0 !important;
+}
+label.radio {
+  text-transform: none;
+  border: none;
+  width: auto;
+  margin: 0 0 0 20px;
+}

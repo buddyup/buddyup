@@ -89,16 +89,16 @@ class TutorApplicationForm(Form):
     """
     Base class for the create and edit profile forms
     """
-    courses = QuerySelectMultipleField(u"Courses",
+    courses = QueryMultiCheckboxField(u"Courses",
                                       get_label=u"name",
                                       query_factory=ordered_factory(Course))
-    languages = QuerySelectMultipleField(u"Languages",
+    languages = QueryMultiCheckboxField(u"Languages",
                                          get_label=u"name",
                                          query_factory=sorted_languages)
 
     # status = SelectField("Status", choices=[("looking", "Looking for new clients"), ("interested", "Interested in becoming a tutor")])
 
-    location = QuerySelectField(u"Location",
+    location = QueryRadioField(u"Location",
                                 get_label=u"name",
                                 allow_blank=True,
                                 query_factory=ordered_factory(Location))
@@ -115,10 +115,10 @@ class TutorProfileForm(Form):
     Base class for the create and edit profile forms
     """
     #full_name = TextField(u'Full Name (required)', validators=[required()])
-    subjects = QuerySelectMultipleField(u"Subject(s) Tutoring",
+    subjects = QueryMultiCheckboxField(u"Subject(s) Tutoring",
                                       get_label=u"name",
                                       query_factory=ordered_factory(Major))
-    languages = QuerySelectMultipleField(u"Other Language(s)",
+    languages = QueryMultiCheckboxField(u"Other Language(s)",
                                          get_label=u"name",
                                          query_factory=sorted_languages)
     #location = QuerySelectField(u"Location",
