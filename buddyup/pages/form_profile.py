@@ -10,7 +10,7 @@ from wtforms.ext.sqlalchemy.fields import (QuerySelectMultipleField,
                                            QuerySelectField)
 from buddyup.app import app, in_production
 from buddyup.database import Course, Major, Location, db
-from buddyup.util import sorted_languages, login_required, QueryMultiCheckboxField, QueryMultiRadioField
+from buddyup.util import sorted_languages, login_required, QueryMultiCheckboxField, QueryRadioField
 
 
 PHOTO_EXTS = ['jpg', 'jpe', 'jpeg', 'png', 'gif', 'bmp', 'tif', 'tiff']
@@ -39,9 +39,10 @@ class ProfileForm(Form):
     languages = QueryMultiCheckboxField(u"Other Language(s)",
                                          get_label=u"name",
                                          query_factory=sorted_languages)
-    location = QueryMultiRadioField(u"Where do you live?",
+    location = QueryRadioField(u"Where do you live?",
                                 get_label=u"name",
                                 allow_blank=True,
+                                blank_text="None of these",
                                 query_factory=ordered_factory(Location))
     validators = [FileAllowed(PHOTO_EXTS, u"Images only!")]
     if app.config.get("BUDDYUP_REQUIRE_PHOTO", True) and in_production():

@@ -42,7 +42,7 @@ def login_required(func):
         if g.user is None:
             app.logger.info('redirecting not logged in user')
             return redirect(url_for('index'))
-        elif not g.user.initialized and f.__name__ != 'profile_create':
+        elif not g.user.initialized and f.__name__ not in ['profile_create','logout']:
             return redirect(url_for('profile_create'))
         else:
             return func(*args, **kwargs)
@@ -435,23 +435,10 @@ class ListRadioWidget(ListWidget):
     return HTMLString(u''.join(html))
 
 #  Form Stuff
-class QueryMultiRadioField(QuerySelectMultipleField):
+class QueryRadioField(QuerySelectField):
   """
-    A multiple-select, except displays a list of Radioes.
-    Iterating the field will produce subfields, allowing custom rendering of
-    the enclosed Radio fields.
+    A select, except displays a list of Radioes.
   """
 
   widget = ListRadioWidget()
   option_widget = RadioInput()
-
-  def iter_choices(self):
-    """ Handle True/False Radioes in a single list. """
-
-    for pk, obj in self._get_object_list():
-      if hasattr(obj, self.id):
-        selected = getattr(obj, self.id)
-      else:
-        selected = obj in self.data
-
-      yield (pk, self.get_label(obj), selected)

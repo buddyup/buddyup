@@ -804,3 +804,21 @@ label { text-align: left; }
 
 /* line 166, ../sass/pages/profile.scss */
 input[type=text] { width: 100% !important; }
+
+
+label.checkbox-inline {
+  text-transform: none;
+  border: none;
+  width: auto;
+  display: inline-block;
+  margin: 0 10px 0 0 !important;
+}
+label.radio {
+  text-transform: none;
+  border: none;
+  width: auto;
+  margin: 0 0 0 20px;
+}
+.multipicker-row {
+  text-align: left;
+}

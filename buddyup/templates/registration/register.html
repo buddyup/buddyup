@@ -35,39 +35,43 @@ function update_about_me_label() {
 $(function(){
     $("#languages-0").click();
     $("#full_name").focus();
+    {% if ".edu" in g.user.email or "buddyup.org" in g.user.email %}
+        $("#email").val('{{ g.user.email}}');
+    {% else %}
+        $("#email").focus();
+    {% endif %}
+
+    {% if g.user.name and not "@" in g.user.name %}
+        $("#full_name").val('{{ g.user.name}}');
+    {% else %}
+        $("#full_name").focus();
+    {% endif %}
+
     $("input,textarea").change(check_form_validity);
     $("input,textarea").change(update_about_me_label);
 });    
 </script>
 {% endblock %}
 
-{% block nav %}
-<nav class="navbar navbar-default container registration" role="navigation">
-    <div class="wrapper">
-        <img class="logo" src="/static/_assets/images/buddyup_logo.png" height="60"/>
-    </div><!-- /wrapper -->
-</nav>
-{% endblock %}
+
 
 {% block content %}
-
-
 <article id="top" class="simple container">
     <div class="wrapper row">
         <div class="col-md-10 col-md-offset-1">
             <h1>Tell your peers a little about yourself</h1>
 			<p>
-				Welcome to BuddyUp.org! You’re about ready to join a community of thousands of
-				learners just like you. Before you can contribute or receive messages from members,
-				you must first create a profile. Your profile is how people will see you online,
-				so be thoughtful and take your time.
+				Welcome to BuddyUp! You’re about ready to join a community of thousands of
+				learners just like you.
+            </p>
+            <p>
+                Before you can use all of BuddyUp you must first create a profile, so people can see you. Profiles with real pictures and bios tend to be more popular.
 			</p>
         </div>
     </div>
 </article>
 
 <article id="main-content" class="container">
-
         {% if get_flashed_messages() %}
         <section id="" class="row">
             <div class="col-md-8 col-md-offset-2">
