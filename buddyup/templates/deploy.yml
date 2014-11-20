@@ -1,21 +1,26 @@
 heroku:
     fork: hudson-buddyup
     addons:
-        - rediscloud
+        - heroku-postgresql:hobby-dev
     config:
         TZ: "America/Los_Angeles"
     cloned_config:
-        buddyup-will:
-            - WILL_URL
-            - WILL_USERNAME
-            - WILL_PASSWORD
-            - WILL_TOKEN
-            - WILL_V2_TOKEN
-            - WILL_NAME
-            - WILL_HANDLE
-            - WILL_REDIS_URL
-            - WILL_AWS_ACCESS_KEY_ID
-            - WILL_AWS_SECRET_ACCESS_KEY
-            - WILL_AWS_DEV_BUCKET_NAME
+        hudson-buddyup:
+            - ADMIN_USER
+            - AUTH0_CALLBACK_URL
+            - AUTH0_CLIENT_ID
+            - AUTH0_CLIENT_SECRET
+            - AUTH0_DOMAIN
+            - AUTHENTICATION_SCHEME
+            - AWS_ACCESS_KEY_ID
+            - AWS_S3_BUCKET
+            - AWS_SECRET_ACCESS_KEY
+            - BUDDYUP_TYPE
+            - DEMO_SITE
+            - DOMAIN_NAME
+            - EMAIL_FORMAT
+            - INTERCOM_API_KEY
+            - MANDRILL_APIKEY
+            - MANDRILL_USERNAME
     scale:
         web: 1
