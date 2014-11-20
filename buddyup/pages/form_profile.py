@@ -10,7 +10,8 @@ from wtforms.ext.sqlalchemy.fields import (QuerySelectMultipleField,
                                            QuerySelectField)
 from buddyup.app import app, in_production
 from buddyup.database import Course, Major, Location, db
-from buddyup.util import sorted_languages, login_required
+from buddyup.util import sorted_languages, login_required, QueryMultiCheckboxField, QueryMultiRadioField
+
 
 PHOTO_EXTS = ['jpg', 'jpe', 'jpeg', 'png', 'gif', 'bmp', 'tif', 'tiff']
 # Python 3: infinite loop because map() is lazy, use list(map(...))
@@ -27,30 +28,30 @@ class ProfileForm(Form):
     """
     Base class for the create and edit forms
     """
-    full_name = TextField(u'Full Name (required)', validators=[required()])
+    full_name = TextField(u'Full Name', validators=[required()])
     COURSE_FORMAT = u"{0.name} by {0.instructor}"
-    courses = QuerySelectMultipleField(u"Course(s)",
+    courses = QueryMultiCheckboxField(u"Course(s)",
                                        get_label=COURSE_FORMAT.format,
                                        query_factory=ordered_factory(Course))
-    majors = QuerySelectMultipleField(u"Major(s)",
+    majors = QueryMultiCheckboxField(u"Major(s)",
                                       get_label=u"name",
                                       query_factory=ordered_factory(Major))
-    languages = QuerySelectMultipleField(u"Other Language(s)",
+    languages = QueryMultiCheckboxField(u"Other Language(s)",
                                          get_label=u"name",
                                          query_factory=sorted_languages)
-    location = QuerySelectField(u"Location",
-                                get_label=u"name"
-,                                allow_blank=True,
+    location = QueryMultiRadioField(u"Where do you live?",
+                                get_label=u"name",
+                                allow_blank=True,
                                 query_factory=ordered_factory(Location))
     validators = [FileAllowed(PHOTO_EXTS, u"Images only!")]
     if app.config.get("BUDDYUP_REQUIRE_PHOTO", True) and in_production():
         validators.append(required())
 
-    photo = FileField(u"Profile Photo (required)", validators=validators)
+    photo = FileField(u"Profile Photo", validators=validators)
     facebook = TextField(u"Facebook (optional)")
     twitter = TextField(u"Twitter")
     linkedin = TextField(u"LinkedIn")
-    email = TextField(u".edu Email Address (required)", validators=[required(), Email(), Regexp("(?:[^@?]*)@(?:(?:(?:[A-z_]+\.)*edu)|buddyup\.org)$", flags=re.IGNORECASE, message=u'You must use your .edu email address.')])
+    email = TextField(u".edu Email Address", validators=[required(), Email(), Regexp("(?:[^@?]*)@(?:(?:(?:[A-z_]+\.)*edu)|buddyup\.org)$", flags=re.IGNORECASE, message=u'You must use your .edu email address.')])
     bio = TextAreaField(u'A Few Words About You')
 
 
@@ -59,7 +60,7 @@ class ProfileCreateForm(ProfileForm):
     if app.config.get("BUDDYUP_REQUIRE_PHOTO", True) and in_production():
         validators.append(required())
 
-    photo = FileField(u"Profile Photo (required)", validators=validators)
+    photo = FileField(u"Profile Photo", validators=validators)
  
 
 class ProfileUpdateForm(ProfileForm):

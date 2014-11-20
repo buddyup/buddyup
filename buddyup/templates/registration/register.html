@@ -13,6 +13,34 @@
 <link href="/static/_assets/css/registration.css" rel="stylesheet">
 {% endblock %}
 
+{% block head %}{{super()}}
+<script>
+function check_form_validity() {
+    if ($("#full_name").val() && 
+        $("#email").val() && 
+        $("#photo").val() && 
+        $("input[name=term_condition]").prop('checked')) {
+            $(".get_started_btn").removeClass("disabled");
+            $(".get_started_btn").removeAttr("disabled");
+    } else {
+        $(".get_started_btn").addClass("disabled");
+        $(".get_started_btn").attr("disabled", "disabled");
+    }
+}
+function update_about_me_label() {
+    if ($("#full_name").val()) {
+        $("#about_you_label").html("Who is " + $("#full_name").val() + "?");
+    }
+}
+$(function(){
+    $("#languages-0").click();
+    $("#full_name").focus();
+    $("input,textarea").change(check_form_validity);
+    $("input,textarea").change(update_about_me_label);
+});    
+</script>
+{% endblock %}
+
 {% block nav %}
 <nav class="navbar navbar-default container registration" role="navigation">
     <div class="wrapper">
@@ -26,8 +54,8 @@
 
 <article id="top" class="simple container">
     <div class="wrapper row">
-        <div class="col-md-6 col-md-offset-3">
-            <h1>Tell us a little about yourself</h1>
+        <div class="col-md-10 col-md-offset-1">
+            <h1>Tell your peers a little about yourself</h1>
 			<p>
 				Welcome to BuddyUp.org! You’re about ready to join a community of thousands of
 				learners just like you. Before you can contribute or receive messages from members,
@@ -52,54 +80,33 @@
             enctype="multipart/form-data">
         {{ form.csrf_token }}
 
-        <section id="" class="row">
+        <div id="" class="row">
 
-            <div class="col-md-6 col-md-offset-3">
+            <div class="col-md-4 col-md-offset-1">
+                <div class="form-group">
+					<label for="" class="control-label">{{ form.full_name.label.text }}<span class="required_asterisk">*</span></label>{% if form.full_name.errors %}<div class="form-error">{% endif %}{{render_errors(form.full_name)}}
+                    {{form.full_name(class_="form-control", placeholder="Sally Williams")}}
+                    {% if form.full_name.errors %}</div>{% endif %}
+                </div>
+            </div>
+            <div class="col-md-4 col-md-offset-1">
+                <div class="form-group">
+                    <label for="" class="control-label">{{ form.email.label.text }}<span class="required_asterisk">*</span></label>{% if form.email.errors %}<div class="form-error">{% endif %}{{render_errors(form.email)}}
+                    {{form.email(class_="form-control", placeholder="swilliams345@university.edu")}}
+                    {% if form.email.errors %}</div>{% endif %}
+                </div>
+            </div>
+        </div>
+        <div id="" class="row">
+            <div class="col-md-4 col-md-offset-1">
 
                 <div class="form-group">
-                <label for="" class="control-label">{{ form.photo.label.text }}</label>
-				{% if form.photo.errors %}<div class="form-error">{% endif %}
-                {{ render_errors(form.photo) }}
+                <label for="" class="control-label">{{ form.photo.label.text }}<span class="required_asterisk">*</span></label>{% if form.photo.errors %}<div class="form-error">{% endif %}{{ render_errors(form.photo) }}
                 {{ form.photo }}
                 {% if form.photo.errors %}</div>{% endif %}
                 </div>
-
-                <div class="form-group">
-				    <label for="" class="control-label">{{ form.email.label.text }}</label>
-					{% if form.email.errors %}<div class="form-error">{% endif %}
-                    {{render_errors(form.email)}}
-				    {{form.email(class_="form-control")}}
-                    {% if form.email.errors %}</div>{% endif %}
-                </div>
-
-                <div class="form-group">
-					<label for="" class="control-label">{{ form.full_name.label.text }}</label>
-					{% if form.full_name.errors %}<div class="form-error">{% endif %}
-                    {{render_errors(form.full_name)}}
-                    {{form.full_name(class_="form-control")}}
-                    {% if form.full_name.errors %}</div>{% endif %}
-                </div>
-
-
-                <div class="form-group">
-                    <label for="" class="control-label">About you</label>
-                    {{render_errors(form.bio)}}
-                    {{form.bio(class_="form-control", rows=5)}}
-                </div>
-                <div class="multipicker form-group">
-                    <label for="" class="control-label">What's your major?</label>
-                    {{render_errors(form.majors)}}
-                    <div class="multipicker-row">
-                        {{form.majors(class_="form-control")}}
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="" class="control-label">Location</label>
-                    {{render_errors(form.location)}}
-                    {{form.location(class_="form-control")}}
-                </div>
-
+            </div>
+            <div class="col-md-4 col-md-offset-1">
                 <div class="multipicker form-group">
                     <label for="" class="control-label">What languages do you speak?</label>
                     {{render_errors(form.languages)}}
@@ -107,6 +114,37 @@
                         {{form.languages(class_="form-control")}}
                     </div>
                 </div>
+            </div>
+        </div>
+        <div id="" class="row">
+            <div class="col-md-4 col-md-offset-1">
+                <div class="form-group">
+                    <label for="" class="control-label" id="about_you_label">About you</label>
+                    {{render_errors(form.bio)}}
+                    {{form.bio(class_="form-control", rows=5, placeholder="Tell other students about yourself, your interests, and what makes you you!")}}
+                </div>
+            </div>
+            <div class="col-md-4 col-md-offset-1">
+                <div class="form-group">
+                    <label for="" class="control-label">Where are you most often?</label>
+                    {{render_errors(form.location)}}
+                    {{form.location(class_="form-control")}}
+                </div>
+            </div>
+        </div>
+        <div id="" class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="multipicker form-group">
+                    <label for="" class="control-label">What's your major?</label>
+                    {{render_errors(form.majors)}}
+                    <div class="multipicker-row">
+                        {{form.majors(class_="form-control")}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
 
     <!--             <div class="form-group">
                     <label for="" class="control-label">What are you interested in?</label>
@@ -132,19 +170,20 @@
 				</div>
 
 -->
+        <div id="" class="row">
+            <div class="col-md-10 col-md-offset-1">
                 <div class="form-group">
-<input type="checkbox" name="term_condition"/> I have read and agree to the <a href="/terms" target="_blank">Terms &amp; Conditions</a>.
+                    <label class="control-label">Terms &amp; Conditions <span class="required_asterisk">*</span></label>
+<label for="terms_and_conditions_checkbox" class="checkbox-inline"><input type="checkbox" id="terms_and_conditions_checkbox" name="term_condition"/> I have read and agree to the <a href="/terms" target="_blank">Terms &amp; Conditions</a>.
                 </div>
-
-
             </div>
-        </section>
+        </div>
 
-        <section id="submit" class="row">
-            <div class="col-md-6 col-md-offset-3">
-                <a href="javascript:registration.submit()" class="button primary action">Save &amp; Continue</a>
+        <div id="submit" class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <button type="submit" onclick="registration.submit()" disabled class="button primary action disabled get_started_btn">Get Started!</button>
             </div>
-        </section>
+        </div>
 
     </form>
 
