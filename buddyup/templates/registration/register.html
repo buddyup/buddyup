@@ -49,6 +49,9 @@ $(function(){
 
     $("input,textarea").change(check_form_validity);
     $("input,textarea").change(update_about_me_label);
+    $("#registration").submit(function(){
+        $(".get_started_btn").html("Registering...").addClass("disabled");
+    });
 });    
 </script>
 {% endblock %}
@@ -185,7 +188,7 @@ $(function(){
 
         <div id="submit" class="row">
             <div class="col-md-10 col-md-offset-1">
-                <button type="submit" onclick="registration.submit()" disabled class="button primary action disabled get_started_btn">Get Started!</button>
+                <button type="submit" disabled class="button primary action disabled get_started_btn" >Get Started!</button>
             </div>
         </div>
 
