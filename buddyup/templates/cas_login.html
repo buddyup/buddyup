@@ -8,21 +8,60 @@
 		margin: 60px 0;
 	}
 	footer {
-		display: none;
 		position: absolute;
 		bottom: 0;
 		width: 100%;
 	}
+	#top h1 {
+		font-weight: normal;
+	}
+	#a0-widget {
+		width: 280px !important;
+	}
+	#a0-onestep {
+		box-shadow: none !important;
+		color: inherit;
+		width: 280px !important;
+	}
+	#root {
+		margin-top: 20px;
+	}
+	#top { 
+		background-color: #FFF
+	}
+	.a0-avatar {
+		display: none !important;
+	}
+	#root h1 {
+		display: none !important;
+	}
+	@media only screen and (max-width: 767px) {
+		h1 {
+			font-size: 24px;
+			line-height: 1em;
+		}
+	}
 </style>
 {% endblock %}
-{% block body %}
+{% block content %}
 <div class="container signup">
-	<div class="logo_image">
-		<center><img src='/static/_assets/images/buddyup_logo.png'/></center>
-	</div>
-	
-	<div class="text-center">
-		<a class="button primary" href="{{ login_url }}">Sign into BuddyUp</a>
-	</div>
+
+            <article id="top" class="simple">
+                <div class="container">
+                    <div class="row text-center">
+                        <h1 class="col-md-12">Welcome to BuddyUp</h1>
+                        <p class="col-md-12">
+                            The simple way to connect to your classmates and succeed.<br/>
+                            <br/>
+                            
+                        </p>
+                    	<div class="text-center">
+							<a class="button primary" href="{{ login_url }}">Sign into BuddyUp</a>
+						</div>
+						
+
+					</div>
+				</div>
+			</article>
 </div>
 {% endblock %}
