@@ -33,7 +33,7 @@ class ProfileForm(Form):
     courses = QueryMultiCheckboxField(u"Course(s)",
                                        get_label=COURSE_FORMAT.format,
                                        query_factory=ordered_factory(Course))
-    majors = QueryMultiCheckboxField(u"Major(s)",
+    majors = QuerySelectMultipleField(u"Major(s)",
                                       get_label=u"name",
                                       query_factory=ordered_factory(Major))
     languages = QueryMultiCheckboxField(u"Other Language(s)",
