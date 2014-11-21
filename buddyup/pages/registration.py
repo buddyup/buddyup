@@ -33,7 +33,7 @@ def profile_create():
         else:
             update_current_user(form)
             send_out_verify_email(g.user)
-            return redirect(url_for('registration_complete'))
+            return redirect(url_for('home'))
     else:
         return render_template('registration/register.html', form=form)
 

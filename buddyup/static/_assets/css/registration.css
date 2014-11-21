@@ -812,3 +812,31 @@ label { text-align: left; }
 
 /* line 58, ../sass/pages/registration.scss */
 input[type=text] { width: 100% !important; }
+
+.required_asterisk {
+  color: red;
+}
+label.checkbox-inline {
+  text-transform: none;
+  border: none;
+  width: auto;
+  display: inline-block;
+  margin: 0 10px 0 0 !important;
+}
+label.radio {
+  text-transform: none;
+  border: none;
+  width: auto;
+  margin: 0 0 0 20px;
+}
+.button.primary.disabled {
+  background-color: #DDD;
+  color: #999;
+  border: #BBB;
+}
+.form-group label.control-label {
+  margin: 0 0 8px 0;
+  padding: 0 0 4px 0;
+  line-height: 1em;
+
+}

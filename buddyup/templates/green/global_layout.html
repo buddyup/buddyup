@@ -34,11 +34,10 @@
                             <li class="hidden-xs main-link logo-wrapper"><a href="/" class="logo">&nbsp;</a></li>
                             <li class="visible-xs-block main-link"><a href="/">Home</a></li>
 
-							{% if logged_in %}
-
                             <li class="main-link"><a href="/classmates">Classmates</a></li>
                             <li class="main-link"><a href="/courses">Courses</a></li>
                             <li class="main-link"><a href="/tutors">Tutors</a></li>
+                            {% if logged_in %}
                             <li class="main-link study_session_header">
                                 <a href="{{ url_for('new_event_course_chooser') }}" class="">+ Study Session</a>
                             </li>
@@ -52,7 +51,7 @@
                                 <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dLabel">
                                     <li role="presentation">
                                         <ul class="list overflow-list">
-                                            <li class=""><a href="{{ profile(user_record) }}">My Profile</a></li>
+                                            <li class=""><a href="{{ url_for('profile') }}">My Profile</a></li>
 											<li class=""><a href="{{ url_for('my_events') }}">My Events</a></li>
                                             <li class=""><a id="Intercom" href="mailto:pzthv8fq@incoming.intercom.io">Help</a></li>
                                             <li class=""><a href="{{ url_for('logout') }}">Log out</a></li>
@@ -65,12 +64,10 @@
 							{% include "nav/notifications.html" %}
 
                             <!-- Reiterate overflow menu ONLY for mobile menu -->
-                            <li class="visible-xs-block"><a href="{{ profile(user_record) }}">My Profile</a></li>
+                            <li class="visible-xs-block"><a href="{{ url_for('profile') }}">My Profile</a></li>
                             <li class="visible-xs-block"><a href="{{ url_for('my_events') }}">My Events</a></li>
                             <li class="visible-xs-block"><a href="{{ url_for('logout') }}">Log out</a></li>
                             <!-- /Reiterate overflow menu for mobile menu -->
-
-
 							{% endif %}
                         </ul>
                     </div> <!-- ./navbar-collapse -->
@@ -86,7 +83,7 @@
         </div>
     {% endblock %}
     {% block footer %}
-        <footer>
+        <footer class="footer">
             <div class="container">
                 <p class="row">
                     <span><a href="/privacy">Privacy Policy</a></spam>

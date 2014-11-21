@@ -4,6 +4,8 @@ import random
 import json
 
 from flask import flash, request, abort, g, redirect, url_for, request
+from wtforms.ext.sqlalchemy.fields import QuerySelectMultipleField, QuerySelectField
+from wtforms.widgets import ListWidget, CheckboxInput, HTMLString, RadioInput
 
 from buddyup.database import (Course, Language, Event, EventComment, Visit, db, Action, User, Tutor, TutorCourse, TutorLanguage)
 from buddyup.app import app, mandrill_client, in_production
@@ -40,7 +42,7 @@ def login_required(func):
         if g.user is None:
             app.logger.info('redirecting not logged in user')
             return redirect(url_for('index'))
-        elif not g.user.initialized and f.__name__ != 'profile_create':
+        elif not g.user.initialized and f.__name__ not in ['profile_create','logout']:
             return redirect(url_for('profile_create'))
         else:
             return func(*args, **kwargs)
@@ -385,3 +387,58 @@ def populate_event(event_id):
         user.events.append(event)
     db.session.commit()
 
+
+class ListCheckboxWidget(ListWidget):
+  """ ListWidget doesn't do rendering properly with Twitter Bootstrap's CSS. """
+
+  def __call__(self, field, **kwargs):
+    kwargs.setdefault('id', field.id)
+
+    html = ["\n"]
+
+    for subfield in field:
+      html.append(u'<label class="checkbox-inline">%s%s</label>\n' % (subfield(), subfield.label.text))
+
+    return HTMLString(u''.join(html))
+
+#  Form Stuff
+class QueryMultiCheckboxField(QuerySelectMultipleField):
+  """
+    A multiple-select, except displays a list of checkboxes.
+    Iterating the field will produce subfields, allowing custom rendering of
+    the enclosed checkbox fields.
+  """
+
+  widget = ListCheckboxWidget()
+  option_widget = CheckboxInput()
+
+  def iter_choices(self):
+    """ Handle True/False checkboxes in a single list. """
+
+    for pk, obj in self._get_object_list():
+      if hasattr(obj, self.id):
+        selected = getattr(obj, self.id)
+      else:
+        selected = obj in self.data
+
+      yield (pk, self.get_label(obj), selected)
+
+class ListRadioWidget(ListWidget):
+  def __call__(self, field, **kwargs):
+    kwargs.setdefault('id', field.id)
+
+    html = ["\n"]
+
+    for subfield in field:
+      html.append(u'<label class="radio">%s%s</label>\n' % (subfield(), subfield.label.text))
+
+    return HTMLString(u''.join(html))
+
+#  Form Stuff
+class QueryRadioField(QuerySelectField):
+  """
+    A select, except displays a list of Radioes.
+  """
+
+  widget = ListRadioWidget()
+  option_widget = RadioInput()
