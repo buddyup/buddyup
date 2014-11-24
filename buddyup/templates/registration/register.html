@@ -35,13 +35,13 @@ function update_about_me_label() {
 $(function(){
     $("#languages-0").click();
     $("#full_name").focus();
-    {% if ".edu" in g.user.email or "buddyup.org" in g.user.email %}
+    {% if g.user and g.user.email and (".edu" in g.user.email or "buddyup.org" in g.user.email) %}
         $("#email").val('{{ g.user.email}}');
     {% else %}
         $("#email").focus();
     {% endif %}
 
-    {% if g.user.name and not "@" in g.user.name %}
+    {% if g.user and g.user.email and g.user.name and not "@" in g.user.name %}
         $("#full_name").val('{{ g.user.name}}');
     {% else %}
         $("#full_name").focus();
