@@ -35,6 +35,7 @@ def from_env(*variables):
 from_env('ADMIN_USER',
          'SECRET_KEY',
          'HELP_URL',
+         'INTERCOM_APP_ID',
          'AWS_S3_BUCKET',
          'DEMO_MODE',
          'SSO_INSTANCE',
@@ -64,6 +65,7 @@ def in_production():
 @app.before_request
 def setup():
     g.school_name = app.config["DOMAIN_NAME"].split(".")[0]
+    g.intercom_app_id = app.config["INTERCOM_APP_ID"]
 
     if 'user_id' in session:
         g.user = database.User.query.get(session['user_id'])
