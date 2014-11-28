@@ -37,16 +37,16 @@
                             <li class="main-link"><a href="/classmates">Classmates</a></li>
                             <li class="main-link"><a href="/courses">Courses</a></li>
                             <li class="main-link"><a href="/tutors">Tutors</a></li>
-                            {% if logged_in %}
-                            <li class="main-link study_session_header">
+                            <li class="main-link study_session_header hidden-sm">
                                 <a href="{{ url_for('new_event_course_chooser') }}" class="">+ Study Session</a>
                             </li>
+                            {% if logged_in %}
                             <li class="hidden-xs pull-right" id="profile-overflow">
 
                                 <!-- Profile & Overflow dropdown -->
                                 <a href="" data-toggle="dropdown" class="button">
                                     <span class="img" style="background-image: url('{{ photo_large(user_record) }}');">&nbsp;</span>
-                                    <span class="name">{{ user_name }}</span>
+                                    <span class="name hidden-sm">{{ user_name }}</span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dLabel">
                                     <li role="presentation">
@@ -61,14 +61,15 @@
                                 <!-- / Profile & Overflow dropdown -->
                             </li>
 
-							{% include "nav/notifications.html" %}
+                            {% include "nav/notifications.html" %}
 
                             <!-- Reiterate overflow menu ONLY for mobile menu -->
                             <li class="visible-xs-block"><a href="{{ url_for('profile') }}">My Profile</a></li>
                             <li class="visible-xs-block"><a href="{{ url_for('my_events') }}">My Events</a></li>
                             <li class="visible-xs-block"><a href="{{ url_for('logout') }}">Log out</a></li>
                             <!-- /Reiterate overflow menu for mobile menu -->
-							{% endif %}
+
+                            {% endif %}
                         </ul>
                     </div> <!-- ./navbar-collapse -->
 
