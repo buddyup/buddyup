@@ -686,9 +686,6 @@ ul.bulleted li { padding-top: 0.5em; padding-bottom: 0.5em; }
   display: block;
   margin: 0 10px 20px 10px;
 }
-.study_session_header {
-  /*margin-left: 20%; */
-}
 .main-link.study_session_header a {
   /* Seriously??  We have importants scattered??  */
   color: #ffaa00 !important;
