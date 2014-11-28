@@ -47,7 +47,7 @@ def update_users():
             headers = {'content-type': 'application/json', 'accept': 'application/json'}
 
             print user.email or user.user_name
-            r = requests.post('https://api.intercom.io/users', data=json.dumps(data), headers=headers, auth=('5714bb0i', INTERCOM_API_KEY))
+            r = requests.post('https://api.intercom.io/users', data=json.dumps(data), headers=headers, auth=(app.config["INTERCOM_APP_ID"], app.config["INTERCOM_API_KEY"]))
             assert r.status_code == 200
 
 def main():
