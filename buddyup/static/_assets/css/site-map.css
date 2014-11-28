@@ -687,7 +687,7 @@ ul.bulleted li { padding-top: 0.5em; padding-bottom: 0.5em; }
   margin: 0 10px 20px 10px;
 }
 .study_session_header {
-  margin-left: 20%; 
+  /*margin-left: 20%; */
 }
 .main-link.study_session_header a {
   /* Seriously??  We have importants scattered??  */
@@ -726,6 +726,9 @@ body {
   /* Set the fixed height of the footer here */
   height: 90px;
   background-color: #f5f5f5;
+}
+#nav-main #profile-overflow, #profile-overflow .overflow-list {
+  width: auto !important;
 }
 
 @media (max-width: 767px) {
