@@ -6,6 +6,7 @@ heroku:
         TZ: "America/Los_Angeles"
         AUTH0_CALLBACK_URL: http://$APP_NAME.herokuapp.com/callback
         DOMAIN_NAME: $APP_NAME.herokuapp.com
+        AWS_S3_BUCKET: buddyup-$APP_NAME
     cloned_config:
         hudson-buddyup:
             - ADMIN_USER
