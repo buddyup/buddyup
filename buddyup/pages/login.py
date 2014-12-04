@@ -199,11 +199,14 @@ def callback_handling():
     }
 
     token_info = requests.post(token_url, data=json.dumps(token_payload), headers = json_header).json()
-
-    user_url = "https://{domain}/userinfo?access_token={access_token}".format(
-    domain=env["AUTH0_DOMAIN"],
-    access_token=token_info['access_token']
-    )
+    try:
+        user_url = "https://{domain}/userinfo?access_token={access_token}".format(
+        domain=env["AUTH0_DOMAIN"],
+        access_token=token_info['access_token']
+        )
+    except Exception, e:
+        print token_info
+        raise e
 
     user_info = requests.get(user_url).json()
 
