@@ -14,6 +14,6 @@ deployment:
       - git push git@heroku.com:oregonstate-buddyup.git $CIRCLE_SHA1:master
       - git push git@heroku.com:ecampus-oregonstate-buddyup.git $CIRCLE_SHA1:master
       - git push git@heroku.com:buddyup.git $CIRCLE_SHA1:master
-      - git push git@heroku.com:buddyup-skyline.git $CIRCLE_SHA1:master
+      - git push git@heroku.com:buddyup-skylinecollege.git $CIRCLE_SHA1:master
       - git push git@heroku.com:buddyup-canadacollege.git $CIRCLE_SHA1:master
       - git push git@heroku.com:buddyup-collegeofsanmateo.git $CIRCLE_SHA1:master
