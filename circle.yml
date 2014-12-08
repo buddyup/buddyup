@@ -5,8 +5,15 @@ notify:
   webhooks:
     - url: http://will.buddyup.org/api/circleci/deployed/
 
-# deployment:
-#   production:
-#     branch: master
-#     heroku:
-#       appname: buddyup-will
+deployment:
+  production:
+    branch: master
+    commands:
+      - git push git@heroku.com:hudson-buddyup.git $CIRCLE_SHA1:master
+      - git push git@heroku.com:oit-buddyup.git $CIRCLE_SHA1:master
+      - git push git@heroku.com:oregonstate-buddyup.git $CIRCLE_SHA1:master
+      - git push git@heroku.com:ecampus-oregonstate-buddyup.git $CIRCLE_SHA1:master
+      - git push git@heroku.com:buddyup.git $CIRCLE_SHA1:master
+      - git push git@heroku.com:buddyup-skyline.git $CIRCLE_SHA1:master
+      - git push git@heroku.com:buddyup-canadacollege.git $CIRCLE_SHA1:master
+      - git push git@heroku.com:buddyup-collegeofsanmateo.git $CIRCLE_SHA1:master
