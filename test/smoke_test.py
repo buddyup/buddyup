@@ -14,12 +14,13 @@ class SmokeTests(unittest.TestCase):
         db.session.commit()
 
     def tearDown(self):
-        import os
-        if 'DATABASE_URL' in os.environ and os.environ['DATABASE_URL'] != 'sqlite:///:memory:':
-            os.remove(os.environ['DATABASE_URL'])
-        else:
-            # Delete users from the memory database, if used.
-            User.query.delete()
+        if User.query.filter(User.user_name=="skippy").count():
+            u = User.query.filter(User.user_name=="skippy")[0]
+
+            Visit.query.filter(Visit.user_id==u.id).delete()
+            User.query.filter(User.user_name=="skippy").delete()
+        
+        db.session.commit()
 
 
     def test_homepage(self):
@@ -32,4 +33,3 @@ class SmokeTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
