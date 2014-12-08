@@ -1,0 +1,12 @@
+test:
+  override:
+    - nosetests
+notify:
+  webhooks:
+    - url: http://will.buddyup.org/api/circleci/deployed/
+
+# deployment:
+#   production:
+#     branch: master
+#     heroku:
+#       appname: buddyup-will
