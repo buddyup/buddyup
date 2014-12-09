@@ -85,21 +85,21 @@ $(function(){
 
         <form id="registration" action="{{ url_for('profile_create') }}" method="POST"
             enctype="multipart/form-data">
-        {{ form.csrf_token }}
+            {{ form.csrf_token }}
 
         <div id="" class="row">
 
             <div class="col-md-4 col-md-offset-1">
                 <div class="form-group">
 					<label for="" class="control-label">{{ form.full_name.label.text }}<span class="required_asterisk">*</span></label>{% if form.full_name.errors %}<div class="form-error">{% endif %}{{render_errors(form.full_name)}}
-                    {{form.full_name(class_="form-control", placeholder="Sally Williams")}}
+                    {{form.full_name(class_="form-control", placeholder="Sally Williams", taborder="1")}}
                     {% if form.full_name.errors %}</div>{% endif %}
                 </div>
             </div>
             <div class="col-md-4 col-md-offset-1">
                 <div class="form-group">
                     <label for="" class="control-label">{{ form.email.label.text }}<span class="required_asterisk">*</span></label>{% if form.email.errors %}<div class="form-error">{% endif %}{{render_errors(form.email)}}
-                    {{form.email(class_="form-control", placeholder="swilliams345@university.edu")}}
+                    {{form.email(class_="form-control", placeholder="swilliams345@university.edu", taborder="2")}}
                     {% if form.email.errors %}</div>{% endif %}
                 </div>
             </div>
@@ -109,7 +109,7 @@ $(function(){
 
                 <div class="form-group">
                 <label for="" class="control-label">{{ form.photo.label.text }}<span class="required_asterisk">*</span></label>{% if form.photo.errors %}<div class="form-error">{% endif %}{{ render_errors(form.photo) }}
-                {{ form.photo }}
+                {{ form.photo(taborder="3") }}
                 {% if form.photo.errors %}</div>{% endif %}
                 </div>
             </div>

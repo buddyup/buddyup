@@ -135,7 +135,12 @@ def mark_buddies_in_group(classmates_by_group):
 def list_coursemates(course_id, page=1):
     course = Course.query.get_or_404(course_id)
 
-    link_next = url_for('list_coursemates', course_id=course_id, page=page+1)
+    link_next = None
+    try:
+        if len(coursemates_query(course_id).paginate(page+1, per_page=PAGE_SIZE).items) > 0:
+            link_next = url_for('list_coursemates', course_id=course_id, page=page+1)
+    except:
+        pass
     link_prev = url_for('list_coursemates', course_id=course_id, page=page-1) if page > 1 else None
 
     return render_template('courses/followers/index.html', user=g.user, course=course, classmates=mark_buddies(paginated_coursemates(course_id, page)), everyone="selected", next=link_next, prev=link_prev)
@@ -147,7 +152,12 @@ def list_coursemates(course_id, page=1):
 def list_buddies_in_course(course_id, page=1):
     course = Course.query.get_or_404(course_id)
 
-    link_next = url_for('list_buddies_in_course', course_id=course_id, page=page+1)
+    link_next = None
+    try:
+        if len(g.user.buddies.order_by(User.full_name).paginate(page+1, per_page=PAGE_SIZE).items) > 0:
+            link_next = url_for('list_buddies_in_course', course_id=course_id, page=page+1)
+    except:
+        pass
     link_prev = url_for('list_buddies_in_course', course_id=course_id, page=page-1) if page > 1 else None
 
     buddies = g.user.buddies.order_by(User.full_name).paginate(page, per_page=PAGE_SIZE).items
@@ -181,8 +191,18 @@ def list_coursemates_by_major(course_id, page=1):
                             .filter(MajorMembership.columns['major_id'] == Major.id)\
                             .order_by(Major.name)\
                             .paginate(page, per_page=PAGE_SIZE).items
+    link_next = None
+    try:
+        if len(coursemates_query(course_id)\
+                            .add_entity(Major)\
+                            .filter(User.id == MajorMembership.columns['user_id'])\
+                            .filter(MajorMembership.columns['major_id'] == Major.id)\
+                            .order_by(Major.name)\
+                            .paginate(page+1, per_page=PAGE_SIZE).items) > 0:
+            link_next = url_for('list_coursemates_by_major', course_id=course_id, page=page+1)
+    except:
+        pass
 
-    link_next = url_for('list_coursemates_by_major', course_id=course_id, page=page+1)
     link_prev = url_for('list_coursemates_by_major', course_id=course_id, page=page-1) if page > 1 else None
 
     return list_by_group(classmates_by_major, course=course, major="selected", group_list=Major.query.order_by('name').all(), next=link_next, prev=link_prev)
@@ -200,8 +220,18 @@ def list_coursemates_by_single_major(course_id, major_id, page=1):
                             .filter(MajorMembership.columns['major_id'] == Major.id)\
                             .filter(Major.id == major_id)\
                             .paginate(page, per_page=PAGE_SIZE).items
+    link_next = None
+    try:
+        if len(coursemates_query(course_id)\
+                            .add_entity(Major)\
+                            .filter(User.id == MajorMembership.columns['user_id'])\
+                            .filter(MajorMembership.columns['major_id'] == Major.id)\
+                            .filter(Major.id == major_id)\
+                            .paginate(page+1, per_page=PAGE_SIZE).items) > 0:
+            link_next = url_for('list_coursemates_by_single_major', course_id=course_id, major_id=major_id, page=page+1)
+    except:
+        pass
 
-    link_next = url_for('list_coursemates_by_single_major', course_id=course_id, major_id=major_id, page=page+1)
     link_prev = url_for('list_coursemates_by_single_major', course_id=course_id, major_id=major_id, page=page-1) if page > 1 else None
 
     return list_by_group(classmates_by_major, course=course, major="selected", next=link_next, prev=link_prev)
@@ -219,8 +249,18 @@ def list_coursemates_by_language(course_id, page=1):
                             .filter(LanguageMembership.columns['language_id'] == Language.id)\
                             .order_by(Language.name)\
                             .paginate(page, per_page=PAGE_SIZE).items
+    link_next = None
+    try:
+        if len(coursemates_query(course_id)\
+                            .add_entity(Language)\
+                            .filter(User.id == LanguageMembership.columns['user_id'])\
+                            .filter(LanguageMembership.columns['language_id'] == Language.id)\
+                            .order_by(Language.name)\
+                            .paginate(page+1, per_page=PAGE_SIZE).items) > 0:
+            link_next = url_for('list_coursemates_by_language', course_id=course_id, page=page+1)
+    except:
+        pass
 
-    link_next = url_for('list_coursemates_by_language', course_id=course_id, page=page+1)
     link_prev = url_for('list_coursemates_by_language', course_id=course_id, page=page-1) if page > 1 else None
 
     return list_by_group(classmates_by_language, course=course, language="selected", group_list=Language.query.order_by('name').all(), next=link_next, prev=link_prev)
@@ -238,8 +278,18 @@ def list_coursemates_by_single_language(course_id, language_id, page=1):
                             .filter(LanguageMembership.columns['language_id'] == Language.id)\
                             .filter(Language.id == language_id)\
                             .paginate(page, per_page=PAGE_SIZE).items
+    link_next = None
+    try:
+        if len(coursemates_query(course_id)\
+                            .add_entity(Language)\
+                            .filter(User.id == LanguageMembership.columns['user_id'])\
+                            .filter(LanguageMembership.columns['language_id'] == Language.id)\
+                            .filter(Language.id == language_id)\
+                            .paginate(page+1, per_page=PAGE_SIZE).items) > 0:
+            link_next = url_for('list_coursemates_by_single_language', course_id=course_id, language_id=language_id, page=page+1)
+    except:
+        pass
 
-    link_next = url_for('list_coursemates_by_single_language', course_id=course_id, language_id=language_id, page=page+1)
     link_prev = url_for('list_coursemates_by_single_language', course_id=course_id, language_id=language_id, page=page-1) if page > 1 else None
 
     return list_by_group(classmates_by_language, course=course, language="selected", next=link_next, prev=link_prev)
@@ -256,8 +306,17 @@ def list_coursemates_by_location(course_id, page=1):
                             .filter(User.location_id==Location.id)\
                             .order_by(Location.name)\
                             .paginate(page, per_page=PAGE_SIZE).items
+    link_next = None
+    try:
+        if len(coursemates_query(course_id)\
+                            .add_entity(Location)\
+                            .filter(User.location_id==Location.id)\
+                            .order_by(Location.name)\
+                            .paginate(page+1, per_page=PAGE_SIZE).items) > 0:
+            link_next = url_for('list_coursemates_by_location', course_id=course_id, page=page+1)
+    except:
+        pass
 
-    link_next = url_for('list_coursemates_by_location', course_id=course_id, page=page+1)
     link_prev = url_for('list_coursemates_by_location', course_id=course_id, page=page-1) if page > 1 else None
 
     return list_by_group(classmates_by_location, course=course, location="selected", group_list=Location.query.order_by('name').all(), next=link_next, prev=link_prev)
@@ -275,23 +334,18 @@ def list_coursemates_by_single_location(course_id, location_id, page=1):
                             .filter(User.location_id==Location.id)\
                             .filter(Location.id == location_id)\
                             .paginate(page, per_page=PAGE_SIZE).items
+    link_next = None
+    try:
+        if len(coursemates_query(course_id)\
+                            .add_entity(Location)\
+                            .filter(User.location_id==Location.id)\
+                            .filter(Location.id == location_id)\
+                            .paginate(page+1, per_page=PAGE_SIZE).items) > 0:
+            link_next = url_for('list_coursemates_by_single_location', course_id=course_id, location_id=location_id, page=page+1)
+    except:
+        pass
 
-    link_next = url_for('list_coursemates_by_single_location', course_id=course_id, location_id=location_id, page=page+1)
     link_prev = url_for('list_coursemates_by_single_location', course_id=course_id, location_id=location_id, page=page-1) if page > 1 else None
 
 
     return list_by_group(classmates_by_location, course=course, location="selected", next=link_next, prev=link_prev)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
