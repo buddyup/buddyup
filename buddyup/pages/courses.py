@@ -151,7 +151,6 @@ def list_coursemates(course_id, page=1):
 @app.route('/courses/<int:course_id>/followers/buddies/page/<int:page>')
 @login_required
 def list_buddies_in_course(course_id, page=1):
-    print "yo, buddies!"
     filter_name = "Buddies"
     course = Course.query.get_or_404(course_id)
 
@@ -178,7 +177,6 @@ def list_by_group(grouped_classmates, **kwargs):
         classmates[group.name].append(classmate)
 
     groups = sorted(classmates.keys())
-    print kwargs
     return render_template('courses/by_grouping.html', user=g.user, classmates=classmates, groupings=groups, **kwargs)
 
 

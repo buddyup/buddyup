@@ -90,12 +90,9 @@ def change_profile_photo(user, storage):
 
         if   exif[orientation] == 3 : 
             base_image=base_image.rotate(180, expand=True)
-            print "exif 3"
         elif exif[orientation] == 6 : 
-            print "exif 6"
             base_image=base_image.rotate(270, expand=True)
         elif exif[orientation] == 8 : 
-            print "exif 8"
             base_image=base_image.rotate(90, expand=True)
 
         images = [scale(base_image, size) for size in SIZES]
