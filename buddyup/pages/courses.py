@@ -45,14 +45,14 @@ def course_view(id):
 @login_required
 def list_courses():
     courses = Course.query.order_by(Course.name).all()
-    return render_template('courses/index.html', user=g.user, courses=courses, all_courses="selected")
+    return render_template('courses/index.html', filter_name="All Courses", user=g.user, courses=courses, all_courses="selected")
 
 
 @app.route("/courses/following")
 @login_required
 @track_activity
 def my_courses():
-    return render_template('courses/index.html', user=g.user, courses=g.user.courses.order_by(Course.name), following="selected")
+    return render_template('courses/index.html', filter_name="My Courses",  user=g.user, courses=g.user.courses.order_by(Course.name), following="selected")
 
 
 @app.route('/courses/majors')
@@ -133,6 +133,7 @@ def mark_buddies_in_group(classmates_by_group):
 @app.route('/courses/<int:course_id>/followers/page/<int:page>')
 @login_required
 def list_coursemates(course_id, page=1):
+    filter_name = "Everyone"
     course = Course.query.get_or_404(course_id)
 
     link_next = None
@@ -143,13 +144,15 @@ def list_coursemates(course_id, page=1):
         pass
     link_prev = url_for('list_coursemates', course_id=course_id, page=page-1) if page > 1 else None
 
-    return render_template('courses/followers/index.html', user=g.user, course=course, classmates=mark_buddies(paginated_coursemates(course_id, page)), everyone="selected", next=link_next, prev=link_prev)
+    return render_template('courses/followers/index.html', filter_name=filter_name, user=g.user, course=course, classmates=mark_buddies(paginated_coursemates(course_id, page)), everyone="selected", next=link_next, prev=link_prev)
 
 
 @app.route('/courses/<int:course_id>/followers/buddies')
 @app.route('/courses/<int:course_id>/followers/buddies/page/<int:page>')
 @login_required
 def list_buddies_in_course(course_id, page=1):
+    print "yo, buddies!"
+    filter_name = "Buddies"
     course = Course.query.get_or_404(course_id)
 
     link_next = None
@@ -163,7 +166,7 @@ def list_buddies_in_course(course_id, page=1):
     buddies = g.user.buddies.order_by(User.full_name).paginate(page, per_page=PAGE_SIZE).items
     for buddy in buddies:
         buddy.__dict__["is_buddy"] = True # We're in 'Buddies' after all!
-    return render_template('courses/followers/index.html', user=g.user, course=course, classmates=buddies, buddies="selected", next=link_next, prev=link_prev)
+    return render_template('courses/followers/index.html', filter_name=filter_name, user=g.user, course=course, classmates=buddies, buddies="selected", next=link_next, prev=link_prev)
 
 
 def list_by_group(grouped_classmates, **kwargs):
@@ -175,7 +178,7 @@ def list_by_group(grouped_classmates, **kwargs):
         classmates[group.name].append(classmate)
 
     groups = sorted(classmates.keys())
-
+    print kwargs
     return render_template('courses/by_grouping.html', user=g.user, classmates=classmates, groupings=groups, **kwargs)
 
 
@@ -183,6 +186,7 @@ def list_by_group(grouped_classmates, **kwargs):
 @app.route('/courses/<int:course_id>/followers/majors/page/<int:page>')
 @login_required
 def list_coursemates_by_major(course_id, page=1):
+    filter_name = "Major"
     course = Course.query.get_or_404(course_id)
 
     classmates_by_major = coursemates_query(course_id)\
@@ -205,13 +209,14 @@ def list_coursemates_by_major(course_id, page=1):
 
     link_prev = url_for('list_coursemates_by_major', course_id=course_id, page=page-1) if page > 1 else None
 
-    return list_by_group(classmates_by_major, course=course, major="selected", group_list=Major.query.order_by('name').all(), next=link_next, prev=link_prev)
+    return list_by_group(classmates_by_major, filter_name=filter_name, course=course, major="selected", group_list=Major.query.order_by('name').all(), next=link_next, prev=link_prev)
 
 
 @app.route('/courses/<int:course_id>/followers/majors/<int:major_id>/')
 @app.route('/courses/<int:course_id>/followers/majors/<int:major_id>/page/<int:page>')
 @login_required
 def list_coursemates_by_single_major(course_id, major_id, page=1):
+    filter_name = "Major"
     course = Course.query.get_or_404(course_id)
 
     classmates_by_major = coursemates_query(course_id)\
@@ -234,13 +239,14 @@ def list_coursemates_by_single_major(course_id, major_id, page=1):
 
     link_prev = url_for('list_coursemates_by_single_major', course_id=course_id, major_id=major_id, page=page-1) if page > 1 else None
 
-    return list_by_group(classmates_by_major, course=course, major="selected", next=link_next, prev=link_prev)
+    return list_by_group(classmates_by_major, filter_name=filter_name, course=course, major="selected", next=link_next, prev=link_prev)
 
 
 @app.route('/courses/<int:course_id>/followers/languages/')
 @app.route('/courses/<int:course_id>/followers/languages/page/<int:page>')
 @login_required
 def list_coursemates_by_language(course_id, page=1):
+    filter_name = "Language"
     course = Course.query.get_or_404(course_id)
 
     classmates_by_language = coursemates_query(course_id)\
@@ -263,13 +269,14 @@ def list_coursemates_by_language(course_id, page=1):
 
     link_prev = url_for('list_coursemates_by_language', course_id=course_id, page=page-1) if page > 1 else None
 
-    return list_by_group(classmates_by_language, course=course, language="selected", group_list=Language.query.order_by('name').all(), next=link_next, prev=link_prev)
+    return list_by_group(classmates_by_language, filter_name=filter_name, course=course, language="selected", group_list=Language.query.order_by('name').all(), next=link_next, prev=link_prev)
 
 
 @app.route('/courses/<int:course_id>/followers/languages/<int:language_id>/')
 @app.route('/courses/<int:course_id>/followers/languages/<int:language_id>/page/<int:page>')
 @login_required
 def list_coursemates_by_single_language(course_id, language_id, page=1):
+    filter_name = "Language"
     course = Course.query.get_or_404(course_id)
 
     classmates_by_language = coursemates_query(course_id)\
@@ -292,13 +299,14 @@ def list_coursemates_by_single_language(course_id, language_id, page=1):
 
     link_prev = url_for('list_coursemates_by_single_language', course_id=course_id, language_id=language_id, page=page-1) if page > 1 else None
 
-    return list_by_group(classmates_by_language, course=course, language="selected", next=link_next, prev=link_prev)
+    return list_by_group(classmates_by_language, filter_name=filter_name, course=course, language="selected", next=link_next, prev=link_prev)
 
 
 @app.route('/courses/<int:course_id>/followers/locations/')
 @app.route('/courses/<int:course_id>/followers/locations/page/<int:page>')
 @login_required
 def list_coursemates_by_location(course_id, page=1):
+    filter_name = "Location"
     course = Course.query.get_or_404(course_id)
 
     classmates_by_location = coursemates_query(course_id)\
@@ -319,7 +327,7 @@ def list_coursemates_by_location(course_id, page=1):
 
     link_prev = url_for('list_coursemates_by_location', course_id=course_id, page=page-1) if page > 1 else None
 
-    return list_by_group(classmates_by_location, course=course, location="selected", group_list=Location.query.order_by('name').all(), next=link_next, prev=link_prev)
+    return list_by_group(classmates_by_location, filter_name=filter_name, course=course, location="selected", group_list=Location.query.order_by('name').all(), next=link_next, prev=link_prev)
 
 
 
@@ -327,6 +335,7 @@ def list_coursemates_by_location(course_id, page=1):
 @app.route('/courses/<int:course_id>/followers/locations/<int:location_id>/page/<int:page>')
 @login_required
 def list_coursemates_by_single_location(course_id, location_id, page=1):
+    filter_name = "Location"
     course = Course.query.get_or_404(course_id)
 
     classmates_by_location = coursemates_query(course_id)\
@@ -348,4 +357,4 @@ def list_coursemates_by_single_location(course_id, location_id, page=1):
     link_prev = url_for('list_coursemates_by_single_location', course_id=course_id, location_id=location_id, page=page-1) if page > 1 else None
 
 
-    return list_by_group(classmates_by_location, course=course, location="selected", next=link_next, prev=link_prev)
+    return list_by_group(classmates_by_location, filter_name=filter_name, course=course, location="selected", next=link_next, prev=link_prev)
