@@ -64,6 +64,26 @@ The BuddyUp Team""".format(**invite_info)
 
     send_email(to_user, subject, message)
 
+def email_accepted_invitation(from_user, to_user):
+
+    invite_info = {
+        'SENDER': from_user.full_name,
+        'RECIPIENT': to_user.full_name,
+        'DOMAIN': app.config.get('DOMAIN_NAME', ''),
+    }
+
+    subject = "%s wants to BuddyUp!" % invite_info['SENDER']
+
+    message = """Hi {SENDER}!
+
+{RECIPIENT} accepted your buddy invite - you're buddied up!
+
+Thanks,
+
+The BuddyUp Team
+http://{DOMAIN}/""".format(**invite_info)
+
+    send_email(to_user, subject, message)
 
 def invite(sender, classmate):
     # Don't send multiple invitations.
@@ -119,8 +139,8 @@ def accept_invitation(receiver_name, sender_name):
     if not acting_on_self(receiver): abort(404)
 
     buddy_up(sender, receiver)
-
     clear_buddy_invites(sender.id, receiver.id)
+    email_accepted_invitation(sender, receiver)
 
     # Once we've accepted the invitation, go visit the sender's page.
     return redirect(url_for('buddy_view', user_name=sender_name))
