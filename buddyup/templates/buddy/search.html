@@ -30,7 +30,7 @@
 					<option value="-1">All Enrolled Courses</option>
 					{% for course_record in courses %}
 					<option value="{{ course_record.id }}">
-						{{ course_record.name }} by {{ course_record.instructor }}
+						{{ course_record.name }} {# by {{ course_record.instructor }} #}
 					</option>
 					{% endfor %}
 				</select>

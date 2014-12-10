@@ -1,0 +1,58 @@
+{% extends "green/global_layout.html" %}
+{% block title %}Add a Course{% endblock %}
+{% macro render_errors(field) %}
+	{% if field.errors %}
+		<ul class="errors">
+		{% for error in field.errors %}
+			<li>{{ error }}</li>
+		{% endfor %}
+		</ul>
+	{% endif %}
+{% endmacro %}
+{% block pagestyle %}
+<link href="/static/_assets/css/event-detail.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<article id="top" class="detail">
+    <div class="wrapper container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <a href="#"></a>
+                <h1>Add a course</h1>
+                <div class="subtitle">
+					Is there a course that's not in BuddyUp yet? Add it below!
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
+
+<article id="main-content" class="container">
+
+	{% for message in get_flashed_messages() %} 
+	<div class="alert alert-danger">
+		<button type="button" class="close" data-dismiss="alert">&times;</button >{{ message }}
+	</div >
+	{% endfor %}
+
+    <form id="course_add_form" role="form" action="{{request.path}}" method="POST">
+		{{ form.csrf_token }}
+        <section id="" class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <h2>Course Listing Name (i.e. CHEM101)</h2>
+                <div class="form-group">
+					{{render_errors(form.name)}}
+					{{form.name(class_="form-control", placeholder="CHEM101")}}
+                </div>
+            </div>
+        </section>
+
+        <section id="submit" class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <a href="javascript:course_add_form.submit()" class="button submit submit-form">Add Course</a>
+            </div>
+        </section>
+    </form>
+</article>
+
+{% endblock %}

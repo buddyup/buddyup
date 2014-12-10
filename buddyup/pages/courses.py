@@ -1,3 +1,6 @@
+import json
+import os
+import requests
 from flask import g, request, abort, redirect, url_for
 
 from buddyup.app import app
@@ -10,6 +13,8 @@ from buddyup.util import login_required, args_get, sorted_languages, shuffled, t
 
 from buddyup.pages.classmates import PAGE_SIZE
 from buddyup.pages.tutors import tutors_for_course
+from buddyup.pages.form_profile import CourseCreationForm
+from buddyup.util import form_get, args_get, check_empty, email
 
 from collections import defaultdict
 
@@ -40,6 +45,47 @@ def course_view(id):
 
     return render_template('courses/view.html', user=g.user, course=course, followers=followers, events=events, tutors=tutors)
 
+
+@app.route("/courses/add/", methods=['GET', 'POST'])
+@login_required
+@track_activity
+def create_course():
+    form = CourseCreationForm()
+
+    if form.validate_on_submit():
+        name = form.data["name"].upper()
+        
+        course = Course(name=name)
+        db.session.add(course)
+        db.session.commit()
+
+        # Ping Will
+        try:
+            WILL_URL = os.environ["WILL_URL"]
+            headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+            r = requests.post(
+                "%s/api/course-added" % WILL_URL, 
+                headers=headers, 
+                data=json.dumps({
+                    "user_name": g.user.full_name,
+                    "user_id": g.user.id,
+                    "school": g.school_name,
+                    "course_name": course.name,
+                })
+            )
+            assert r.status_code == 200
+        except:
+            import traceback; traceback.print_exc();
+
+        return redirect(url_for('course_creation_complete', id=course.id))
+    else:
+        return render_template('courses/create.html', form=form)
+
+@app.route('/courses/add-success/<id>', methods=['GET', 'POST'])
+@login_required
+def course_creation_complete(id):
+    course = Course.query.get_or_404(id)
+    return render_template('courses/created.html', course=course, domain=app.config.get('DOMAIN_NAME', ''))
 
 @app.route('/courses')
 @login_required

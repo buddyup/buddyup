@@ -32,7 +32,8 @@
                                 <form action="{{ url_for('admin_delete_course') }}" method="POST">
                                         <select size=15 name="courses" multiple>
                                                 {% for course in courses %}
-                                                <option value="{{ course.id }}">{{ course.name }} by {{ course.instructor }}</option>
+                                                <option value="{{ course.id }}">{{ course.name }} {# by {{ course.instructor }} #}
+                                                </option>
                                                 {% endfor %}
                                         </select>
                                         <br><input class="btn-danger" type="submit" value="Remove course"> 
@@ -122,7 +123,7 @@
                                         <select width="100%" name="course">
                                         {% for course in courses %}
                                                 <option value="{{ course.id }}">
-                                                        {{ course.name }} by {{ course.instructor }}
+                                                        {{ course.name }} {# by {{ course.instructor }} #}
                                                 </option>
                                         {% endfor %}
                                         </select>

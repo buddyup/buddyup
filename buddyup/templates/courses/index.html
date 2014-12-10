@@ -38,7 +38,7 @@
 									<span class="title">{{ course.name }}</span>
 									<span class="subtitle">
 										<span class="icon icon-course">&nbsp;</span>
-										{{course.instructor}}
+										{# {{course.instructor}} #}
 										{# TODO: Any additional decoration here. #}
 									</span>
 									{% if not course in user.courses %}
@@ -55,8 +55,8 @@
                     </div>
 					<div class="col-md-12">
                         <div class"alert">
-                            Can't find your course?<br/>
-                            Email: <a href="mailto:info@buddyup.org">info@buddyup.org</a>
+                            Can't find your course?
+                            <a href="{{ url_for('create_course') }}">Add it!</a>
                         </div>
                     </div>
                 </section>

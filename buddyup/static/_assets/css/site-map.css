@@ -740,6 +740,22 @@ body {
   min-width: 24px;
   text-align: center;
 }
+.actual_h2 {
+  font-size: 2em;
+  font-weight: 100;
+  margin: 40px 0 10px 0;
+}
+
+@media (min-width: 768px) {
+  #top.detail .action {
+    margin: 0;
+    clear: none;
+    float: none;
+    right: 0px;
+    position: absolute;
+    top: 12px;
+  }
+}
 
 @media (max-width: 767px) {
   body {
