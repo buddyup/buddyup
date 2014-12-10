@@ -28,7 +28,7 @@
                 </div>
             </article>
 
-            <article id="main-content" class="container courses">
+            <article id="main-content" class="container courses course_listings">
                 <section class="row">
                     <div class="col-md-12 col-md-offset-0">
                         <ul class="block-grid">
@@ -43,9 +43,9 @@
 									</span>
 									{% if not course in user.courses %}
 									<form style="display: none;" id="follow_{{course.id}}" method="POST" action="{{url_for('follow_course', id=course.id)}}"></form>
-									<span class="button small" onclick="Intercom('trackEvent', 'follow-course');follow_{{course.id}}.submit();return false;">
+									<span class="add_button button small" onclick="Intercom('trackEvent', 'follow-course');follow_{{course.id}}.submit();return false;">
 										<span class="icon icon-person-add">&nbsp;</span>
-										Follow
+										<span class="text">Follow</span>
 									</span>
 									{% endif %}
 								</div></div></a>

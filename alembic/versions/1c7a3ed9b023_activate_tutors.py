@@ -15,7 +15,8 @@ import sqlalchemy as db
 
 
 def upgrade():
-    op.add_column('tutor', db.Column('approved', db.Boolean, default=False))
+    # op.add_column('tutor', db.Column('approved', db.Boolean, default=False))
+    pass
 
 def downgrade():
     pass

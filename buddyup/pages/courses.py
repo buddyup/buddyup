@@ -74,6 +74,7 @@ def unfollow_course(id):
     course = Course.query.get_or_404(id)
 
     if course in g.user.courses:
+        g.user.archived_courses.append(course)
         g.user.courses.remove(course)
         db.session.commit()
 
