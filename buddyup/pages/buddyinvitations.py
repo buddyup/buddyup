@@ -72,7 +72,7 @@ def email_accepted_invitation(from_user, to_user):
         'DOMAIN': app.config.get('DOMAIN_NAME', ''),
     }
 
-    subject = "%s wants to BuddyUp!" % invite_info['SENDER']
+    subject = "%s accepted your invite!" % invite_info['RECIPIENT']
 
     message = """Hi {SENDER}!
 
