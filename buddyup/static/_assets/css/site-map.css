@@ -745,6 +745,27 @@ body {
   font-weight: 100;
   margin: 40px 0 10px 0;
 }
+.cta_button_block {
+  display: block;
+  padding: 5px;
+  margin: 4px 0 20px 0;
+  width: 100%;
+  text-align: center;
+}
+a.cta_button, a.cta_button:hover {
+  display: inline-block;
+  cursor: pointer;
+  background-color: #ffaa00;
+  color: #FFF;
+  border-radius: 6px;
+  padding: 6px 18px;
+  margin: 4px 0;
+  font-weight: normal;
+  text-decoration: none;
+}
+a.cta_button:hover {
+  background-color: #ffba10;
+}
 
 @media (min-width: 768px) {
   #top.detail .action {
