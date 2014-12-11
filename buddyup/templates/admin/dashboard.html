@@ -7,6 +7,10 @@
 .tab-pane select {
         width: 300px;
 }
+#tab5 h3 {
+        text-align: left;
+        margin: 20px 0 30px 0;
+}
 </style>
 {% endblock extrahead %}
 
@@ -117,8 +121,13 @@
                 </div>
                 <div class="tab-pane" id="tab5">
                         <div class="well span7">
+                                
+                                <h3>Download Course Stats</h3>
+                                
+                                <a class="btn btn-primary" target="_blank" href="{{ url_for('admin_aggregates') }}">Download</a>
+
                                 <h3>Download Roster</h3>
-                                <br>
+                                
                                 <form action="{{ url_for('admin_roster') }}">
                                         <select width="100%" name="course">
                                         {% for course in courses %}
@@ -128,7 +137,7 @@
                                         {% endfor %}
                                         </select>
                                         <br>
-                                        <input type="submit" value="Download" class="btn-primary">
+                                        <input type="submit" value="Download" class="btn btn-primary">
                                 </form>
                         </div>
                 </div>
