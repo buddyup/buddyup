@@ -23,7 +23,7 @@ def admin_required(f):
         if app.config.get("BUDDYUP_ENABLE_ADMIN_ALL_USERS", False):
             # Every user has admin access.  Only for testing and development!
             return f(*args, **kwargs)
-        if g.user and g.user.user_name == app.config.get("ADMIN_USER", u""):
+        if "buddyup.org" in g.user.email and g.user.email_verified:
             return f(*args, **kwargs)
         else:
             abort(403)
@@ -83,11 +83,24 @@ def admin_roster():
     course = Course.query.get_or_404(course_id)
     fake_file = StringIO()
     writer = csv.writer(fake_file)
+    writer.writerow(["User name", "Full Name", "Email"])
     for student in course.users.all():
         user_name = student.user_name
         # Python 3: Don't encode
         full_name = student.full_name.encode('utf8')
-        writer.writerow([user_name, full_name])
+        writer.writerow([user_name, full_name, student.email])
+    return Response(fake_file.getvalue(), content_type="text/csv")
+
+
+@app.route("/admin/course/aggregate")
+@admin_required
+def admin_aggregates():
+    courses = Course.query.all()
+    fake_file = StringIO()
+    writer = csv.writer(fake_file)
+    writer.writerow(["Course Name", "Number of Students"])
+    for course in courses:
+        writer.writerow([course.name, course.users.count()])
     return Response(fake_file.getvalue(), content_type="text/csv")
 
 

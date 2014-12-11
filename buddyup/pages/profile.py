@@ -92,7 +92,7 @@ def profile_photo():
         else:
             db.session.commit()
             flash("Successfully changed photo")
-        return redirect(url_for('buddy_view', user_name=g.user.user_name))
+        return redirect("%s?updated" % url_for('buddy_view', user_name=g.user.user_name))
     else:
         return render_template("profile/photo.html",
                                form=form,

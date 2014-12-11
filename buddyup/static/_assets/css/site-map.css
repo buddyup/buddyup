@@ -723,13 +723,125 @@ body {
   /* Set the fixed height of the footer here */
   height: 90px;
   background-color: #f5f5f5;
+  overflow: hidden;
 }
 #nav-main #profile-overflow, #profile-overflow .overflow-list {
   width: auto !important;
 }
+.pagination {
+  text-align: right;
+  width: 100%;
+}
+.pagination a {
+  display: inline-block;
+  margin: 0 5px;
+}
+.icon.icon-badge {
+  min-width: 24px;
+  text-align: center;
+}
+.actual_h2 {
+  font-size: 2em;
+  font-weight: 100;
+  margin: 40px 0 10px 0;
+}
+.cta_button_block {
+  display: block;
+  padding: 5px;
+  margin: 4px 0 20px 0;
+  width: 100%;
+  text-align: center;
+}
+a.cta_button, a.cta_button:hover {
+  display: inline-block;
+  cursor: pointer;
+  background-color: #ffaa00;
+  color: #FFF;
+  border-radius: 6px;
+  padding: 6px 18px;
+  margin: 4px 0;
+  font-weight: normal;
+  text-decoration: none;
+}
+a.cta_button:hover {
+  background-color: #ffba10;
+}
+
+@media (min-width: 768px) {
+  #top.detail .action {
+    margin: 0;
+    clear: none;
+    float: none;
+    right: 0px;
+    position: absolute;
+    top: 12px;
+  }
+}
 
 @media (max-width: 767px) {
   body {
-    /*padding: 0 !important;*/
+    padding: 0 !important;
+  }
+  .navbar {
+    margin-bottom: 0 !important;
+  }
+  .navbar-collapse {
+    padding: 0;
+  }
+  .navbar-collapse li.main-link {
+    width: 100%;
+    display: block;
+  }
+  .row {
+    margin-left: -20px !important;
+  }
+  .block-grid .block {
+    min-height: 20px;
+    color: #222;
+  }
+  .course_listings.courses .block-grid .block {
+    position: relative;
+    background: none !important;
+    border: 0 !important;
+    margin: 4px 0 !important;
+  }
+  .course_listings.courses .block-grid .block .info {
+    background-color: transparent !important;
+  }
+  .course_listings.courses .block-grid .block .title {
+    color: #666 !important;
+    text-align: left;
+    left: 40px !important;
+  }
+  .course_listings.courses .block-grid .block .subtitle {
+    display: none;
+  }
+  .course_listings.courses .block-grid .block .info .wrapper > span.button.add_button, .course_listings.courses .block-grid .block .info .wrapper > span.button.add_button:hover {
+    left: 0 !important;
+    right: 0px;
+    width: 30px;
+    bottom: auto;
+    margin: 0;
+    padding: 0 0 0 6px !important;
+    background: none;
+    border: none;
+  }
+  .course_listings.courses .block-grid .block.followed:before {
+    left: 0;
+    bottom: -4px !important;
+    color: #FFF;
+    width: 27px !important;
+    height: 27px !important;
+    border: 0 !important;
+  }
+  .course_listings.courses .block-grid .block.followed:after {
+    left: 8px;
+    bottom: -4px !important;
+  }
+  .course_listings.courses .block-grid .block .info .wrapper > span.button.add_button .text {
+    display: none;
+  }
+  .course_listings.courses .block-grid .block img {
+    display: none;
   }
 }

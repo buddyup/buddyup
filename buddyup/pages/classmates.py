@@ -150,25 +150,37 @@ def annotate_classmates_in_group(classmates_by_group):
 @app.route('/classmates/page/<int:page>')
 @login_required
 def list_classmates(page=1):
+    filter_name = "Everyone"
+    link_next = None
+    try:
+        if len(annotate_classmates(paginated_classmates(page+1))) > 0:
+            link_next = url_for('list_classmates', page=page+1)
+    except:
+        pass
 
-    link_next = url_for('list_classmates', page=page+1)
     link_prev = url_for('list_classmates', page=page-1) if page > 1 else None
 
-    return render_template('buddy/index.html', user=g.user, classmates=annotate_classmates(paginated_classmates(page)), everyone="selected", next=link_next, prev=link_prev)
+    return render_template('buddy/index.html', filter_name=filter_name,user=g.user, classmates=annotate_classmates(paginated_classmates(page)), everyone="selected", next=link_next, prev=link_prev)
 
 
 @app.route('/classmates/buddies')
 @app.route('/classmates/buddies/page/<int:page>')
 @login_required
 def list_buddies(page=1):
+    link_next = None
+    filter_name = "Buddies"
+    try:
+        if len(g.user.buddies.order_by(User.full_name).paginate(page+1, per_page=PAGE_SIZE).items) > 0:
+            link_next = url_for('list_classmates', page=page+1)
+    except:
+        pass
 
-    link_next = url_for('list_classmates', page=page+1)
     link_prev = url_for('list_classmates', page=page-1) if page > 1 else None
 
     buddies = g.user.buddies.order_by(User.full_name).paginate(page, per_page=PAGE_SIZE).items
     for buddy in buddies:
         buddy.__dict__["is_buddy"] = True # We're in 'Buddies' after all!
-    return render_template('buddy/index.html', user=g.user, classmates=buddies, buddies="selected", next=link_next, prev=link_prev)
+    return render_template('buddy/index.html', user=g.user, filter_name=filter_name, classmates=buddies, buddies="selected", next=link_next, prev=link_prev)
 
 
 def list_by_group(grouped_classmates, **kwargs):
@@ -188,87 +200,139 @@ def list_by_group(grouped_classmates, **kwargs):
 @app.route('/classmates/majors/page/<int:page>')
 @login_required
 def list_classmates_by_major(page=1):
+    filter_name = "Major"
     classmates_by_major = classmates_query()\
                             .add_entity(Major)\
                             .filter(User.id == MajorMembership.columns['user_id'])\
                             .filter(MajorMembership.columns['major_id'] == Major.id)\
                             .order_by(Major.name)\
                             .paginate(page, per_page=PAGE_SIZE).items
+    link_next = None
+    try:
+        if len(classmates_query()\
+                            .add_entity(Major)\
+                            .filter(User.id == MajorMembership.columns['user_id'])\
+                            .filter(MajorMembership.columns['major_id'] == Major.id)\
+                            .order_by(Major.name)\
+                            .paginate(page+1, per_page=PAGE_SIZE).items) > 0:
+            link_next = url_for('list_classmates_by_major', page=page+1)
+    except:
+        pass
 
-    link_next = url_for('list_classmates_by_major', page=page+1)
     link_prev = url_for('list_classmates_by_major', page=page-1) if page > 1 else None
 
-    return list_by_group(classmates_by_major, major="selected", group_list=Major.query.order_by('name').all(), next=link_next, prev=link_prev)
+    return list_by_group(classmates_by_major, filter_name=filter_name, major="selected", group_list=Major.query.order_by('name').all(), next=link_next, prev=link_prev)
 
 
 @app.route('/classmates/majors/<int:major_id>/')
 @app.route('/classmates/majors/<int:major_id>/page/<int:page>')
 @login_required
 def list_classmates_by_single_major(major_id, page=1):
+    filter_name = "Major"
     classmates_by_major = classmates_query()\
                             .add_entity(Major)\
                             .filter(User.id == MajorMembership.columns['user_id'])\
                             .filter(MajorMembership.columns['major_id'] == Major.id)\
                             .filter(Major.id == major_id)\
                             .paginate(page, per_page=PAGE_SIZE).items
+    link_next = None
+    try:
+        if len(classmates_query()\
+                            .add_entity(Major)\
+                            .filter(User.id == MajorMembership.columns['user_id'])\
+                            .filter(MajorMembership.columns['major_id'] == Major.id)\
+                            .filter(Major.id == major_id)\
+                            .paginate(page+1, per_page=PAGE_SIZE).items) > 0:
+            link_next = url_for('list_classmates_by_single_major', major_id=major_id, page=page+1)
+    except:
+        pass
 
-    link_next = url_for('list_classmates_by_single_major', major_id=major_id, page=page+1)
     link_prev = url_for('list_classmates_by_single_major', major_id=major_id, page=page-1) if page > 1 else None
 
-    return list_by_group(classmates_by_major, major="selected", next=link_next, prev=link_prev)
+    return list_by_group(classmates_by_major,  filter_name=filter_name, major="selected", next=link_next, prev=link_prev)
 
 
 @app.route('/classmates/languages/')
 @app.route('/classmates/languages/page/<int:page>')
 @login_required
 def list_classmates_by_language(page=1):
-
+    filter_name = "Language"
     classmates_by_language = classmates_query()\
                             .add_entity(Language)\
                             .filter(User.id == LanguageMembership.columns['user_id'])\
                             .filter(LanguageMembership.columns['language_id'] == Language.id)\
                             .order_by(Language.name)\
                             .paginate(page, per_page=PAGE_SIZE).items
+    link_next = None
+    try:
+        if len(classmates_query()\
+                            .add_entity(Language)\
+                            .filter(User.id == LanguageMembership.columns['user_id'])\
+                            .filter(LanguageMembership.columns['language_id'] == Language.id)\
+                            .order_by(Language.name)\
+                            .paginate(page+1, per_page=PAGE_SIZE).items) > 0:
+            link_next = url_for('list_classmates_by_language', page=page+1)
+    except:
+        pass
 
-    link_next = url_for('list_classmates_by_language', page=page+1)
     link_prev = url_for('list_classmates_by_language', page=page-1) if page > 1 else None
 
-    return list_by_group(classmates_by_language, language="selected", group_list=Language.query.order_by('name').all(), next=link_next, prev=link_prev)
+    return list_by_group(classmates_by_language,  filter_name=filter_name, language="selected", group_list=Language.query.order_by('name').all(), next=link_next, prev=link_prev)
 
 
 @app.route('/classmates/languages/<int:language_id>/')
 @app.route('/classmates/languages/<int:language_id>/page/<int:page>')
 @login_required
 def list_classmates_by_single_language(language_id, page=1):
-
+    filter_name = "Language"
     classmates_by_language = classmates_query()\
                             .add_entity(Language)\
                             .filter(User.id == LanguageMembership.columns['user_id'])\
                             .filter(LanguageMembership.columns['language_id'] == Language.id)\
                             .filter(Language.id == language_id)\
                             .paginate(page, per_page=PAGE_SIZE).items
+    link_next = None
+    try:
+        if len(classmates_query()\
+                            .add_entity(Language)\
+                            .filter(User.id == LanguageMembership.columns['user_id'])\
+                            .filter(LanguageMembership.columns['language_id'] == Language.id)\
+                            .filter(Language.id == language_id)\
+                            .paginate(page+1, per_page=PAGE_SIZE).items) > 0:
+            link_next = url_for('list_classmates_by_single_language', language_id=language_id, page=page+1)
+    except:
+        pass
 
-    link_next = url_for('list_classmates_by_single_language', language_id=language_id, page=page+1)
     link_prev = url_for('list_classmates_by_single_language', language_id=language_id, page=page-1) if page > 1 else None
 
-    return list_by_group(classmates_by_language, language="selected", next=link_next, prev=link_prev)
+    return list_by_group(classmates_by_language, filter_name=filter_name, language="selected", next=link_next, prev=link_prev)
 
 
 @app.route('/classmates/locations/')
 @app.route('/classmates/locations/page/<int:page>')
 @login_required
 def list_classmates_by_location(page=1):
-
+    filter_name = "Location"
     classmates_by_location = classmates_query()\
                             .add_entity(Location)\
                             .filter(User.location_id==Location.id)\
                             .order_by(Location.name)\
                             .paginate(page, per_page=PAGE_SIZE).items
+    link_next = None
+    try:
+        if len(classmates_query()\
+                            .add_entity(Location)\
+                            .filter(User.location_id==Location.id)\
+                            .order_by(Location.name)\
+                            .paginate(page+1, per_page=PAGE_SIZE).items) > 0:
+            link_next = url_for('list_classmates_by_location', page=page+1)
+    except:
+        pass
 
-    link_next = url_for('list_classmates_by_location', page=page+1)
+
     link_prev = url_for('list_classmates_by_location', page=page-1) if page > 1 else None
 
-    return list_by_group(classmates_by_location, location="selected", group_list=Location.query.order_by('name').all(), next=link_next, prev=link_prev)
+    return list_by_group(classmates_by_location, filter_name=filter_name, location="selected", group_list=Location.query.order_by('name').all(), next=link_next, prev=link_prev)
 
 
 
@@ -276,18 +340,28 @@ def list_classmates_by_location(page=1):
 @app.route('/classmates/locations/<int:location_id>/page/<int:page>')
 @login_required
 def list_classmates_by_single_location(location_id, page=1):
-
+    filter_name = "Location"
     classmates_by_location = classmates_query()\
                             .add_entity(Location)\
                             .filter(User.location_id==Location.id)\
                             .filter(Location.id == location_id)\
                             .paginate(page, per_page=PAGE_SIZE).items
 
-    link_next = url_for('list_classmates_by_single_location', location_id=location_id, page=page+1)
+    link_next = None
+    try:
+        if len(classmates_query()\
+                            .add_entity(Location)\
+                            .filter(User.location_id==Location.id)\
+                            .filter(Location.id == location_id)\
+                            .paginate(page+1, per_page=PAGE_SIZE).items) > 0:
+            link_next = url_for('list_classmates_by_single_location', location_id=location_id, page=page+1)
+    except:
+        pass
+
     link_prev = url_for('list_classmates_by_single_location', location_id=location_id, page=page-1) if page > 1 else None
 
 
-    return list_by_group(classmates_by_location, location="selected", next=link_next, prev=link_prev)
+    return list_by_group(classmates_by_location, filter_name=filter_name, location="selected", next=link_next, prev=link_prev)
 
 
 @app.route('/classmate/invite')

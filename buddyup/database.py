@@ -14,6 +14,11 @@ CourseMembership = db.Table('coursemembership',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
     )
 
+ArchivedCourseMembership = db.Table('archivedcoursemembership',
+    db.Column('course_id', db.Integer, db.ForeignKey('course.id')),
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    )
+
 
 EventMembership = db.Table('eventmembership',
     db.Column('event_id', db.Integer, db.ForeignKey('event.id')),
@@ -126,6 +131,10 @@ class User(db.Model):
                               secondary=CourseMembership,
                               backref=db.backref('users', lazy="dynamic"),
                               lazy='dynamic')
+    archived_courses = db.relationship('Course',
+                              secondary=ArchivedCourseMembership,
+                              lazy='dynamic')
+
     majors = db.relationship('Major', lazy="dynamic",
                              secondary=MajorMembership,
                              backref='users')

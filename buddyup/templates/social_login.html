@@ -54,30 +54,29 @@
 </style>
 {% endblock %}
 {% block content %}
-<div class="container signup">
+<article id="top" class="simple">
+    <div class="container signup">
+        <div class="row text-center">
+            <h1 class="col-md-12">Welcome to BuddyUp</h1>
+            <p class="col-md-12">
+                The simple way to connect to your classmates and succeed.<br/>
+                <br/>
+                Log in
+            </p>
+        	<div id="root" style="width: 280px; margin: 40px auto;">
+			    <span class="loader">Loading...</span>
+			</div>
+			
 
-            <article id="top" class="simple">
-                <div class="container">
-                    <div class="row text-center">
-                        <h1 class="col-md-12">Welcome to BuddyUp</h1>
-                        <p class="col-md-12">
-                            The simple way to connect to your classmates and succeed.<br/>
-                            <br/>
-                            Log in
-                        </p>
-                    	<div id="root" style="width: 280px; margin: 40px auto;">
-						    <span class="loader">Loading...</span>
-						</div>
-						
-
-					</div>
-				</div>
-			</article>
-</div>
+		</div>
+	</div>
+</article>
 {% endblock %}
 
 {% block bottom_js %}
 <script>
-Intercom('trackEvent', 'hit-signin-page');
+if (window.Intercom !== undefined) {
+	Intercom('trackEvent', 'hit-signin-page');
+}
 </script>
 {% endblock %}

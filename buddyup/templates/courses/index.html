@@ -18,7 +18,7 @@
 								{% include "courses/nav.html" %}
                             </ul>
                             <div class="visible-xs-block dropdown">
-                                <a data-toggle="dropdown" class="button dropdown" href="#">Everyone</a>
+                                <a data-toggle="dropdown" class="button dropdown" href="#">{% if filter_name %}{{filter_name}} {% else %}Filter Courses{% endif %}</a>
                                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 									{% include "courses/nav.html" %}
                                 </ul>
@@ -28,7 +28,7 @@
                 </div>
             </article>
 
-            <article id="main-content" class="container courses">
+            <article id="main-content" class="container courses course_listings">
                 <section class="row">
                     <div class="col-md-12 col-md-offset-0">
                         <ul class="block-grid">
@@ -38,14 +38,14 @@
 									<span class="title">{{ course.name }}</span>
 									<span class="subtitle">
 										<span class="icon icon-course">&nbsp;</span>
-										{{course.instructor}}
+										{# {{course.instructor}} #}
 										{# TODO: Any additional decoration here. #}
 									</span>
 									{% if not course in user.courses %}
 									<form style="display: none;" id="follow_{{course.id}}" method="POST" action="{{url_for('follow_course', id=course.id)}}"></form>
-									<span class="button small" onclick="Intercom('trackEvent', 'follow-course');follow_{{course.id}}.submit();return false;">
+									<span class="add_button button small" onclick="Intercom('trackEvent', 'follow-course');follow_{{course.id}}.submit();return false;">
 										<span class="icon icon-person-add">&nbsp;</span>
-										Follow
+										<span class="text">Follow</span>
 									</span>
 									{% endif %}
 								</div></div></a>
@@ -53,7 +53,15 @@
 							{% endfor %}
                         </ul>
                     </div>
-					<p>Can't find your course? Email: <a href="mailto:info@buddyup.org">info@buddyup.org</a></p>
+					<div class="col-md-12">
+                        <div class"alert">
+                            <div class="cta_button_block">
+                            Can't find your course?
+                            <br/>
+                                <a href="{{ url_for('create_course') }}" class="cta_button">Add a course</a>
+                            </div>
+                        </div>
+                    </div>
                 </section>
             </article>
 

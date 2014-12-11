@@ -11,7 +11,7 @@
             <div class="col-md-10 col-md-offset-1">
                 <div class="thumbnail" style="background-image:url('/static/_assets/images/courses/math_chalkboard2.jpg')">&nbsp;</div>
                 <h1>{{course.name}}</h1>
-                <span class="subtitle">{{course.instructor}}</span>
+                {# <span class="subtitle">{{course.instructor}}</span> #}
 				{% if course in user.courses %}
 				<form style="display: none;" id="unfollow_{{course.id}}" method="POST" action="{{url_for('unfollow_course', id=course.id)}}"></form>
                 <a href="javascript:unfollow_{{course.id}}.submit()" class="action button small primary"><span class="icon icon-course-add">&nbsp;</span>Unfollow Course</a>

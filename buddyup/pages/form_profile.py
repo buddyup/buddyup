@@ -4,7 +4,7 @@ import re
 from flask.ext.wtf import Form
 from flask.ext.wtf.file import FileField, FileAllowed
 
-from wtforms.validators import required, Email, Optional, Regexp
+from wtforms.validators import required, Email, Optional, Regexp, ValidationError
 from wtforms.fields import TextField, RadioField, FieldList, TextAreaField, SelectField
 from wtforms.ext.sqlalchemy.fields import (QuerySelectMultipleField,
                                            QuerySelectField)
@@ -29,7 +29,7 @@ class ProfileForm(Form):
     Base class for the create and edit forms
     """
     full_name = TextField(u'Full Name', validators=[required()])
-    COURSE_FORMAT = u"{0.name} by {0.instructor}"
+    COURSE_FORMAT = u"{0.name}"
     courses = QueryMultiCheckboxField(u"Course(s)",
                                        get_label=COURSE_FORMAT.format,
                                        query_factory=ordered_factory(Course))
@@ -55,6 +55,14 @@ class ProfileForm(Form):
     email = TextField(u".edu Email Address", validators=[required(), Email(), Regexp("(?:[^@?]*)@(?:(?:(?:[A-z_]+\.)*edu)|buddyup\.org)$", flags=re.IGNORECASE, message=u'You must use your .edu email address.')])
     bio = TextAreaField(u'A Few Words About You')
 
+
+def not_existing_course(form, field):
+    matches = Course.query.filter(Course.name==field.data.upper())
+    if matches.count() > 0:
+        raise ValidationError('Course already exists!')
+
+class CourseCreationForm(Form):
+    name = TextField(u'Full Name', validators=[required(), not_existing_course])
 
 class ProfileCreateForm(ProfileForm):
     validators = [FileAllowed(PHOTO_EXTS, u"Images only!")]

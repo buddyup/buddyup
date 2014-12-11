@@ -12,7 +12,7 @@
             <div class="col-md-10 col-md-offset-1">
                 <a href="{{url_for('course_view', id=course.id)}}"><div class="thumbnail" style="background-image:url('/static/_assets/images/courses/math_chalkboard2.jpg')">&nbsp;</div></a>
                 <h1>Events</h1>
-                <div class="subtitle"><span>{{course.instructor}}</span>&bull;<span><a href="{{url_for('course_view', id=course.id)}}">{{course.name}}</a></span></div>
+                <div class="subtitle">{#<span>{{course.instructor}}</span>#}&bull;<span><a href="{{url_for('course_view', id=course.id)}}">{{course.name}}</a></span></div>
                 <a href="{{url_for('new_event', course_id=course.id)}}" onclick="Intercom('trackEvent', 'created-event');" class="action button small primary"><span class="icon icon-event-add">&nbsp;</span>New Event</a>
             </div>
         </div>
