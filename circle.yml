@@ -12,7 +12,7 @@ deployment:
       - git push git@heroku.com:hudson-buddyup.git $CIRCLE_SHA1:master
       - heroku run alembic upgrade head --app hudson-buddyup
       - git push git@heroku.com:oit-buddyup.git $CIRCLE_SHA1:master
-      - heroku run alembic upgrade head --app buddyup
+      - heroku run alembic upgrade head --app oit-buddyup
       - git push git@heroku.com:oregonstate-buddyup.git $CIRCLE_SHA1:master
       - heroku run alembic upgrade head --app oregonstate-buddyup
       - git push git@heroku.com:ecampus-oregonstate-buddyup.git $CIRCLE_SHA1:master

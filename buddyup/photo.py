@@ -88,14 +88,15 @@ def change_profile_photo(user, storage):
             for orientation in ExifTags.TAGS.keys() : 
                 if ExifTags.TAGS[orientation]=='Orientation' : break 
             exif=dict(base_image._getexif().items())
-
-            if   exif[orientation] == 3 : 
-                base_image=base_image.rotate(180, expand=True)
-            elif exif[orientation] == 6 : 
-                base_image=base_image.rotate(270, expand=True)
-            elif exif[orientation] == 8 : 
-                base_image=base_image.rotate(90, expand=True)
-        except AttributeError:
+            
+            if orientation in exif:
+                if   exif[orientation] == 3 : 
+                    base_image=base_image.rotate(180, expand=True)
+                elif exif[orientation] == 6 : 
+                    base_image=base_image.rotate(270, expand=True)
+                elif exif[orientation] == 8 : 
+                    base_image=base_image.rotate(90, expand=True)
+        except AttributeError, KeyError:
             pass
 
         images = [scale(base_image, size) for size in SIZES]
