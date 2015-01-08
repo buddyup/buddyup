@@ -7,3 +7,4 @@ heroku run alembic upgrade head --app buddyup
 heroku run alembic upgrade head --app buddyup-skylinecollege
 heroku run alembic upgrade head --app buddyup-canadacollege
 heroku run alembic upgrade head --app buddyup-collegeofsanmateo
+heroku run alembic upgrade head --app buddyup-ohsu
