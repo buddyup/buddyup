@@ -1,7 +1,8 @@
+import hashlib
 from flask import url_for, redirect, g, request, session, make_response, flash
 
 from buddyup.app import app
-from buddyup.database import User
+from buddyup.database import User, db
 from buddyup.util import login_required, shuffled, send_out_verify_email
 from buddyup.templating import render_template
 from buddyup.pages.profile import update_current_user
@@ -32,6 +33,12 @@ def profile_create():
             return render_template('registration/register.html', form=form)
         else:
             update_current_user(form)
+            if not g.user.email_verify_code or g.user.email_verify_code == "":
+                m = hashlib.sha1()
+                m.update("Verify email for %s" % g.user.user_name)
+                g.user.email_verify_code = u"%s" % m.hexdigest()
+                db.session.commit()
+
             send_out_verify_email(g.user)
             return redirect(url_for('home'))
     else:
