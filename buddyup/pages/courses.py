@@ -64,7 +64,7 @@ def create_course():
             WILL_URL = os.environ["WILL_URL"]
             headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
             r = requests.post(
-                "%s/api/course-added" % WILL_URL, 
+                "%sapi/course-added" % WILL_URL, 
                 headers=headers, 
                 data=json.dumps({
                     "user_name": g.user.full_name,
