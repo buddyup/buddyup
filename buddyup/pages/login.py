@@ -46,6 +46,9 @@ def use_google():
 
 def create_new_user(user_name):
     new_user = User(user_name=user_name)
+    m = hashlib.sha1()
+    m.update("Verify email for %s" % user_name)
+    new_user.email_verify_code = u"%s" % m.hexdigest()
     db.session.add(new_user)
     db.session.commit()
     return new_user

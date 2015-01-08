@@ -105,7 +105,7 @@ def confirm_verify_email(code):
 @login_required
 def send_verify_email():
     # Just in case they're in a funky account space, re-send this email.
-    if not g.user.email_verify_code:
+    if not g.user.email_verify_code or g.user.email_verify_code == "":
         m = hashlib.sha1()
         m.update("Verify email for %s" % g.user.user_name)
         g.user.email_verify_code = u"%s" % m.hexdigest()
