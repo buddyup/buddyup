@@ -85,14 +85,14 @@ def home():
     return render_template('index.html', classmates=annotate_classmates(classmates))
 
 
-@app.route('/verify-email')
 @login_required
+@app.route('/verify-email')
 def verify_email():
     next_page = request.args.get('next')
     return render_template('verify_email.html', next_page=next_page)
 
-@app.route('/verify-email/<path:code>')
 @login_required
+@app.route('/verify-email/<path:code>')
 def confirm_verify_email(code):
     if code and g.user.email_verify_code == code:
         g.user.email_verified = True
@@ -101,8 +101,8 @@ def confirm_verify_email(code):
     next_page = request.args.get('next')
     return render_template('verify_email.html', next_page=next_page)
 
-@app.route('/send-verify-email')
 @login_required
+@app.route('/send-verify-email')
 def send_verify_email():
     # Just in case they're in a funky account space, re-send this email.
     if not g.user.email_verify_code or g.user.email_verify_code == "":

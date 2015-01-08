@@ -33,13 +33,20 @@ def profile_create():
             return render_template('registration/register.html', form=form)
         else:
             update_current_user(form)
-            if not g.user.email_verify_code or g.user.email_verify_code == "":
-                m = hashlib.sha1()
-                m.update("Verify email for %s" % g.user.user_name)
-                g.user.email_verify_code = u"%s" % m.hexdigest()
-                db.session.commit()
 
-            send_out_verify_email(g.user)
+            if app.config.get('BUDDYUP_ENABLE_AUTHENTICATION', False):
+                # PDX SSO
+                g.user.email_verified = True
+                db.session.commit()
+            else:
+                if not g.user.email_verify_code or g.user.email_verify_code == "":
+                    m = hashlib.sha1()
+                    m.update("Verify email for %s" % g.user.user_name)
+                    g.user.email_verify_code = u"%s" % m.hexdigest()
+                    db.session.commit()
+
+                send_out_verify_email(g.user)
+
             return redirect(url_for('home'))
     else:
         return render_template('registration/register.html', form=form)
