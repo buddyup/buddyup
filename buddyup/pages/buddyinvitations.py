@@ -83,7 +83,7 @@ Thanks,
 The BuddyUp Team
 http://{DOMAIN}/""".format(**invite_info)
 
-    send_email(to_user, subject, message)
+    send_email(from_user, subject, message)
 
 def invite(sender, classmate):
     # Don't send multiple invitations.
