@@ -51,7 +51,7 @@
 										{% endif %}
 									</span>
 									{% if not classmate.is_buddy %}
-									<span class="button small" onclick="Intercom('trackEvent', 'invite-sent');$.post('{{url_for('invite_send', user_name=classmate.user_name)}}', function(){ location.reload() });"><span class="icon icon-person-add">&nbsp;</span>Connect</span>
+									<span class="button small" onclick="Intercom('trackEvent', 'invite-sent');$.post('{{url_for('invite_send', user_name=classmate.user_name)}}', function(){ location.reload() });"><span class="icon icon-person-add">&nbsp;</span>Buddy Up</span>
 									{%endif%}
 								</div></div></a>
 							</li>
