@@ -112,6 +112,10 @@ def upload(user, images):
     conn = boto.connect_s3()
     try:
         bucket = conn.create_bucket(app.config['AWS_S3_BUCKET'])
+    except:
+        bucket = conn.get_bucket(app.config['AWS_S3_BUCKET'])
+        pass
+    try:
         for image in images:
             upload_one(bucket, image, user)
     finally:

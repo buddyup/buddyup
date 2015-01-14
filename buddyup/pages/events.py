@@ -80,7 +80,7 @@ def new_event(course_id):
 
         db.session.add(event)
 
-        # The event owner should automatically join the new event.
+        # The event owner should automatically join the new study group.
         g.user.events.append(event)
 
         db.session.commit()
@@ -199,14 +199,14 @@ def send_event_invitation(sender, receiver, event):
 
     message = """Hi {RECIPIENT}!
 
-{SENDER} created a new event, {EVENT_NAME}, and wants you to come!
+{SENDER} created a new study group, {EVENT_NAME}, and wants you to come!
 See all the details and respond at: http://{DOMAIN}{EVENT_LINK}
 
 Happy Studying,
 
 The BuddyUp Team""".format(**invite_info)
 
-    send_email(receiver, "New event: %s" % event.name, message)
+    send_email(receiver, "New study group: %s" % event.name, message)
 
 
 from buddyup.pages.courses import coursemates_query

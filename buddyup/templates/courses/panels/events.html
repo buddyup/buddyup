@@ -1,8 +1,8 @@
 <section id="events" class="row">
     <div class="col-md-10 col-md-offset-1">
         <div class="group-heading">
-            <h3><a href="{{url_for('course_events', id=course.id)}}"><span class="icon icon-event">&nbsp;</span>Events</a></h3>
-            <a href="{{url_for('course_events', id=course.id)}}" class="right">See all {{course.events|count}} events</a>
+            <h3><a href="{{url_for('course_events', id=course.id)}}"><span class="icon icon-event">&nbsp;</span>Study Groups</a></h3>
+            <a href="{{url_for('course_events', id=course.id)}}" class="right">See all {{course.events|count}} study groups</a>
         </div>
         <div class="" id="calendar-wrapper">
             <div class="row">
@@ -10,7 +10,7 @@
                     <a class="button" data-calendar-nav="prev"><span class="icon icon-prev"></span></a>
                     <h4></h4>
                     <a class="button" data-calendar-nav="next"><span class="icon icon-next"></span></a>
-                    <a href="{{url_for('new_event', course_id=course.id)}}" class="action button small primary"><span class="icon icon-event-add">&nbsp;</span>New Event</a>
+                    <a href="{{url_for('new_event', course_id=course.id)}}" class="action button small primary"><span class="icon icon-event-add">&nbsp;</span>New Study Group</a>
                 </div>
             </div>
             <div class="row">
@@ -35,7 +35,7 @@
                         <li class="tablelist-group-row">
                             <ul class="tablelist">
                                 <li class="main">
-                                    <div class="title"><a href="{{url_for('course_events', id=course.id)}}">See all events</a></div>
+                                    <div class="title"><a href="{{url_for('course_events', id=course.id)}}">See all study groups</a></div>
                                 </li>
                             </ul>
                         </li>
