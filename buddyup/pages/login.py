@@ -192,6 +192,7 @@ def callback_handling():
 
     json_header = {'content-type': 'application/json'}
 
+    print env
     token_url = "https://{domain}/oauth/token".format(domain=env["AUTH0_DOMAIN"])
     token_payload = {
         'client_id' : env['AUTH0_CLIENT_ID'], \
