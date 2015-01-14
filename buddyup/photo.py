@@ -113,6 +113,7 @@ def upload(user, images):
     try:
         bucket = conn.create_bucket(app.config['AWS_S3_BUCKET'])
     except:
+        bucket = conn.get_bucket(app.config['AWS_S3_BUCKET'])
         pass
     try:
         for image in images:
