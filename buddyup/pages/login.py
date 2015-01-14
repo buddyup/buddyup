@@ -192,7 +192,6 @@ def callback_handling():
 
     json_header = {'content-type': 'application/json'}
 
-    print env
     token_url = "https://{domain}/oauth/token".format(domain=env["AUTH0_DOMAIN"])
     token_payload = {
         'client_id' : env['AUTH0_CLIENT_ID'], \
@@ -201,8 +200,6 @@ def callback_handling():
         'code' : code, \
         'grant_type': 'authorization_code' \
     }
-    print token_url
-    print token_payload
 
     token_info = requests.post(token_url, data=json.dumps(token_payload), headers = json_header).json()
     try:
