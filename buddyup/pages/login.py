@@ -200,6 +200,8 @@ def callback_handling():
         'code' : code, \
         'grant_type': 'authorization_code' \
     }
+    print token_url
+    print token_payload
 
     token_info = requests.post(token_url, data=json.dumps(token_payload), headers = json_header).json()
     try:
