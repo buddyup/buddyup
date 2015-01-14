@@ -1,5 +1,5 @@
 {% extends "green/global_layout.html" %}
-{% block title %} My Events {% endblock %}
+{% block title %} My Study Groups{% endblock %}
 {% block pagestyle %}
 <link href="/static/_assets/css/buddies.css" rel="stylesheet">
 {% endblock %}
@@ -8,8 +8,8 @@
     <div class="wrapper container">
         <div class="row">
             <div class="col-md-12 col-md-offset-0">
-                <h1>My Events</h1>
-                <!-- <a href="" class="action button small primary">New Event</a> -->
+                <h1>My Study Groups</h1>
+                <!-- <a href="" class="action button small primary">New Study Group</a> -->
             </div>
 
             <div class="col-md-12 col-md-offset-0">
@@ -47,7 +47,7 @@
     <section id="notes" class="row">
         <div class="col-md-10 col-md-offset-1">
             <!-- <div class="group-heading">
-                <h3><span class="icon icon-note">&nbsp;</span>Upcoming Events</h3>
+                <h3><span class="icon icon-note">&nbsp;</span>Upcoming Study Groups</h3>
             </div> -->
             <ul class="tablelist-group">
 				{% for event in events %}
@@ -62,7 +62,7 @@
                         </ul>
                     </li>
 				{% else %}
-				No events yet.
+				No Study Groups yet.
 				{% endfor %}
                 </ul>
             </div>

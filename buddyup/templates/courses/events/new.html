@@ -1,5 +1,5 @@
 {% extends "green/global_layout.html" %}
-{% block title %} New Event for {{course.name}} {% endblock %}
+{% block title %} New Study Group for {{course.name}} {% endblock %}
 {% macro render_errors(field) %}
 	{% if field.errors %}
 		<ul class="errors">
@@ -23,7 +23,7 @@
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
                 <a href="{{url_for('course_view', id=course.id)}}"><div class="thumbnail" style="background-image:url('/static/_assets/images/courses/math_chalkboard2.jpg')">&nbsp;</div></a>
-                <h1>New Event</h1>
+                <h1>New Study Group</h1>
                 <div class="subtitle">{#<span>{{course.instructor}}</span>#}&bull;<span><a href="./detail.html">{{course.name}}</a></div>
             </div>
         </div>

@@ -57,6 +57,10 @@ def create_course():
         
         course = Course(name=name)
         db.session.add(course)
+
+        if course not in g.user.courses:
+            g.user.courses.append(course)
+
         db.session.commit()
 
         # Ping Will
