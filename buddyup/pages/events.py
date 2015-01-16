@@ -3,7 +3,10 @@ from flask import (g, request, flash, redirect, url_for, session, abort,
 from datetime import datetime, timedelta
 import time
 from functools import partial
+import json
 import re
+import requests
+
 
 from buddyup.app import app
 from buddyup.database import Event, Course, EventInvitation, db, EventComment, User, EventMembership
@@ -58,10 +61,10 @@ def new_event_course_chooser():
 @login_required
 def new_event(course_id):
     form = EventForm()
-    course = User.query.get_or_404(course_id)
+    course = Course.query.get_or_404(course_id)
     if request.method != 'POST':
         return render_template('courses/events/new.html',
-                                course=Course.query.get_or_404(course_id),
+                                course=course,
                                 coursemates=coursemates_query(course.id).order_by(User.full_name),
                                 times=time_pulldown(),
                                 form=form)
@@ -98,6 +101,23 @@ def new_event(course_id):
             send_event_invitation(g.user, invitee, event)
 
         flash("Invitations sent.")
+        try:
+            WILL_URL = os.environ["WILL_URL"]
+            headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+            r = requests.post(
+                "%sapi/event-added" % WILL_URL, 
+                headers=headers, 
+                data=json.dumps({
+                    "user_name": g.user.full_name,
+                    "user_id": g.user.id,
+                    "school": g.school_name,
+                    "course_name": course.name,
+                    "event_name": event.name,
+                })
+            )
+            assert r.status_code == 200
+        except:
+            import traceback; traceback.print_exc();
 
         return redirect(url_for('course_event', course_id=course.id, event_id=event.id))
     else:
@@ -176,17 +196,19 @@ def send_event_invitation(sender, receiver, event):
     db.session.add(invitation)
     db.session.commit()
 
-    event_link = '<a href="%s%s">%s</a>' % (
+    event_link = '<a href="http://%s%s">%s</a>' % (
             app.config.get('DOMAIN_NAME', ''),
             url_for('course_event', course_id=event.course.id, event_id=event.id), 
             event.name)
 
     payload = "%s invited you to '%s'" % (sender.full_name, event_link)
     text = "Accept"
-    link = url_for('accept_event_invitation', course_id=event.course.id, event_id=event.id, invitation_id=invitation.id)
+    link = "http://%s%s" % (
+        app.config.get('DOMAIN_NAME', ''),
+        url_for('accept_event_invitation', course_id=event.course.id, event_id=event.id, invitation_id=invitation.id),
+    )
 
     send_notification(sender, receiver, payload, action_text=text, action_link=link)
-
     invite_info = {
         'SENDER': sender.full_name,
         'RECIPIENT': receiver.full_name,

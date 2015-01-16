@@ -25,7 +25,7 @@ class Dev(Base):
     ADMIN_USER = 'mockuser'
     BUDDYUP_REQUIRE_PHOTO = False
     DEFAULT_EMAIL_FORMAT = "buddyupdev+{user}@gmail.com"
-    DOMAIN_NAME = 'buddyup-dev.herokuapp.com'
+    DOMAIN_NAME = os.environ.get('DOMAIN_NAME', 'buddyup-dev.herokuapp.com')
 
 class Production(Base):
     DEFAULT_EMAIL_FORMAT = os.environ.get('EMAIL_FORMAT', '{user}@pdx.edu')
@@ -41,4 +41,4 @@ class Testing(Base):
     ADMIN_USER = 'mockuser'
     BUDDYUP_REQUIRE_PHOTO = False
     DEFAULT_EMAIL_FORMAT = "buddyupdev+{user}@gmail.com"
-    DOMAIN_NAME = 'buddyup-dev.herokuapp.com'
+    DOMAIN_NAME = os.environ.get('DOMAIN_NAME', 'buddyup-dev.herokuapp.com')

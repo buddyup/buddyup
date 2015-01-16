@@ -1,3 +1,7 @@
+import os
+import json
+import requests
+
 from calendar import day_name as day_names
 from flask import g, request, url_for, redirect, flash
 
@@ -54,6 +58,22 @@ def tutor_application():
 
         db.session.add(application)
         db.session.commit()
+
+        try:
+            WILL_URL = os.environ["WILL_URL"]
+            headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+            r = requests.post(
+                "%sapi/tutor-application" % WILL_URL, 
+                headers=headers, 
+                data=json.dumps({
+                    "user_name": g.user.full_name,
+                    "user_id": g.user.id,
+                    "school": g.school_name,
+                })
+            )
+            assert r.status_code == 200
+        except:
+            import traceback; traceback.print_exc();
 
         return redirect(url_for('tutor_application_complete'))
     else:
