@@ -27,3 +27,5 @@ deployment:
       - heroku run alembic upgrade head --app buddyup-collegeofsanmateo
       - git push git@heroku.com:buddyup-ohsu.git $CIRCLE_SHA1:master
       - heroku run alembic upgrade head --app buddyup-ohsu
+      - git push git@heroku.com:buddyup-stanford.git $CIRCLE_SHA1:master
+      - heroku run alembic upgrade head --app buddyup-stanford
