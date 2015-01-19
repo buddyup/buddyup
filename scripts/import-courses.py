@@ -132,11 +132,9 @@ MAJORS = [
 
 def main():
     args = parser.parse_args()
-    print args
     with open(os.path.join(os.getcwd(), 'data/%s.csv' % (args.school_name[0])), 'rb') as csvfile:
         reader = csv.reader(csvfile)
         courses = {}
-
         for row in reader:
             name = u"%s" %row[1]
             num = int(row[0])
