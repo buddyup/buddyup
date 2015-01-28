@@ -44,7 +44,11 @@ def main():
                             print "has followers."
                         else:
                             print "empty"
-                            Course.query.filter_by(id=m.id).delete()
+                            try:
+                                Course.query.filter_by(id=m.id).delete()
+                            except:
+                                print course_name
+                                import traceback; traceback.print_exc();
                 else:
                     print "not found"
 
