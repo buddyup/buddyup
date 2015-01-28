@@ -40,15 +40,11 @@ def main():
                 matches = Course.query.filter(Course.name==course_name)
                 if matches.count() > 0:
                     for m in matches:
-                        if m.users.count() > 0:
-                            print "has followers."
+                        if m.users.count() > 0 or m.tutors.count():
+                            print "has followers or tutors."
                         else:
                             print "empty"
-                            try:
-                                Course.query.filter_by(id=m.id).delete()
-                            except:
-                                print course_name
-                                import traceback; traceback.print_exc();
+                            Course.query.filter_by(id=m.id).delete()
                 else:
                     print "not found"
 
