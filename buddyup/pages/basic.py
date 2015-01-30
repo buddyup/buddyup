@@ -94,6 +94,10 @@ def verify_email():
 @app.route('/verify-email/<path:code>')
 @login_required
 def confirm_verify_email(code):
+    print "confirm verify"
+    print code
+    print g.user
+
     if code and g.user.email_verify_code == code:
         g.user.email_verified = True
         db.session.commit()
