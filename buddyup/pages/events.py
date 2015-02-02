@@ -162,10 +162,8 @@ def course_event(course_id, event_id):
         t = c.time
         SERVER = tz.tzlocal()
         PST = tz.gettz('US/Pacific')
-        print PST
         converted = t.replace(tzinfo=SERVER)
         converted.astimezone(PST)
-        print converted
         c.time = converted
         comments.append(c)
     attending = event in g.user.events
