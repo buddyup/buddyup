@@ -836,6 +836,9 @@ a.cta_button:hover {
 article#main-content.short_content section {
   padding-top: 0;
 }
+a.clear_notifications {
+  float: right;
+}
 
 @media (min-width: 768px) {
   #top.detail .action {

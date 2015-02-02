@@ -26,3 +26,13 @@ def clear_notification(id):
     db.session.commit()
 
     return "{}"
+
+
+@app.route('/notifications/clear-all')
+@login_required
+def clear_notifications():
+    for n in g.user.notifications:
+        db.session.delete(n)
+        db.session.commit()
+
+    return redirect(url_for('list_notifications'))
