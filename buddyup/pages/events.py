@@ -1,6 +1,7 @@
 from flask import (g, request, flash, redirect, url_for, session, abort,
                    get_flashed_messages, jsonify)
 from datetime import datetime, timedelta
+from dateutil import tz
 import time
 from functools import partial
 import json
@@ -155,7 +156,18 @@ def course_events(id):
 def course_event(course_id, event_id):
     course = Course.query.get_or_404(course_id)
     event = Event.query.get_or_404(event_id)
-    comments = EventComment.query.filter(EventComment.event_id == Event.id, Event.id == event.id)
+    raw_comments = EventComment.query.filter(EventComment.event_id == Event.id, Event.id == event.id)
+    comments = []
+    for c in raw_comments:
+        t = c.time
+        SERVER = tz.tzlocal()
+        PST = tz.gettz('US/Pacific')
+        print PST
+        converted = t.replace(tzinfo=SERVER)
+        converted.astimezone(PST)
+        print converted
+        c.time = converted
+        comments.append(c)
     attending = event in g.user.events
     # attendees = db.session.query(EventMembership).join(Event).filter(Event.id==event.id).all()
     attendees = User.query.join(EventMembership).join(Event).filter(EventMembership.c.event_id==event.id).all()

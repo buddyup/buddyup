@@ -11,4 +11,6 @@ def error_page(e):
     """
     Dispatch to {error code}.html
     """
+    import traceback
+    traceback.print_exc()
     return render_template('errors/%i.html' % e.code, e=e), e.code

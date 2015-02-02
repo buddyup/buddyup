@@ -830,6 +830,12 @@ a.cta_button:hover {
 .course_listings.courses .block-grid .block img {
   display: none;
 }
+#main-content.short_content {
+  padding-top: 0;
+}
+article#main-content.short_content section {
+  padding-top: 0;
+}
 
 @media (min-width: 768px) {
   #top.detail .action {
