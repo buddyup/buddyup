@@ -22,12 +22,12 @@
                 <div class="subtitle">
 					Is there a course that's not in BuddyUp yet? Add it below!
                 </div>
-            </div>
+                           </div>
         </div>
     </div>
 </article>
 
-<article id="main-content" class="container">
+<article id="main-content" class="container short_content">
 
 	{% for message in get_flashed_messages() %} 
 	<div class="alert alert-danger">
@@ -39,6 +39,9 @@
 		{{ form.csrf_token }}
         <section id="" class="row">
             <div class="col-md-6 col-md-offset-3">
+                <p>To avoid confusion, please double-check that this course isn't already listed on <a href="{{url_for('list_courses')}}">the courses page</a>.
+                </p>
+                <p>&nbsp;</p>
                 <h2>Course Listing Name (i.e. CHEM101)</h2>
                 <div class="form-group">
 					{{render_errors(form.name)}}

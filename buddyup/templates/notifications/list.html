@@ -45,7 +45,10 @@ $(function(){
     <section id="" class="row">
         <div class="col-md-6 col-md-offset-3">
 				{% if notifications|list|count > 0 %}
-            <div class="group-heading"><h3>Today</h3></div>
+            <div class="group-heading">
+                <a href="{{url_for('clear_notifications')}}" class="clear_notifications" onclick="return confirm('Clear all of your notifications?');">Clear All</a>
+                <h3>Today</h3>
+            </div>
             <ul class="tablelist-group">
 					{% for notification in notifications %}
 	                <li class="tablelist-group-row">
