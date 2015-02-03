@@ -1,6 +1,9 @@
 # Python 3: Switch to io.StringIO
-#from io import StringIO
-from cStringIO import StringIO
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from io import StringIO
+
 import csv
 
 from flask import (g, abort, get_flashed_messages, request, flash, redirect,
@@ -9,7 +12,7 @@ from flask import (g, abort, get_flashed_messages, request, flash, redirect,
 from sqlalchemy.sql import functions
 
 from buddyup.app import app
-from buddyup.database import (Course, Visit, User, BuddyInvitation,
+from buddyup.database import (Course, Visit, User, BuddyInvitation, Tutor,
                               Location, Major, Event, Language, CourseMembership,
                               db)
 from buddyup.templating import render_template
@@ -23,7 +26,7 @@ def admin_required(f):
         if app.config.get("BUDDYUP_ENABLE_ADMIN_ALL_USERS", False):
             # Every user has admin access.  Only for testing and development!
             return f(*args, **kwargs)
-        if "buddyup.org" in g.user.email and g.user.email_verified:
+        if g.user and "buddyup.org" in g.user.email and g.user.email_verified:
             return f(*args, **kwargs)
         else:
             abort(403)
@@ -89,6 +92,24 @@ def admin_roster():
         # Python 3: Don't encode
         full_name = student.full_name.encode('utf8')
         writer.writerow([user_name, full_name, student.email])
+    return Response(fake_file.getvalue(), content_type="text/csv")
+
+
+@app.route("/admin/tutors")
+@admin_required
+def admin_tutor():
+    tutors = Tutor.query.all()
+    fake_file = StringIO()
+    writer = csv.writer(fake_file)
+    writer.writerow(["User name", "Full Name", "Email", "Courses", "Languages"])
+    for t in tutors:
+        student = User.query.get_or_404(t.user_id)
+        user_name = student.user_name
+        courses = ", ".join([c.name for c in t.courses])
+        languages = ", ".join([l.name for l in t.languages])
+        # Python 3: Don't encode
+        full_name = student.full_name.encode('utf8')
+        writer.writerow([user_name, full_name, student.email, courses, languages])
     return Response(fake_file.getvalue(), content_type="text/csv")
 
 
@@ -212,5 +233,4 @@ def admin_stats():
     variables['total_invites'] = BuddyInvitation.query.count()
     # Maybe only count users who have logged in?
     variables['total_users'] = User.query.filter(User.activated == True).count()
-    
     render_template('admin_stats.html', **variables)
