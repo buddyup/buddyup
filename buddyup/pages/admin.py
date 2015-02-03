@@ -1,6 +1,9 @@
 # Python 3: Switch to io.StringIO
-#from io import StringIO
-from cStringIO import StringIO
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from io import StringIO
+
 import csv
 
 from flask import (g, abort, get_flashed_messages, request, flash, redirect,
@@ -9,7 +12,7 @@ from flask import (g, abort, get_flashed_messages, request, flash, redirect,
 from sqlalchemy.sql import functions
 
 from buddyup.app import app
-from buddyup.database import (Course, Visit, User, BuddyInvitation,
+from buddyup.database import (Course, Visit, User, BuddyInvitation, Tutor,
                               Location, Major, Event, Language, CourseMembership,
                               db)
 from buddyup.templating import render_template
@@ -85,6 +88,22 @@ def admin_roster():
     writer = csv.writer(fake_file)
     writer.writerow(["User name", "Full Name", "Email"])
     for student in course.users.all():
+        user_name = student.user_name
+        # Python 3: Don't encode
+        full_name = student.full_name.encode('utf8')
+        writer.writerow([user_name, full_name, student.email])
+    return Response(fake_file.getvalue(), content_type="text/csv")
+
+
+@app.route("/admin/tutors")
+@admin_required
+def admin_tutor():
+    tutors = Tutor.query.all()
+    fake_file = StringIO()
+    writer = csv.writer(fake_file)
+    writer.writerow(["User name", "Full Name", "Email"])
+    for t in tutors:
+        student = User.query.get_or_404(t.user_id)
         user_name = student.user_name
         # Python 3: Don't encode
         full_name = student.full_name.encode('utf8')
@@ -212,5 +231,4 @@ def admin_stats():
     variables['total_invites'] = BuddyInvitation.query.count()
     # Maybe only count users who have logged in?
     variables['total_users'] = User.query.filter(User.activated == True).count()
-    
     render_template('admin_stats.html', **variables)
