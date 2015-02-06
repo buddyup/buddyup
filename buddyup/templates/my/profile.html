@@ -93,6 +93,10 @@
 		{% else %}
 			<b>Courses:</b> Not enrolled
 		{% endif %}
+
+		{% if tutor_for|length > 0 %}
+			<b>Tutor_for:</b> {{ tutor_for| join(', ') }}
+		{% endif %}
 	</div>
 	{% if print_buddies|length > 0 %}
 	   <br>

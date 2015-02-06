@@ -9,10 +9,17 @@
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
                 <a href="#"></a>
+                {% if approved %}
+                <h1>Application Approved</h1>
+                <div class="subtitle">
+					Thank you. Your application has been approved, and you're listed as a tutor!
+                </div>
+                {% else %}
                 <h1>Application Received</h1>
                 <div class="subtitle">
-					Thank you. Your application is now under review.
+                    Thank you. Your application is now under review.
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>

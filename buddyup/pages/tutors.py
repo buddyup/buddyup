@@ -91,7 +91,8 @@ def tutor_application():
 @app.route('/tutors/applied', methods=['GET', 'POST'])
 @login_required
 def tutor_application_complete():
-    return render_template('tutors/thankyou.html')
+    approved = Tutor.query.filter(Tutor.approved==True).join(User).filter(User.id==g.user.id).count() > 0
+    return render_template('tutors/thankyou.html', approved=approved)
 
 def tutors_for_course(course):
     user_ids = [t.user_id for t in course.tutors if t.approved]

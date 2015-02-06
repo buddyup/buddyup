@@ -2,7 +2,7 @@ from flask import g, request, abort, redirect, url_for
 
 from buddyup.app import app
 from buddyup.database import (User, BuddyInvitation, Major, MajorMembership,
-                              Language, LanguageMembership,
+                              Language, LanguageMembership, Tutor,
                               Course, CourseMembership, db,
                               Location, Action)
 from buddyup.templating import render_template
@@ -20,13 +20,18 @@ def extract_names(records):
 @track_activity
 def buddy_view(user_name):
     classmate = g.user if user_name == g.user.user_name else User.query.filter_by(user_name=user_name).first_or_404()
+    tutor = list(Tutor.query.filter(Tutor.approved==True).filter(Tutor.user_id==classmate.id).all())
+    if len(tutor) > 0:
+        tutor_for = tutor[0].courses.all()
+    else:
+        tutor_for = []
 
     # Not our buddy if we're viewing ourselves or they aren't in our buddies list.
     myself = (user_name == g.user.user_name)
     is_buddy = (not myself) and (classmate in g.user.buddies)
     is_invited = (not myself) and BuddyInvitation.query.filter(BuddyInvitation.sender == g.user, BuddyInvitation.receiver == classmate).count() > 0
 
-    return render_template('buddy/view.html', classmate=classmate, is_buddy=is_buddy, is_invited=is_invited, myself=myself)
+    return render_template('buddy/view.html', classmate=classmate, is_buddy=is_buddy, is_invited=is_invited, myself=myself, tutor_for=tutor_for)
 
 
 @app.route("/classmates/search")
