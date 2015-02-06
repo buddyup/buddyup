@@ -100,7 +100,6 @@ def admin_roster():
 @app.route("/admin/update-tutors", methods=['POST'])
 @admin_required
 def admin_update_tutors():
-    print request.form
     # Ouch, what a hack.
     approved_ids = []
     for k in request.form:
