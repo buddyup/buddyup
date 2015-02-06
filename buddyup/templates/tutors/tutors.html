@@ -1,0 +1,65 @@
+{% extends "green/global_layout.html" %}
+{% block title %} Tutors {% endblock %}
+{% block pagestyle %}
+<link href="/static/_assets/css/event-detail.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<article id="top" class="detail">
+	<div class="wrapper container">
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+				<a href="#"></a>
+				<h1>Tutors</h1>
+				<div class="subtitle">
+					{% if tutors|list|count == 0 %}
+						<p>No tutors are available yet.</p>
+					{% else %}
+						{{ tutors|list|count }} tutors available.
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+</article>
+
+<article id="main-content" class="container short_content">
+	<section class="row">
+		<div class="col-md-12 col-md-offset-0">
+			{% if tutors|list|count > 0 %}
+			<ul class="block-grid">
+				{% for classmate in tutors %}
+				<li class="block {% if classmate.is_buddy %}followed{%endif%}" style="background-image:url('{{ photo_large(classmate) }}')">
+					<a href="{{ profile(classmate) }}"><img src="/static/_assets/images/clear.png" /><div class="info hide"><div class="wrapper">
+						<span class="title">{{ classmate.full_name }}</span>
+						{% if not classmate.is_buddy %}
+							{% if classmate.invited %}
+							<span class="button small">
+								Invitation Sent
+							</span>
+							{% else %}
+							<span class="button small" onclick="Intercom('trackEvent', 'invite-sent');$.post('{{url_for('invite_send', user_name=classmate.user_name)}}', function(){ location.reload() });">
+								<span class="icon icon-person-add">&nbsp;</span>Buddy Up
+							</span>
+							{% endif %}
+						{% endif %}
+					</div></div></a>
+				</li>
+				{% endfor %}
+			</ul>
+			{% else %}
+				
+			{% endif %}
+		</div>
+	</section>
+	<div class="col-md-12">
+		<div class"alert">
+			<div class="cta_button_block">
+			Are you interested in being listed as a tutor?
+			<br/>
+				<a href="{{ url_for('tutor_application') }}" class="cta_button">Apply to be a tutor</a>
+			</div>
+		</div>
+	</div>
+</article>
+
+{% endblock %}

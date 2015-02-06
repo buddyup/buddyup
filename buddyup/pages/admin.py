@@ -49,6 +49,8 @@ def admin_dashboard():
     variables['majors'] = Major.query.order_by(Major.name).all()
     variables['locations'] = Location.query.order_by(Location.name).all()
     variables['languages'] = Language.query.order_by(Language.name).all()
+    variables['tutors'] = Tutor.query.order_by(Tutor.approved.desc()).all()
+    variables['User'] = User
     return render_template('admin/dashboard.html', **variables)
 
 
@@ -95,9 +97,28 @@ def admin_roster():
     return Response(fake_file.getvalue(), content_type="text/csv")
 
 
+@app.route("/admin/update-tutors", methods=['POST'])
+@admin_required
+def admin_update_tutors():
+    # Ouch, what a hack.
+    approved_ids = []
+    for k in request.form:
+        approved_ids.append(int(k[k.find("_")+1:k.rfind("_")]))
+
+    tutors = Tutor.query.all()
+    for t in tutors:
+        if t.id in approved_ids:
+            t.approved = True
+        else:
+            t.approved = False
+        db.session.add(t)
+    db.session.commit()
+    return redirect(url_for('admin_dashboard'))
+
+
 @app.route("/admin/tutors")
 @admin_required
-def admin_tutor():
+def admin_tutor_csv():
     tutors = Tutor.query.all()
     fake_file = StringIO()
     writer = csv.writer(fake_file)

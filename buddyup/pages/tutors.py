@@ -32,7 +32,15 @@ def extract_names(records):
 def already_applied():
     return Tutor.query.join(User).filter(User.id==g.user.id).count() > 0
 
-@app.route('/tutors/', methods=['GET', 'POST'])
+
+@app.route('/tutors/', methods=['GET',])
+@login_required
+def tutors():
+    approved_tutors = [User.query.get_or_404(t.user_id) for t in Tutor.query.filter(Tutor.approved==True).all()]
+    return render_template('tutors/tutors.html', tutors=approved_tutors)
+
+
+@app.route('/tutor-application/', methods=['GET', 'POST'])
 @login_required
 def tutor_application():
     if already_applied():
@@ -83,7 +91,8 @@ def tutor_application():
 @app.route('/tutors/applied', methods=['GET', 'POST'])
 @login_required
 def tutor_application_complete():
-    return render_template('tutors/thankyou.html')
+    approved = Tutor.query.filter(Tutor.approved==True).join(User).filter(User.id==g.user.id).count() > 0
+    return render_template('tutors/thankyou.html', approved=approved)
 
 def tutors_for_course(course):
     user_ids = [t.user_id for t in course.tutors if t.approved]
