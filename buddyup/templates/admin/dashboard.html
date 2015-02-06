@@ -11,6 +11,13 @@
         text-align: left;
         margin: 20px 0 30px 0;
 }
+.tutors_admin_form td {
+  padding: 8px;
+  /*text-align: bottom;*/
+}
+.tutors_admin_form label {
+  margin: 0;
+}
 </style>
 {% endblock extrahead %}
 
@@ -26,7 +33,8 @@
                 <li><a href="#tab2" data-toggle="tab">Manage Location</a></li>
                 <li><a href="#tab3" data-toggle="tab">Manage Major</a></li>
                 <li><a href="#tab4" data-toggle="tab">Manage Language</a></li>
-                <li><a href="#tab5" data-toggle="tab">Rosters</a></li>
+                <li><a href="#tab5" data-toggle="tab">Manage Tutors</a></li>
+                <li><a href="#tab6" data-toggle="tab">Rosters</a></li>
         </ul>
         <div class="tab-content">
                 <div class="tab-pane active" id="tab1">
@@ -120,6 +128,25 @@
                         </div>
                 </div>
                 <div class="tab-pane" id="tab5">
+                        <div class="span7">
+                        <form action="{{ url_for('admin_update_tutors') }}" class="tutors_admin_form" method="POST">
+                                <table class="table table-striped table-hover">
+                                        <tr align="left">
+                                                <th>Approved</th>
+                                                <th>User</th>
+                                        </tr>
+                                {% for t in tutors %}
+                                <tr>
+                                        <td><input type="checkbox" name="tutor_{{t.id}}_approved" id="tutor_{{t.id}}" {% if t.approved %}checked=checked{% endif %} (/></td>
+                                        <td><label for="tutor_{{t.id}}" >{{ User.query.get_or_404(t.user_id) }}</label></td>
+                                </tr>
+                                {% endfor %}
+                                </table>
+                                <br><input class="btn-danger" type="submit" value="Save Changes"> 
+                        </form>
+                        </div>
+                </div>
+                <div class="tab-pane" id="tab6">
                         <div class="well span7">
                                 
                                 <h3>Download Course Stats</h3>
@@ -128,7 +155,7 @@
 
                                 <h3>Download Tutors</h3>
                                 
-                                <a class="btn btn-primary" target="_blank" href="{{ url_for('admin_tutor') }}">Download</a>
+                                <a class="btn btn-primary" target="_blank" href="{{ url_for('admin_tutor_csv') }}">Download</a>
 
                                 <h3>Download Roster</h3>
                                 
