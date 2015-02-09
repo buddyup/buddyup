@@ -160,10 +160,14 @@ def course_event(course_id, event_id):
     comments = []
     for c in raw_comments:
         t = c.time
+        print t
         SERVER = tz.tzlocal()
+        print SERVER
         PST = tz.gettz('US/Pacific')
+        print PST
         converted = t.replace(tzinfo=SERVER)
         converted.astimezone(PST)
+        print converted
         c.time = converted
         comments.append(c)
     attending = event in g.user.events
