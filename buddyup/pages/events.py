@@ -166,7 +166,7 @@ def course_event(course_id, event_id):
         PST = tz.gettz('US/Pacific')
         print PST
         converted = t.replace(tzinfo=SERVER)
-        converted.astimezone(PST)
+        converted = converted.astimezone(PST)
         print converted
         c.time = converted
         comments.append(c)
