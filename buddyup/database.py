@@ -110,6 +110,7 @@ class User(db.Model):
     twitter_token = db.Column(db.UnicodeText)
     twitter_secret = db.Column(db.UnicodeText)
     linkedin = db.Column(db.UnicodeText, default=u"")
+    skype = db.Column(db.UnicodeText, default=u"")
     linkedin_token = db.Column(db.UnicodeText)
     google_token = db.Column(db.UnicodeText)
     location_id = db.Column(db.Integer, db.ForeignKey('location.id'))
