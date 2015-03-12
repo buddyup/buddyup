@@ -19,7 +19,7 @@ from buddyup import photo
 from buddyup.app import app
 from buddyup.util import email, delete_user
 
-USER_FILTERS = ["linkedin", "twitter", "facebook", "bio", "email"]
+USER_FILTERS = ["skype", "linkedin", "twitter", "facebook", "bio", "email"]
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--verbose", "-v", action="store_true",

@@ -52,6 +52,7 @@ class ProfileForm(Form):
     facebook = TextField(u"Facebook (optional)")
     twitter = TextField(u"Twitter")
     linkedin = TextField(u"LinkedIn")
+    skype = TextField(u"Skype")
     email = TextField(u".edu Email Address", validators=[required(), Email(), Regexp("^([^@?]*)@([A-z_\.]*)(buddyup\.org|\.edu\.au|\.edu\.jp|\.edu)$", flags=re.IGNORECASE, message=u'You must use your .edu email address.')])
     bio = TextAreaField(u'A Few Words About You')
 
