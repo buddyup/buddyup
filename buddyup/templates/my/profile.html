@@ -45,6 +45,11 @@
 					<img src="{{ img('linkedin-50x50.png') }}">
 				</li>
 			{% endif %}
+			{% if user_record.skype %}
+				<li><a href="{{ user_record.skype }}">
+					<i class="fa fa-skype"></i>
+				</li>
+			{% endif %}
 
 			{% if not user_record.linkedin %}
 				<li>

@@ -60,7 +60,12 @@
 					<img src="{{ img('linkedin-50x50.png') }}">
 				</a>
 			{% endif %}
-			
+			{% if user_record.skype %}
+				<a href="{{ user_record.skype }}">
+					<i class="fa fa-skype"></i>
+				</a>
+			{% endif %}
+						
 			<a href="mailto:{{ classmate|email }}">
 				<img src="{{ img('yellow_mail_50x38.png') }}" width="50" height="50">
 			</a>

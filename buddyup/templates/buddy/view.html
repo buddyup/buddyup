@@ -136,6 +136,12 @@ $(function(){
 		{%endif%}
 
         {% if is_buddy %}
+        {% if classmate.skype %}
+        <div class="col-md-6 col-md-offset-3">
+            <h3>Skype</h3>
+            <p><i class="fa fa-skype"></i> {{ classmate.skype }}</p>
+        </div>
+        {% endif %}
         <div class="col-md-6 col-md-offset-3">
             <a href="#" class="action button primary remove-buddy"><span class="icon icon-remove">&nbsp;</span>Remove Buddy</a>
         </div>

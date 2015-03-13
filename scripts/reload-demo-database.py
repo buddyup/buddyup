@@ -103,6 +103,7 @@ def create_user(user_info):
     user.courses = [lookup_course(c) for c in random.sample(COURSES, 2)]
     user.majors = [lookup_major(random.choice(MAJORS))]
     user.languages = [lookup_language("English"), lookup_language(random.choice(LANGUAGES))]
+    user.skype = user.user_name
     user.verified = True
     user.has_photos = True
     user.email_verified = True

@@ -48,6 +48,7 @@ def profile():
             form.twitter.data = user.twitter
             form.email.data = user.email
             form.linkedin.data = user.linkedin
+            form.skype.data = user.skype
             form.bio.data = user.bio
             form.majors.data = user.majors.all()
             form.languages.data = user.languages.all()
@@ -63,6 +64,7 @@ def update_current_user(form):
     user.facebook = form.facebook.data
     user.twitter = form.twitter.data
     user.linkedin = form.linkedin.data
+    user.skype = form.skype.data
     user.bio = form.bio.data
     user.email = form.email.data
 
