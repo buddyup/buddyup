@@ -45,7 +45,7 @@ def school_dashboard():
     for r in result:
         count_list = r[0]
     variables['total_matches'] = count_list
-    variables['school_name'] = os.environ.get('DOMAIN_NAME', 'buddyup-dev.herokuapp.com').split('.')[0].replace("-"," ").title()
+    variables['school_name'] = os.environ.get('DOMAIN_NAME', 'campus.buddyup.org').split('.')[0].replace("-"," ").title()
     variables['User'] = User
     return render_template('admin/school_dashboard.html', **variables)
 
