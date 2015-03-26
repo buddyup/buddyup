@@ -1,4 +1,5 @@
 # Python 3: Switch to io.StringIO
+import os
 try:
     from cStringIO import StringIO
 except ImportError:
@@ -14,7 +15,7 @@ from sqlalchemy.sql import functions
 from buddyup.app import app
 from buddyup.database import (Course, Visit, User, BuddyInvitation, Tutor,
                               Location, Major, Event, Language, CourseMembership,
-                              db)
+                              db, Buddy)
 from buddyup.templating import render_template
 from buddyup.util import form_get, args_get, check_empty, email
 from functools import wraps
@@ -31,6 +32,23 @@ def admin_required(f):
         else:
             abort(403)
     return func
+
+
+@app.route("/dashboard")
+# @admin_required
+def school_dashboard():
+    variables = {}
+    variables['total_groups'] = Event.query.count()
+    variables['total_users'] = User.query.count()
+    result = db.engine.execute("select count(user1_id) from buddy")
+    count_list = None
+    for r in result:
+        count_list = r[0]
+    variables['total_matches'] = count_list
+    variables['school_name'] = os.environ.get('DOMAIN_NAME', 'campus.buddyup.org').split('.')[0].replace("-"," ").title()
+    variables['User'] = User
+    return render_template('admin/school_dashboard.html', **variables)
+
 
 
 @app.route("/admin")
