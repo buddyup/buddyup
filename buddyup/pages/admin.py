@@ -15,7 +15,7 @@ from sqlalchemy.sql import functions
 from buddyup.app import app
 from buddyup.database import (Course, Visit, User, BuddyInvitation, Tutor,
                               Location, Major, Event, Language, CourseMembership,
-                              db)
+                              db, Buddy)
 from buddyup.templating import render_template
 from buddyup.util import form_get, args_get, check_empty, email
 from functools import wraps
@@ -38,20 +38,13 @@ def admin_required(f):
 # @admin_required
 def school_dashboard():
     variables = {}
-    # variables['group_count'] = Event.query.count()
-    # variables['unique_visits'] = Visit.query.count()
-    query = db.session.query(functions.sum(Visit.requests))
-    # variables['total_visits'] = query.scalar()
     variables['total_groups'] = Event.query.count()
-    # variables['total_invites'] = BuddyInvitation.query.count()
-    # Maybe only count users who have logged in?
     variables['total_users'] = User.query.count()
-    variables['total_matches'] = Buddy.query.count()
-    # variables['courses'] = Course.query.order_by(Course.name).all()
-    # variables['majors'] = Major.query.order_by(Major.name).all()
-    # variables['locations'] = Location.query.order_by(Location.name).all()
-    # variables['languages'] = Language.query.order_by(Language.name).all()
-    # variables['tutors'] = Tutor.query.order_by(Tutor.approved.desc()).all()
+    result = db.engine.execute("select count(user1_id) from buddy")
+    count_list = None
+    for r in result:
+        count_list = r[0]
+    variables['total_matches'] = count_list
     variables['school_name'] = os.environ.get('DOMAIN_NAME', 'buddyup-dev.herokuapp.com').split('.')[0].replace("-"," ").title()
     variables['User'] = User
     return render_template('admin/school_dashboard.html', **variables)

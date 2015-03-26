@@ -4,35 +4,77 @@
     <meta charset="utf-8">
     <title>{{schoool_name}} Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="{{ css('bootstrap.min') }}" rel="stylesheet">
-    <link href="{{ css('bootstrap-responsive.min') }}" rel="stylesheet">
-    <link href="{{ css('style') }}" rel="stylesheet">
-    <link href="{{ css('jq') }}" rel="stylesheet">
-    <link href="{{ css('prettify') }}" rel="stylesheet">
-    <link href="{{ css('theme.bootstrap') }}" rel="stylesheet">
-    <link href="{{ css('jquery.tablesorter.pager') }}" rel="stylesheet">
-
-    <script src="{{ js('jquery') }}"></script>
-    <script src="{{ js('bootstrap') }}"></script>
-    <style type="text/css">
-        h1 {
-            font-size: 40px;
-            font-weight: 100;
-            margin: 1em auto;
-        }
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <style type="text/css">
         body {
             background: #27ACE2;
             color: #EEE;
+            font-family: "Helvetica Neue", Helvetica, "Lato", sans-serif;
+        }
+        h1 {
+            font-size: 40px;
+            font-weight: 100;
+            margin: 100px auto;
+            text-align: center;
+        }
+        h2 {
+            font-size: 30px;
+            font-weight: 100;
+            color: #EEE;
+        }
+        .number {
+            font-size: 120px;
+            line-height: 1em;
+            font-weight: 800;
+            color: #FFF;
+        }
+        .num_col {
+            text-align: center;
+        }
+        a {
+            color: #EEE;
+        }
+        .contact {
+            margin-top: 200px;
+            font-size: 26px;
+            text-align: center;
+            font-weight: 100;
+        }
+        .contact a {
+            margin-left: 10px;
+            /*color: #DDD;*/
+        }
+        .contact a:hover {
+            color: #FFF;
+            text-decoration: underline;
         }
     </style>
 </head>
 
 <body>
    <div class="container">
-        <h1>BuddyUp at {{school_name}}</h3>
-        <p>Students: {{ total_users }}</p>
-        <p>Buddy Matches: {{ total_matches }}</p>
-        <p>Study Groups: {{ total_groups }}</p>
+        <h1>BuddyUp at {{school_name}}</h1>
+        <div class="row">
+            <div class="num_col col col-md-4">
+                <div class="number">{{ "{:,}".format(total_users) }}</div>
+                <h2>Students</h2>
+            </div>
+            <div class="num_col col col-md-4">
+                <div class="number">{{ "{:,}".format(total_matches) }}</div>
+                <h2>Buddy Matches</h2>
+            </div>
+            <div class="num_col col col-md-4">
+                <div class="number">{{ "{:,}".format(total_groups) }}</div>
+                <h2>Study Groups</h2>
+            </div>
+        </div>
+        <div class="row contact">
+            <div class="col col-md-12">
+                Questions? <a href="support@buddyup.org">Send us an email!</a>
+            </div>
+        </div>
     </div>
 </body>
 </html>
