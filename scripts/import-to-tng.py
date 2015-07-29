@@ -2,6 +2,7 @@
 import os
 import hashlib
 import requests
+import re
 import sys
 
 sys.path.insert(0, os.getcwd())
@@ -26,10 +27,26 @@ MISLIST_SUBJECT_MAPPINGS = {
     "ECON": "EC",
     "BIO": "BI",
     "PHYS": "PH",
+    "MGNT": "MGMT",
+    "SPA": "SPAN",
+    "CHEN": "CH",
+    "MA": "MTH",
+    "MATH": "MTH",
+    "MNGMT": "MGMT",
 }
 COURSE_NAME_OVERIDES = {
     "CS300": "CS 300",
     "CS311": "CS 311",
+    "PS 399 - 002": "PS 399",
+    "STATS 244 FLIGHT": "STATS 244",
+    "STATS 243 WEBB": "STATS 243",
+    "CH-221": "CH 221",
+    "BI 252 BALLHORN": "BI 252",
+    "STATS 243 BLACKMORE": "STATS 243",
+    "STAT 243 BLACKMORE": "STAT 243",
+    "STATS 243 BLACKMORE": "STATS 243",
+    "STATS244 BLACKMORE": "STATS 244",
+    "PSY 350 LANDES": "PSY 350",
 }
 
 SUBJECT_MAPPINGS = {
@@ -62,6 +79,30 @@ SUBJECT_MAPPINGS = {
     "CS": {"icon": "calculator", "name": "Computer Science", },
     "ECE": {"icon": "calculator", "name": "Electrical and Computer Engineering", },
     "MUS": {"icon": "paint", "name": "Music", },
+    "WR": {"icon": "pencil", "name": "Writing", },
+    "KOR": {"icon": "globe", "name": "Korean", },
+    "ART": {"icon": "paint", "name": "Art", },
+    "ASL": {"icon": "globe", "name": "American Sign Language", },
+    "CHN": {"icon": "globe", "name": "Chinese", },
+    "BST": {"icon": "globe", "name": "Black Studies", },
+    "PHE": {"icon": "medkit", "name": "Public Health Education", },
+    "EAS": {"icon": "calculator", "name": "Engineering and Applied Sciences", },
+    "ARH": {"icon": "paint", "name": "Art History", },
+    "UNST": {"icon": "university", "name": "University Studies", },
+    "BA": {"icon": "building", "name": "Business Administration", },
+    "MKTG": {"icon": "building", "name": "Marketing", },
+    "WS": {"icon": "globe", "name": "Women's Studies", },
+    "CE": {"icon": "calculator", "name": "Civil Engineering", },
+    "GER": {"icon": "globe", "name": "German", },
+    "ACTG": {"icon": "building", "name": "Accounting", },
+    "SYSC": {"icon": "lightbulb-o", "name": "Systems Science", },
+    "LAT": {"icon": "university", "name": "Latin", },
+    "CHLA": {"icon": "globe", "name": "Chicano-Latino", },
+    "FILM": {"icon": "film", "name": "Film", },
+    "PS": {"icon": "university", "name": "Political Science", },
+    "PE": {"icon": "medkit", "name": "Physical Education", },
+    "SPED": {"icon": "lightbulb-o", "name": "Special Education", },
+    "HON": {"icon": "lightbulb-o", "name": "Honors", },
 }
 
 # flask
@@ -79,7 +120,8 @@ SUBJECT_MAPPINGS = {
 
 IGNORE_SUBJECT_LIST = [
     "OTHER",
-    "Group Theory"
+    "Group Theory",
+    "421-526",
 ]
 
 
@@ -87,19 +129,24 @@ def import_data():
     tng_id = os.environ["TNG_ID"]
     print("Migrating for %s" % tng_id)
 
-    courses = []
+    courses = {}
     students = []
     subjects = {}
 
 
-    print("Migrating courses..")
+    print("Parsing courses..")
     for course in Course.query:
-        try:
-            if course.name not in IGNORE_SUBJECT_LIST:
-                if course.name in COURSE_NAME_OVERIDES:
-                    name = COURSE_NAME_OVERIDES[course.name]
+        parsing_error = False
+        if course.name.strip() not in IGNORE_SUBJECT_LIST:
+            try:
+                if course.name.strip() in COURSE_NAME_OVERIDES:
+                    name = COURSE_NAME_OVERIDES[course.name.strip()]
                 else:
-                    name = course.name
+                    name = course.name.strip()
+
+                if " " not in name:
+                    split = re.split('(\d+)', name)
+                    name = "%s %s" % (split[0], ''.join(split[1:]))
                 subject, code = name.split(" ")
 
                 if subject in MISLIST_SUBJECT_MAPPINGS:
@@ -108,9 +155,16 @@ def import_data():
                 if not subject.upper() in SUBJECT_MAPPINGS:
                     raise Exception("Unknown subject %s from %s" % (subject, name))
 
-        except Exception, e:
-            print "Error parsing %s" % course.name
-            raise
+            except Exception, e:
+                # print "Error parsing %s" % name
+                parsing_error = True
+                # raise
+
+            courses[course.id] = {
+                "name": name,
+                "students": [],
+                "parsing_error": parsing_error
+            }
 
         # name = db.Column(db.UnicodeText)
         # instructor = db.Column(db.UnicodeText)
@@ -128,9 +182,15 @@ def import_data():
 #         "subject_name": "Gender and Cultural Studies"
 #     }
 # }
-    print("Migrating users..")
+    print("Parsing users..")
     for user in User.query:
-        print(user)
+        # print(user)
+        for c in user.courses:
+            if c.id in courses:
+                courses[c.id]["students"].append(user.id)
+            # print(c.id)
+        students.append(user)
+
     #     user_obj = {
     #         "classes": {
     #             "-JuhlLFxoYvaivUl5Les": {
@@ -248,6 +308,17 @@ def import_data():
     #                             primaryjoin=EventInvitation.receiver_id==id,
     #                             lazy="dynamic")
 
+    print("Saving courses...")
+    for id, c in courses.items():
+        # print "%s: %s" % (c["name"], len(c["students"]))
+        if len(c["students"]) > 1:
+            if c["parsing_error"]:
+                # raise Exception("Error parsing %s" % (c["name"]))
+                print("Error parsing %s" % (c["name"]))
+    print(" - %s valid courses" % (len(courses.keys())))
+
+    print("Saving Students...")
+    print(" - %s students" % (len(students)))
     print("Saving School...")
     # {
     #     "classes": {
