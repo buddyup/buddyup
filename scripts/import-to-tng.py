@@ -20,35 +20,48 @@ from buddyup.util import email, delete_user
 
 MISLIST_SUBJECT_MAPPINGS = {
     "STATS": "STAT",
-    "CALC": "MTH"
+    "CALC": "MTH",
+    "CHEM": "CH",
+    "GEOG": "G",
+    "ECON": "EC",
+    "BIO": "BI",
+    "PHYS": "PH",
+}
+COURSE_NAME_OVERIDES = {
+    "CS300": "CS 300",
+    "CS311": "CS 311",
 }
 
 SUBJECT_MAPPINGS = {
     "STAT": {"icon": "calculator", "name": "Statistics", },
     "MTH": {"icon": "calculator", "name": "Math", },
-    "CHEM": {"icon": "flask", "name": "Chemistry", },
     "FR": {"icon": "globe", "name": "French", },
-    "GEOG": {"icon": "globe", "name": "Geology", },
-    "ECON": {"icon": "building", "name": "Economics", },
     "BI": {"icon": "paw", "name": "Biology", },
-    "BIO": {"icon": "paw", "name": "Biology", },
     "SPAN": {"icon": "globe", "name": "Spanish", },
     "PSY": {"icon": "lightbulb-o", "name": "Psychology", },
-    "PHYS": {"icon": "flask", "name": "Physics", },
+    "PH": {"icon": "flask", "name": "Physics", },
     "RUS": {"icon": "globe", "name": "Russian", },
     "JPN": {"icon": "globe", "name": "Japanese", },
-    "MGMT": {"icon": "building", "name": "Management & Leadership", },
+    "MGMT": {"icon": "building", "name": "Management", },
     "AR": {"icon": "globe", "name": "Arabic", },
     "ANTH": {"icon": "university", "name": "Anthropology", },
     "CH": {"icon": "flask", "name": "Chemistry", },
-    "COMM": {"icon": "film", "name": "Communications", },
+    "COMM": {"icon": "film", "name": "Communication", },
     "CR": {"icon": "lightbulb-o", "name": "Conflict Resolution", },
     "EC": {"icon": "building", "name": "Economics", },
     "ENG": {"icon": "pencil", "name": "English", },
-    "ESM": {"icon": "pencil", "name": "Environmental Sciences", },
+    "ESM": {"icon": "pencil", "name": "Environmental Science & Management", },
     "G": {"icon": "globe", "name": "Geology", },
     "HST": {"icon": "university", "name": "History", },
     "INTL": {"icon": "globe", "name": "International Studies", },
+    "LING": {"icon": "pencil", "name": "Applied Linguistics", },
+    "PHL": {"icon": "lightbulb-o", "name": "Philosophy", },
+    "SOC": {"icon": "lightbulb-o", "name": "Sociology", },
+    "SPHR": {"icon": "lightbulb-o", "name": "Speech & Hearing Science", },
+    "WLL": {"icon": "globe", "name": "World Languages & Literatures", },
+    "CS": {"icon": "calculator", "name": "Computer Science", },
+    "ECE": {"icon": "calculator", "name": "Electrical and Computer Engineering", },
+    "MUS": {"icon": "paint", "name": "Music", },
 }
 
 # flask
@@ -83,9 +96,17 @@ def import_data():
     for course in Course.query:
         try:
             if course.name not in IGNORE_SUBJECT_LIST:
-                subject, code = course.name.split(" ")
+                if course.name in COURSE_NAME_OVERIDES:
+                    name = COURSE_NAME_OVERIDES[course.name]
+                else:
+                    name = course.name
+                subject, code = name.split(" ")
+
+                if subject in MISLIST_SUBJECT_MAPPINGS:
+                    subject = MISLIST_SUBJECT_MAPPINGS[subject]
+
                 if not subject.upper() in SUBJECT_MAPPINGS:
-                    raise Exception("Unknown subject %s from %s" % (subject, course.name))
+                    raise Exception("Unknown subject %s from %s" % (subject, name))
 
         except Exception, e:
             print "Error parsing %s" % course.name
