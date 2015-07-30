@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import csv
 import os
+import json
 import hashlib
 import requests
 import re
@@ -79,16 +80,16 @@ SUBJECT_MAPPINGS = {
     "WLL": {"icon": "globe", "name": "World Languages & Literatures", },
     "CS": {"icon": "calculator", "name": "Computer Science", },
     "ECE": {"icon": "calculator", "name": "Electrical and Computer Engineering", },
-    "MUS": {"icon": "paint", "name": "Music", },
+    "MUS": {"icon": "paint-brush", "name": "Music", },
     "WR": {"icon": "pencil", "name": "Writing", },
     "KOR": {"icon": "globe", "name": "Korean", },
-    "ART": {"icon": "paint", "name": "Art", },
+    "ART": {"icon": "paint-brush", "name": "Art", },
     "ASL": {"icon": "globe", "name": "American Sign Language", },
     "CHN": {"icon": "globe", "name": "Chinese", },
     "BST": {"icon": "globe", "name": "Black Studies", },
     "PHE": {"icon": "medkit", "name": "Public Health Education", },
     "EAS": {"icon": "calculator", "name": "Engineering and Applied Sciences", },
-    "ARH": {"icon": "paint", "name": "Art History", },
+    "ARH": {"icon": "paint-brush", "name": "Art History", },
     "UNST": {"icon": "university", "name": "University Studies", },
     "BA": {"icon": "building", "name": "Business Administration", },
     "MKTG": {"icon": "building", "name": "Marketing", },
@@ -106,11 +107,22 @@ SUBJECT_MAPPINGS = {
     "HON": {"icon": "lightbulb-o", "name": "Honors", },
 }
 
+SCHOOL_NAME = {
+    "pdx_edu": "Portland State University",
+    "buddyup_org": "BuddyUp University",
+    "oregonstate_edu": "Oregon State University",
+    "oit_edu": "Oregon Institute of Technology",
+    "oregonstate_edu": "Oregon State University",
+    "smccd_edu": "San Mateo Community College District",
+    "stanford_edu": "Stanford",
+    "sydney_edu_au": "University of Sydney",
+}
+
 # flask
 # calculator
 # university
 # globe
-# paint
+# paint-brush
 # building
 # pencil
 # cutlery
@@ -201,6 +213,8 @@ def import_data():
     courses = {}
     students = []
     subjects = {}
+    CLASSES_BY_PK = {}
+    student_data = {}
 
 
     print("Parsing courses..")
@@ -221,7 +235,7 @@ def import_data():
                 if subject in MISLIST_SUBJECT_MAPPINGS:
                     subject = MISLIST_SUBJECT_MAPPINGS[subject]
 
-                if not subject.upper() in SUBJECT_MAPPINGS:
+                if subject.upper() not in SUBJECT_MAPPINGS:
                     raise Exception("Unknown subject %s from %s" % (subject, name))
 
             except Exception, e:
@@ -237,6 +251,12 @@ def import_data():
                 "parsing_error": parsing_error
             }
             if not parsing_error:
+                subjects[subject] = {
+                    "name": SUBJECT_MAPPINGS[subject]["name"],
+                    "icon": SUBJECT_MAPPINGS[subject]["icon"],
+                    "code": subject,
+                    "parsing_error": parsing_error
+                }
                 courses[course.id]["icon"] = SUBJECT_MAPPINGS[subject.upper()]["icon"]
                 courses[course.id]["subject_name"] = SUBJECT_MAPPINGS[subject.upper()]["name"]
 
@@ -248,16 +268,30 @@ def import_data():
                 courses[c.id]["students"].append(user.id)
             # print(c.id)
         students.append(user)
-                        # lazy="dynamic")
 
     print("Saving school...")
-    # firebase_patch("/schools/%s/profile" % tng_id, {
-    #     "active": True,
-    # })
+    firebase_patch("/schools/%s/profile" % tng_id, {
+        "active": True,
+    })
     firebase_classes = firebase_get("/schools/%s/classes" % tng_id)
 
+    firebase_subjects = firebase_get("/schools/%s/subjects" % tng_id)
+
+    print("Saving subjects...")
+    for id, s in subjects.items():
+        if s["code"] not in firebase_subjects:
+            print("Adding %s - %s" % (s["code"], s["name"]))
+            data = {
+                "code": s["code"],
+                "icon": s["icon"],
+                "name": s["name"],
+            }
+            firebase_patch("schools/%s/subjects/%s/" % (tng_id, s["code"]), data)
+        else:
+            print("Exists %s - %s" % (s["code"], s["name"]))
+
     print("Saving courses...")
-    for id, c in courses.items():
+    for db_pk, c in courses.items():
         # print "%s: %s" % (c["name"], len(c["students"]))
         if len(c["students"]) > 1:
             if c["parsing_error"]:
@@ -272,7 +306,7 @@ def import_data():
                             c["code"] == data["code"]
                         ):
                             found = True
-                            c["id"] = data["id"]
+                            c["id"] = key
                             break
 
                 if not found:
@@ -288,13 +322,35 @@ def import_data():
                         }
                     }
                     # print(data)
-                    # resp = firebase_post("classes/", data)
-                    # id = resp["profile"]["id"]
-                    # c["id"] = id
-                    # firebase_patch("classes/%s/id" % id, {".value": id})
-                    # firebase_patch("classes/%s/profile/id" % id, {".value": id})
+                    resp = firebase_post("classes/", data)
+                    print(resp)
+                    id = resp["name"]
+                    c["id"] = id
+                    firebase_patch("classes/%s/" % id, {"id": id})
+                    firebase_patch("classes/%s/profile/" % id, {"id": id})
+
+                    firebase_patch("schools/%s/classes/%s/" % (tng_id, id), {
+                        "code": data["profile"]["code"],
+                        "id": id,
+                        "name": get_class_name(c["subject"], c["code"]),
+                        "school_id": tng_id,
+                        "subject_code": data["profile"]["subject_code"],
+                        "subject_icon": data["profile"]["subject_icon"],
+                        "subject_name": data["profile"]["subject_name"],
+                    })
+
                 else:
                     print("Exists: %s %s" % (c["subject"], c["code"],))
+
+                CLASSES_BY_PK["%s" % db_pk] = {
+                    "code": c["code"],
+                    "id": c["id"],
+                    "name": get_class_name(c["subject"], c["code"]),
+                    "school_id": tng_id,
+                    "subject_code": c["subject"],
+                    "subject_icon": c["icon"],
+                    "subject_name": c["subject_name"],
+                }
 
         # name = db.Column(db.UnicodeText)
         # instructor = db.Column(db.UnicodeText)
@@ -314,10 +370,88 @@ def import_data():
 #     }
 # }
 
-    print(" - %s valid courses" % (len(courses.keys())))
+    print("\n%s courses added.\n\n" % (len(courses.keys())))
 
     print("Saving Students...")
+    firebase_students = firebase_get("/schools/%s/students" % tng_id)
+    for s in students:
+        print(s)
+        # print(s.__dict__)
+        # get ID
+        id = "1234"
+        signup_date = 1234
 
+        data = {
+            "classes": {},
+            "pictures": {
+                "original": ""
+            },
+            "private": {
+                "badge_count": 0,
+                "email_buddy_request": "on",
+                "email_groups": "everyone",
+                "email_hearts": "buddies",
+                "email_my_groups": "on",
+                "email_private_message": "on",
+                "push_buddy_request": "on",
+                "push_groups": "everyone",
+                "push_hearts": "everyone",
+                "push_my_groups": "on",
+                "push_private_message": "on"
+            },
+            "public": {
+                "bio": s.bio,
+                "buid": id,
+                "first_name": s.full_name.split(" ")[0],
+                "last_name": " ".join(s.full_name.split(" ")[1:]),
+                "profile_pic_url_medium": "",
+                "profile_pic_url_tiny": "",
+                "signed_up_at": signup_date
+            },
+            "schools": {
+                "%s" % tng_id: {
+                    "id": "%s" % tng_id,
+                    "name": SCHOOL_NAME[tng_id]
+                }
+            }
+
+        }
+        # print(data)
+        for course in s.courses:
+            if "%s" % course.id not in CLASSES_BY_PK:
+                print("Missing %s" % course) 
+            else:
+                c_data = CLASSES_BY_PK["%s" % course.id]
+                data["classes"][c_data["id"]] = c_data
+
+        print(data)
+        # Get/create accounts on server.
+        # s.email_verified = 
+
+
+        for buddy in s.buddies:
+            print buddy
+            # data["buddies"][""]
+
+
+
+        # firebase_patch("schools/%s/classes/%s/" % (tng_id, id), {
+        #     "code": data["profile"]["code"],
+        #     "id": id,
+        #     "name": get_class_name(c["subject"], c["code"]),
+        #     "school_id": tng_id,
+        #     "subject_code": data["profile"]["subject_code"],
+        #     "subject_icon": data["profile"]["subject_icon"],
+        #     "subject_name": data["profile"]["subject_name"],
+        # })
+
+
+        # firebase_put("schools/%s/students/%s/" % (tng_id, id), {
+        #     ".value": True,
+        #     "subject_name": data["profile"]["subject_name"],
+        # })
+
+        
     #     user_obj = {
     #         "classes": {
     #             "-JuhlLFxoYvaivUl5Les": {
@@ -436,45 +570,8 @@ def import_data():
     #     
     print(" - %s students" % (len(students)))
     print("Saving School...")
+    
     # {
-    #     "classes": {
-    #         "-JuhlLFxoYvaivUl5Les": {
-    #             "code": "1101",
-    #             "id": "-JuhlLFxoYvaivUl5Les",
-    #             "name": "Chemistry 1A",
-    #             "school_id": "sydney_edu_au",
-    #             "subject_code": "CHEM",
-    #             "subject_icon": "flask",
-    #             "subject_name": "Chemistry"
-    #         },
-    #         "-JuhlfJ368zjSoPUdUqT": {
-    #             "code": "1003",
-    #             "id": "-JuhlfJ368zjSoPUdUqT",
-    #             "name": "Physics 1 (Technological)",
-    #             "school_id": "sydney_edu_au",
-    #             "subject_code": "PHYS",
-    #             "subject_icon": "lightbulb-o",
-    #             "subject_name": "Physics"
-    #         },
-    #         "-JuiQ4-yYIbfCqI0CZmQ": {
-    #             "code": "1602",
-    #             "id": "-JuiQ4-yYIbfCqI0CZmQ",
-    #             "name": "Introduction to Gender Studies",
-    #             "school_id": "sydney_edu_au",
-    #             "subject_code": "GCST",
-    #             "subject_icon": "pencil",
-    #             "subject_name": "Gender and Cultural Studies"
-    #         },
-    #         "-JuiQRSX5zZkKFeOEm6w": {
-    #             "code": "1002",
-    #             "id": "-JuiQRSX5zZkKFeOEm6w",
-    #             "name": "Introductory Macroeconomics",
-    #             "school_id": "sydney_edu_au",
-    #             "subject_code": "ECON",
-    #             "subject_icon": "globe",
-    #             "subject_name": "Economics"
-    #         }
-    #     },
     #     "profile": {
     #         "active": true,
     #         "city": "Sydney",
