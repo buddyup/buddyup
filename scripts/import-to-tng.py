@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import csv
 import os
 import hashlib
 import requests
@@ -124,9 +125,77 @@ IGNORE_SUBJECT_LIST = [
     "421-526",
 ]
 
+tng_id = os.environ["TNG_ID"]
+
+
+CLASS_NAME_MAPPING = {}
+
+if tng_id == "buddyup_org" or tng_id == "pdx_edu":
+    with open('scripts/psu_fall_2014.csv') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            if row[0]:
+                CLASS_NAME_MAPPING[row[0]] = row[3].title()
+
+
+def get_class_name(subject, code):
+    name = "%s %s" % (subject, code)
+    if name in CLASS_NAME_MAPPING:
+        return CLASS_NAME_MAPPING[name]
+    return name
+
+
+def firebase_url(endpoint):
+    if not endpoint.endswith("/"):
+        endpoint = "%s/" % endpoint
+    if endpoint.startswith("/"):
+        endpoint = endpoint[1:]
+
+    return "https://%s/%s.json?format=export&auth=%s" % (
+        os.environ["FIREBASE_ENDPOINT"],
+        endpoint,
+        os.environ["FIREBASE_KEY"],
+    )
+
+
+def firebase_put(endpoint, data, acks_late=True):
+    # TODO: get endpoint make sure it hasn't been updated more recently.
+    # print(firebase_url(endpoint))
+    r = requests.put(firebase_url(endpoint), json.dumps(data))
+    if not r.status_code == 200:
+        print(r.status_code)
+        print(r.json())
+    assert r.status_code == 200
+
+
+def firebase_patch(endpoint, data, acks_late=True):
+    r = requests.patch(firebase_url(endpoint), json.dumps(data))
+    if not r.status_code == 200:
+        print(r.status_code)
+        print(r.json())
+    assert r.status_code == 200
+
+
+def firebase_post(endpoint, data, acks_late=True):
+    r = requests.post(firebase_url(endpoint), json.dumps(data))
+    if not r.status_code == 200:
+        print(r.status_code)
+        print(r.json())
+    assert r.status_code == 200
+    return r.json()
+
+
+def firebase_get(endpoint, acks_late=True):
+    # r = requests.get(firebase_url(endpoint), json.dumps(data))
+    r = requests.get(firebase_url(endpoint))
+    if not r.status_code == 200:
+        print(r.status_code)
+        print(r.json())
+    assert r.status_code == 200
+    return r.json()
+
 
 def import_data():
-    tng_id = os.environ["TNG_ID"]
     print("Migrating for %s" % tng_id)
 
     courses = {}
@@ -162,14 +231,76 @@ def import_data():
 
             courses[course.id] = {
                 "name": name,
+                "subject": subject,
+                "code": code,
                 "students": [],
                 "parsing_error": parsing_error
             }
+            if not parsing_error:
+                courses[course.id]["icon"] = SUBJECT_MAPPINGS[subject.upper()]["icon"]
+                courses[course.id]["subject_name"] = SUBJECT_MAPPINGS[subject.upper()]["name"]
+
+    print("Parsing users..")
+    for user in User.query:
+        # print(user)
+        for c in user.courses:
+            if c.id in courses:
+                courses[c.id]["students"].append(user.id)
+            # print(c.id)
+        students.append(user)
+                        # lazy="dynamic")
+
+    print("Saving school...")
+    # firebase_patch("/schools/%s/profile" % tng_id, {
+    #     "active": True,
+    # })
+    firebase_classes = firebase_get("/schools/%s/classes" % tng_id)
+
+    print("Saving courses...")
+    for id, c in courses.items():
+        # print "%s: %s" % (c["name"], len(c["students"]))
+        if len(c["students"]) > 1:
+            if c["parsing_error"]:
+                # raise Exception("Error parsing %s" % (c["name"]))
+                print("Error parsing %s" % (c["name"]))
+            else:
+                found = False
+                if firebase_classes:
+                    for key, data in firebase_classes.items():
+                        if (
+                            c["subject"] == data["subject_code"] and
+                            c["code"] == data["code"]
+                        ):
+                            found = True
+                            c["id"] = data["id"]
+                            break
+
+                if not found:
+                    print("Adding %s %s - %s" % (c["subject"], c["code"], get_class_name(c["subject"], c["code"])))
+                    data = {
+                        "profile": {
+                            "code": c["code"],
+                            "name": get_class_name(c["subject"], c["code"]),
+                            "school_id": tng_id,
+                            "subject_code": c["subject"],
+                            "subject_icon": c["icon"],
+                            "subject_name": c["subject_name"],
+                        }
+                    }
+                    # print(data)
+                    # resp = firebase_post("classes/", data)
+                    # id = resp["profile"]["id"]
+                    # c["id"] = id
+                    # firebase_patch("classes/%s/id" % id, {".value": id})
+                    # firebase_patch("classes/%s/profile/id" % id, {".value": id})
+                else:
+                    print("Exists: %s %s" % (c["subject"], c["code"],))
 
         # name = db.Column(db.UnicodeText)
         # instructor = db.Column(db.UnicodeText)
         # events = db.relationship('Event', backref='course')
 
+        # Get course if it exists.
 # class_obj = {
 #     "id": "-JuiQ4-yYIbfCqI0CZmQ",
 #     "profile": {
@@ -182,14 +313,10 @@ def import_data():
 #         "subject_name": "Gender and Cultural Studies"
 #     }
 # }
-    print("Parsing users..")
-    for user in User.query:
-        # print(user)
-        for c in user.courses:
-            if c.id in courses:
-                courses[c.id]["students"].append(user.id)
-            # print(c.id)
-        students.append(user)
+
+    print(" - %s valid courses" % (len(courses.keys())))
+
+    print("Saving Students...")
 
     #     user_obj = {
     #         "classes": {
@@ -306,18 +433,7 @@ def import_data():
     #                             primaryjoin=EventInvitation.sender_id==id)
     # event_invitations_received = db.relationship('EventInvitation', backref='receiver',
     #                             primaryjoin=EventInvitation.receiver_id==id,
-    #                             lazy="dynamic")
-
-    print("Saving courses...")
-    for id, c in courses.items():
-        # print "%s: %s" % (c["name"], len(c["students"]))
-        if len(c["students"]) > 1:
-            if c["parsing_error"]:
-                # raise Exception("Error parsing %s" % (c["name"]))
-                print("Error parsing %s" % (c["name"]))
-    print(" - %s valid courses" % (len(courses.keys())))
-
-    print("Saving Students...")
+    #     
     print(" - %s students" % (len(students)))
     print("Saving School...")
     # {
