@@ -6,6 +6,7 @@ import hashlib
 import requests
 import re
 import sys
+import time
 
 sys.path.insert(0, os.getcwd())
 
@@ -138,6 +139,8 @@ IGNORE_SUBJECT_LIST = [
 ]
 
 tng_id = os.environ["TNG_ID"]
+FIREBASE_KEY = os.environ["FIREBASE_KEY"]
+API_ENDPOINT = os.environ["API_ENDPOINT"]
 
 
 CLASS_NAME_MAPPING = {}
@@ -419,15 +422,28 @@ def import_data():
         # print(data)
         for course in s.courses:
             if "%s" % course.id not in CLASSES_BY_PK:
-                print("Missing %s" % course) 
+                print("Missing %s" % course)
             else:
                 c_data = CLASSES_BY_PK["%s" % course.id]
                 data["classes"][c_data["id"]] = c_data
 
         print(data)
-        # Get/create accounts on server.
-        # s.email_verified = 
 
+        if tng_id == "buddyup_org" or tng_id == "pdx_edu" and not s.email:
+            s.email = "%s@pdx.edu" % s.user_name
+        # Get/create accounts on server.
+        account_data = {
+            "email": s.email,
+            "secret": FIREBASE_KEY,
+            "created_at": int(time.mktime(s.created_at.timetuple()) * 1000),
+            "email_verified": s.email_verified,
+        }
+        print s.__dict__
+        print(account_data)
+        r = requests.post("%sapi/v1/migrate-user" % API_ENDPOINT, account_data)
+        resp = r.json()
+        print(resp)
+        raise Exception("stopping")
 
         for buddy in s.buddies:
             print buddy
