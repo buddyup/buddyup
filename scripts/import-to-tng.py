@@ -431,6 +431,7 @@ def import_data():
 
         if tng_id == "buddyup_org" or tng_id == "pdx_edu" and not s.email:
             s.email = "%s@pdx.edu" % s.user_name
+        
         # Get/create accounts on server.
         account_data = {
             "email": s.email,
@@ -440,10 +441,17 @@ def import_data():
         }
         print s.__dict__
         print(account_data)
-        r = requests.post("%sapi/v1/migrate-user" % API_ENDPOINT, account_data)
+
+        json_header = {'content-type': 'application/json'}
+        r = requests.post(
+            "%sv1/internal/migrate-user" % API_ENDPOINT,
+            data=json.dumps(account_data),
+            headers=json_header
+        )
+        assert r.status_code == 200
         resp = r.json()
         print(resp)
-        raise Exception("stopping")
+        
 
         for buddy in s.buddies:
             print buddy
