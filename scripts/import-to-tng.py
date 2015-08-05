@@ -21,6 +21,7 @@ from buddyup.database import (
 from buddyup import photo
 from buddyup.app import app
 from buddyup.util import email, delete_user
+from buddyup.photo import get_photo_url
 
 MISLIST_SUBJECT_MAPPINGS = {
     "STATS": "STAT",
@@ -158,6 +159,18 @@ def get_class_name(subject, code):
     if name in CLASS_NAME_MAPPING:
         return CLASS_NAME_MAPPING[name]
     return name
+
+
+def find_photo(user):
+    # I know. This is insane. But they never stored a backref on photo.
+    print(user.user_name)
+    print(Photo)
+    print(Photo.query)
+    for p in Photo.query:
+        print(p.url)
+        if user.user_name in p.url and p.x != 50 and p.x != 200:
+            print("found photo!")
+            return p
 
 
 def firebase_url(endpoint):
@@ -354,35 +367,35 @@ def import_data():
                     "subject_icon": c["icon"],
                     "subject_name": c["subject_name"],
                 }
-
-        # name = db.Column(db.UnicodeText)
-        # instructor = db.Column(db.UnicodeText)
-        # events = db.relationship('Event', backref='course')
-
-        # Get course if it exists.
-# class_obj = {
-#     "id": "-JuiQ4-yYIbfCqI0CZmQ",
-#     "profile": {
-#         "code": "1602",
-#         "id": "-JuiQ4-yYIbfCqI0CZmQ",
-#         "name": "Introduction to Gender Studies",
-#         "school_id": "sydney_edu_au",
-#         "subject_code": "GCST",
-#         "subject_icon": "pencil",
-#         "subject_name": "Gender and Cultural Studies"
-#     }
-# }
-
     print("\n%s courses added.\n\n" % (len(courses.keys())))
 
     print("Saving Students...")
     firebase_students = firebase_get("/schools/%s/students" % tng_id)
     for s in students:
-        print(s)
-        # print(s.__dict__)
-        # get ID
-        id = "1234"
-        signup_date = 1234
+        # print(data)
+        if tng_id == "buddyup_org" or tng_id == "pdx_edu" and not s.email:
+            s.email = "%s@pdx.edu" % s.user_name
+
+        # Get/create accounts on server.
+        account_data = {
+            "email": s.email,
+            "secret": FIREBASE_KEY,
+            "created_at": int(time.mktime(s.created_at.timetuple()) * 1000),
+            "email_verified": s.email_verified,
+        }
+
+        json_header = {'content-type': 'application/json'}
+        r = requests.post(
+            "%sv1/internal/migrate-user" % API_ENDPOINT,
+            data=json.dumps(account_data),
+            headers=json_header
+        )
+        assert r.status_code == 200
+        resp = r.json()
+        assert r.json()["success"] is True
+        id = r.json()["buid"]
+
+        signup_date = r.json()["created_at"]
 
         data = {
             "classes": {},
@@ -419,232 +432,92 @@ def import_data():
             }
 
         }
-        # print(data)
+        # Classes
         for course in s.courses:
             if "%s" % course.id not in CLASSES_BY_PK:
-                print("Missing %s" % course)
+                # print("Missing %s" % course)
+                pass
             else:
                 c_data = CLASSES_BY_PK["%s" % course.id]
                 data["classes"][c_data["id"]] = c_data
 
-        print(data)
+        student_data[s.email] = data
 
+    # Loop again now that we have full data.
+    print("\nDoing actual adds.")
+    for s in students:
         if tng_id == "buddyup_org" or tng_id == "pdx_edu" and not s.email:
             s.email = "%s@pdx.edu" % s.user_name
-        
-        # Get/create accounts on server.
-        account_data = {
-            "email": s.email,
-            "secret": FIREBASE_KEY,
-            "created_at": int(time.mktime(s.created_at.timetuple()) * 1000),
-            "email_verified": s.email_verified,
-        }
-        print s.__dict__
-        print(account_data)
 
-        json_header = {'content-type': 'application/json'}
-        r = requests.post(
-            "%sv1/internal/migrate-user" % API_ENDPOINT,
-            data=json.dumps(account_data),
-            headers=json_header
-        )
-        assert r.status_code == 200
-        resp = r.json()
-        print(resp)
-        
+        data = student_data[s.email]
+        buid = data["public"]["buid"]
 
-        for buddy in s.buddies:
-            print buddy
-            # data["buddies"][""]
+        if buid not in firebase_students:
 
+            # Buddies
+            for buddy in s.buddies:
+                if tng_id == "buddyup_org" or tng_id == "pdx_edu" and not buddy.email:
+                    buddy_email = "%s@pdx.edu" % buddy.user_name
+                else:
+                    buddy_email = buddy.email
 
+                if not "buddies" in data:
+                    data["buddies"] = {}
 
-        # firebase_patch("schools/%s/classes/%s/" % (tng_id, id), {
-        #     "code": data["profile"]["code"],
-        #     "id": id,
-        #     "name": get_class_name(c["subject"], c["code"]),
-        #     "school_id": tng_id,
-        #     "subject_code": data["profile"]["subject_code"],
-        #     "subject_icon": data["profile"]["subject_icon"],
-        #     "subject_name": data["profile"]["subject_name"],
-        # })
+                buddy_buid = student_data[buddy_email]["public"]["buid"]
 
+                if buddy_buid not in data["buddies"]:
+                    data["buddies"][buddy_buid] = {}
 
-        # firebase_put("schools/%s/students/%s/" % (tng_id, id), {
-        #     ".value": True,
-        #     "subject_name": data["profile"]["subject_name"],
-        # })
+                data["buddies"][buddy_buid]["first_name"] = student_data[buddy_email]["public"]["first_name"]
+                data["buddies"][buddy_buid]["last_name"] = student_data[buddy_email]["public"]["last_name"]
+                data["buddies"][buddy_buid]["user_id"] = student_data[buddy_email]["public"]["buid"]
 
-        
-    #     user_obj = {
-    #         "classes": {
-    #             "-JuhlLFxoYvaivUl5Les": {
-    #                 "code": "1101",
-    #                 "course_id": "-JuhlLFxoYvaivUl5Les",
-    #                 "id": "-JuhlLFxoYvaivUl5Les",
-    #                 "name": "Chemistry 1A",
-    #                 "school_id": "%s" % tng_id,
-    #                 "subject_code": "CHEM",
-    #                 "subject_icon": "flask",
-    #                 "subject_name": "Chemistry"
-    #             }
-    #         },
+            # Picture
+            picture = find_photo(s)
+            assert picture is not None
+            url = get_photo_url(s, picture)
+            print ("found photo: %s" % url)
 
-    #         "pictures": {
-    #             "original": "data:image/png;base64,iVBORw0KGgoAAA"
-    #         },
-    #         "private": {
-    #             "badge_count": 0,
-    #             "email_buddy_request": "on",
-    #             "email_groups": "everyone",
-    #             "email_hearts": "buddies",
-    #             "email_my_groups": "on",
-    #             "email_private_message": "on",
-    #             "push_buddy_request": "on",
-    #             "push_groups": "everyone",
-    #             "push_hearts": "everyone",
-    #             "push_my_groups": "on",
-    #             "push_private_message": "on"
-    #         },
-    #         "public": {
-    #             "bio": "Me! Rabbits.",
-    #             "buid": "-Jutvurlo6atQliTl27u",
-    #             "first_name": "Sharon",
-    #             "last_name": "Kitching",
-    #             "profile_pic_url_medium": "https://buddyup-core.s3.amazonaws.com:443/profile_pics/9fda1979630b061c3fbb46a39551bb3eaa41b34c-medium.jpg",
-    #             "profile_pic_url_tiny": "https://buddyup-core.s3.amazonaws.com:443/profile_pics/9fda1979630b061c3fbb46a39551bb3eaa41b34c-tiny.jpg",
-    #             "signed_up_at": 1437638569000
-    #         },
-    #         "schools": {
-    #             "%s" % tng_id: {
-    #                 "id": "%s" % tng_id,
-    #                 "name": "University of Sydney"
-    #             }
-    #         }
-    #     }
+            image = requests.get(url)
 
+            data["pictures"] = {
+                "original": "data:image/png;base64,%s" % image.content
+            }
+            data["public"]["profile_pic_url_medium"] = ""
+            data["public"]["profile_pic_url_tiny"] = ""
 
-    # id = db.Column(db.Integer, primary_key=True)
-    # created_at = db.Column(db.DateTime, default=datetime.datetime.now)
-    # # Note: Portland State University user names are always <= 8 ASCII characters
-    # user_name = db.Column(db.String(255), index=True, unique=True)
-    # full_name = db.Column(db.UnicodeText, default=u"")
-    # bio = db.Column(db.UnicodeText, default=u"")
-    # facebook = db.Column(db.UnicodeText, default=u"")
-    # facebook_token = db.Column(db.UnicodeText)
-    # twitter = db.Column(db.UnicodeText, default=u"")
-    # twitter_token = db.Column(db.UnicodeText)
-    # twitter_secret = db.Column(db.UnicodeText)
-    # linkedin = db.Column(db.UnicodeText, default=u"")
-    # skype = db.Column(db.UnicodeText, default=u"")
-    # linkedin_token = db.Column(db.UnicodeText)
-    # google_token = db.Column(db.UnicodeText)
-    # location_id = db.Column(db.Integer, db.ForeignKey('location.id'))
-    # email = db.Column(db.UnicodeText)
-    # has_photos = db.Column(db.Boolean, default=False)
-    # email_verified = db.Column(db.Boolean, default=False)
-    # email_verify_code = db.Column(db.UnicodeText, default=u"")
-    # #tutor = db.Column(db.Boolean, default = False)
+            print(data)
+            firebase_patch("users/%s/" % buid, data)
+            raise Exception
 
-    # # Initialized flag
-    # initialized = db.Column(db.Boolean, default=False)
-    
-    # def __repr__(self):
-    #     return '%s' % self.full_name
+            # Kick off thumbnails
+            account_data = {
+                "buid": buid,
+                "secret": FIREBASE_KEY,
+            }
 
-    # # Relationships
-    # location = db.relationship('Location')
-    # courses = db.relationship('Course',
-    #                           secondary=CourseMembership,
-    #                           backref=db.backref('users', lazy="dynamic"),
-    #                           lazy='dynamic')
-    # archived_courses = db.relationship('Course',
-    #                           secondary=ArchivedCourseMembership,
-    #                           lazy='dynamic')
+            json_header = {'content-type': 'application/json'}
+            r = requests.post(
+                "%sv1/internal/migrate-picture" % API_ENDPOINT,
+                data=json.dumps(account_data),
+                headers=json_header
+            )
+            assert r.status_code == 200
 
-    # majors = db.relationship('Major', lazy="dynamic",
-    #                          secondary=MajorMembership,
-    #                          backref='users')
-    # languages = db.relationship('Language', lazy='dynamic',
-    #                             secondary=LanguageMembership,
-    #                             backref=db.backref('users', lazy="dynamic"))
-    # notifications = db.relationship('Notification', backref='recipient',
-    #                             primaryjoin=Notification.recipient_id == id)
+            # Add to class classmates
+            for class_id, class_data in data["classes"].items():
+                firebase_put("classes/%s/students/%s/" % (class_id, buid), {
+                    ".value": True,
+                    "subject_name": data["profile"]["subject_name"],
+                })
 
-    # notifications_sent = db.relationship('Notification', backref='sender',
-    #                             primaryjoin=Notification.sender_id == id)
+            # Add to School's students
+            firebase_put("schools/%s/students/%s/" % (tng_id, buid), {
+                ".value": True,
+            })
 
-    # buddies = db.relationship('User', secondary=Buddy,
-    #                           lazy='dynamic',
-    #                           primaryjoin=Buddy.c.user1_id == id,
-    #                           secondaryjoin=Buddy.c.user2_id == id)
-    # buddy_invitations_sent = db.relationship('BuddyInvitation', backref='sender',
-    #                             primaryjoin=BuddyInvitation.sender_id == id)
-    # buddy_invitations_received = db.relationship('BuddyInvitation', backref='receiver',
-    #                             primaryjoin=BuddyInvitation.receiver_id==id)
-
-    # events = db.relationship('Event', lazy="dynamic",
-    #                          primaryjoin=EventMembership.c.user_id==id,
-    #                          secondary=EventMembership,
-    #                          backref=db.backref('users', lazy="dynamic"))
-    # event_invitations_sent = db.relationship('EventInvitation', backref='sender',
-    #                             primaryjoin=EventInvitation.sender_id==id)
-    # event_invitations_received = db.relationship('EventInvitation', backref='receiver',
-    #                             primaryjoin=EventInvitation.receiver_id==id,
-    #     
     print(" - %s students" % (len(students)))
-    print("Saving School...")
-    
-    # {
-    #     "profile": {
-    #         "active": true,
-    #         "city": "Sydney",
-    #         "email_suffix": "sydney.edu.au",
-    #         "id": "sydney_edu_au",
-    #         "logo_full_url": "",
-    #         "logo_lg_url": "",
-    #         "logo_md_url": "",
-    #         "logo_sm_url": "",
-    #         "name": "University of Sydney",
-    #         "primary_color": "blue",
-    #         "secondary_color": "green",
-    #         "short_name": "Sydney Uni",
-    #         "state": "Australia",
-    #         "web_site": "sydney.edu.au",
-    #         "website": "http://sydney.edu.au/"
-    #     },
-    #     "students": {
-    #         "-JuhimjeBisoiUPmf4XA": true,
-    #         "-JujFeNUwxfSZlUQAz_f": true,
-    #         "-Jutvurlo6atQliTl27u": true,
-    #         "-JvCYmctaxKivki7nbqV": true,
-    #         "-JvHtSiLmrT16Ox2vqvu": true
-    #     },
-    #     "subjects": {
-    #         "CHEM": {
-    #             "code": "CHEM",
-    #             "icon": "flask",
-    #             "name": "Chemistry"
-    #         },
-    #         "ECON": {
-    #             "code": "ECON",
-    #             "icon": "globe",
-    #             "name": "Economics"
-    #         },
-    #         "GCST": {
-    #             "code": "GCST",
-    #             "icon": "pencil",
-    #             "name": "Gender and Cultural Studies"
-    #         },
-    #         "PHYS": {
-    #             "code": "PHYS",
-    #             "icon": "lightbulb-o",
-    #             "name": "Physics"
-    #         }
-    #     }
-    # }
-
-    # db.session.commit()
 
 
 def main():
