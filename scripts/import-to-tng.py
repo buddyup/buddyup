@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+import base64
+import boto
 import csv
 import os
 import json
@@ -143,8 +145,22 @@ tng_id = os.environ["TNG_ID"]
 FIREBASE_KEY = os.environ["FIREBASE_KEY"]
 API_ENDPOINT = os.environ["API_ENDPOINT"]
 
-
 CLASS_NAME_MAPPING = {}
+PHOTO_LIST = []
+
+class Blank():
+    pass
+
+if tng_id == "buddyup_org":
+    bucket_name = 'buddyuppdx'
+
+conn = boto.connect_s3()
+try:
+    bucket = conn.get_bucket(bucket_name)
+    for key in bucket.list():
+        PHOTO_LIST.append(key.name.encode('utf-8'))
+except:
+    import traceback; traceback.print_exc();
 
 if tng_id == "buddyup_org" or tng_id == "pdx_edu":
     with open('scripts/psu_fall_2014.csv') as csvfile:
@@ -163,14 +179,30 @@ def get_class_name(subject, code):
 
 def find_photo(user):
     # I know. This is insane. But they never stored a backref on photo.
-    print(user.user_name)
-    print(Photo)
-    print(Photo.query)
-    for p in Photo.query:
-        print(p.url)
-        if user.user_name in p.url and p.x != 50 and p.x != 200:
-            print("found photo!")
-            return p
+    potentials = []
+    for p in PHOTO_LIST:
+        if user.user_name in p:
+            x = int(p.split(".")[0].split("-")[-2])
+            y = int(p.split(".")[0].split("-")[-1])
+            potentials.append({
+                "x": x,
+                "y": y,
+                "url": p
+            })
+    biggest = 0
+    biggest_url = None
+    size = Blank()
+    for p in potentials:
+        if p["x"] > biggest:
+            biggest = p["x"]
+            biggest_url = p["url"]
+            size.x = p["x"]
+            size.y = p["y"]
+    if biggest_url:
+        print("found photo (%s)!" % biggest)
+    else:
+        print("no photo found for %s" % user)
+    return biggest_url, size
 
 
 def firebase_url(endpoint):
@@ -369,6 +401,8 @@ def import_data():
                 }
     print("\n%s courses added.\n\n" % (len(courses.keys())))
 
+    missing_photos = []
+
     print("Saving Students...")
     firebase_students = firebase_get("/schools/%s/students" % tng_id)
     for s in students:
@@ -376,72 +410,83 @@ def import_data():
         if tng_id == "buddyup_org" or tng_id == "pdx_edu" and not s.email:
             s.email = "%s@pdx.edu" % s.user_name
 
-        # Get/create accounts on server.
-        account_data = {
-            "email": s.email,
-            "secret": FIREBASE_KEY,
-            "created_at": int(time.mktime(s.created_at.timetuple()) * 1000),
-            "email_verified": s.email_verified,
-        }
-
-        json_header = {'content-type': 'application/json'}
-        r = requests.post(
-            "%sv1/internal/migrate-user" % API_ENDPOINT,
-            data=json.dumps(account_data),
-            headers=json_header
-        )
-        assert r.status_code == 200
-        resp = r.json()
-        assert r.json()["success"] is True
-        id = r.json()["buid"]
-
-        signup_date = r.json()["created_at"]
-
-        data = {
-            "classes": {},
-            "pictures": {
-                "original": ""
-            },
-            "private": {
-                "badge_count": 0,
-                "email_buddy_request": "on",
-                "email_groups": "everyone",
-                "email_hearts": "buddies",
-                "email_my_groups": "on",
-                "email_private_message": "on",
-                "push_buddy_request": "on",
-                "push_groups": "everyone",
-                "push_hearts": "everyone",
-                "push_my_groups": "on",
-                "push_private_message": "on"
-            },
-            "public": {
-                "bio": s.bio,
-                "buid": id,
-                "first_name": s.full_name.split(" ")[0],
-                "last_name": " ".join(s.full_name.split(" ")[1:]),
-                "profile_pic_url_medium": "",
-                "profile_pic_url_tiny": "",
-                "signed_up_at": signup_date
-            },
-            "schools": {
-                "%s" % tng_id: {
-                    "id": "%s" % tng_id,
-                    "name": SCHOOL_NAME[tng_id]
-                }
+        # Skip people who don't have photos:
+        if not find_photo(s):
+            print "Skipping %s - no photo" % s.email
+            missing_photos.append(s.email)
+        else:
+            # Get/create accounts on server.
+            account_data = {
+                "email": s.email,
+                "secret": FIREBASE_KEY,
+                "created_at": int(time.mktime(s.created_at.timetuple()) * 1000),
+                "email_verified": s.email_verified,
             }
 
-        }
-        # Classes
-        for course in s.courses:
-            if "%s" % course.id not in CLASSES_BY_PK:
-                # print("Missing %s" % course)
-                pass
-            else:
-                c_data = CLASSES_BY_PK["%s" % course.id]
-                data["classes"][c_data["id"]] = c_data
+            json_header = {'content-type': 'application/json'}
+            r = requests.post(
+                "%sv1/internal/migrate-user" % API_ENDPOINT,
+                data=json.dumps(account_data),
+                headers=json_header
+            )
+            assert r.status_code == 200
+            resp = r.json()
+            assert r.json()["success"] is True
+            buid = r.json()["buid"]
+            if r.json()["buid"] is None:
+                print(account_data)
+                raise Exception("No buid for %s" % r.json())
 
-        student_data[s.email] = data
+            signup_date = r.json()["created_at"]
+
+            data = {
+                "classes": {},
+                "pictures": {
+                    "original": ""
+                },
+                "private": {
+                    "badge_count": 0,
+                    "email_buddy_request": "on",
+                    "email_groups": "everyone",
+                    "email_hearts": "buddies",
+                    "email_my_groups": "on",
+                    "email_private_message": "on",
+                    "push_buddy_request": "on",
+                    "push_groups": "everyone",
+                    "push_hearts": "everyone",
+                    "push_my_groups": "on",
+                    "push_private_message": "on"
+                },
+                "public": {
+                    "bio": s.bio,
+                    "buid": r.json()["buid"],
+                    "first_name": s.full_name.split(" ")[0],
+                    "last_name": " ".join(s.full_name.split(" ")[1:]),
+                    "profile_pic_url_medium": "",
+                    "profile_pic_url_tiny": "",
+                    "signed_up_at": signup_date,
+                },
+                "schools": {
+                    "%s" % tng_id: {
+                        "id": "%s" % tng_id,
+                        "name": SCHOOL_NAME[tng_id]
+                    }
+                }
+
+            }
+            # Classes
+            for course in s.courses:
+                if "%s" % course.id not in CLASSES_BY_PK:
+                    # print("Missing %s" % course)
+                    pass
+                else:
+                    c_data = CLASSES_BY_PK["%s" % course.id]
+                    data["classes"][c_data["id"]] = c_data
+
+            student_data[s.email] = data
+
+    print("Missing photos for %s students" % len(missing_photos))
+    print(missing_photos)
 
     # Loop again now that we have full data.
     print("\nDoing actual adds.")
@@ -451,6 +496,7 @@ def import_data():
 
         data = student_data[s.email]
         buid = data["public"]["buid"]
+        print(data["public"])
 
         if buid not in firebase_students:
 
@@ -474,42 +520,42 @@ def import_data():
                 data["buddies"][buddy_buid]["user_id"] = student_data[buddy_email]["public"]["buid"]
 
             # Picture
-            picture = find_photo(s)
-            assert picture is not None
-            url = get_photo_url(s, picture)
-            print ("found photo: %s" % url)
+            picture, size = find_photo(s)
+            if picture:
+                url = "http://%s.s3.amazonaws.com/%s" % (
+                    bucket_name,
+                    picture,
+                )
+                print ("found photo: %s" % url)
 
-            image = requests.get(url)
+                image = requests.get(url)
 
-            data["pictures"] = {
-                "original": "data:image/png;base64,%s" % image.content
-            }
-            data["public"]["profile_pic_url_medium"] = ""
-            data["public"]["profile_pic_url_tiny"] = ""
+                data["pictures"] = {
+                    "original": "data:image/png;base64,%s" % base64.b64encode(image.content)
+                }
+                data["public"]["profile_pic_url_medium"] = ""
+                data["public"]["profile_pic_url_tiny"] = ""
 
-            print(data)
-            firebase_patch("users/%s/" % buid, data)
-            raise Exception
+                firebase_patch("users/%s/" % buid, data)
 
-            # Kick off thumbnails
-            account_data = {
-                "buid": buid,
-                "secret": FIREBASE_KEY,
-            }
+                # Kick off thumbnails
+                account_data = {
+                    "buid": buid,
+                    "secret": FIREBASE_KEY,
+                }
 
-            json_header = {'content-type': 'application/json'}
-            r = requests.post(
-                "%sv1/internal/migrate-picture" % API_ENDPOINT,
-                data=json.dumps(account_data),
-                headers=json_header
-            )
-            assert r.status_code == 200
+                json_header = {'content-type': 'application/json'}
+                r = requests.post(
+                    "%sv1/internal/migrate-picture" % API_ENDPOINT,
+                    data=json.dumps(account_data),
+                    headers=json_header
+                )
+                assert r.status_code == 200
 
             # Add to class classmates
             for class_id, class_data in data["classes"].items():
                 firebase_put("classes/%s/students/%s/" % (class_id, buid), {
                     ".value": True,
-                    "subject_name": data["profile"]["subject_name"],
                 })
 
             # Add to School's students
@@ -518,10 +564,10 @@ def import_data():
             })
 
     print(" - %s students" % (len(students)))
-
+    print("Missing photos for %s" % len(missing_photos))
 
 def main():
-    import_data()    
+    import_data()
 
 if __name__ == '__main__':
     main()
