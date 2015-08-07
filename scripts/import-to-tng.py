@@ -233,7 +233,12 @@ def firebase_patch(endpoint, data, acks_late=True):
     if not r.status_code == 200:
         print(r.status_code)
         print(r.json())
-    assert r.status_code == 200
+    try:
+        assert r.status_code == 200
+    except:
+        print(r.status_code)
+        # print(data)
+        raise
 
 
 def firebase_post(endpoint, data, acks_late=True):
@@ -410,80 +415,76 @@ def import_data():
         if tng_id == "buddyup_org" or tng_id == "pdx_edu" and not s.email:
             s.email = "%s@pdx.edu" % s.user_name
 
-        # Skip people who don't have photos:
-        if not find_photo(s):
-            print "Skipping %s - no photo" % s.email
-            missing_photos.append(s.email)
-        else:
-            # Get/create accounts on server.
-            account_data = {
-                "email": s.email,
-                "secret": FIREBASE_KEY,
-                "created_at": int(time.mktime(s.created_at.timetuple()) * 1000),
-                "email_verified": s.email_verified,
-            }
+        # Get/create accounts on server.
+        account_data = {
+            "email": s.email,
+            "secret": FIREBASE_KEY,
+            "created_at": int(time.mktime(s.created_at.timetuple()) * 1000),
+            "email_verified": s.email_verified,
+            "school_code": tng_id,
+        }
 
-            json_header = {'content-type': 'application/json'}
-            r = requests.post(
-                "%sv1/internal/migrate-user" % API_ENDPOINT,
-                data=json.dumps(account_data),
-                headers=json_header
-            )
-            assert r.status_code == 200
-            resp = r.json()
-            assert r.json()["success"] is True
-            buid = r.json()["buid"]
-            if r.json()["buid"] is None:
-                print(account_data)
-                raise Exception("No buid for %s" % r.json())
+        json_header = {'content-type': 'application/json'}
+        r = requests.post(
+            "%sv1/internal/migrate-user" % API_ENDPOINT,
+            data=json.dumps(account_data),
+            headers=json_header
+        )
+        assert r.status_code == 200
+        resp = r.json()
+        assert r.json()["success"] is True
+        buid = r.json()["buid"]
+        if r.json()["buid"] is None:
+            print(account_data)
+            raise Exception("No buid for %s" % r.json())
 
-            signup_date = r.json()["created_at"]
+        signup_date = r.json()["created_at"]
 
-            data = {
-                "classes": {},
-                "pictures": {
-                    "original": ""
-                },
-                "private": {
-                    "badge_count": 0,
-                    "email_buddy_request": "on",
-                    "email_groups": "everyone",
-                    "email_hearts": "buddies",
-                    "email_my_groups": "on",
-                    "email_private_message": "on",
-                    "push_buddy_request": "on",
-                    "push_groups": "everyone",
-                    "push_hearts": "everyone",
-                    "push_my_groups": "on",
-                    "push_private_message": "on"
-                },
-                "public": {
-                    "bio": s.bio,
-                    "buid": r.json()["buid"],
-                    "first_name": s.full_name.split(" ")[0],
-                    "last_name": " ".join(s.full_name.split(" ")[1:]),
-                    "profile_pic_url_medium": "",
-                    "profile_pic_url_tiny": "",
-                    "signed_up_at": signup_date,
-                },
-                "schools": {
-                    "%s" % tng_id: {
-                        "id": "%s" % tng_id,
-                        "name": SCHOOL_NAME[tng_id]
-                    }
+        data = {
+            "classes": {},
+            "pictures": {
+                "original": ""
+            },
+            "private": {
+                "badge_count": 0,
+                "email_buddy_request": "on",
+                "email_groups": "everyone",
+                "email_hearts": "buddies",
+                "email_my_groups": "on",
+                "email_private_message": "on",
+                "push_buddy_request": "on",
+                "push_groups": "everyone",
+                "push_hearts": "everyone",
+                "push_my_groups": "on",
+                "push_private_message": "on"
+            },
+            "public": {
+                "bio": s.bio,
+                "buid": r.json()["buid"],
+                "first_name": s.full_name.split(" ")[0],
+                "last_name": " ".join(s.full_name.split(" ")[1:]),
+                "profile_pic_url_medium": "",
+                "profile_pic_url_tiny": "",
+                "signed_up_at": signup_date,
+            },
+            "schools": {
+                "%s" % tng_id: {
+                    "id": "%s" % tng_id,
+                    "name": SCHOOL_NAME[tng_id]
                 }
-
             }
-            # Classes
-            for course in s.courses:
-                if "%s" % course.id not in CLASSES_BY_PK:
-                    # print("Missing %s" % course)
-                    pass
-                else:
-                    c_data = CLASSES_BY_PK["%s" % course.id]
-                    data["classes"][c_data["id"]] = c_data
 
-            student_data[s.email] = data
+        }
+        # Classes
+        for course in s.courses:
+            if "%s" % course.id not in CLASSES_BY_PK:
+                # print("Missing %s" % course)
+                pass
+            else:
+                c_data = CLASSES_BY_PK["%s" % course.id]
+                data["classes"][c_data["id"]] = c_data
+
+        student_data[s.email] = data
 
     print("Missing photos for %s students" % len(missing_photos))
     print(missing_photos)
@@ -526,31 +527,36 @@ def import_data():
                     bucket_name,
                     picture,
                 )
-                print ("found photo: %s" % url)
+            else:
+                url = "https://s3-us-west-2.amazonaws.com/buddyup-core/add_photo_high_res.png"
 
-                image = requests.get(url)
+            data["public"]["profile_pic_url_medium"] = ""
+            data["public"]["profile_pic_url_tiny"] = ""
 
-                data["pictures"] = {
-                    "original": "data:image/png;base64,%s" % base64.b64encode(image.content)
-                }
-                data["public"]["profile_pic_url_medium"] = ""
-                data["public"]["profile_pic_url_tiny"] = ""
+            print("patching user data")
+            firebase_patch("users/%s/" % buid, data)
 
-                firebase_patch("users/%s/" % buid, data)
+            print ("found photo: %s" % url)
+            image = requests.get(url)
 
-                # Kick off thumbnails
-                account_data = {
-                    "buid": buid,
-                    "secret": FIREBASE_KEY,
-                }
+            print("patching profile pic")
+            firebase_patch("users/%s/pictures", {
+                "original": "data:image/png;base64,%s" % base64.b64encode(image.content)
+            })
 
-                json_header = {'content-type': 'application/json'}
-                r = requests.post(
-                    "%sv1/internal/migrate-picture" % API_ENDPOINT,
-                    data=json.dumps(account_data),
-                    headers=json_header
-                )
-                assert r.status_code == 200
+            # Kick off thumbnails
+            account_data = {
+                "buid": buid,
+                "secret": FIREBASE_KEY,
+            }
+
+            json_header = {'content-type': 'application/json'}
+            r = requests.post(
+                "%sv1/internal/migrate-picture" % API_ENDPOINT,
+                data=json.dumps(account_data),
+                headers=json_header
+            )
+            assert r.status_code == 200
 
             # Add to class classmates
             for class_id, class_data in data["classes"].items():
