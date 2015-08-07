@@ -232,6 +232,8 @@ def firebase_patch(endpoint, data, acks_late=True):
     r = requests.patch(firebase_url(endpoint), json.dumps(data))
     if not r.status_code == 200:
         print(r.status_code)
+        print(r.content)
+        print(r.text)
         print(r.json())
     try:
         assert r.status_code == 200
@@ -422,6 +424,8 @@ def import_data():
             "created_at": int(time.mktime(s.created_at.timetuple()) * 1000),
             "email_verified": s.email_verified,
             "school_code": tng_id,
+            "first_name": s.full_name.split(" ")[0],
+            "last_name": " ".join(s.full_name.split(" ")[1:]),
         }
 
         json_header = {'content-type': 'application/json'}
