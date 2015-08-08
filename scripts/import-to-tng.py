@@ -2,13 +2,21 @@
 import base64
 import boto
 import csv
+from collections import namedtuple
 import os
 import json
 import hashlib
+from io import BytesIO
 import requests
 import re
 import sys
 import time
+from PIL import Image, ImageOps, ExifTags
+
+Dimensions = namedtuple('Dimensions', 'x y')
+
+
+ORIGINAL_SIZE = Dimensions(1200, 1200)
 
 sys.path.insert(0, os.getcwd())
 
@@ -460,7 +468,12 @@ def import_data():
                 "push_groups": "everyone",
                 "push_hearts": "everyone",
                 "push_my_groups": "on",
-                "push_private_message": "on"
+                "push_private_message": "on",
+                "migrated": True,
+                "has_completed_migration": False,
+            },
+            "internal": {
+                "email_verified": True,
             },
             "public": {
                 "bio": s.bio,
@@ -524,7 +537,7 @@ def import_data():
                 data["buddies"][buddy_buid]["last_name"] = student_data[buddy_email]["public"]["last_name"]
                 data["buddies"][buddy_buid]["user_id"] = student_data[buddy_email]["public"]["buid"]
 
-            # Picture
+            # # Picture
             picture, size = find_photo(s)
             if picture:
                 url = "http://%s.s3.amazonaws.com/%s" % (
@@ -538,14 +551,38 @@ def import_data():
             data["public"]["profile_pic_url_tiny"] = ""
 
             print("patching user data")
-            firebase_patch("users/%s/" % buid, data)
+            for k, v in data.items():
+                print(k)
+                firebase_patch("users/%s/%s" % (buid, k), v)
 
             print ("found photo: %s" % url)
             image = requests.get(url)
+            print len(image.content)
+            base_image = Image.open(BytesIO(image.content))
 
+            try:
+                for orientation in ExifTags.TAGS.keys() : 
+                    if ExifTags.TAGS[orientation]=='Orientation' : break 
+                exif=dict(base_image._getexif().items())
+                if orientation in exif:
+                    if   exif[orientation] == 3 : 
+                        base_image=base_image.rotate(180, expand=True)
+                    elif exif[orientation] == 6 : 
+                        base_image=base_image.rotate(270, expand=True)
+                    elif exif[orientation] == 8 : 
+                        base_image=base_image.rotate(90, expand=True)
+            except AttributeError, KeyError:
+                # import traceback; traceback.print_exc();
+                pass
+
+            resized = ImageOps.fit(base_image, ORIGINAL_SIZE, method=Image.ANTIALIAS, centering=(0.5, 0.5))
+            print "resized."
+            print len(resized.tobytes())
+            output = BytesIO()
+            resized.save(output, format="PNG")
             print("patching profile pic")
-            firebase_patch("users/%s/pictures", {
-                "original": "data:image/png;base64,%s" % base64.b64encode(image.content)
+            firebase_patch("users/%s/pictures" % buid, {
+                "original": "data:image/png;base64,%s" % base64.b64encode(output.getvalue())
             })
 
             # Kick off thumbnails
