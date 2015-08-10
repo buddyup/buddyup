@@ -130,6 +130,7 @@ SCHOOL_NAME = {
     "smccd_edu": "San Mateo Community College District",
     "stanford_edu": "Stanford",
     "sydney_edu_au": "University of Sydney",
+    "hudson_edu": "Hudson University",
 }
 
 # flask
