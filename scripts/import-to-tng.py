@@ -344,7 +344,7 @@ def import_data():
 
     print("Saving subjects...")
     for id, s in subjects.items():
-        if s["code"] not in firebase_subjects:
+        if not firebase_subjects or s["code"] not in firebase_subjects:
             print("Adding %s - %s" % (s["code"], s["name"]))
             data = {
                 "code": s["code"],
