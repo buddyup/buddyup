@@ -152,9 +152,11 @@ IGNORE_SUBJECT_LIST = [
 tng_id = os.environ["TNG_ID"]
 FIREBASE_KEY = os.environ["FIREBASE_KEY"]
 API_ENDPOINT = os.environ["API_ENDPOINT"]
+bucket_name = os.environ["AWS_S3_BUCKET"]
 
 CLASS_NAME_MAPPING = {}
 PHOTO_LIST = []
+
 
 class Blank():
     pass
