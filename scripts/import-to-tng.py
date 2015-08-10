@@ -119,18 +119,28 @@ SUBJECT_MAPPINGS = {
     "PE": {"icon": "medkit", "name": "Physical Education", },
     "SPED": {"icon": "lightbulb-o", "name": "Special Education", },
     "HON": {"icon": "lightbulb-o", "name": "Honors", },
-}
+    # OIT
+    "ACAD": {"icon": "lightbulb-o", "name": "Academic Success", },
+    "ACC": {"icon": "calculator", "name": "Accounting", },
+    "CHE": {"icon": "flask", "name": "Chemistry", },
+    "DMS": {"icon": "medkit", "name": "Diagnostic Medical Sonography", },
+    "ECO": {"icon": "university", "name": "Economics", },
+    "EE": {"icon": "calculator", "name": "Electrical Engineering", },
+    "MGT": {"icon": "building", "name": "Management", },
+    "MIS": {"icon": "building", "name": "Management Information Systems", },
+    "MIT": {"icon": "medkit", "name": "Medical Imaging Technology", },
+    "Other": {"icon": "cutlery", "name": "Other", },
+    "PHY": {"icon": "globe", "name": "Physics", },
+    "REE": {"icon": "lightbulb-o", "name": "Renewable Energy Engineering", },
+    "SPE": {"icon": "globe", "name": "Speech", },
+    "WRI": {"icon": "pencil", "name": "Writing", },
+    # OSU E-Campus
+    "FW": {"icon": "paw", "name": "Fisheries and Wildlife", },
+    "HDFS": {"icon": "globe", "name": "Human Dev and Family Sciences", },
+    "ENGR": {"icon": "calculator", "name": "Engineering Sciences", },
+    "MB": {"icon": "flask", "name": "Microbiology", },
 
-SCHOOL_NAME = {
-    "pdx_edu": "Portland State University",
-    "buddyup_org": "BuddyUp University",
-    "oregonstate_edu": "Oregon State University",
-    "oit_edu": "Oregon Institute of Technology",
-    "oregonstate_edu": "Oregon State University",
-    "smccd_edu": "San Mateo Community College District",
-    "stanford_edu": "Stanford",
-    "sydney_edu_au": "University of Sydney",
-    "hudson_edu": "Hudson University",
+
 }
 
 # flask
@@ -145,6 +155,20 @@ SCHOOL_NAME = {
 # paw
 # lightbulb-o
 # medkit
+
+SCHOOL_NAME = {
+    "pdx_edu": "Portland State University",
+    "buddyup_org": "BuddyUp University",
+    "oregonstate_edu": "Oregon State University",
+    "oit_edu": "Oregon Institute of Technology",
+    "oregonstate_edu": "Oregon State University",
+    "smccd_edu": "San Mateo Community College District",
+    "stanford_edu": "Stanford",
+    "sydney_edu_au": "University of Sydney",
+    "hudson_edu": "Hudson University",
+}
+
+
 
 IGNORE_SUBJECT_LIST = [
     "OTHER",
@@ -307,7 +331,7 @@ def import_data():
                     raise Exception("Unknown subject %s from %s" % (subject, name))
 
             except Exception, e:
-                # print "Error parsing %s" % name
+                # print "Error parsing %
                 parsing_error = True
                 # raise
 
@@ -363,8 +387,8 @@ def import_data():
         # print "%s: %s" % (c["name"], len(c["students"]))
         if len(c["students"]) > 1:
             if c["parsing_error"]:
-                # raise Exception("Error parsing %s" % (c["name"]))
-                print("Error parsing %s" % (c["name"]))
+                # raise Exception("Error parsing %
+                print("Error parsing %
             else:
                 found = False
                 if firebase_classes:
