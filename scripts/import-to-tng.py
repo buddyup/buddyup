@@ -139,8 +139,6 @@ SUBJECT_MAPPINGS = {
     "HDFS": {"icon": "globe", "name": "Human Dev and Family Sciences", },
     "ENGR": {"icon": "calculator", "name": "Engineering Sciences", },
     "MB": {"icon": "flask", "name": "Microbiology", },
-
-
 }
 
 # flask
@@ -331,7 +329,8 @@ def import_data():
                     raise Exception("Unknown subject %s from %s" % (subject, name))
 
             except Exception, e:
-                # print "Error parsing %
+                # print "Error parsing %" % name
+
                 parsing_error = True
                 # raise
 
@@ -387,8 +386,8 @@ def import_data():
         # print "%s: %s" % (c["name"], len(c["students"]))
         if len(c["students"]) > 1:
             if c["parsing_error"]:
-                # raise Exception("Error parsing %
-                print("Error parsing %
+                # raise Exception("Error parsing %s" % (c["name"]))
+                print("Error parsing %s" % (c["name"]))
             else:
                 found = False
                 if firebase_classes:
