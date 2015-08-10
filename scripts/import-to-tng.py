@@ -521,7 +521,7 @@ def import_data():
         buid = data["public"]["buid"]
         print(data["public"])
 
-        if buid not in firebase_students:
+        if not firebase_students or buid not in firebase_students:
 
             # Buddies
             for buddy in s.buddies:
