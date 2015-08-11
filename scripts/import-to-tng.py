@@ -654,18 +654,18 @@ def import_data():
                 data=json.dumps(account_data),
                 headers=json_header
             )
-            assert r.status_code == 200
+            if r.status_code == 200:
 
-            # Add to class classmates
-            for class_id, class_data in data["classes"].items():
-                firebase_put("classes/%s/students/%s/" % (class_id, buid), {
+                # Add to class classmates
+                for class_id, class_data in data["classes"].items():
+                    firebase_put("classes/%s/students/%s/" % (class_id, buid), {
+                        ".value": True,
+                    })
+
+                # Add to School's students
+                firebase_put("schools/%s/students/%s/" % (tng_id, buid), {
                     ".value": True,
                 })
-
-            # Add to School's students
-            firebase_put("schools/%s/students/%s/" % (tng_id, buid), {
-                ".value": True,
-            })
 
     print(" - %s students" % (len(students)))
     print("Missing photos for %s" % len(missing_photos))
