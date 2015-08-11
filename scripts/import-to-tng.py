@@ -447,7 +447,7 @@ def import_data():
     missing_photos = []
 
     print("Saving Students...")
-    firebase_students = firebase_get("/schools/%s/students" % tng_id)
+    # firebase_students = firebase_get("/schools/%s/students" % tng_id)
     for s in students:
         # print(data)
         if tng_id == "buddyup_org" or tng_id == "pdx_edu" and not s.email:
@@ -548,99 +548,99 @@ def import_data():
             buid = data["public"]["buid"]
             print(data["public"])
 
-            if not firebase_students or buid not in firebase_students:
+            # if not firebase_students or buid not in firebase_students:
 
-                # Buddies
-                for buddy in s.buddies:
-                    if tng_id == "buddyup_org" or tng_id == "pdx_edu" and not buddy.email:
-                        buddy_email = "%s@pdx.edu" % buddy.user_name
-                    else:
-                        buddy_email = buddy.email
-
-                    if not "buddies" in data:
-                        data["buddies"] = {}
-
-                    buddy_buid = student_data[buddy_email]["public"]["buid"]
-
-                    if buddy_buid not in data["buddies"]:
-                        data["buddies"][buddy_buid] = {}
-
-                    data["buddies"][buddy_buid]["first_name"] = student_data[buddy_email]["public"]["first_name"]
-                    data["buddies"][buddy_buid]["last_name"] = student_data[buddy_email]["public"]["last_name"]
-                    data["buddies"][buddy_buid]["user_id"] = student_data[buddy_email]["public"]["buid"]
-
-                # # Picture
-                picture, size = find_photo(s)
-                if picture:
-                    url = "http://%s.s3.amazonaws.com/%s" % (
-                        bucket_name,
-                        picture,
-                    )
+            # Buddies
+            for buddy in s.buddies:
+                if tng_id == "buddyup_org" or tng_id == "pdx_edu" and not buddy.email:
+                    buddy_email = "%s@pdx.edu" % buddy.user_name
                 else:
-                    url = "https://s3-us-west-2.amazonaws.com/buddyup-core/add_photo_high_res.png"
+                    buddy_email = buddy.email
 
-                data["public"]["profile_pic_url_medium"] = ""
-                data["public"]["profile_pic_url_tiny"] = ""
+                if not "buddies" in data:
+                    data["buddies"] = {}
 
-                print("patching user data")
-                for k, v in data.items():
-                    print(k)
-                    firebase_patch("users/%s/%s" % (buid, k), v)
+                buddy_buid = student_data[buddy_email]["public"]["buid"]
 
-                print ("found photo: %s" % url)
-                image = requests.get(url)
-                print len(image.content)
-                base_image = Image.open(BytesIO(image.content))
+                if buddy_buid not in data["buddies"]:
+                    data["buddies"][buddy_buid] = {}
 
-                try:
-                    for orientation in ExifTags.TAGS.keys() : 
-                        if ExifTags.TAGS[orientation]=='Orientation' : break 
-                    exif=dict(base_image._getexif().items())
-                    if orientation in exif:
-                        if   exif[orientation] == 3 : 
-                            base_image=base_image.rotate(180, expand=True)
-                        elif exif[orientation] == 6 : 
-                            base_image=base_image.rotate(270, expand=True)
-                        elif exif[orientation] == 8 : 
-                            base_image=base_image.rotate(90, expand=True)
-                except AttributeError, KeyError:
-                    # import traceback; traceback.print_exc();
-                    pass
+                data["buddies"][buddy_buid]["first_name"] = student_data[buddy_email]["public"]["first_name"]
+                data["buddies"][buddy_buid]["last_name"] = student_data[buddy_email]["public"]["last_name"]
+                data["buddies"][buddy_buid]["user_id"] = student_data[buddy_email]["public"]["buid"]
 
-                resized = ImageOps.fit(base_image, ORIGINAL_SIZE, method=Image.ANTIALIAS, centering=(0.5, 0.5))
-                print "resized."
-                print len(resized.tobytes())
-                output = BytesIO()
-                resized.save(output, format="PNG")
-                print("patching profile pic")
-                firebase_patch("users/%s/pictures" % buid, {
-                    "original": "data:image/png;base64,%s" % base64.b64encode(output.getvalue())
-                })
-
-                # Kick off thumbnails
-                account_data = {
-                    "buid": buid,
-                    "secret": FIREBASE_KEY,
-                }
-
-                json_header = {'content-type': 'application/json'}
-                r = requests.post(
-                    "%sv1/internal/migrate-picture" % API_ENDPOINT,
-                    data=json.dumps(account_data),
-                    headers=json_header
+            # # Picture
+            picture, size = find_photo(s)
+            if picture:
+                url = "http://%s.s3.amazonaws.com/%s" % (
+                    bucket_name,
+                    picture,
                 )
-                assert r.status_code == 200
+            else:
+                url = "https://s3-us-west-2.amazonaws.com/buddyup-core/add_photo_high_res.png"
 
-                # Add to class classmates
-                for class_id, class_data in data["classes"].items():
-                    firebase_put("classes/%s/students/%s/" % (class_id, buid), {
-                        ".value": True,
-                    })
+            data["public"]["profile_pic_url_medium"] = ""
+            data["public"]["profile_pic_url_tiny"] = ""
 
-                # Add to School's students
-                firebase_put("schools/%s/students/%s/" % (tng_id, buid), {
+            print("patching user data")
+            for k, v in data.items():
+                print(k)
+                firebase_patch("users/%s/%s" % (buid, k), v)
+
+            print ("found photo: %s" % url)
+            image = requests.get(url)
+            print len(image.content)
+            base_image = Image.open(BytesIO(image.content))
+
+            try:
+                for orientation in ExifTags.TAGS.keys() : 
+                    if ExifTags.TAGS[orientation]=='Orientation' : break 
+                exif=dict(base_image._getexif().items())
+                if orientation in exif:
+                    if   exif[orientation] == 3 : 
+                        base_image=base_image.rotate(180, expand=True)
+                    elif exif[orientation] == 6 : 
+                        base_image=base_image.rotate(270, expand=True)
+                    elif exif[orientation] == 8 : 
+                        base_image=base_image.rotate(90, expand=True)
+            except AttributeError, KeyError:
+                # import traceback; traceback.print_exc();
+                pass
+
+            resized = ImageOps.fit(base_image, ORIGINAL_SIZE, method=Image.ANTIALIAS, centering=(0.5, 0.5))
+            print "resized."
+            print len(resized.tobytes())
+            output = BytesIO()
+            resized.save(output, format="PNG")
+            print("patching profile pic")
+            firebase_patch("users/%s/pictures" % buid, {
+                "original": "data:image/png;base64,%s" % base64.b64encode(output.getvalue())
+            })
+
+            # Kick off thumbnails
+            account_data = {
+                "buid": buid,
+                "secret": FIREBASE_KEY,
+            }
+
+            json_header = {'content-type': 'application/json'}
+            r = requests.post(
+                "%sv1/internal/migrate-picture" % API_ENDPOINT,
+                data=json.dumps(account_data),
+                headers=json_header
+            )
+            assert r.status_code == 200
+
+            # Add to class classmates
+            for class_id, class_data in data["classes"].items():
+                firebase_put("classes/%s/students/%s/" % (class_id, buid), {
                     ".value": True,
                 })
+
+            # Add to School's students
+            firebase_put("schools/%s/students/%s/" % (tng_id, buid), {
+                ".value": True,
+            })
 
     print(" - %s students" % (len(students)))
     print("Missing photos for %s" % len(missing_photos))
