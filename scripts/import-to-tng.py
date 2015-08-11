@@ -139,7 +139,31 @@ SUBJECT_MAPPINGS = {
     "HDFS": {"icon": "globe", "name": "Human Dev and Family Sciences", },
     "ENGR": {"icon": "calculator", "name": "Engineering Sciences", },
     "MB": {"icon": "flask", "name": "Microbiology", },
+
+    # Skyline
+    "DANC": {"icon": "paint-brush", "name": "Dance"},
+    "DRAM": {"icon": "paint-brush", "name": "Drama"},
+    "ECE": {"icon": "university", "name": "Early Childhood Education"},
+    "ENGL": {"icon": "pencil", "name": "English"},
+    "FITN": {"icon": "medkit", "name": "Fitness"},
+    "HSCI": {"icon": "medkit", "name": "Health Science"},
+    "INTD": {"icon": "paint-brush", "name": "Interior Design"},
+    "KINE": {"icon": "medkit", "name": "Kinesiology"},
+    "LIT": {"icon": "pencil", "name": "Literature"},
+    "OCEN": {"icon": "globe", "name": "Oceanography"},
+    "PHIL": {"icon": "university", "name": "Philosophy"},
+    "PHYSICS": {"icon": "flask", "name": "Physics"},
+    "PLSC": {"icon": "globe", "name": "Political Science"},
+    "PSYC": {"icon": "lightbulb-o", "name": "Psychology"},
+    "PSYCH": {"icon": "lightbulb-o", "name": "Psychology"},
+    "PSYCHOLOGY": {"icon": "lightbulb-o", "name": "Psychology"},
+    "SOCI": {"icon": "globe", "name": "Sociology"},
 }
+
+# print "Error parsing %" % name
+# raise Exception("Error parsing %s" % (c["name"]))
+# print("Error parsing %s" % (c["name"]))
+
 
 # flask
 # calculator
@@ -160,7 +184,7 @@ SCHOOL_NAME = {
     "oregonstate_edu": "Oregon State University",
     "oit_edu": "Oregon Institute of Technology",
     "oregonstate_edu": "Oregon State University",
-    "smccd_edu": "San Mateo Community College District",
+    "my_smccd_edu": "San Mateo Community College District",
     "stanford_edu": "Stanford",
     "sydney_edu_au": "University of Sydney",
     "hudson_edu": "Hudson University",
@@ -329,7 +353,7 @@ def import_data():
                     raise Exception("Unknown subject %s from %s" % (subject, name))
 
             except Exception, e:
-                # print "Error parsing %" % name
+                
 
                 parsing_error = True
                 # raise
@@ -386,8 +410,8 @@ def import_data():
         # print "%s: %s" % (c["name"], len(c["students"]))
         if len(c["students"]) > 1:
             if c["parsing_error"]:
-                # raise Exception("Error parsing %s" % (c["name"]))
                 print("Error parsing %s" % (c["name"]))
+
             else:
                 found = False
                 if firebase_classes:
