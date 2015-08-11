@@ -560,14 +560,15 @@ def import_data():
                 if not "buddies" in data:
                     data["buddies"] = {}
 
-                buddy_buid = student_data[buddy_email]["public"]["buid"]
+                if buddy_email in student_data:
+                    buddy_buid = student_data[buddy_email]["public"]["buid"]
 
-                if buddy_buid not in data["buddies"]:
-                    data["buddies"][buddy_buid] = {}
+                    if buddy_buid not in data["buddies"]:
+                        data["buddies"][buddy_buid] = {}
 
-                data["buddies"][buddy_buid]["first_name"] = student_data[buddy_email]["public"]["first_name"]
-                data["buddies"][buddy_buid]["last_name"] = student_data[buddy_email]["public"]["last_name"]
-                data["buddies"][buddy_buid]["user_id"] = student_data[buddy_email]["public"]["buid"]
+                    data["buddies"][buddy_buid]["first_name"] = student_data[buddy_email]["public"]["first_name"]
+                    data["buddies"][buddy_buid]["last_name"] = student_data[buddy_email]["public"]["last_name"]
+                    data["buddies"][buddy_buid]["user_id"] = student_data[buddy_email]["public"]["buid"]
 
             # # Picture
             picture, size = find_photo(s)
